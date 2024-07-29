@@ -1,0 +1,202 @@
+---
+title: "Intro to data visualization and graphical grammars"
+jupyter: "531"
+---
+
+::: {.callout-note title="Learning outcomes"}
+- **Explain**: The main advantages of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
+
+- **Describe**: A grammar of graphics defines the grammatical rules that can be used to construct entire visualizations from smaller building blocks.
+
+- **Apply**: Be able to use the visualization grammars Altair and ggplot and create a basic chart via `alt.Chart()...` / `ggplot()...`
+
+- **Explain**: The advantage of high level level syntax allows us to think in terms of the data, rather than graphical details.
+:::
+
+### What is data visualization?
+
+At its core,
+data visualization is about representing numbers with graphical elements
+such as the position of a line, the length of a bar, or the colour of a point.
+We often use visualizations to explore data ourselves,
+and to effectively communicate our insights to others,
+as we will learn in later modules of this course.
+
+### What is the purpose of visualizing data?
+
+We often visualize data in order to help us answer a specific question
+we have about our dataset,
+but it can also help us generate new questions.
+
+Before creating a visualization,
+it is important that you
+think about why you are making it,
+and what you want to achieve from creating this plot.
+Is there a specific question you are trying to answer,
+like comparing the relationship between two dataframe columns?
+Or are you creating a plot
+to help you understand the structure of your data more in general,
+such as plotting the distribution of each dataframe column?
+
+In either case,
+it can be extremely helpful to draw out your plot with pen and paper first.
+This helps you think about if the plot you are creating makes sense
+or if there is another plot better suited for the task at hand.
+Drawing with pen and paper also makes it easier to write the code afterwards,
+since you clearly know what you are expecting
+the visualization to look like.
+
+### Why bother visualizing data instead of showing raw numbers?
+
+To understand why visualizations are so powerful,
+it is helpful to remember that to answer a question,
+we often have to put the data in a format that is easy for us humans to interpret.
+Because our number systems have only been around for about 5,000 years,
+we need to assert effort and train ourselves
+to recognize structure in numerical data.
+
+Visual systems,
+on the other hand,
+have undergone refinement during 500,000,000 years of evolution,
+so we can instinctively recognize visual patterns
+and accurately estimate visual properties
+such as colours and distances.
+
+Practically,
+this means that we can arrive at correct conclusions faster
+from studying visual rather than numerical
+representations of the same data.
+For example, have a look at the
+four sets of numbers in the table on the slide.
+Can you see the differences in the general trends between these four sets of numbers?
+This is a slightly modified version of the original,
+<a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="_blank">which was put together by statistician Francis Anscombe in the
+70s.</a>
+
+
+```{python}
+#| echo: false
+
+import altair as alt
+import pandas as pd
+from vega_datasets import data
+from IPython.display import display_html, HTML
+
+anscombe = data.anscombe()
+anscombe['Set'] = anscombe['Series'].map({'I': 'A', 'II': 'B', 'III': 'C', 'IV': 'D'})
+anscombe = anscombe.drop(columns='Series')
+anscombe.loc[anscombe['Y'] == anscombe['Y'].max(), 'Y'] = 8.5
+
+s = ''
+for set_name, df in anscombe.groupby('Set'):
+    df = df.drop(columns='Set')
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'X'), (set_name, 'Y')])
+    s = s + (
+        df
+        .style
+        .format('{:.2f}')
+        .hide(axis='index')
+        ._repr_html_()
+    )
+
+html_content = '<div class="dataframe-grid">' + s + '</div>'
+
+display(HTML(html_content))
+```
+
+#### Summary statistics don't tell the whole story
+
+You are likely not able to see much difference between the data sets
+in the table above.
+What about if I showed you a few commonly used numerical summaries of the data?
+
+```{python}
+#| echo: false
+
+s = ''
+for set_name, df in anscombe.groupby('Set'):
+    df = df.drop(columns='Set')
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'X'), (set_name, 'Y')])
+    s += (
+        df
+        .agg(['mean', 'std'])
+        .round(2)
+        .style
+        .format('{:.2f}')
+        .hide(axis='index')
+        ._repr_html_()
+        .replace('>7.11',  ' style="background-color:#4853a4; color:#ffffff"> <b>7.11</b>')
+        .replace('>1.15',  ' style="background-color:#4853a4; color:#ffffff"> <b>1.15</b>')
+    )
+
+html_content = '<div class="dataframe-grid">' + s + '</div>'
+
+display(HTML(html_content))
+```
+
+<br>
+Summaries,
+such as the mean and standard deviation,
+are helpful statistical tools
+that are often useful for detecting the differences between datasets.
+However,
+since they collapse the data into just a few numbers,
+statistical summaries can't tell the whole story about the data
+and there can be important differences between datasets
+that summaries fail to reveal.
+
+Below,
+the mean and standard deviation indicate that set C
+is slightly different from the other sets of data
+in terms of the centre of the sample distribution and the spread of that distribution,
+while the remaining three sets of data have a similar centre and spread.
+
+#### Plotting the data immediately reveals patterns in the data 
+
+So if you can't really see any patterns in the data
+and the statistical summaries are the same,
+that must mean that the four sets are pretty similar, right?
+Sounds about right to me so let's go ahead and plot them to have a quick look and...
+
+```{python}
+#| echo: false
+
+def bigger_font():
+    return {
+        'config': {
+            'view': {'continuousWidth': 400, 'continuousHeight': 300},
+            'legend': {'symbolSize': 14, 'titleFontSize': 14, 'labelFontSize': 14},
+            'axis': {'titleFontSize': 14, 'labelFontSize': 12},
+            'header': {'titleFontSize': 16, 'labelFontSize': 14},
+            'encoding': {'x': {'scale': {'zero': False}}}}}
+alt.themes.register('bigger_font', bigger_font)
+alt.themes.enable('bigger_font')
+(alt.Chart(anscombe).mark_circle(size=80, opacity=1).encode(
+    x='X',
+    y='Y')
+ .properties(width=300, height=200)
+ .facet('Set', columns=2)
+ .configure_axis(grid=True)
+ .configure_header(title=None)
+)
+```
+
+... what the... how... there must be something wrong, right?
+Well what is wrong is that humans are not good at detecting patterns in raw numbers,
+and we don't have good intuition about which combination of numbers can contribute to the same statistical summaries.
+But guess what we excel at? Detecting visual patterns!
+
+It is immediately clear to us how these sets of numbers differ
+once they are shown as graphical objects 
+instead of textual objects.
+We could not detect these patterns from only looking at the raw numbers or summary statistics
+This is one of the main reasons why data visualization
+is such a powerful tool for data exploration and communication.
+
+In our example here,
+we would come to widely different conclusions about the behaviour of the data
+for the four different data sets.
+
+Sets A and C are roughly linearly increasing at similar rates,
+whereas set B reaches a plateau and starts to drop,
+and set D has a constant X-value for all numbers except one big outlier.

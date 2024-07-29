@@ -1,0 +1,20 @@
+.boxed {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px 15px 0 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+
+.dataframe-grid {
+    display: flex;
+    flex-direction: row; 
+    gap: 50px; 
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.callout-header {
+    margin-bottom: 10px !important;
+}
