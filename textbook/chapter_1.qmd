@@ -221,91 +221,75 @@ While powerful, data visualization can lead to misinterpretation if not done car
 
 ## Creating plots in R and Python
 
-There is a plethora of visualization tools in each language,
-here is a brief overview.
+There is a plethora of visualization tools in each language.
 
 ### The R and Python visualization landscapes
 
 ```{mermaid}
 %%{init: {'flowchart': {'width': 800}}}%%
 graph TD
-    %% Color definitions
-    classDef alignmentTool fill:#FF69B4,color:#000
-    classDef highLevel fill:#87CEFA,color:#000
-    classDef lowLevel fill:#FFA500,color:#000
-    classDef javascript fill:#FFFFFF,color:#000
-    classDef highlight fill:#87CEFA,stroke:#00FF00,color:#000,stroke-width:2px
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
 
-    %% R ecosystem
-    base[base]:::lowLevel
-    grid[grid]:::lowLevel
-    lattice[lattice]:::highLevel
-    ggplot[ggplot]:::highlight
-    ggiraph[ggiraph]:::highLevel
-    ggplotly[ggplotly]:::highLevel
-    plotly_r[plotly]:::lowLevel
-    patchwork[patchwork/cowplot]:::alignmentTool
-    htmlwidgets[htmlwidgets]:::javascript
+    %% R ecosystem
+    base[base]:::lowLevel
+    grid[grid]:::lowLevel
+    lattice[lattice]:::highLevel
+    ggplot[ggplot]:::highLevel
+    ggiraph[ggiraph]:::highLevel
+    ggplotly[ggplotly]:::highLevel
+    plotly_r[plotly]:::lowLevel
+    patchwork[patchwork/cowplot]:::alignmentTool
+    htmlwidgets[htmlwidgets]:::javascript
+    altair_r[Altair]:::highLevel
 
-    %% JavaScript-related
-    js[JavaScript]:::javascript
-    d3[D3]:::javascript
-    vega[Vega]:::javascript
-    vegalite[Vega-Lite]:::javascript
+    %% JavaScript-related
+    js[JavaScript]:::javascript
+    d3[D3]:::javascript
+    vega[Vega]:::javascript
+    vegalite[Vega-Lite]:::javascript
 
-    %% Python ecosystem
-    matplotlib[Matplotlib]:::lowLevel
-    plotnine[Plotnine]:::highLevel
-    pandas[Pandas]:::highLevel
-    seaborn[Seaborn]:::highLevel
-    holoviz[HoloViz]:::highLevel
-    bokeh[Bokeh]:::lowLevel
-    plotly_py[Plotly]:::lowLevel
-    plotly_express[Plotly Express]:::highLevel
-    altair[Altair]:::highlight
+    %% Python ecosystem
+    matplotlib[Matplotlib]:::lowLevel
+    plotnine[Plotnine]:::highLevel
+    pandas[Pandas]:::highLevel
+    seaborn[Seaborn]:::highLevel
+    holoviz[HoloViz]:::highLevel
+    bokeh[Bokeh]:::lowLevel
+    plotly_py[Plotly]:::lowLevel
+    plotly_express[Plotly Express]:::highLevel
+    altair[Altair]:::highLevel
 
-    %% Subgraph for R ecosystem
-    subgraph R_Ecosystem[R Ecosystem]
-        base --> grid
-        grid --> lattice & ggplot
-        lattice & ggplot --> patchwork
-        ggplot -.-> ggiraph & ggplotly
-        ggplotly --> plotly_r
-        htmlwidgets --> ggiraph & plotly_r
-    end
+    %% Subgraph for R ecosystem
+    subgraph R_Ecosystem[R Ecosystem]
+        base --> grid
+        grid --> lattice & ggplot
+        lattice & ggplot --> patchwork
+        ggplot -.-> ggiraph & ggplotly
+        ggplotly --> plotly_r
+        htmlwidgets --> ggiraph & plotly_r & altair_r
+    end
 
-    %% Subgraph for JavaScript ecosystem
-    subgraph JS_Ecosystem[JavaScript Ecosystem]
-        js --> d3
-        d3 --> vega
-        vega --> vegalite
-    end
+    %% Subgraph for JavaScript ecosystem
+    subgraph JS_Ecosystem[JavaScript Ecosystem]
+        js --> d3
+        d3 --> vega
+        vega --> vegalite
+    end
 
-    %% Subgraph for Python ecosystem
-    subgraph Python_Ecosystem[Python Ecosystem]
-        matplotlib --> plotnine & pandas & seaborn & holoviz
-        holoviz --> bokeh
-        plotly_py --> plotly_express
-        vegalite --> altair
-    end
+    %% Subgraph for Python ecosystem
+    subgraph Python_Ecosystem[Python Ecosystem]
+        matplotlib --> plotnine & pandas & seaborn & holoviz
+        holoviz --> bokeh
+        plotly_py --> plotly_express
+        vegalite --> altair & altair_r
+    end
 
-    %% Connections between ecosystems
-    js --> htmlwidgets & bokeh & plotly_py
-```
-
-```{mermaid}
-graph TD
-    %% Color definitions
-    classDef alignmentTool fill:#FF69B4,color:#000
-    classDef highLevel fill:#87CEFA,color:#000
-    classDef lowLevel fill:#FFA500,color:#000
-    classDef javascript fill:#FFFFFF,color:#000
-
-    %% Legend items
-    AT[Alignment Tool]:::alignmentTool
-    HL[High Level]:::highLevel
-    LL[Low Level]:::lowLevel
-    JS[JavaScript]:::javascript
+    %% Connections between ecosystems
+    js --> htmlwidgets & bokeh & plotly_py
 ```
 
 In this book we will focus on Altair and ggplot,
@@ -425,3 +409,12 @@ The following table illustrates the structural similarities between graphical gr
 
 Understanding these parallels enables users to approach data visualization systematically, leveraging a defined set of components and rules.
 
+#### Grammar for Altair and ggplot
+
+Two of the most prominent declarative statistical visualization libraries are [Altair](https://altair-viz.github.io/) (Python and R) and [ggplot](https://ggplot2.tidyverse.org/). These offer a powerful and concise visualization grammar for quickly building a wide range of statistical graphics. 
+
+In brief, you first create a canvas/chart, then you encode your data variables as different dimensions in this chart (x, y, color, etc) and add geometric marks to represent the data (points, lines, etc). You can see an illustration of this in the image below, together with how `ggplot` (top) and `altair` (bottom) uses the grammatical components in its syntax. The exact syntax is slightly different, but the overall structure very much the same:
+
+![Alt text](grammar-of-graphics.jpeg)
+
+In the previous image of the plotting landscape, you’ll notice various high-level tools. While these tools are more convenient than low-level ones, their syntax differs from Altair and ggplot. They typically use a top-down approach, focusing on the type of plot to build (e.g., `histogram(data, x, y, color)`) rather than building from the data (e.g., `canvas(data).mark_bar().encode(bin(x), y, color)`). Both approaches have their benefits, but this course emphasizes the grammar-based, bottom-up approach due to its flexibility and power.
