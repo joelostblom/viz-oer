@@ -314,8 +314,11 @@ these are both high level (or declarative) visualization libraries.
 
 ### High level declarative vs low level imperative visualization tools
 
-By declarative,
-we mean that you can provide a high-level specification of *what* you want the visualization to include, rather than having to specify *how* to implement the visualization.
+Declarative visualization tools allow you to give a high-level specification of *what* you want the visualization to include, rather than *how* to implement the visualization.
+
+They focus on **data and relationships**, rather than **plot construction details.** 
+
+Consider the difference between these instructions:
 
 ::: {.panel-tabset}
 
@@ -332,18 +335,13 @@ we mean that you can provide a high-level specification of *what* you want the v
 **Focus**: for-loops, low-level drawing commands, *etc*
 :::
 
+With declarative tools, you simply have to declare links between data variables (e.g., country) and visual encoding channels (e.g., the x-axis, y-axis, color, *etc*). The rest of the plot details are handled automatically. 
 
-Declarative visualization tools let you think about **data and relationships**, rather than **plot construction details.** 
-
-
-You simply have to declare links between data variables (e.g., dollars spent) and visual encoding channels (e.g., the x-axis, y-axis, color, *etc*). The rest of the plot details are handled automatically. 
-
-Building on this declarative plotting idea, a surprising range of simple to sophisticated visualizations can be created using a concise grammar. This approach makes it very easy to change between plot types, or accomodate changes in your underlying data. 
-
+As a result, you can create an impressive range of visualizations - from simple to sophisticated - using a concise grammar. It is also much easier to change between plot types, and accomodate changes in your underlying data. 
 
 ::: {.callout-note icon="false"}
 ## Exercise
- Inspect this visualization of the size of petals in Iris flowers. Try to spot the difference in  the code between the declarative and imperative approaches.
+ **Examine this visualization of the size of petals in Iris flowers. Try to spot the difference in the code between the declarative and imperative approaches.**
 
 ```{python}
 #| echo: false
@@ -358,7 +356,7 @@ plt.ioff()
 
 ::: {.panel-tabset}
 
-# Declarative (Altair)
+# Declarative
 
 ```{python}
 
@@ -370,7 +368,7 @@ alt.Chart(data.iris()).mark_circle().encode(
 
 ```
 
-# Imperative (matplotlib)
+# Imperative
 ```{python}
 
 fig, ax = plt.subplots()
@@ -394,8 +392,36 @@ plt.show()
 ::: {.callout-tip icon="false" collapse="true"}
 ## Answer
 
-The declarative code focusses on what we want to visualize (e.g., `petalLength`, `petalLength`) rather than how to construct the visualization (e.g., defining colors, using for loops).  
+The declarative code says what we want to visualize (e.g., `petalLength`, `petalLength`) rather than how to construct the visualization (e.g., defining colors, using for loops).  
 ::: 
 <br>
 
 :::
+
+### Using a graphical grammar
+
+#### What is a graphical grammar?
+
+A graphical grammar is a system for creating visualizations by combining basic elements according to specific rules. It parallels the grammars of natural and programming languages, but applies to visual components.
+
+Key components of a graphical grammar include:
+
+1. **Canvas**: The background or base of the chart.
+2. **Geometric marks**: Visual elements representing data (e.g., bars, dots).
+3. **Visual encoding**: Rules for mapping data to visual properties.
+
+This approach differs from traditional charting tools that offer pre-made chart types. Instead, it provides flexibility to construct custom visualizations from fundamental building blocks.
+
+The following table illustrates the structural similarities between graphical grammar and other language systems:
+
+| Component | Natural Language | Programming Language | Graphical Grammar |
+|-----------|-------------------|----------------------|-------------------|
+| Basic Units | Words | Variables, literals | Marks (points, lines, bars) |
+| Syntax Rules | Word order, punctuation | Syntax rules, operators | Rules for combining marks, layers, aesthetics |
+| Semantics | Word meanings, context | Expression meanings | Meanings of visual encodings |
+| Composition | Sentences, paragraphs | Statements, code blocks | Layers, facets |
+| Output | Text | Executable code | Data visualizations |
+| Modifiers | Adjectives, adverbs | Attributes, parameters | Scales, legends, annotations |
+
+Understanding these parallels enables users to approach data visualization systematically, leveraging a defined set of components and rules.
+
