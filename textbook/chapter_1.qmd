@@ -20,7 +20,7 @@ data visualization is about representing numbers with graphical elements
 such as the position of a line, the length of a bar, or the colour of a point.
 We often use visualizations to explore data ourselves,
 and to effectively communicate our insights to others,
-as we will learn in later modules of this course.
+as we will learn in later modules of this book.
 
 ### What is the purpose of visualizing data?
 
@@ -213,16 +213,20 @@ but looking at the data graphically shows us how different these datasets actual
 ![](https://blog.revolutionanalytics.com/downloads/DataSaurus%20Dozen.gif)
 
 ::: {.callout-warning}
-## Beware of Visualization Pitfalls
+### Beware of Visualization Pitfalls
 
 While powerful, data visualization can lead to misinterpretation if not done carefully. Learn about common traps and best practices in [Data Visualization: A practical introduction](https://socviz.co/lookatdata.html#lookatdata) by Kieran Healy (Sections 1-1.2).
 
 :::
 
+## Creating plots in R and Python
+
+There is a plethora of visualization tools in each language,
+here is a brief overview.
+
 ### The R and Python visualization landscapes
 
 ```{mermaid}
-
 %%{init: {'flowchart': {'width': 800}}}%%
 graph TD
     %% Color definitions
@@ -230,12 +234,13 @@ graph TD
     classDef highLevel fill:#87CEFA,color:#000
     classDef lowLevel fill:#FFA500,color:#000
     classDef javascript fill:#FFFFFF,color:#000
+    classDef highlight fill:#87CEFA,stroke:#00FF00,color:#000,stroke-width:2px
 
     %% R ecosystem
     base[base]:::lowLevel
     grid[grid]:::lowLevel
     lattice[lattice]:::highLevel
-    ggplot[ggplot]:::highLevel
+    ggplot[ggplot]:::highlight
     ggiraph[ggiraph]:::highLevel
     ggplotly[ggplotly]:::highLevel
     plotly_r[plotly]:::lowLevel
@@ -257,7 +262,7 @@ graph TD
     bokeh[Bokeh]:::lowLevel
     plotly_py[Plotly]:::lowLevel
     plotly_express[Plotly Express]:::highLevel
-    altair[Altair]:::highLevel
+    altair[Altair]:::highlight
 
     %% Subgraph for R ecosystem
     subgraph R_Ecosystem[R Ecosystem]
@@ -302,3 +307,95 @@ graph TD
     LL[Low Level]:::lowLevel
     JS[JavaScript]:::javascript
 ```
+
+In this book we will focus on Altair and ggplot,
+and as you can see in the image above,
+these are both high level (or declarative) visualization libraries.
+
+### High level declarative vs low level imperative visualization tools
+
+By declarative,
+we mean that you can provide a high-level specification of *what* you want the visualization to include, rather than having to specify *how* to implement the visualization.
+
+::: {.panel-tabset}
+
+# Declarative instruction
+
+**"Color my data by the column `country`"**
+
+**Focus**: data, graphical marks, and encoding channels
+
+# Imperative instruction
+
+**"Go through this data frame and plot any observations of `country1` in blue, any observations of `country2` in red"**
+
+**Focus**: for-loops, low-level drawing commands, *etc*
+:::
+
+
+Declarative visualization tools let you think about **data and relationships**, rather than **plot construction details.** 
+
+
+You simply have to declare links between data variables (e.g., dollars spent) and visual encoding channels (e.g., the x-axis, y-axis, color, *etc*). The rest of the plot details are handled automatically. 
+
+Building on this declarative plotting idea, a surprising range of simple to sophisticated visualizations can be created using a concise grammar. This approach makes it very easy to change between plot types, or accomodate changes in your underlying data. 
+
+
+::: {.callout-note icon="false"}
+## Exercise
+ Inspect this visualization of the size of petals in Iris flowers. Try to spot the difference in  the code between the declarative and imperative approaches.
+
+```{python}
+#| echo: false
+#| output: false
+import matplotlib.pyplot as plt
+import seaborn as sns
+import altair as alt
+df = sns.load_dataset('iris')
+plt.ioff()
+
+```
+
+::: {.panel-tabset}
+
+# Declarative (Altair)
+
+```{python}
+
+alt.Chart(data.iris()).mark_circle().encode(
+    x='petalLength',
+    y='petalWidth',
+    color='species'
+)
+
+```
+
+# Imperative (matplotlib)
+```{python}
+
+fig, ax = plt.subplots()
+colors = ['#4E7DA6', '#F28A2E', '#F29191']
+
+for color, species in zip(colors, df['species'].unique()):
+    tmp = df[df['species'] == species]
+    ax.scatter(tmp['petal_length'], tmp['petal_width'], label=species, color=color)
+```
+
+```{python}
+#| echo: false
+ax.legend()
+ax.set_xlabel('Petal Length')
+ax.set_ylabel('Petal Width')
+plt.show()
+```
+
+:::
+
+::: {.callout-tip icon="false" collapse="true"}
+## Answer
+
+The declarative code focusses on what we want to visualize (e.g., `petalLength`, `petalLength`) rather than how to construct the visualization (e.g., defining colors, using for loops).  
+::: 
+<br>
+
+:::
