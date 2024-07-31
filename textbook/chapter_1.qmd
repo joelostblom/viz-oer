@@ -200,3 +200,105 @@ for the four different data sets.
 Sets A and C are roughly linearly increasing at similar rates,
 whereas set B reaches a plateau and starts to drop,
 and set D has a constant X-value for all numbers except one big outlier.
+
+#### A modern take on Anscombe's quartet
+
+For a more recent, dynamic, and avian illustration
+of how graphical representations are much easier for us to interpret,
+check out the [Datasaurus Dozen animation](https://www.autodesk.com/research/publications/same-stats-different-graphs) below.
+It displays several different datasets,
+all with the same mean, standard deviation and correlation between X and Y,
+but looking at the data graphically shows us how different these datasets actually are.
+
+![](https://blog.revolutionanalytics.com/downloads/DataSaurus%20Dozen.gif)
+
+::: {.callout-warning}
+## Beware of Visualization Pitfalls
+
+While powerful, data visualization can lead to misinterpretation if not done carefully. Learn about common traps and best practices in [Data Visualization: A practical introduction](https://socviz.co/lookatdata.html#lookatdata) by Kieran Healy (Sections 1-1.2).
+
+:::
+
+### The R and Python visualization landscapes
+
+```{mermaid}
+
+%%{init: {'flowchart': {'width': 800}}}%%
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+
+    %% R ecosystem
+    base[base]:::lowLevel
+    grid[grid]:::lowLevel
+    lattice[lattice]:::highLevel
+    ggplot[ggplot]:::highLevel
+    ggiraph[ggiraph]:::highLevel
+    ggplotly[ggplotly]:::highLevel
+    plotly_r[plotly]:::lowLevel
+    patchwork[patchwork/cowplot]:::alignmentTool
+    htmlwidgets[htmlwidgets]:::javascript
+
+    %% JavaScript-related
+    js[JavaScript]:::javascript
+    d3[D3]:::javascript
+    vega[Vega]:::javascript
+    vegalite[Vega-Lite]:::javascript
+
+    %% Python ecosystem
+    matplotlib[Matplotlib]:::lowLevel
+    plotnine[Plotnine]:::highLevel
+    pandas[Pandas]:::highLevel
+    seaborn[Seaborn]:::highLevel
+    holoviz[HoloViz]:::highLevel
+    bokeh[Bokeh]:::lowLevel
+    plotly_py[Plotly]:::lowLevel
+    plotly_express[Plotly Express]:::highLevel
+    altair[Altair]:::highLevel
+
+    %% Subgraph for R ecosystem
+    subgraph R_Ecosystem[R Ecosystem]
+        base --> grid
+        grid --> lattice & ggplot
+        lattice & ggplot --> patchwork
+        ggplot -.-> ggiraph & ggplotly
+        ggplotly --> plotly_r
+        htmlwidgets --> ggiraph & plotly_r
+    end
+
+    %% Subgraph for JavaScript ecosystem
+    subgraph JS_Ecosystem[JavaScript Ecosystem]
+        js --> d3
+        d3 --> vega
+        vega --> vegalite
+    end
+
+    %% Subgraph for Python ecosystem
+    subgraph Python_Ecosystem[Python Ecosystem]
+        matplotlib --> plotnine & pandas & seaborn & holoviz
+        holoviz --> bokeh
+        plotly_py --> plotly_express
+        vegalite --> altair
+    end
+
+    %% Connections between ecosystems
+    js --> htmlwidgets & bokeh & plotly_py
+```
+
+```{mermaid}
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+
+    %% Legend items
+    AT[Alignment Tool]:::alignmentTool
+    HL[High Level]:::highLevel
+    LL[Low Level]:::lowLevel
+    JS[JavaScript]:::javascript
+```

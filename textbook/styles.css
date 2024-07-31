@@ -18,3 +18,9 @@
 .callout-header {
     margin-bottom: 10px !important;
 }
+
+#mermaid-1 .cluster rect {
+    fill: #f9f9f9 !important;
+    stroke: #ddd;
+    stroke-width: 1px;
+}
