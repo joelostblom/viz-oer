@@ -94,3 +94,101 @@
       width: 100%;
     }
   }
+
+  .ministry-id-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    width: 640px;
+    height: 300px;
+    padding: 30px;
+    display: flex;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+}
+.ministry-id-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(240,240,240,0.1) 0%,
+        rgba(240,240,240,0.05) 25%,
+        transparent 50%
+    );
+    transform: rotate(-10deg);
+    pointer-events: none;
+}
+.ministry-id-card .left-column {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.ministry-id-card .right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+.ministry-id-card .logo {
+    font-size: 13px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #555;
+    margin-bottom: 20px;
+}
+.ministry-id-card .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.ministry-id-card .info {
+    display: flex;
+    flex-wrap: wrap;
+}
+.ministry-id-card .info-item {
+    flex: 1 0 50%;
+    margin: 5px 0;
+    font-size: 13px;
+}
+.ministry-id-card .name {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+.ministry-id-card .label {
+    font-weight: 500;
+    color: #888;
+    display: block;
+}
+.ministry-id-card .value {
+    font-weight: 400;
+    color: #333;
+}
+.ministry-id-card .footer {
+    font-size: 11px;
+    color: #888;
+    align-self: flex-start;
+    margin-top: 15px;
+    letter-spacing: 1px;
+}
+.ministry-id-card .accent-line {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    width: 3px;
+    height: 50px;
+    background-color: #3a7bd5;
+}
