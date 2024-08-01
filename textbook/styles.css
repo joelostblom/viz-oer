@@ -28,3 +28,69 @@
 #JS_Ecosystem {
     display: none;
 }
+
+.song-container {
+    background: rgb(227, 227, 227);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin: 20px 0;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .song-details {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin-right: 20px;
+  }
+  .song-icon {
+    font-size: 1.5em;
+    margin-right: 15px;
+  }
+  .song-info {
+    flex-grow: 1;
+  }
+  .song-title {
+    font-family: 'Arial', sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 2px;
+    color: black;
+  }
+  .song-artist {
+    font-size: 0.8em;
+    color: #555;
+  }
+  .audio-player {
+    flex-shrink: 0;
+    width: 250px;
+  }
+  .audio-player audio {
+    width: 100%;
+  }
+  /* Custom audio player controls */
+  .audio-player audio::-webkit-media-controls-panel {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .audio-player audio::-webkit-media-controls-current-time-display,
+  .audio-player audio::-webkit-media-controls-time-remaining-display {
+    color: #333;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 600px) {
+    .song-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .song-details {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    .audio-player {
+      width: 100%;
+    }
+  }

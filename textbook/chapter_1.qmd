@@ -210,7 +210,10 @@ It displays several different datasets,
 all with the same mean, standard deviation and correlation between X and Y,
 but looking at the data graphically shows us how different these datasets actually are.
 
-![](https://blog.revolutionanalytics.com/downloads/DataSaurus%20Dozen.gif)
+<figure>
+  <img src="https://blog.revolutionanalytics.com/downloads/DataSaurus%20Dozen.gif" alt="Datasaurus Dozen Animation" style="width:100%; max-width:600px;">
+  <figcaption>The Datasaurus Dozen: Datasets with identical summary statistics but very different distributions.</figcaption>
+</figure>
 
 ::: {.callout-warning}
 ### Beware of Visualization Pitfalls
@@ -291,6 +294,23 @@ graph TD
     %% Connections between ecosystems
     js --> htmlwidgets & bokeh & plotly_py
 ```
+
+
+<div class="song-container">
+<div class="song-details">
+<div class="song-icon">🎵</div>
+<div class="song-info">
+<div class="song-title">Data Viz Ecosystem</div>
+<div class="song-artist">Generated with artificial intelligence</div>
+</div>
+</div>
+<div class="audio-player">
+<audio controls>
+<source src="data-viz-ecosystem.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+</div>
+</div>
 
 In this book we will focus on Altair and ggplot,
 and as you can see in the image above,
@@ -418,3 +438,4 @@ In brief, you first create a canvas/chart, then you encode your data variables a
 ![Alt text](grammar-of-graphics.jpeg)
 
 In the previous image of the plotting landscape, you’ll notice various high-level tools. While these tools are more convenient than low-level ones, their syntax differs from Altair and ggplot. They typically use a top-down approach, focusing on the type of plot to build (e.g., `histogram(data, x, y, color)`) rather than building from the data (e.g., `canvas(data).mark_bar().encode(bin(x), y, color)`). Both approaches have their benefits, but this course emphasizes the grammar-based, bottom-up approach due to its flexibility and power.
+
