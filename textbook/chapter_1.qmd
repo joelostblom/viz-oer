@@ -425,7 +425,7 @@ graph TD
 </div>
 <div class="audio-player">
 <audio controls>
-<source src="data-viz-ecosystem.mp3" type="audio/mpeg">
+<source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 </div>
@@ -478,7 +478,7 @@ Altair and ggplot offer a powerful and concise visualization grammar for quickly
 
 In brief, you first create a canvas/chart, then you encode your data variables as different dimensions in this chart (x, y, color, etc) and add geometric marks to represent the data (points, lines, etc). You can see an illustration of this in the image below, together with how `ggplot` (top) and `altair` (bottom) uses the grammatical components in its syntax. The exact syntax is slightly different, but the overall structure very much the same:
 
-![Alt text](grammar-of-graphics.jpeg)
+![Alt text](/img/grammar-of-graphics.jpeg)
 
 **Let's get coding**
 
@@ -733,7 +733,7 @@ Your name is **Zephyr Eco-Luna** and you have been tasked with investigating emi
                 <div class="footer">Protecting Our Future • Est. 2024</div>
             </div>
             <div class="right-column">
-                <img src="zephyr.jpg" alt="Avatar" class="avatar">
+                <img src="/img/zephyr.jpg" alt="Avatar" class="avatar">
             </div>
         </div>
 <br>
@@ -749,7 +749,7 @@ df_food = pd.read_csv("data/aggregated__food_data.csv")
 df_food
 ```
 
-<img src="environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
+<img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
 
 #### Exercise 1: Planning your analysis
 
@@ -825,7 +825,7 @@ const submitButton = container.querySelector('#submit-button');
 function createChatMessageHTML(content, isBoss) {
   return html`
     <div class="chat-message ${isBoss ? 'boss-message' : ''}">
-      <div class="chat-avatar" style="background-image: url('${isBoss ? 'environ_minister.jpg' : 'zephyr.jpg'}')"></div>
+      <div class="chat-avatar" style="background-image: url('${isBoss ? '/img/environ_minister.jpg' : '/img/zephyr.jpg'}')"></div>
       <div class="chat-message-content">
         <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'Zephyr Eco-Luna'}</div>
         <div>${content}</div>
@@ -900,7 +900,7 @@ These are striking results! There are some clear clusters and outliers in the da
 {
   const apiUrl = "https://openaiproxy-621feba224c9.herokuapp.com/api/proxy";
   const instructions = "You are Minister Reed of the city of Viridia, a sharp witted, impatient but supportive environmental minister. You are talking with your colleague Zephyr who has been tasked with creating an Emissions Report. Don't give solution in first message, but you must provide it after 3 messages and end the conversation definitively when you do. The report found shocking findings: beef Emissions Kg CO2 / kg product are incredibly high (around 60) compared to other food and supply is also high for it. Another is milk, which has Total Food Supply of around 190 (kg/capita/yr) and moderate emissions. The exciting part is that many vegetables etc have extremely low emissions. You see HUGE potential in reducing beef consumption in Viridia given the climate disaster)";
-  const first_message = "Zephyr, I've been waiting! What are the key findings from your investigation?";
+  const first_message = "Zephyr, I've been waiting! What patterns did you see in the food emissions data?";
   let messageCount = 0;
 
   let messages = [
@@ -957,7 +957,7 @@ These are striking results! There are some clear clusters and outliers in the da
   function createChatMessageHTML(content, isBoss) {
     return html`
       <div class="chat-message ${isBoss ? 'boss-message' : ''}">
-        <div class="chat-avatar" style="background-image: url('${isBoss ? 'environ_minister.jpg' : 'zephyr.jpg'}')"></div>
+        <div class="chat-avatar" style="background-image: url('${isBoss ? '/img/environ_minister.jpg' : '/img/zephyr.jpg'}')"></div>
         <div class="chat-message-content">
           <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'Zephyr Eco-Luna'}</div>
           <div>${content}</div>
