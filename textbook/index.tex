@@ -1,0 +1,561 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrreprt}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Textbook},
+  pdfauthor={Norah Jones},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Textbook}
+\author{Norah Jones}
+\date{2024-07-29}
+
+\begin{document}
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\bookmarksetup{startatroot}
+
+\chapter*{Preface}\label{preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+\markboth{Preface}{Preface}
+
+This is a Quarto book.
+
+To learn more about Quarto books visit
+\url{https://quarto.org/docs/books}.
+
+\bookmarksetup{startatroot}
+
+\chapter{Intro to data visualization and graphical
+grammars}\label{intro-to-data-visualization-and-graphical-grammars}
+
+\begin{tcolorbox}[enhanced jigsaw, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Learning outcomes}, colframe=quarto-callout-note-color-frame, colbacktitle=quarto-callout-note-color!10!white, titlerule=0mm, left=2mm, coltitle=black, toprule=.15mm, colback=white, opacityback=0, bottomtitle=1mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm, arc=.35mm, toptitle=1mm, breakable, opacitybacktitle=0.6]
+
+\begin{itemize}
+\item
+  \textbf{Explain}: The main advantages of visualizing data instead of
+  presenting it with numbers is that they are easier to interpret for
+  humans.
+\item
+  \textbf{Describe}: A grammar of graphics defines the grammatical rules
+  that can be used to construct entire visualizations from smaller
+  building blocks.
+\item
+  \textbf{Apply}: Be able to use the visualization grammars Altair and
+  ggplot and create a basic chart via \texttt{alt.Chart()...} /
+  \texttt{ggplot()...}
+\item
+  \textbf{Explain}: The advantage of high level level syntax allows us
+  to think in terms of the data, rather than graphical details.
+\end{itemize}
+
+\end{tcolorbox}
+
+\subsection{What is data
+visualization?}\label{what-is-data-visualization}
+
+At its core, data visualization is about representing numbers with
+graphical elements such as the position of a line, the length of a bar,
+or the colour of a point. We often use visualizations to explore data
+ourselves, and to effectively communicate our insights to others, as we
+will learn in later modules of this course.
+
+\subsection{What is the purpose of visualizing
+data?}\label{what-is-the-purpose-of-visualizing-data}
+
+We often visualize data in order to help us answer a specific question
+we have about our dataset, but it can also help us generate new
+questions.
+
+Before creating a visualization, it is important that you think about
+why you are making it, and what you want to achieve from creating this
+plot. Is there a specific question you are trying to answer, like
+comparing the relationship between two dataframe columns? Or are you
+creating a plot to help you understand the structure of your data more
+in general, such as plotting the distribution of each dataframe column?
+
+In either case, it can be extremely helpful to draw out your plot with
+pen and paper first. This helps you think about if the plot you are
+creating makes sense or if there is another plot better suited for the
+task at hand. Drawing with pen and paper also makes it easier to write
+the code afterwards, since you clearly know what you are expecting the
+visualization to look like.
+
+\subsection{Why bother visualizing data instead of showing raw
+numbers?}\label{why-bother-visualizing-data-instead-of-showing-raw-numbers}
+
+To understand why visualizations are so powerful, it is helpful to
+remember that to answer a question, we often have to put the data in a
+format that is easy for us humans to interpret. Because our number
+systems have only been around for about 5,000 years, we need to assert
+effort and train ourselves to recognize structure in numerical data.
+
+Visual systems, on the other hand, have undergone refinement during
+500,000,000 years of evolution, so we can instinctively recognize visual
+patterns and accurately estimate visual properties such as colours and
+distances.
+
+Practically, this means that we can arrive at correct conclusions faster
+from studying visual rather than numerical representations of the same
+data. For example, have a look at the four sets of numbers in the table
+on the slide. Can you see the differences in the general trends between
+these four sets of numbers? This is a slightly modified version of the
+original, which was put together by statistician Francis Anscombe in the
+70s.
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_1ae4d}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+A} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+A} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+10.00 & 8.04 \\
+8.00 & 6.95 \\
+13.00 & 7.58 \\
+9.00 & 8.81 \\
+11.00 & 8.33 \\
+14.00 & 9.96 \\
+6.00 & 7.24 \\
+4.00 & 4.26 \\
+12.00 & 10.84 \\
+7.00 & 4.81 \\
+5.00 & 5.68 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_519d6}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+B} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+B} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+10.00 & 9.14 \\
+8.00 & 8.14 \\
+13.00 & 8.74 \\
+9.00 & 8.77 \\
+11.00 & 9.26 \\
+14.00 & 8.10 \\
+6.00 & 6.13 \\
+4.00 & 3.10 \\
+12.00 & 9.13 \\
+7.00 & 7.26 \\
+5.00 & 4.74 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_a5387}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+C} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+C} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+10.00 & 7.46 \\
+8.00 & 6.77 \\
+13.00 & 8.50 \\
+9.00 & 7.11 \\
+11.00 & 7.81 \\
+14.00 & 8.84 \\
+6.00 & 6.08 \\
+4.00 & 5.39 \\
+12.00 & 8.15 \\
+7.00 & 6.42 \\
+5.00 & 5.73 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_4cad9}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+D} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+D} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+8.00 & 6.58 \\
+8.00 & 5.76 \\
+8.00 & 7.71 \\
+8.00 & 8.84 \\
+8.00 & 8.47 \\
+8.00 & 7.04 \\
+8.00 & 5.25 \\
+19.00 & 12.50 \\
+8.00 & 5.56 \\
+8.00 & 7.91 \\
+8.00 & 6.89 \\
+\end{longtable}
+
+\subsubsection{Summary statistics don't tell the whole
+story}\label{summary-statistics-dont-tell-the-whole-story}
+
+You are likely not able to see much difference between the data sets in
+the table above. What about if I showed you a few commonly used
+numerical summaries of the data?
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_40ada}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+A} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+A} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+9.00 & 7.50 \\
+3.32 & 2.03 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_ff4fb}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+B} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+B} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+9.00 & 7.50 \\
+3.32 & 2.03 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_33ae9}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+C} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+C} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+9.00 & \textbf{7.11} \\
+3.32 & \textbf{1.15} \\
+\end{longtable}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{}\label{T_f567f}\tabularnewline
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+D} \\
+X & Y \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\multicolumn{2}{@{}l@{}}{%
+D} \\
+X & Y \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+9.00 & 7.50 \\
+3.32 & 2.03 \\
+\end{longtable}
+
+Summaries, such as the mean and standard deviation, are helpful
+statistical tools that are often useful for detecting the differences
+between datasets. However, since they collapse the data into just a few
+numbers, statistical summaries can't tell the whole story about the data
+and there can be important differences between datasets that summaries
+fail to reveal.
+
+Below, the mean and standard deviation indicate that set C is slightly
+different from the other sets of data in terms of the centre of the
+sample distribution and the spread of that distribution, while the
+remaining three sets of data have a similar centre and spread.
+
+\subsubsection{Plotting the data immediately reveals patterns in the
+data}\label{plotting-the-data-immediately-reveals-patterns-in-the-data}
+
+So if you can't really see any patterns in the data and the statistical
+summaries are the same, that must mean that the four sets are pretty
+similar, right? Sounds about right to me so let's go ahead and plot them
+to have a quick look and\ldots{}
+
+\begin{verbatim}
+alt.FacetChart(...)
+\end{verbatim}
+
+\ldots{} what the\ldots{} how\ldots{} there must be something wrong,
+right? Well what is wrong is that humans are not good at detecting
+patterns in raw numbers, and we don't have good intuition about which
+combination of numbers can contribute to the same statistical summaries.
+But guess what we excel at? Detecting visual patterns!
+
+It is immediately clear to us how these sets of numbers differ once they
+are shown as graphical objects instead of textual objects. We could not
+detect these patterns from only looking at the raw numbers or summary
+statistics This is one of the main reasons why data visualization is
+such a powerful tool for data exploration and communication.
+
+In our example here, we would come to widely different conclusions about
+the behaviour of the data for the four different data sets.
+
+Sets A and C are roughly linearly increasing at similar rates, whereas
+set B reaches a plateau and starts to drop, and set D has a constant
+X-value for all numbers except one big outlier.
+
+\bookmarksetup{startatroot}
+
+\chapter{Summary}\label{summary}
+
+In summary, this book has no content whatsoever.
+
+\bookmarksetup{startatroot}
+
+\chapter*{References}\label{references}
+\addcontentsline{toc}{chapter}{References}
+
+\markboth{References}{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{1}
+\end{CSLReferences}
+
+
+
+\end{document}
