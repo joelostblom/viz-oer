@@ -748,3 +748,104 @@ df_food = pd.read_csv("data/aggregated__food_data.csv")
 
 df_food
 ```
+
+
+
+<img src="environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
+```{ojs}
+//| echo: false
+{
+const apiUrl = "https://openaiproxy-621feba224c9.herokuapp.com/api/proxy";
+
+const instructions = "You are Minister Reed of the city of Viridia, an impatient but supportive environmental minister. Your colleague Zephyr has been tasked with creating an Emissions Report. Guide Zephyr toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). You are in a phone text convo.";
+
+const first_message = "Zephyr, I need your Emissions Report on my desk by 2pm. Remind me why you are including the Total Food Supply in your analysis?";
+
+let messageCount = 0;
+
+async function sendOpenAIRequest(prompt) {
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [{ role: "system", content: instructions },
+          { role: "assistant", content: first_message },
+          { role: "user", content: prompt }],
+        temperature: 1,
+        max_tokens: 75,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0
+      })
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+const container = html`<div id="chat-container">
+  <div class="highlight-line"></div>
+  <div id="chat-display"></div>
+  <textarea id="user-input" placeholder="Enter your message here"></textarea>
+  <button id="submit-button">Send Message</button>
+</div>`;
+
+const chatDisplay = container.querySelector('#chat-display');
+const userInput = container.querySelector('#user-input');
+const submitButton = container.querySelector('#submit-button');
+
+function createChatMessageHTML(content, isBoss) {
+  return html`
+    <div class="chat-message ${isBoss ? 'boss-message' : ''}">
+      <div class="chat-avatar" style="background-image: url('${isBoss ? 'environ_minister.jpg' : 'zephyr.jpg'}')"></div>
+      <div class="chat-message-content">
+        <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'Zephyr Eco-Luna'}</div>
+        <div>${content}</div>
+      </div>
+    </div>
+  `;
+}
+
+// Initial message
+chatDisplay.appendChild(createChatMessageHTML(first_message, true));
+
+submitButton.onclick = async () => {
+  const prompt = userInput.value;
+  if (prompt.trim() === '') return;
+
+  messageCount++;
+
+  chatDisplay.appendChild(createChatMessageHTML(prompt, false));
+  userInput.value = '';
+
+  try {
+    const response = await sendOpenAIRequest(prompt);
+    chatDisplay.appendChild(createChatMessageHTML(response, true));
+  } catch (error) {
+    chatDisplay.appendChild(createChatMessageHTML("Error: " + error.message, true));
+  }
+
+  if (messageCount > 4) {
+    chatDisplay.appendChild(createChatMessageHTML("I'm swamped here, Zephyr. It's time to move on to your next task.", true));
+    messageCount = 0; // Reset counter if needed
+  }
+
+  // Scroll to the bottom of the chat display
+  chatDisplay.scrollTop = chatDisplay.scrollHeight;
+};
+
+chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
+return html`${container}`;
+}
+```
