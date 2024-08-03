@@ -1,7 +1,16 @@
 ---
 title: "Intro to data visualization and graphical grammars"
 jupyter: "531"
+format: 
+   html:
+     df-print: paged
 ---
+
+```{python}
+#| echo: false
+#| output: false
+%load_ext rpy2.ipython
+```
 
 ::: {.callout-note title="Learning outcomes"}
 - **Explain**: The main advantages of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
@@ -102,7 +111,7 @@ for set_name, df in anscombe.groupby('Set'):
 
 html_content = '<div class="dataframe-grid">' + s + '</div>'
 
-display(HTML(html_content))
+HTML(html_content)
 ```
 
 #### Summary statistics don't tell the whole story
@@ -463,7 +472,7 @@ The following table illustrates the similarities between the grammars of program
 
 Understanding these parallels enables users to approach data visualization systematically, leveraging a defined set of components and rules.
 
-### Grammar in Altair and ggplot
+### Coding with grammar in Altair and ggplot
 
 Altair and ggplot offer a powerful and concise visualization grammar for quickly building a wide range of statistical graphics. 
 
@@ -471,7 +480,229 @@ In brief, you first create a canvas/chart, then you encode your data variables a
 
 ![Alt text](grammar-of-graphics.jpeg)
 
-### Building charts in Altair and ggplot
+**Let's get coding**
+
+Data in Altair and ggplot is built around ["tidy"](http://vita.had.co.nz/papers/tidy-data.html) dataframes,
+which consists of a set of named data *columns*
+with one feature each and rows with one observation each.
+We will also regularly refer to data columns as data *fields*.
+We will focus on Altair but you can toggle codeblocks to see how to create the same charts in ggplot.
+
+
+We will often use datasets
+from the [vega-datasets](https://github.com/vega/vega-datasets) repository, some which are directly available as Pandas data frames. The cars dataset provides a rich opportunity to explore historical trends in automotive design, performance, and efficiency.
+
+::: {.panel-tabset}
+## Altair
+```{python}
+import altair as alt
+import pandas as pd
+
+
+url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
+# `parse_dates` makes sure a column is stored as a date object in pandas
+cars = pd.read_csv(url, parse_dates=['Year'])
+cars
+```
+
+Datasets in the vega-datasets collection can also be accessed via URLs. For more information about data frames - and some useful transformations to prepare Pandas data frames for plotting with Altair! - see the [Specifying Data with Altair documentation](https://altair-viz.github.io/user_guide/data.html).
+
+## ggplot
+
+```{python}
+#| echo: false
+#| output: false
+%%R
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+```{python}
+%%R
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+
+url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
+cars = read_csv(url, show_col_types = FALSE)
+cars
+```
+:::
+
+
+::: {.column-margin}
+
+<strong> Stellar Charts </strong>
+<br>
+Altair is the name of a star in the same constellation as the star Vega, which is also the name of the Javascript library that Altair is built upon. Meanwhile, the "gg" in ggplot is a reference to the book "Grammar of Graphics",
+which inspired the creation of the ggplot library. 
+
+<br>
+![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
+
+:::
+
+The fundamental object in Altair is the `Chart`, which takes a data frame as a single argument `alt.Chart(cars)`.
+
+With a chart object in hand, we can now specify how we would like the data to be visualized. We first indicate what kind of geometric *mark* we want to use to represent the data. We can set the `mark` attribute of the chart object using the the `Chart.mark_*` methods.
+
+For example, we can show the data as a point using `mark_point()`:
+
+
+```{python}
+alt.Chart(cars).mark_point()
+```
+
+
+Here the rendering consists of one point per row in the dataset, all plotted on top of each other, since we have not yet specified positions for these points.
+
+To visually separate the points, we can map various *encoding channels*, or *channels* for short, to fields in the dataset. For example, we could *encode* the field `Miles_per_Gallon` of the data using the `x` channel, which represents the x-axis position of the points. To specify this, use the `encode` method:
+
+
+::: {.panel-tabset}
+
+## Altair
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x='Miles_per_Gallon'
+)
+```
+
+## ggplot
+
+
+```{python}
+%%R
+ggplot(cars, aes(x = Miles_per_Gallon, y=0)) +
+  geom_point()
+```
+
+::: {.column-margin}
+
+<br>
+<br>
+
+In ggplot2, you begin by creating a plot object with your dataset, such as `ggplot(cars)`. This is similar to Altair's `Chart(cars)`. To visualize the data, you add a geometric object like `geom_point()`, which is conceptually equivalent to Altair's `mark_point()`. Initially, this would plot all points at the origin. To meaningfully represent the data, you map variables to visual properties using `aes()`. For instance, to plot Miles per Gallon on the x-axis, you'd use `aes(x = Miles_per_Gallon)` within `geom_point()`. This corresponds to Altair's `encode` method. 
+:::
+
+:::
+The `encode()` method builds a key-value mapping between encoding channels (such as `x`, `y`, `color`, `shape`, `size`, *etc.*) to fields in the dataset, accessed by field name. For Pandas data frames, Altair automatically determines an appropriate data type for the mapped column, which in this case is the *nominal* type, indicating unordered, categorical values.
+
+
+
+
+You can also see that there is a button with three dots
+to the top right.
+If you click this you will have options to save the chart
+and to open the underlying Vega-Lite code.
+
+Though we've now separated the data by one attribute, we still have multiple points overlapping within each category. Let's further separate these by adding a `y` encoding channel;
+for example lets say we wanted to answer the question:
+"How is a cars fuel efficiency related to its horsepower?"
+
+::: {.panel-tabset}
+
+## Altair
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x='Miles_per_Gallon',
+    y='Horsepower'
+)
+```
+
+## ggplot
+
+```{python}
+%%R
+ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower)) +
+    geom_point()
+```
+
+::: {.column-margin}
+
+<br>
+<br>
+The default ggplot style is quite different from that of Altair.
+Both have advantages,
+and they are easy to customize to look however you want,
+which we will also get into later.
+Note that ggplot does not including the origin of the plot (x=0, y=0) by default,
+but Altair does for many cases.
+
+:::
+::: 
+
+Here we can see that there seems to be a negative correlation with Horsepower and Miles_per_Gallon:
+More powerful cars consume more gas.
+
+But there might be other variables that also influence this relationship,
+e.g. the weight of the car probably matters for fuel efficiency,
+since more force is needed to propel a bigger mass.
+We can add more dimensions to this chart,
+e.g. specifying which column we want to color the points by
+and Altair will automatically figure out an appropriate colorscale to use.
+
+
+::: {.panel-tabset}
+
+# Altair
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x='Miles_per_Gallon',
+    y='Horsepower',
+    color='Weight_in_lbs'
+)
+```
+
+# ggplot
+
+```{python}
+%%R -w 500 -h 375 
+
+ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
+    geom_point()
+    
+```
+
+::: {.column-margin}
+<br>
+<br>
+As with Altair,
+ggplot chooses an appropriate continuous color scale for the quantitative data,
+although it start from dark instead of light,
+which could be related to the different choice of background color.
+Notice also the difference in how the legend is added,
+in Altair the overall width of the figure was increased,
+whereas here the legend takes part of the figure width from the canvas,
+which is made narrower.
+:::
+
+:::
+
+Aha! Here we can see that weight is also correlated with Horsepower (positively)
+and Miles_per_Gallon (negatively).
+We can't say anything about causation from the plot alone,
+just correlation.
+
+One of the really neat things with Altair is that it extends its grammar 
+to interactive plot elements as well.
+We will see much more of this later in the book.
+Let's add a tooltip to each data point with the name of the car,
+hover over the data points to see the tooltip show up!
+
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x='Miles_per_Gallon',
+    y='Horsepower',
+    tooltip='Name'
+)
+```
+
+
+## Mission
+
+Your name is **Zephyr Eco-Luna** and you have been tasked with investigating emissions in the city of Viridia. With a commitment to sustainability and a vision for a greener future, Viridia is taking proactive steps to investigate and mitigate its environmental impact. One significant area of focus is the emissions associated with food consumption and production.
+
 
 ```{=html}
 <br>
@@ -505,4 +736,15 @@ In brief, you first create a canvas/chart, then you encode your data variables a
                 <img src="zephyr.jpg" alt="Avatar" class="avatar">
             </div>
         </div>
+<br>
+```
+
+To start with your investigation, you’ll need to visualize the emissions data effectively. This will help unlock insights crucial for the Ministry of Environment.
+
+
+```{python}
+import pandas as pd
+df_food = pd.read_csv("data/aggregated__food_data.csv")
+
+df_food
 ```
