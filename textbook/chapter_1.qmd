@@ -188,23 +188,19 @@ Sounds about right to me so let's go ahead and plot them to have a quick look an
 ```{python}
 #| echo: false
 
-def bigger_font():
-    return {
-        'config': {
-            'view': {'continuousWidth': 400, 'continuousHeight': 300},
-            'legend': {'symbolSize': 14, 'titleFontSize': 14, 'labelFontSize': 14},
-            'axis': {'titleFontSize': 14, 'labelFontSize': 12},
-            'header': {'titleFontSize': 16, 'labelFontSize': 14},
-            'encoding': {'x': {'scale': {'zero': False}}}}}
-alt.themes.register('bigger_font', bigger_font)
-alt.themes.enable('bigger_font')
-(alt.Chart(anscombe).mark_circle(size=80, opacity=1).encode(
+alt.Chart(anscombe).mark_circle(size=80, opacity=1).encode(
     x='X',
-    y='Y')
- .properties(width=300, height=200)
- .facet('Set', columns=2)
- .configure_axis(grid=True)
- .configure_header(title=None)
+    y='Y'
+).properties(
+  width=300,
+  height=200
+).facet(
+  'Set',
+  columns=2
+).configure_axis(
+  grid=True
+).configure_header(
+  title=None
 )
 ```
 
