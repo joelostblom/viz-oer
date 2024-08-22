@@ -107,7 +107,7 @@ This is a slightly modified version of the original,
 import altair as alt
 import pandas as pd
 from vega_datasets import data
-from IPython.display import display_html, HTML
+from IPython.display import HTML
 
 anscombe = data.anscombe()
 anscombe['Set'] = anscombe['Series'].map({'I': 'A', 'II': 'B', 'III': 'C', 'IV': 'D'})
