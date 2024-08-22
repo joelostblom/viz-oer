@@ -1,13 +1,8 @@
 ---
 title: "Intro to data visualization and graphical grammars"
 format: html
+# engine: jupyter
 ---
-
-```{python}
-#| echo: false
-#| output: false
-%load_ext rpy2.ipython
-```
 
 ::: {.callout-note title="Learning outcomes"}
 - **Explain**: The main advantages of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
@@ -506,15 +501,13 @@ Datasets in the vega-datasets collection can also be accessed via URLs. For more
 
 ## ggplot
 
-```{python}
+```{r}
 #| echo: false
 #| output: false
-%%R
 suppressPackageStartupMessages(library(tidyverse))
 ```
 
-```{python}
-%%R
+```{r}
 library(tidyverse)
 theme_set(theme_gray(base_size = 14))
 
@@ -566,8 +559,7 @@ alt.Chart(cars).mark_point().encode(
 ## ggplot
 
 
-```{python}
-%%R
+```{r}
 ggplot(cars, aes(x = Miles_per_Gallon, y=0)) +
   geom_point()
 ```
@@ -608,8 +600,7 @@ alt.Chart(cars).mark_point().encode(
 
 ## ggplot
 
-```{python}
-%%R
+```{r}
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower)) +
     geom_point()
 ```
@@ -652,9 +643,7 @@ alt.Chart(cars).mark_point().encode(
 
 # ggplot
 
-```{python}
-%%R -w 500 -h 375 
-
+```{r}
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
     geom_point()
     
