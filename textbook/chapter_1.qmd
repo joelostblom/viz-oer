@@ -30,13 +30,13 @@ def show_df(df):
 ```
 
 ::: {.callout-note title="Learning outcomes"}
-- **Explain**: The main advantages of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
+- **Explain** that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
 
-- **Explain**: The advantage of high level level syntax allows us to think in terms of the data, rather than graphical details.
+- **Understand** that the advantage of using a high level level visualization syntax is that it allows us to think in terms of the data, rather than focusing on graphical details.
 
-- **Describe**: A grammar of graphics defines the grammatical rules that can be used to construct entire visualizations from smaller building blocks.
+- **Explain** how a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks.
 
-- **Apply**: Be able to use the visualization grammars Altair and ggplot and create a basic chart via `alt.Chart()...` / `ggplot()...`
+- **Apply** the visualization grammars in Altair and ggplot to create a basic chart via `alt.Chart().mark_point().encode(x='...', y='...', color='...')` and <br> `ggplot() + aes(x=..., y=..., color=...) + geom_point()`
 
 :::
 
