@@ -20,6 +20,8 @@ import rpy2.robjects as ro
 from rpy2.robjects import pandas2ri
 
 
+pd.set_option('display.max_rows', 6)
+
 def show_df(df):
     if isinstance(df, ro.vectors.DataFrame):
         with (ro.default_converter + pandas2ri.converter).context():
