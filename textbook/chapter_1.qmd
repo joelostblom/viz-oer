@@ -430,22 +430,6 @@ graph TD
     JS[JavaScript]:::javascript
 ```
 
-<div class="song-container">
-<div class="song-details">
-<div class="song-icon">🎵</div>
-<div class="song-info">
-<div class="song-title">Data Viz Ecosystem</div>
-<div class="song-artist">Generated with artificial intelligence</div>
-</div>
-</div>
-<div class="audio-player">
-<audio controls>
-<source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
-</div>
-</div> -->
-
 ## What is a graphical grammar?
 
 A graphical grammar is a system for creating visualizations by combining basic elements according to specific rules. It parallels the grammars of natural and programming languages, but applies to visual components.
@@ -1012,3 +996,19 @@ These are striking results! There are some clear clusters and outliers in the da
   return html`${container}`;
 }
 ```
+
+<div class="song-container">
+<div class="song-details">
+<div class="song-icon">🎵</div>
+<div class="song-info">
+<div class="song-title">Data Viz Ecosystem</div>
+<div class="song-artist">Generated with artificial intelligence</div>
+</div>
+</div>
+<div class="audio-player">
+<audio controls>
+<source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+</div>
+</div>
