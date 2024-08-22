@@ -40,7 +40,7 @@ def show_df(df):
 
 :::
 
-### What is data visualization?
+## What is data visualization?
 
 At its core,
 data visualization is about representing numbers with graphical elements
@@ -49,7 +49,7 @@ We often use visualizations to explore data ourselves,
 and to effectively communicate our insights to others,
 as we will learn in later modules of this book.
 
-### What is the purpose of visualizing data?
+## What is the purpose of visualizing data?
 
 We often visualize data in order to help us answer a specific question
 we have about our dataset,
@@ -73,7 +73,7 @@ Drawing with pen and paper also makes it easier to write the code afterwards,
 since you clearly know what you are expecting
 the visualization to look like.
 
-### Why bother visualizing data instead of showing raw numbers?
+## Why bother visualizing data instead of showing raw numbers?
 
 To understand why visualizations are so powerful,
 it is helpful to remember that to answer a question,
@@ -131,7 +131,7 @@ html_content = '<div class="dataframe-grid">' + s + '</div>'
 HTML(html_content)
 ```
 
-#### Summary statistics don't tell the whole story
+### Summary statistics don't tell the whole story
 
 You are likely not able to see much difference between the data sets
 in the table above.
@@ -178,7 +178,7 @@ is slightly different from the other sets of data
 in terms of the centre of the sample distribution and the spread of that distribution,
 while the remaining three sets of data have a similar centre and spread.
 
-#### Plotting the data immediately reveals patterns in the data 
+### Plotting the data immediately reveals patterns in the data 
 
 So if you can't really see any patterns in the data
 and the statistical summaries are the same,
@@ -228,7 +228,7 @@ Sets A and C are roughly linearly increasing at similar rates,
 whereas set B reaches a plateau and starts to drop,
 and set D has a constant X-value for all numbers except one big outlier.
 
-#### A modern take on Anscombe's quartet
+### A modern take on Anscombe's quartet
 
 For a more recent, dynamic, and avian illustration
 of how graphical representations are much easier for us to interpret,
@@ -243,15 +243,13 @@ but looking at the data graphically shows us how different these datasets actual
 </figure>
 
 ::: {.callout-warning}
-### Beware of Visualization Pitfalls
+## Beware of Visualization Pitfalls
 
 While powerful, data visualization can lead to misinterpretation if not done carefully. Learn about common traps and best practices in [Data Visualization: A practical introduction](https://socviz.co/lookatdata.html#lookatdata) by Kieran Healy (Sections 1-1.2).
 
 :::
 
-## Creating plots in R and Python
-
-### High level declarative vs low level imperative visualization tools
+## High level declarative vs low level imperative visualization tools
 
 Declarative visualization tools allow you to give a high-level specification of *what* you want the visualization to include, rather than *how* to implement the visualization.
 
@@ -337,7 +335,7 @@ The declarative code says what we want to visualize (e.g., `petalLength`, `petal
 
 :::
 
-### The R and Python visualization ecosystems
+## The R and Python visualization ecosystems
 
 There are a wide variety of high-level and low-level tools for visualizing data in R and Python. 
 
@@ -446,9 +444,9 @@ graph TD
 Your browser does not support the audio element.
 </audio>
 </div>
-</div>
+</div> -->
 
-### What is a graphical grammar?
+## What is a graphical grammar?
 
 A graphical grammar is a system for creating visualizations by combining basic elements according to specific rules. It parallels the grammars of natural and programming languages, but applies to visual components.
 
@@ -489,7 +487,7 @@ The following table illustrates the similarities between the grammars of program
 
 Understanding these parallels enables users to approach data visualization systematically, leveraging a defined set of components and rules.
 
-### Coding with grammar in Altair and ggplot
+## Coding with grammar in Altair and ggplot
 
 Altair and ggplot offer a powerful and concise visualization grammar for quickly building a wide range of statistical graphics. 
 
@@ -774,7 +772,7 @@ df_food
 
 <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
 
-#### Exercise 1: Planning your analysis
+### Exercise 1: Planning your analysis
 
 Before you start, your boss **Minister Reed** has a few questions for you...
 
@@ -889,7 +887,7 @@ return html`${container}`;
 ```
 
 
-#### Exercise 2: Visualizing the data
+### Exercise 2: Visualizing the data
 
 It's time to put the Grammar of Graphics to good use. Create a scatterplot chart of the food supply and emissions data by following these steps:
 
@@ -912,11 +910,11 @@ alt.Chart(df_food).mark_point().encode(
 
 :::
 
-#### Exercise 3: Inspecting individual marks
+### Exercise 3: Inspecting individual marks
 
 These are striking results! There are some clear clusters and outliers in the data. Add a tooltip to your chart to investigate which foods these are.
 
-#### Exercise 4: Reporting your results
+### Exercise 4: Reporting your results
 
 ```{ojs}
 //| echo: false
