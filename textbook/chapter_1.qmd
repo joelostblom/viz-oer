@@ -133,7 +133,7 @@ for set_name, df in anscombe.groupby('Set'):
 
 html_content = '<div class="dataframe-grid">' + s + '</div>'
 
-display(HTML(html_content))
+HTML(html_content)
 ```
 
 <br>
