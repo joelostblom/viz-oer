@@ -11,6 +11,22 @@ include-in-header:
       </style>
 ---
 
+```{python setup}
+#| echo: false
+#| output: false
+
+import pandas as pd
+import rpy2.robjects as ro
+from rpy2.robjects import pandas2ri
+
+
+def show_df(df):
+    if isinstance(df, ro.vectors.DataFrame):
+        with (ro.default_converter + pandas2ri.converter).context():
+            df = ro.conversion.get_conversion().rpy2py(df)
+    return HTML(df._repr_html_())
+```
+
 ::: {.callout-note title="Learning outcomes"}
 - **Explain**: The main advantages of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
 
@@ -494,6 +510,7 @@ from the [vega-datasets](https://github.com/vega/vega-datasets) repository, some
 ::: {.panel-tabset}
 ## Altair
 ```{python}
+#| output: false
 import altair as alt
 import pandas as pd
 
@@ -502,6 +519,11 @@ url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars
 # `parse_dates` makes sure a column is stored as a date object in pandas
 cars = pd.read_csv(url, parse_dates=['Year'])
 cars
+```
+
+```{python}
+#| echo: false
+show_df(cars)
 ```
 
 Datasets in the vega-datasets collection can also be accessed via URLs. For more information about data frames - and some useful transformations to prepare Pandas data frames for plotting with Altair! - see the [Specifying Data with Altair documentation](https://altair-viz.github.io/user_guide/data.html).
@@ -515,6 +537,7 @@ suppressPackageStartupMessages(library(tidyverse))
 ```
 
 ```{r}
+#| output: false
 library(tidyverse)
 theme_set(theme_gray(base_size = 14))
 
@@ -522,8 +545,13 @@ url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars
 cars = read_csv(url, show_col_types = FALSE)
 cars
 ```
-:::
 
+```{python}
+#| echo: false
+show_df(ro.r['cars'])
+```
+
+:::
 
 ::: {.column-margin}
 
