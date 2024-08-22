@@ -1,9 +1,6 @@
 ---
 title: "Intro to data visualization and graphical grammars"
-jupyter: "531"
-format: 
-   html:
-     df-print: paged
+format: html
 ---
 
 ```{python}
