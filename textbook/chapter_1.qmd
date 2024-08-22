@@ -4,7 +4,7 @@ format: html
 include-in-header:
   - text: |
       <style>
-        .table {
+        .table.dataframe {
           width: auto;
           text-align: right;
         }
