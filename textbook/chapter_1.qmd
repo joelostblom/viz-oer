@@ -359,146 +359,105 @@ of *what* we want the visualization to include,
 rather than coding out the details of *how* to implement the visualization.
 Another way to state this would be that high level libraries
 focus on **data and relationships**,
-whereas low level libraries focus on **plot construction details.** 
+whereas low level libraries focus on **plot construction details.**
 <!--TODO explain jargon delcariative/imperative? -->
 
-## The R and Python visualization ecosystems
+Among declarative visualization libraries,
+there are still a few different approaches
+to how visualization is created.
+Here,
+we are going to learn about libraries that implement
+a so called "grammar of graphics".
 
-There are a wide variety of high-level and low-level tools for visualizing data in R and Python. 
+## What is a grammar of graphics?
 
-In this book we will focus on [Altair](https://altair-viz.github.io/) (Python and R) and [ggplot](https://ggplot2.tidyverse.org/), two of the most prominent declarative statistical visualization libraries.
+A graphical grammar is a system for creating visualizations
+by combining basic elements according to specific rules.
+It parallels the grammars of natural and programming languages,
+but applies to visual components.
 
-**If there are so many high level tools, why focus on Altair and ggplot?** 
-
-Other high level libraries like seaborn and plotly use a top-down approach, focusing on the type of plot to build rather than building from the data. Such libraries often have dedicated functions for each visualization, e.g. `barplot()`, `scatterplot()`.
-
-While there are some benefits to this approach, it requires you to memorize each individual function rather than reusable building blocks, and it makes it more difficult to combine visualizations. Instead, this course emphasizes a grammar-based, bottom-up approach due to its flexibility and power. 
-
-```{mermaid}
-%%{init: {'flowchart': {'width': 800}}}%%
-graph TD
-    %% Color definitions
-    classDef alignmentTool fill:#FF69B4,color:#000
-    classDef highLevel fill:#87CEFA,color:#000
-    classDef lowLevel fill:#FFA500,color:#000
-    classDef javascript fill:#FFFFFF,color:#000
-
-    %% R ecosystem
-    base[base]:::lowLevel
-    grid[grid]:::lowLevel
-    lattice[lattice]:::highLevel
-    ggplot[ggplot]:::highLevel
-    ggiraph[ggiraph]:::highLevel
-    ggplotly[ggplotly]:::highLevel
-    plotly_r[plotly]:::lowLevel
-    patchwork[patchwork/cowplot]:::alignmentTool
-    htmlwidgets[htmlwidgets]:::javascript
-    altair_r[Altair]:::highLevel
-
-    %% JavaScript-related
-    js[JavaScript]:::javascript
-    d3[D3]:::javascript
-    vega[Vega]:::javascript
-    vegalite[Vega-Lite]:::javascript
-
-    %% Python ecosystem
-    matplotlib[Matplotlib]:::lowLevel
-    plotnine[Plotnine]:::highLevel
-    pandas[Pandas]:::highLevel
-    seaborn[Seaborn]:::highLevel
-    holoviz[HoloViz]:::highLevel
-    bokeh[Bokeh]:::lowLevel
-    plotly_py[Plotly]:::lowLevel
-    plotly_express[Plotly Express]:::highLevel
-    altair[Altair]:::highLevel
-
-    %% Subgraph for R ecosystem
-    subgraph R_Ecosystem[R Ecosystem]
-        base --> grid
-        grid --> lattice & ggplot
-        lattice & ggplot --> patchwork
-        ggplot -.-> ggiraph & ggplotly
-        ggplotly --> plotly_r
-        htmlwidgets --> ggiraph & plotly_r & altair_r
-    end
-
-    %% Subgraph for JavaScript ecosystem
-    subgraph JS_Ecosystem[JavaScript Ecosystem]
-        js --> d3
-        d3 --> vega
-        vega --> vegalite
-    end
-
-    %% Subgraph for Python ecosystem
-    subgraph Python_Ecosystem[Python Ecosystem]
-        matplotlib --> plotnine & pandas & seaborn & holoviz
-        holoviz --> bokeh
-        plotly_py --> plotly_express
-        vegalite --> altair & altair_r
-    end
-
-    %% Connections between ecosystems
-    js --> htmlwidgets & bokeh & plotly_py
-
-
-```
-
-```{mermaid}
-graph TD
-    %% Color definitions
-    classDef alignmentTool fill:#FF69B4,color:#000
-    classDef highLevel fill:#87CEFA,color:#000
-    classDef lowLevel fill:#FFA500,color:#000
-    classDef javascript fill:#FFFFFF,color:#000
-    %% Legend items
-    AT[Alignment Tool]:::alignmentTool
-    HL[High Level]:::highLevel
-    LL[Low Level]:::lowLevel
-    JS[JavaScript]:::javascript
-```
-
-## What is a graphical grammar?
-
-A graphical grammar is a system for creating visualizations by combining basic elements according to specific rules. It parallels the grammars of natural and programming languages, but applies to visual components.
-
-We are familiar with grammatical rules for natural languages,
+We are all familiar with the grammatical rules for natural languages^[
+What you typically think of as "a language": English, Mandarin, Hindi, Swedish, etc],
 where they tell us how to combine words into sentences
 to convey particular meanings.
+Programming languages also have a grammatical structure,
+let's see how they work in the following exercise:
 
-In programming, different languages have different grammar, for instance if you try to write ```"hello" + "world"``` in Python the grammar of Python defines that the addition of string should perform concatenation so the returned result is `"helloworld"`.
+:::: {.callout-note icon="false"}
 
-In contrast, the grammar of R says that there is no such thing as addition of strings,
-so it throws an error complaining that non-numeric arguments were passed to the `+` operator.
+## Exercise
 
-**Graphical grammar**
+What do you think the output would be of the following Python code?
 
-Likewise for a visualization grammar,
-different packages make different choices
-for what happens when different visual elements are added together,
-and which those visual elements are.
 
-Key components of a graphical grammar include:
+```python
+1 + 2
+```
+
+As you might have expected,
+the output is `3`
+because Python uses the conventional rules of mathematics
+to add the two numbers together.
+Almost all programming languages follow this rule.
+But what does the `+`-operator do
+if we are trying to add something other than numbers.
+What do you think the output would be of the following code?
+Do you think it differs between programming languages?
+
+```python
+'one' + 'two'
+```
+::: {.callout-tip collapse=true}
+
+### Solution
+
+<!-- TODO `` -->
+The grammar of Python defines that the `+`-operator
+should perform concatenation when strings are added together,
+so the returned result would be `"onetwo"`.
+In contrast,
+the grammar of R says that there is no such thing as addition of strings,
+so it would throw an error complaining that non-numeric arguments were passed to the `+`-operator.
+
+:::
+
+::::
+
+As with the grammar of programming languages,
+visualization packages make different choices
+for what happens when different visual elements are added together.
+Key components of a graphical grammar often include:
 
 1. **Canvas**: The background or base of the chart.
-2. **Geometric marks**: Visual elements representing data (e.g., bars, dots).
-3. **Visual encoding**: Rules for mapping data to visual properties.
+2. **Geometric marks**: Visual elements representing data (e.g. points, bars).
+3. **Visual encoding**: Rules for mapping data to visual properties (e.g. the column `'group'` to `color`).
 
-Unlike traditional charting tools that offer pre-made chart types, a grammar-based approach is more flexible. It allows the user to construct custom visualizations from fundamental building blocks.
+In the next session,
+we will see how these components can be added together using code.
 
 The following table illustrates the similarities between the grammars of programming, natural language and graphics:
 
-| Component | Natural Language | Programming Language | Graphical Grammar |
-|-----------|-------------------|----------------------|-------------------|
-| Basic Units | Words | Variables, literals | Marks (points, lines, bars) |
+| Component    | Natural Language        | Programming Language    | Graphical Grammar                             |
+|--------------|-------------------------|-------------------------|-----------------------------------------------|
+| Basic Units  | Words                   | Variables, literals     | Marks (points, lines, bars)                   |
 | Syntax Rules | Word order, punctuation | Syntax rules, operators | Rules for combining marks, layers, aesthetics |
-| Semantics | Word meanings, context | Expression meanings | Meanings of visual encodings |
-| Composition | Sentences, paragraphs | Statements, code blocks | Layers, facets |
-| Output | Text | Executable code | Data visualizations |
-| Modifiers | Adjectives, adverbs | Attributes, parameters | Scales, legends, annotations |
+| Semantics    | Word meanings, context  | Expression meanings     | Meanings of visual encodings                  |
+| Composition  | Sentences, paragraphs   | Statements, code blocks | Layers, facets                                |
+| Output       | Text                    | Executable code         | Data visualizations                           |
+| Modifiers    | Adjectives, adverbs     | Attributes, parameters  | Scales, legends, annotations                  |
 
-Understanding these parallels enables users to approach data visualization systematically, leveraging a defined set of components and rules.
+Understanding these parallels enables users to approach data visualization systematically,
+leveraging a defined set of components and rules.
 
 ## Coding with grammar in Altair and ggplot
+
+This means that we are not going to have one function called `barplot`,
+another called `scatterplot` and so on.
+Instead we are going to add the three components together,
+as we will see in the next se
+This is in contrast Unlike traditional charting tools that offer pre-made chart types,
+a grammar-based approach is more flexible. It allows the user to construct custom visualizations from fundamental building blocks.
+
 
 Altair and ggplot offer a powerful and concise visualization grammar for quickly building a wide range of statistical graphics. 
 
