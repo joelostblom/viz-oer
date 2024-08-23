@@ -486,7 +486,7 @@ Here,
 we will load in a small dataset relating to cars
 containing historical trends in automotive design, performance, and efficiency.
 
-:::: {.panel-tabset group='pkg'}
+:::: {.panel-tabset}
 
 ## Altair
 
@@ -569,7 +569,7 @@ Here the rendering consists of one point per row in the dataset, all plotted on 
 To visually separate the points, we can map various *encoding channels*, or *channels* for short, to fields in the dataset. For example, we could *encode* the field `Miles_per_Gallon` of the data using the `x` channel, which represents the x-axis position of the points. To specify this, use the `encode` method:
 
 
-::: {.panel-tabset group='pkg'}
+::: {.panel-tabset}
 
 ## Altair
 ```{python}
@@ -610,7 +610,7 @@ Though we've now separated the data by one attribute, we still have multiple poi
 for example lets say we wanted to answer the question:
 "How is a cars fuel efficiency related to its horsepower?"
 
-::: {.panel-tabset group='pkg'}
+::: {.panel-tabset}
 
 ## Altair
 
@@ -655,7 +655,7 @@ e.g. specifying which column we want to color the points by
 and Altair will automatically figure out an appropriate colorscale to use.
 
 
-::: {.panel-tabset group='pkg'}
+::: {.panel-tabset}
 
 # Altair
 ```{python}
