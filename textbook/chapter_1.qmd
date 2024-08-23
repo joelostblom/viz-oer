@@ -506,7 +506,15 @@ cars
 show_df(cars)
 ```
 
-Datasets in the vega-datasets collection can also be accessed via URLs. For more information about data frames - and some useful transformations to prepare Pandas data frames for plotting with Altair! - see the [Specifying Data with Altair documentation](https://altair-viz.github.io/user_guide/data.html).
+::: {.column-margin}
+
+**Stellar Charts**
+
+Altair is the name of a star in the same constellation as the star Vega, which is also the name of the Javascript library that Altair is built upon.
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
+
+:::
 
 ## ggplot
 
@@ -530,19 +538,18 @@ cars
 show_df(ro.r['cars'])
 ```
 
-:::
-
 ::: {.column-margin}
 
-<strong> Stellar Charts </strong>
-<br>
-Altair is the name of a star in the same constellation as the star Vega, which is also the name of the Javascript library that Altair is built upon. Meanwhile, the "gg" in ggplot is a reference to the book "Grammar of Graphics",
-which inspired the creation of the ggplot library. 
+**Grammatically correct**
 
-<br>
-![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
+The "gg" in ggplot is a reference to the book "Grammar of Graphics",
+which inspired the creation of the ggplot library.
+
+![](https://pictures.abebooks.com/isbn/9780387987743-us.jpg)
 
 :::
+
+::::
 
 The fundamental object in Altair is the `Chart`, which takes a data frame as a single argument `alt.Chart(cars)`.
 
@@ -587,6 +594,7 @@ In ggplot2, you begin by creating a plot object with your dataset, such as `ggpl
 :::
 
 :::
+
 The `encode()` method builds a key-value mapping between encoding channels (such as `x`, `y`, `color`, `shape`, `size`, *etc.*) to fields in the dataset, accessed by field name. For Pandas data frames, Altair automatically determines an appropriate data type for the mapped column, which in this case is the *nominal* type, indicating unordered, categorical values.
 
 
@@ -880,6 +888,7 @@ It's time to put the Grammar of Graphics to good use. Create a scatterplot chart
 ::: {.callout-tip icon="false" collapse="true"}
 
 # Solution
+
 ```{python}
 
 alt.Chart(df_food).mark_point().encode(
