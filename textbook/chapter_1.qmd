@@ -8,6 +8,8 @@ include-in-header:
           text-align: right;
         }
       </style>
+fig-width: 4
+fig-height: 4
 ---
 
 ```{python setup}
