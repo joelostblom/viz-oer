@@ -993,18 +993,20 @@ These are striking results! There are some clear clusters and outliers in the da
 }
 ```
 
+```{=html}
 <div class="song-container">
-<div class="song-details">
-<div class="song-icon">🎵</div>
-<div class="song-info">
-<div class="song-title">Data Viz Ecosystem</div>
-<div class="song-artist">Generated with artificial intelligence</div>
+  <div class="song-details">
+    <div class="song-icon">🎵</div>
+    <div class="song-info">
+      <div class="song-title">Data Viz Ecosystem</div>
+      <div class="song-artist">Generated with artificial intelligence</div>
+    </div>
+  </div>
+  <div class="audio-player">
+    <audio controls>
+    <source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg"></source>
+    Your browser does not support the audio element.
+    </audio>
+  </div>
 </div>
-</div>
-<div class="audio-player">
-<audio controls>
-<source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
-</div>
-</div>
+```
