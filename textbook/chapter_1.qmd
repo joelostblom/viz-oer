@@ -520,7 +520,6 @@ suppressPackageStartupMessages(library(tidyverse))
 ```{r}
 #| output: false
 library(tidyverse)
-theme_set(theme_gray(base_size = 14))
 
 url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
 cars = read_csv(url, show_col_types = FALSE)
