@@ -449,36 +449,47 @@ The following table illustrates the similarities between the grammars of program
 Understanding these parallels enables users to approach data visualization systematically,
 leveraging a defined set of components and rules.
 
-## Coding with grammar in Altair and ggplot
+## Learning to speak with a grammar of graphics
 
-This means that we are not going to have one function called `barplot`,
-another called `scatterplot` and so on.
-Instead we are going to add the three components together,
-as we will see in the next se
-This is in contrast Unlike traditional charting tools that offer pre-made chart types,
-a grammar-based approach is more flexible. It allows the user to construct custom visualizations from fundamental building blocks.
+To start creating our own charts,
+we will work with two libraries that implement a grammar of graphics:
+Altair in Python, and ggplot in R.
+These two libraries both offer a powerful and concise visualization grammar
+for quickly building a wide range of statistical charts.
 
+What does these grammars look like?
+In brief,
+we first create a canvas/chart,
+then encode our data variables as different channels in this chart (x, y, color, etc)
+and add geometric marks to represent the data (points, lines, etc).
+You can see an illustration of this in the image below,
+together with how ggplot (top) and Altair (bottom) implements the grammatical components in their respective syntax.
+The exact syntax is slightly different, but the overall structure very much the same.
 
-Altair and ggplot offer a powerful and concise visualization grammar for quickly building a wide range of statistical graphics. 
+![](/img/grammar-of-graphics.jpeg)
 
-In brief, you first create a canvas/chart, then you encode your data variables as different dimensions in this chart (x, y, color, etc) and add geometric marks to represent the data (points, lines, etc). You can see an illustration of this in the image below, together with how `ggplot` (top) and `altair` (bottom) uses the grammatical components in its syntax. The exact syntax is slightly different, but the overall structure very much the same:
+<!--TODO Ideally remake this images using `+ aes()` instead -->
+<!--TODO Should I maybe replace it wirh a programmatic version? It is a fun image, not sure if it looks to informal -->
 
-![Alt text](/img/grammar-of-graphics.jpeg)
+<!-- Coding with grammar in Altair and ggplot -->
 
 **Let's get coding**
 
+
+Let's get coding!
+
 Data in Altair and ggplot is built around ["tidy"](http://vita.had.co.nz/papers/tidy-data.html) dataframes,
-which consists of a set of named data *columns*
-with one feature each and rows with one observation each.
-We will also regularly refer to data columns as data *fields*.
-We will focus on Altair but you can toggle codeblocks to see how to create the same charts in ggplot.
+which consists of a set of named data *columns* (also referred to as *variables* or *fields*)
+with one feature each
+and rows with one observation each.
+Here,
+we will load in a small dataset relating to cars
+containing historical trends in automotive design, performance, and efficiency.
 
+:::: {.panel-tabset}
 
-We will often use datasets
-from the [vega-datasets](https://github.com/vega/vega-datasets) repository, some which are directly available as Pandas data frames. The cars dataset provides a rich opportunity to explore historical trends in automotive design, performance, and efficiency.
-
-::: {.panel-tabset}
 ## Altair
+
 ```{python}
 #| output: false
 import altair as alt
