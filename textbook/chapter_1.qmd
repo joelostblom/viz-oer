@@ -1,6 +1,5 @@
 ---
 title: "Intro to data visualization and graphical grammars"
-format: html
 include-in-header:
   - text: |
       <style>
