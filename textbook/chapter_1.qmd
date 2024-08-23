@@ -528,8 +528,9 @@ suppressPackageStartupMessages(library(tidyverse))
 #| output: false
 library(tidyverse)
 
-url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
-cars = read_csv(url, show_col_types = FALSE)
+
+url <- 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
+cars <- read_csv(url)
 cars
 ```
 
