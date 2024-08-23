@@ -656,6 +656,8 @@ and they are easy to customize to look however you want,
 which we will also get into later.
 Note that ggplot does not including the origin of the plot (x=0, y=0) by default,
 but Altair does for many cases.
+Both these defaults are sensible in different context,
+which we will learn more about in later chapters.
 
 :::
 ::: 
