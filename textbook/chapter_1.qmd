@@ -220,98 +220,143 @@ but looking at the data graphically shows us how different these datasets actual
   <figcaption>The Datasaurus Dozen: Datasets with identical summary statistics but very different distributions.</figcaption>
 </figure>
 
-::: {.callout-warning}
-## Beware of Visualization Pitfalls
+Now that we have experienced the benefits of visualizing data,
+let's figure out how to create such visualizations!
 
-While powerful, data visualization can lead to misinterpretation if not done carefully. Learn about common traps and best practices in [Data Visualization: A practical introduction](https://socviz.co/lookatdata.html#lookatdata) by Kieran Healy (Sections 1-1.2).
+## Which visualization library should we pick? 
 
-:::
+There is a lot we can learn about visualization
+without using coding,
+but in order to make this learning experience interactive,
+we will create charts programmatically
+as we learn about new visualization concepts.
 
-## High level declarative vs low level imperative visualization tools
+In order to do so,
+we will start by selecting which visualization library to use.
+To make an informed decision,
+it is helpful to understand
+that most visualization libraries can be classified as
+taking either a high level declarative approach
+or a low level imperative approach to creating visualization.
 
-Declarative visualization tools allow you to give a high-level specification of *what* you want the visualization to include, rather than *how* to implement the visualization.
+:::: {.callout-note icon="false"}
 
-They focus on **data and relationships**, rather than **plot construction details.** 
-
-Consider the difference between these instructions:
-
-::: {.panel-tabset}
-
-# Declarative instruction
-
-**"Color my data by the column `country`"**
-
-**Focus**: data, graphical marks, and encoding channels
-
-# Imperative instruction
-
-**"Go through this data frame and plot any observations of `country1` in blue, any observations of `country2` in red"**
-
-**Focus**: for-loops, low-level drawing commands, *etc*
-:::
-
-With declarative tools, you simply have to declare links between data variables (e.g., country) and visual encoding channels (e.g., the x-axis, y-axis, color, *etc*). The rest of the plot details are handled automatically. 
-
-As a result, you can create an impressive range of visualizations - from simple to sophisticated - using a concise grammar. It is also much easier to change between plot types, and accomodate changes in your underlying data. 
-
-::: {.callout-note icon="false"}
 ## Exercise
- **Examine this visualization of the size of petals in Iris flowers. Try to spot the difference in the code between the declarative and imperative approaches.**
+
+To understand the difference between these two approaches,
+let's start with an example,
+using the following small toy data set:
+
 
 ```{python}
 #| echo: false
-#| output: false
-import matplotlib.pyplot as plt
-import seaborn as sns
-import altair as alt
-df = sns.load_dataset('iris')
-plt.ioff()
 
+df = pd.DataFrame({
+    'x': [0.2, 0.6, 1.2, 2.4],
+    'y': [0.6, 0.9, 1.8, 2.7],
+    'group': ['a', 'a', 'b', 'b']
+})
+show_df(df)
 ```
+
+A helpful way to illustrate the difference
+between the two syntax approaches
+is to imagine that we want to create a chart
+where we color the points according to their group.
+Here is pseudocode^["pseudocode" is an informal way of writing code that is often used to explain a concept to the reader]
+that illustrates this difference:
 
 ::: {.panel-tabset}
 
-# Declarative
+### Declarative syntax
 
-```{python}
-
-alt.Chart(data.iris()).mark_circle().encode(
-    x='petalLength',
-    y='petalWidth',
-    color='species'
+```python
+create_chart(
+    x='x',
+    y='y',
+    color='group'
 )
-
 ```
 
-# Imperative
+
 ```{python}
+#| echo: false
 
-fig, ax = plt.subplots()
-colors = ['#4E7DA6', '#F28A2E', '#F29191']
+alt.Chart(df, width=200, height=200).mark_point().encode(
+    x='x',
+    y='y',
+    color='group'
+)
+```
 
-for color, species in zip(colors, df['species'].unique()):
-    tmp = df[df['species'] == species]
-    ax.scatter(tmp['petal_length'], tmp['petal_width'], label=species, color=color)
+
+### Imperative syntax
+
+```python
+fig = create_figure()
+colors = ['blue', 'yellow']
+for color, group in zip(colors, df['group'].unique()):
+    tmp_df = df[df['group'] == group]
+    fig.add_chart(tmp_df['x'], tmp_df['y'], label=group, color=color)
 ```
 
 ```{python}
 #| echo: false
-ax.legend()
-ax.set_xlabel('Petal Length')
-ax.set_ylabel('Petal Width')
-plt.show()
+
+alt.Chart(df, width=200, height=200).mark_point().encode(
+    x='x',
+    y='y',
+    color='group'
+)
 ```
 
 :::
 
-::: {.callout-tip icon="false" collapse="true"}
-## Answer
+Although the same chart is created from both these pseudocode examples,
+the syntax looks widely different.
+Before continuing to read our explanation of the two approaches below,
+pause here and try to describe the differences between the two
+in your own words^[Actively engaging your brain in exercises like this
+instead of simply trying to memorize an explanation you read,
+aids in recalling the information later].
+ <!--TODO ref? -->
 
-The declarative code says what we want to visualize (e.g., `petalLength`, `petalWidth`) rather than how to construct the visualization (e.g., defining colors, using for loops).  
-::: 
-<br>
+::::
 
+Based on the syntax of the exercise above,
+we can say that a declarative approach to visualization
+let's us express ourselves in terms of the data (`color='group'`)
+whereas an imperative approach to visualization focuses more explicitly
+on plot construction details such as defining colors explicitly
+and then assigning them to groups by looping through the data.
+
+As an example,
+consider the difference between these instructions:
+
+::: {.panel-tabset}
+
+### Declarative instruction
+
+**"Color by the column `group` in the dataframe."**
+
+**Focus**: Declaring links between data variables (e.g., `group`) and graphical properties (e.g. `color`). The rest of the plot details (such as which colors to use) are handled automatically.
+
+### Imperative instruction
+
+**"Loop over the dataframe and plot any observations of group `A` in blue and any observations of group `B` in yellow."**
+
+**Focus**: Being explicit with all the details for creating the chart via for-loops and low-level drawing commands.
 :::
+
+In this book we will learn about
+declarative visualization tools,
+since these allow us to code a high-level specification
+of *what* we want the visualization to include,
+rather than coding out the details of *how* to implement the visualization.
+Another way to state this would be that high level libraries
+focus on **data and relationships**,
+whereas low level libraries focus on **plot construction details.** 
+<!--TODO explain jargon delcariative/imperative? -->
 
 ## The R and Python visualization ecosystems
 
