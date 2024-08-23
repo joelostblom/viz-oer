@@ -83,7 +83,6 @@ This is a slightly modified version of the original,
 <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="_blank">which was put together by statistician Francis Anscombe in the
 70s.</a>
 
-
 ```{python}
 #| echo: false
 
@@ -155,7 +154,7 @@ statistical summaries can't tell the whole story about the data
 and there can be important differences between datasets
 that summaries fail to reveal.
 
-Below,
+Above,
 the mean and standard deviation indicate that set C
 is slightly different from the other sets of data
 in terms of the centre of the sample distribution and the spread of that distribution,
@@ -187,9 +186,10 @@ alt.Chart(anscombe).mark_circle(size=80, opacity=1).encode(
 )
 ```
 
-... what the... how... there must be something wrong, right?
+... what... how can they be so different... there must be something wrong, right?
 Well what is wrong is that humans are not good at detecting patterns in raw numbers,
-and we don't have good intuition about which combination of numbers can contribute to the same statistical summaries.
+and we don't have good intuition about which combination of numbers
+can contribute to the same statistical summaries.
 But guess what we excel at? Detecting visual patterns!
 
 It is immediately clear to us how these sets of numbers differ
@@ -199,17 +199,16 @@ We could not detect these patterns from only looking at the raw numbers or summa
 This is one of the main reasons why data visualization
 is such a powerful tool for data exploration and communication.
 
-In our example here,
+In our example above,
 we would come to widely different conclusions about the behaviour of the data
 for the four different data sets.
-
 Sets A and C are roughly linearly increasing at similar rates,
 whereas set B reaches a plateau and starts to drop,
 and set D has a constant X-value for all numbers except one big outlier.
 
 ### A modern take on Anscombe's quartet
 
-For a more recent, dynamic, and avian illustration
+For a more recent and dynamic illustration
 of how graphical representations are much easier for us to interpret,
 check out the [Datasaurus Dozen animation](https://www.autodesk.com/research/publications/same-stats-different-graphs) below.
 It displays several different datasets,
