@@ -497,8 +497,7 @@ import pandas as pd
 
 
 url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
-# `parse_dates` makes sure a column is stored as a date object in pandas
-cars = pd.read_csv(url, parse_dates=['Year'])
+cars = pd.read_csv(url)
 cars
 ```
 
