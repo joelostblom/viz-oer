@@ -314,14 +314,14 @@ alt.Chart(df, width=200, height=200).mark_point().encode(
 
 Although the same chart is created from both these pseudocode examples,
 the syntax looks widely different.
-Before continuing to read our explanation of the two approaches below,
+Before clicking on the solution below to read our explanation of the two approaches,
 pause here and try to describe the differences between the two
 in your own words^[Actively engaging your brain in exercises like this
 instead of simply trying to memorize an explanation you read,
 aids in recalling the information later].
  <!--TODO ref? -->
 
-::::
+::: {.callout-tip title='Solution' collapse=true}
 
 Based on the syntax of the exercise above,
 we can say that a declarative approach to visualization
@@ -330,8 +330,12 @@ whereas an imperative approach to visualization focuses more explicitly
 on plot construction details such as defining colors explicitly
 and then assigning them to groups by looping through the data.
 
-As an example,
-consider the difference between these instructions:
+:::
+
+::::
+
+A related way to understand declarative vs imperative approaches
+is to consider the difference between giving an instruction in each:
 
 ::: {.panel-tabset}
 
