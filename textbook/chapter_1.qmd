@@ -411,7 +411,6 @@ Do you think it differs between programming languages?
 
 ### Solution
 
-<!-- TODO `` -->
 The grammar of Python defines that the `+`-operator
 should perform concatenation when strings are added together,
 so the returned result would be `"onetwo"`.
@@ -902,7 +901,6 @@ and tasked with investigating emissions in the city of Viridia.
 To start with your investigation,
 you'll need to visualize the emissions data effectively.
 This will help unlock insights crucial for the Ministry of Environment.
-<!-- todo ````` -->
 
 ```{python}
 #| output: false
