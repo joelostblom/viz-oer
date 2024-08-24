@@ -35,7 +35,7 @@ def show_df(df):
 
 - **Understand** that the advantage of using a high level level visualization syntax is that it allows us to think in terms of the data, rather than focusing on graphical details.
 
-- **Explain** how a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks.
+- **Understand** that a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks, such geometric marks and aesthetic encodings.
 
 - **Apply** the visualization grammars in Altair and ggplot to create a basic chart via `alt.Chart().mark_point().encode(x='...', y='...', color='...')` and <br> `ggplot() + aes(x=..., y=..., color=...) + geom_point()`
 
