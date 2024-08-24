@@ -501,7 +501,7 @@ containing historical trends in automotive design, performance, and efficiency.
 
 :::: {.panel-tabset}
 
-## Altair
+### Altair
 
 ```{python}
 #| output: false
@@ -521,7 +521,7 @@ show_df(cars)
 
 ::: {.column-margin}
 
-**Stellar Charts**
+**Stellar charts**
 
 Altair is the name of a star in the same constellation as the star Vega, which is also the name of the Javascript library that Altair is built upon.
 
@@ -565,63 +565,118 @@ which inspired the creation of the ggplot library.
 
 ::::
 
-The fundamental object in Altair is the `Chart`, which takes a data frame as a single argument `alt.Chart(cars)`.
+Now let's create our first charts!
 
-With a chart object in hand, we can now specify how we would like the data to be visualized. We first indicate what kind of geometric *mark* we want to use to represent the data. We can set the `mark` attribute of the chart object using the the `Chart.mark_*` methods.
+::: {.panel-tabset}
 
-For example, we can show the data as a point using `mark_point()`:
+### Altair
 
+The fundamental object in Altair is the `Chart`,
+which takes a data frame as a single argument `alt.Chart(cars)`.
+With a chart object in hand,
+we can now specify how we would like the data to be visualized.
+We first indicate what kind of geometric *mark* we want to use to represent the data.
+We can set the `mark` attribute of the chart object using any the `Chart.mark_*` methods.
+For example, we can show the data as points using `mark_point()`:
 
 ```{python}
 alt.Chart(cars).mark_point()
 ```
 
+Although it looks like there is only one point in the chart,
+there is actually one point per row in the dataset,
+all plotted on top of each other.
+To visually separate the points,
+we can map various *encoding channels*,
+(or just *encodings* or *channels* for short),
+to columns in the dataset.
+For example,
+we could *encode* the colum `Miles_per_Gallon`
+(how many miles a car can travel on each gallon of fuel)
+of the data using the `x` channel,
+which represents the x-axis position of the points.
+To specify this,
+we use the `encode` method:
 
-Here the rendering consists of one point per row in the dataset, all plotted on top of each other, since we have not yet specified positions for these points.
-
-To visually separate the points, we can map various *encoding channels*, or *channels* for short, to fields in the dataset. For example, we could *encode* the field `Miles_per_Gallon` of the data using the `x` channel, which represents the x-axis position of the points. To specify this, use the `encode` method:
-
-
-::: {.panel-tabset}
-
-## Altair
 ```{python}
-alt.Chart(cars).mark_point().encode(
-    x='Miles_per_Gallon'
-)
+alt.Chart(cars).mark_point().encode(x='Miles_per_Gallon')
 ```
 
-## ggplot
-
-
-```{r}
-ggplot(cars, aes(x = Miles_per_Gallon, y=0)) +
-  geom_point()
-```
-
-::: {.column-margin}
-
-<br>
-<br>
-
-In ggplot2, you begin by creating a plot object with your dataset, such as `ggplot(cars)`. This is similar to Altair's `Chart(cars)`. To visualize the data, you add a geometric object like `geom_point()`, which is conceptually equivalent to Altair's `mark_point()`. Initially, this would plot all points at the origin. To meaningfully represent the data, you map variables to visual properties using `aes()`. For instance, to plot Miles per Gallon on the x-axis, you'd use `aes(x = Miles_per_Gallon)` within `geom_point()`. This corresponds to Altair's `encode` method. 
-:::
-
-:::
-
-The `encode()` method builds a key-value mapping between encoding channels (such as `x`, `y`, `color`, `shape`, `size`, *etc.*) to fields in the dataset, accessed by field name. For Pandas data frames, Altair automatically determines an appropriate data type for the mapped column, which in this case is the *nominal* type, indicating unordered, categorical values.
-
-
-
-
-You can also see that there is a button with three dots
+For all Altair charts,
+you can see that there is a button with three dots
 to the top right.
 If you click this you will have options to save the chart
 and to open the underlying Vega-Lite code.
+We will see how to save charts programmatically in a later chapter.
 
-Though we've now separated the data by one attribute, we still have multiple points overlapping within each category. Let's further separate these by adding a `y` encoding channel;
-for example lets say we wanted to answer the question:
-"How is a cars fuel efficiency related to its horsepower?"
+### ggplot
+
+In ggplot2,
+we begin by creating a canvas linked with our dataset with `ggplot(cars)`
+and encode the *aesthetics* of the chart with the `aes()` function,
+which maps a column in the data frame to a dimension in the chart.
+
+```{r}
+ggplot(cars) + aes(x = Miles_per_Gallon)
+```
+
+To visualize the data,
+we need to tell ggplot which geometric mark to use for representing the data.
+Let's use points via the `geom_point()` function.
+You don't see any output here
+because `geom_point()` requires both
+an x and y aesthetic;
+we will see how to add these in the next code block
+(in fact this expression would raise an error if evaluated,
+so here we just show the code).
+
+```r
+ggplot(cars) + aes(x = Miles_per_Gallon) + geom_point()
+```
+Note that instead of `ggplot() + aes()`
+you will often see `ggplot(aes())`.
+These are functionally the same,
+but putting `aes()` outside `ggplot()`
+gives some additional flexibility as we will see later.
+
+:::
+
+::: {.column-margin}
+
+**To quote or not to quote**
+
+As you can see,
+in Altair you need to use quotes to refer to the column names
+while in ggplot you don't.
+Why is that?
+This is because Python is a stricter language than R,
+and requires that packages follow its fundamental rules
+and we can't reference a column as an unquoted variable name.
+In R,
+a package is more free to redefine the rules
+and essentially create a domain specific syntax for its purpose.
+This has both pros and cons:
+it is convenient to not have to type the quotes
+and to get tab completion for column names,
+but it is inconvenient to write functions and program with these constructs
+[as detailed in the dplyr documentation](https://dplyr.tidyverse.org/articles/programming.html).
+
+:::
+
+Though we've now separated the data by one attribute,
+we still have multiple points overlapping within each category.
+Let's further separate these
+by spreading the data out over the `y`-axis.
+With the addition of a second dimension in our chart,
+we're ready to ask our first question about the data.
+Let's say we're interested in
+how a car's fuel efficiency is related to its engine power.
+To answer this question,
+we would want to explore the relationship
+between the columns `Miles_per_Gallon` and `Horsepower`
+(how powerful the engine is),
+which we can do by assigning them to the x and y dimension,
+respectively.
 
 ::: {.panel-tabset}
 
@@ -637,40 +692,113 @@ alt.Chart(cars).mark_point().encode(
 ## ggplot
 
 ```{r}
-ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower)) +
+ggplot(cars) +
+    aes(
+        x = Miles_per_Gallon,
+        y = Horsepower
+    ) +
     geom_point()
 ```
+<!--TODO unsure what the best syntax is here, many just write the aes on one row, which is less clear -->
+
+:::
 
 ::: {.column-margin}
 
-<br>
-<br>
-The default ggplot style is quite different from that of Altair.
+**Styling differences**
+
+The default style is quite different between the libraries.
 Both have advantages,
 and they are easy to customize to look however you want,
 which we will also get into later.
-Note that ggplot does not including the origin of the plot (x=0, y=0) by default,
-but Altair does for many cases.
+It's worth noting
+that ggplot does not including the origin of the plot (x=0, y=0) by default,
+but Altair does in many cases.
 Both these defaults are sensible in different context,
 which we will learn more about in later chapters.
+<br>
+<br>
+You can also see that ggplot will print a warning
+when there are some observations that can be plotted
+due to missing values in one of the two columns.
+Altair also avoids plotting these observations,
+but is less verbose and does not print a warning.
+<br>
+<br>
+Finally, note that `=` for parameter assignment
+is surrounded by spaces in R but not in Python.
 
 :::
-::: 
 
-Here we can see that there seems to be a negative correlation with Horsepower and Miles_per_Gallon:
-More powerful cars consume more gas.
+This type of chart is often called a "scatter plot".
+Characteristic for a scatter plot
+is that there is one graphical element (often a point)
+per observations in the data
+and one column each on the x and y axis.
+We will learn more about for which purposes it is effective
+later in the book.
 
-But there might be other variables that also influence this relationship,
-e.g. the weight of the car probably matters for fuel efficiency,
-since more force is needed to propel a bigger mass.
-We can add more dimensions to this chart,
-e.g. specifying which column we want to color the points by
-and Altair will automatically figure out an appropriate colorscale to use.
+:::: {.callout-note title='Exercise'}
 
+Study the chart above,
+what can you say about the relationship
+between Horsepower and Miles_per_Gallon?
+If you choose to use statistical terms such as talking
+about the correlation between the two variables,
+try to express yourself in common English
+as if you were explaining what the chart means
+to someone of the general public.
+Finally,
+it's always good to ask yourself
+if your interpretation of the chart makes sense,
+given your knowledge about how the world works.
+
+::: {.callout-tip title='Solution' collapse=true}
+
+From the chart,
+we can see that `Horsepower` and `Miles_per_Gallon`
+are negatively correlated.
+This means that cars with more powerful engines (higher Horsepower),
+have lower fuel efficiency (lower Miles_per_Gallon).
+This makes sense as more powerful engines often consume more gas
+than less powerful ones.
+Note that we can't make claims about a causal relationship from the chart alone,
+but in this case the observed relationship in the chart
+supports our mechanistic understanding of the world.
+
+:::
+
+::::
+
+Our conclusion above makes sense for the data we showed in chart.
+But remember that there are other variables in our dataframe,
+let's show it again as a reminder.
+
+```{python}
+#| echo: false
+
+show_df(cars)
+```
+
+What if one of the other columns also influence a car's fuel efficiency?
+For example, it seems likely that the weight of the car impacts fuel efficiency,
+since more force is needed to propel a larger mass.
+To explore this variable,
+we can add more dimensions to this chart,
+e.g. specifying which column we want to color the points by.
 
 ::: {.panel-tabset}
 
-# Altair
+### Altair
+
+When using the `color` encoding channel,
+Altair will automatically figure out an appropriate colorscale to use.
+The `Weight_in_lbs` column contains continuous numerical data
+so a continuous gradient will be used for the colorscale.
+The largest value in the `Weight_in_lbs` column
+is represented with a dark color
+since this has the highest contrast to the light background of the chart.
+
 ```{python}
 alt.Chart(cars).mark_point().encode(
     x='Miles_per_Gallon',
@@ -679,49 +807,64 @@ alt.Chart(cars).mark_point().encode(
 )
 ```
 
-# ggplot
+### ggplot
+
+When using the `color` encoding channel,
+ggplot will automatically figure out which colorscale to use.
+The `Weight_in_lbs` column contains continuous numerical data
+so a continuous gradient will be used for the colorscale.
+The largest value in the `Weight_in_lbs` column
+is represented with a light color
+since this has the highest contrast to the dark background of the chart.
 
 ```{r}
-ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
+ggplot(cars) +
+    aes(
+        x = Miles_per_Gallon,
+        y = Horsepower,
+        color = Weight_in_lbs
+    ) +
     geom_point()
-    
 ```
+
+:::
 
 ::: {.column-margin}
-<br>
-<br>
-As with Altair,
-ggplot chooses an appropriate continuous color scale for the quantitative data,
-although it start from dark instead of light,
-which could be related to the different choice of background color.
-Notice also the difference in how the legend is added,
-in Altair the overall width of the figure was increased,
-whereas here the legend takes part of the figure width from the canvas,
-which is made narrower.
+
+**Making space**
+
+Notice the difference in how the legend is added in the two libraries.
+In Altair the overall width of the figure was increased
+to keep the dimensions of the chart area the same,
+whereas in ggplot the width of the figure is kept constant
+so the chart area must narrow to accommodate the legend.
+In general,
+we don't want the chart area to shrink just because we are adding a legend,
+so here we would need to manually increase the width of the ggplot chart,
+which we will learn about in a future chapter.
+<!--TODO should we learn this here? depends on how many figs will need it before it is introduced in a chaprter -->
 :::
 
+:::: {.callout-note title='Exercise'}
+
+How does a car's weight relate to its fuel efficiency?
+
+::: {.callout-tip title='Solution' collapse=true}
+
+We can see that weight is correlated positively with `Horsepower`
+and negatively with `Miles_per_Gallon`.
+This aligns with our knowledge about the world:
+heavy cars require bigger engines
+and more fuel to propel them forward.
+However,
+remember that we can't say anything about causation from the chart alone,
+we can just note the correlation
+and that is what we would expect
+based on our knowledge about physics of moving objects.
+
 :::
 
-Aha! Here we can see that weight is also correlated with Horsepower (positively)
-and Miles_per_Gallon (negatively).
-We can't say anything about causation from the plot alone,
-just correlation.
-
-One of the really neat things with Altair is that it extends its grammar 
-to interactive plot elements as well.
-We will see much more of this later in the book.
-Let's add a tooltip to each data point with the name of the car,
-hover over the data points to see the tooltip show up!
-
-
-```{python}
-alt.Chart(cars).mark_point().encode(
-    x='Miles_per_Gallon',
-    y='Horsepower',
-    tooltip='Name'
-)
-```
-
+::::
 
 ## Mission
 
