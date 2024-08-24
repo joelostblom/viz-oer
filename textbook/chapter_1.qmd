@@ -467,6 +467,8 @@ together with how ggplot (top) and Altair (bottom) implements the grammatical co
 The exact syntax is slightly different, but the overall structure very much the same.
 
 ![](/img/grammar-of-graphics.jpeg)
+<!--TODO Ideally remake this images using `+ aes()` instead -->
+<!--TODO Should I maybe replace it wirh a programmatic version? It is a fun image, not sure if it looks to informal -->
 
 As a result of the predictable structure,
 a grammar of graphics allows you to create an impressive range of visualizations
@@ -480,14 +482,6 @@ Altair and ggplot have been show to be two of the libraries
 that require the least amount of changes in the code
 between different types of visualizations.
 <!--TODO ref nic paper -->
-
-<!--TODO Ideally remake this images using `+ aes()` instead -->
-<!--TODO Should I maybe replace it wirh a programmatic version? It is a fun image, not sure if it looks to informal -->
-
-<!-- Coding with grammar in Altair and ggplot -->
-
-**Let's get coding**
-
 
 Let's get coding!
 
