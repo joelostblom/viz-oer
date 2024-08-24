@@ -853,6 +853,121 @@ based on our knowledge about physics of moving objects.
 
 ::::
 
+## Deep dive
+
+<details><summary>Click to expand the optional deep dive or proceed to the exercises.</summary>
+
+### The R and Python visualization ecosystems
+
+There are a wide variety of high-level and low-level tools for visualizing data in R and Python.
+While we have already outline the advantages of the libraries we chose,
+it can be helpful to be aware of which others are avaialble 
+since you are likely to encounter some of them in the wild.
+In this diagram
+you can see an overview of how which other libraries exist
+and how they are connected.
+
+```{mermaid}
+%%{init: {'flowchart': {'width': 800}}}%%
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+
+    %% R ecosystem
+    base[base]:::lowLevel
+    grid[grid]:::lowLevel
+    lattice[lattice]:::highLevel
+    ggplot[ggplot]:::highLevel
+    ggiraph[ggiraph]:::highLevel
+    ggplotly[ggplotly]:::highLevel
+    plotly_r[plotly]:::lowLevel
+    patchwork[patchwork/cowplot]:::alignmentTool
+    htmlwidgets[htmlwidgets]:::javascript
+    altair_r[Altair]:::highLevel
+
+    %% JavaScript-related
+    js[JavaScript]:::javascript
+    d3[D3]:::javascript
+    vega[Vega]:::javascript
+    vegalite[Vega-Lite]:::javascript
+
+    %% Python ecosystem
+    matplotlib[Matplotlib]:::lowLevel
+    plotnine[Plotnine]:::highLevel
+    pandas[Pandas]:::highLevel
+    seaborn[Seaborn]:::highLevel
+    holoviz[HoloViz]:::highLevel
+    bokeh[Bokeh]:::lowLevel
+    plotly_py[Plotly]:::lowLevel
+    plotly_express[Plotly Express]:::highLevel
+    altair[Altair]:::highLevel
+
+    %% Subgraph for R ecosystem
+    subgraph R_Ecosystem[R Ecosystem]
+        base --> grid
+        grid --> lattice & ggplot
+        lattice & ggplot --> patchwork
+        ggplot -.-> ggiraph & ggplotly
+        ggplotly --> plotly_r
+        htmlwidgets --> ggiraph & plotly_r & altair_r
+    end
+
+    %% Subgraph for JavaScript ecosystem
+    subgraph JS_Ecosystem[JavaScript Ecosystem]
+        js --> d3
+        d3 --> vega
+        vega --> vegalite
+    end
+
+    %% Subgraph for Python ecosystem
+    subgraph Python_Ecosystem[Python Ecosystem]
+        matplotlib --> plotnine & pandas & seaborn & holoviz
+        holoviz --> bokeh
+        plotly_py --> plotly_express
+        vegalite --> altair & altair_r
+    end
+
+    %% Connections between ecosystems
+    js --> htmlwidgets & bokeh & plotly_py
+```
+
+```{mermaid}
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+    %% Legend items
+    AT[Alignment Tool]:::alignmentTool
+    HL[High Level]:::highLevel
+    LL[Low Level]:::lowLevel
+    JS[JavaScript]:::javascript
+```
+
+```{=html}
+<div class="song-container">
+  <div class="song-details">
+    <div class="song-icon">🎵</div>
+    <div class="song-info">
+      <div class="song-title">Data Viz Ecosystem</div>
+      <div class="song-artist">Generated with artificial intelligence</div>
+    </div>
+  </div>
+  <div class="audio-player">
+    <audio controls>
+    <source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg"></source>
+    Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
+```
+
+</summary>
+
 ## Exercise mission
 
 With a commitment to sustainability and a vision for a greener future,
@@ -1160,22 +1275,4 @@ These are striking results! There are some clear clusters and outliers in the da
 
   return html`${container}`;
 }
-```
-
-```{=html}
-<div class="song-container">
-  <div class="song-details">
-    <div class="song-icon">🎵</div>
-    <div class="song-info">
-      <div class="song-title">Data Viz Ecosystem</div>
-      <div class="song-artist">Generated with artificial intelligence</div>
-    </div>
-  </div>
-  <div class="audio-player">
-    <audio controls>
-    <source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg"></source>
-    Your browser does not support the audio element.
-    </audio>
-  </div>
-</div>
 ```
