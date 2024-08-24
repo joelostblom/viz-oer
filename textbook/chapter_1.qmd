@@ -529,13 +529,7 @@ Altair is the name of a star in the same constellation as the star Vega, which i
 
 :::
 
-## ggplot
-
-```{r}
-#| echo: false
-#| output: false
-suppressPackageStartupMessages(library(tidyverse))
-```
+### ggplot
 
 ```{r}
 #| output: false
