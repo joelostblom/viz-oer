@@ -1,0 +1,278 @@
+.boxed {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px 15px 0 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+
+.dataframe-grid {
+    display: flex;
+    flex-direction: row; 
+    gap: 50px; 
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.callout-header {
+    margin-bottom: 10px !important;
+}
+
+#mermaid-1 .cluster rect {
+    fill: #f9f9f9 !important;
+    stroke: #ddd;
+    stroke-width: 1px;
+}
+
+#JS_Ecosystem {
+    display: none;
+}
+
+.song-container {
+    background: rgb(227, 227, 227);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin: 20px 0;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .song-details {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin-right: 20px;
+  }
+  .song-icon {
+    font-size: 1.5em;
+    margin-right: 15px;
+  }
+  .song-info {
+    flex-grow: 1;
+  }
+  .song-title {
+    font-family: 'Arial', sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 2px;
+    color: black;
+  }
+  .song-artist {
+    font-size: 0.8em;
+    color: #555;
+  }
+  .audio-player {
+    flex-shrink: 0;
+    width: 250px;
+  }
+  .audio-player audio {
+    width: 100%;
+  }
+  /* Custom audio player controls */
+  .audio-player audio::-webkit-media-controls-panel {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .audio-player audio::-webkit-media-controls-current-time-display,
+  .audio-player audio::-webkit-media-controls-time-remaining-display {
+    color: #333;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 600px) {
+    .song-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .song-details {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    .audio-player {
+      width: 100%;
+    }
+  }
+
+  .ministry-id-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    width: 640px;
+    height: 300px;
+    padding: 30px;
+    display: flex;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+}
+.ministry-id-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(240,240,240,0.1) 0%,
+        rgba(240,240,240,0.05) 25%,
+        transparent 50%
+    );
+    transform: rotate(-10deg);
+    pointer-events: none;
+}
+.ministry-id-card .left-column {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.ministry-id-card .right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+.ministry-id-card .logo {
+    font-size: 13px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #555;
+    margin-bottom: 20px;
+}
+.ministry-id-card .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.ministry-id-card .info {
+    display: flex;
+    flex-wrap: wrap;
+}
+.ministry-id-card .info-item {
+    flex: 1 0 50%;
+    margin: 5px 0;
+    font-size: 13px;
+}
+.ministry-id-card .name {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+.ministry-id-card .label {
+    font-weight: 500;
+    color: #888;
+    display: block;
+}
+.ministry-id-card .value {
+    font-weight: 400;
+    color: #333;
+}
+.ministry-id-card .footer {
+    font-size: 11px;
+    color: #888;
+    align-self: flex-start;
+    margin-top: 15px;
+    letter-spacing: 1px;
+}
+.ministry-id-card .accent-line {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    width: 3px;
+    height: 50px;
+    background-color: rgb(73, 101, 131);
+}
+
+#chat-container {
+  max-width: 800px;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+#chat-display {
+  max-height: 500px;
+  overflow-y: auto;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+.chat-message {
+  display: flex;
+  margin-bottom: 25px;
+  align-items: flex-start;
+}
+.chat-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+.chat-message-content {
+  background-color: #e7f3ff;
+  padding: 15px;
+  border-radius: 18px;
+  max-width: 75%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.boss-message .chat-message-content {
+  background-color: #f0f0f0;
+}
+.chat-sender-name {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+#user-input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+#user-input:focus {
+  outline: none;
+  border-color: rgb(73, 101, 131);
+}
+#submit-button {
+  padding: 15px 25px;
+  background-color: rgb(73, 101, 131);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+#submit-button:hover {
+  background-color: #45a049;
+}
+.highlight-line {
+  height: 4px;
+  background: rgb(73, 101, 131);
+  margin-bottom: 25px;
+  border-radius: 2px;
+}
+
+h4 {
+  margin-bottom: 1rem;
+}
