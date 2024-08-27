@@ -1,0 +1,1278 @@
+---
+title: "Intro to data visualization and graphical grammars"
+include-in-header:
+  - text: |
+      <style>
+        .table.dataframe {
+          width: auto;
+          text-align: right;
+        }
+      </style>
+fig-width: 4
+fig-height: 4
+---
+
+```{python setup}
+#| echo: false
+#| output: false
+
+import pandas as pd
+import rpy2.robjects as ro
+from rpy2.robjects import pandas2ri
+
+
+pd.set_option('display.max_rows', 6)
+
+def show_df(df):
+    if isinstance(df, ro.vectors.DataFrame):
+        with (ro.default_converter + pandas2ri.converter).context():
+            df = ro.conversion.get_conversion().rpy2py(df)
+    return HTML(df._repr_html_())
+```
+
+::: {.callout-note title="Learning outcomes"}
+- **Explain** that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
+
+- **Understand** that the advantage of using a high level level visualization syntax is that it allows us to think in terms of the data, rather than focusing on graphical details.
+
+- **Understand** that a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks, such geometric marks and aesthetic encodings.
+
+- **Apply** the visualization grammars in Altair and ggplot to create a basic chart via `alt.Chart().mark_point().encode(x='...', y='...', color='...')` and <br> `ggplot() + aes(x=..., y=..., color=...) + geom_point()`
+
+:::
+
+## What is data visualization?
+
+At its core,
+data visualization is about representing numbers with graphical elements
+such as the position of a point, the length of a bar, or the color of a line.
+
+## What is the purpose of visualizing data?
+
+We can use visualizations both to improve own understanding of data
+and to effectively communicate our data insights to others.
+While we often use visualization
+to help us answer a specific question
+we have about our dataset,
+it can also help us generate new questions.
+
+## Why bother visualizing data instead of showing raw numbers?
+
+To understand why visualizations are so powerful,
+it is helpful to remember that to answer a question,
+we often have to put the data in a format that is easy for us humans to interpret.
+Because our number systems have only been around for about 5,000 years,
+we need to assert effort and train ourselves
+to recognize structure in numerical data.
+
+Visual systems,
+on the other hand,
+have undergone refinement during 500,000,000 years of evolution,
+so we can instinctively recognize visual patterns
+and accurately estimate visual properties
+such as colours and distances.
+
+Practically,
+this means that we can arrive at correct conclusions faster
+from studying visual rather than numerical
+representations of the same data.
+For example, have a look at the
+four sets of numbers in the table on the slide.
+Can you see the differences in the general trends between these four sets of numbers?
+This is a slightly modified version of the original,
+<a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="_blank">which was put together by statistician Francis Anscombe in the
+70s.</a>
+
+```{python}
+#| echo: false
+
+import altair as alt
+import pandas as pd
+from vega_datasets import data
+from IPython.display import HTML
+
+anscombe = data.anscombe()
+anscombe['Set'] = anscombe['Series'].map({'I': 'A', 'II': 'B', 'III': 'C', 'IV': 'D'})
+anscombe = anscombe.drop(columns='Series')
+anscombe.loc[anscombe['Y'] == anscombe['Y'].max(), 'Y'] = 8.5
+
+s = ''
+for set_name, df in anscombe.groupby('Set'):
+    df = df.drop(columns='Set')
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'X'), (set_name, 'Y')])
+    s = s + (
+        df
+        .style
+        .format('{:.2f}')
+        .hide(axis='index')
+        ._repr_html_()
+    )
+
+html_content = '<div class="dataframe-grid">' + s + '</div>'
+
+HTML(html_content)
+```
+
+### Summary statistics don't tell the whole story
+
+You are likely not able to see much difference between the data sets
+in the table above.
+What about if I showed you a few commonly used numerical summaries of the data?
+
+```{python}
+#| echo: false
+
+s = ''
+for set_name, df in anscombe.groupby('Set'):
+    df = df.drop(columns='Set')
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'X'), (set_name, 'Y')])
+    s += (
+        df
+        .agg(['mean', 'std'])
+        .round(2)
+        .style
+        .format('{:.2f}')
+        .hide(axis='index')
+        ._repr_html_()
+        .replace('>7.11',  ' style="background-color:#4853a4; color:#ffffff"> <b>7.11</b>')
+        .replace('>1.15',  ' style="background-color:#4853a4; color:#ffffff"> <b>1.15</b>')
+    )
+
+html_content = '<div class="dataframe-grid">' + s + '</div>'
+
+HTML(html_content)
+```
+
+<br>
+Summaries,
+such as the mean and standard deviation,
+are helpful statistical tools
+that are often useful for detecting the differences between datasets.
+However,
+since they collapse the data into just a few numbers,
+statistical summaries can't tell the whole story about the data
+and there can be important differences between datasets
+that summaries fail to reveal.
+
+Above,
+the mean and standard deviation indicate that set C
+is slightly different from the other sets of data
+in terms of the centre of the sample distribution and the spread of that distribution,
+while the remaining three sets of data have a similar centre and spread.
+
+### Plotting the data immediately reveals patterns in the data 
+
+So if you can't really see any patterns in the data
+and the statistical summaries are the same,
+that must mean that the four sets are pretty similar, right?
+Sounds about right to me so let's go ahead and plot them to have a quick look and...
+
+```{python}
+#| echo: false
+
+alt.Chart(anscombe).mark_circle(size=80, opacity=1).encode(
+    x='X',
+    y='Y'
+).properties(
+  width=300,
+  height=200
+).facet(
+  'Set',
+  columns=2
+).configure_axis(
+  grid=True
+).configure_header(
+  title=None
+)
+```
+
+... what... how can they be so different... there must be something wrong, right?
+Well what is wrong is that humans are not good at detecting patterns in raw numbers,
+and we don't have good intuition about which combination of numbers
+can contribute to the same statistical summaries.
+But guess what we excel at? Detecting visual patterns!
+
+It is immediately clear to us how these sets of numbers differ
+once they are shown as graphical objects 
+instead of textual objects.
+We could not detect these patterns from only looking at the raw numbers or summary statistics
+This is one of the main reasons why data visualization
+is such a powerful tool for data exploration and communication.
+
+In our example above,
+we would come to widely different conclusions about the behaviour of the data
+for the four different data sets.
+Sets A and C are roughly linearly increasing at similar rates,
+whereas set B reaches a plateau and starts to drop,
+and set D has a constant X-value for all numbers except one big outlier.
+
+### A modern take on Anscombe's quartet
+
+For a more recent and dynamic illustration
+of how graphical representations are much easier for us to interpret,
+check out the [Datasaurus Dozen animation](https://www.autodesk.com/research/publications/same-stats-different-graphs) below.
+It displays several different datasets,
+all with the same mean, standard deviation and correlation between X and Y,
+but looking at the data graphically shows us how different these datasets actually are.
+
+<figure>
+  <img src="https://blog.revolutionanalytics.com/downloads/DataSaurus%20Dozen.gif" alt="Datasaurus Dozen Animation" style="width:100%; max-width:600px;">
+  <figcaption>The Datasaurus Dozen: Datasets with identical summary statistics but very different distributions.</figcaption>
+</figure>
+
+Now that we have experienced the benefits of visualizing data,
+let's figure out how to create such visualizations!
+
+## Which visualization library should we pick? 
+
+There is a lot we can learn about visualization
+without using coding,
+but in order to make this learning experience interactive,
+we will create charts programmatically
+as we learn about new visualization concepts.
+
+In order to do so,
+we will start by selecting which visualization library to use.
+To make an informed decision,
+it is helpful to understand
+that most visualization libraries can be classified as
+taking either a high level declarative approach
+or a low level imperative approach to creating visualization.
+
+:::: {.callout-note icon="false"}
+
+## Exercise
+
+To understand the difference between these two approaches,
+let's start with an example,
+using the following small toy data set:
+
+
+```{python}
+#| echo: false
+
+df = pd.DataFrame({
+    'x': [0.2, 0.6, 1.2, 2.4],
+    'y': [0.6, 0.9, 1.8, 2.7],
+    'group': ['a', 'a', 'b', 'b']
+})
+show_df(df)
+```
+
+A helpful way to illustrate the difference
+between the two syntax approaches
+is to imagine that we want to create a chart
+where we color the points according to their group.
+Here is pseudocode^["pseudocode" is an informal way of writing code that is often used to explain a concept to the reader]
+that illustrates this difference:
+
+::: {.panel-tabset}
+
+### Declarative syntax
+
+```python
+create_chart(
+    x='x',
+    y='y',
+    color='group'
+)
+```
+
+
+```{python}
+#| echo: false
+
+alt.Chart(df, width=200, height=200).mark_point().encode(
+    x='x',
+    y='y',
+    color='group'
+)
+```
+
+
+### Imperative syntax
+
+```python
+fig = create_figure()
+colors = ['blue', 'yellow']
+for color, group in zip(colors, df['group'].unique()):
+    tmp_df = df[df['group'] == group]
+    fig.add_chart(tmp_df['x'], tmp_df['y'], label=group, color=color)
+```
+
+```{python}
+#| echo: false
+
+alt.Chart(df, width=200, height=200).mark_point().encode(
+    x='x',
+    y='y',
+    color='group'
+)
+```
+
+:::
+
+Although the same chart is created from both these pseudocode examples,
+the syntax looks widely different.
+Before clicking on the solution below to read our explanation of the two approaches,
+pause here and try to describe the differences between the two
+in your own words^[Actively engaging your brain in exercises like this
+instead of simply trying to memorize an explanation you read,
+aids in recalling the information later].
+ <!--TODO ref? -->
+
+::: {.callout-tip title='Solution' collapse=true}
+
+Based on the syntax of the exercise above,
+we can say that a declarative approach to visualization
+let's us express ourselves in terms of the data (`color='group'`)
+whereas an imperative approach to visualization focuses more explicitly
+on plot construction details such as defining colors explicitly
+and then assigning them to groups by looping through the data.
+
+:::
+
+::::
+
+A related way to understand declarative vs imperative approaches
+is to consider the difference between giving an instruction in each:
+
+::: {.panel-tabset}
+
+### Declarative instruction
+
+**"Color by the column `group` in the dataframe."**
+
+**Focus**: Declaring links between data variables (e.g., `group`) and graphical properties (e.g. `color`). The rest of the plot details (such as which colors to use) are handled automatically.
+
+### Imperative instruction
+
+**"Loop over the dataframe and plot any observations of group `A` in blue and any observations of group `B` in yellow."**
+
+**Focus**: Being explicit with all the details for creating the chart via for-loops and low-level drawing commands.
+:::
+
+In this book we will learn about
+declarative visualization tools,
+since these allow us to code a high-level specification
+of *what* we want the visualization to include,
+rather than coding out the details of *how* to implement the visualization.
+Another way to state this would be that high level libraries
+focus on **data and relationships**,
+whereas low level libraries focus on **plot construction details.**
+<!--TODO explain jargon delcariative/imperative? -->
+
+Among declarative visualization libraries,
+there are still a few different approaches
+to how visualization is created.
+Here,
+we are going to learn about libraries that implement
+a so called "grammar of graphics".
+
+## What is a grammar of graphics?
+
+A graphical grammar is a system for creating visualizations
+by combining basic elements according to specific rules.
+It parallels the grammars of natural and programming languages,
+but applies to visual components.
+
+We are all familiar with the grammatical rules for natural languages^[
+What you typically think of as "a language": English, Mandarin, Hindi, Swedish, etc],
+where they tell us how to combine words into sentences
+to convey particular meanings.
+Programming languages also have a grammatical structure,
+let's see how they work in the following exercise:
+
+:::: {.callout-note}
+
+## Exercise
+
+What do you think the output would be of the following Python code?
+
+
+```python
+1 + 2
+```
+
+As you might have expected,
+the output is `3`
+because Python uses the conventional rules of mathematics
+to add the two numbers together.
+Almost all programming languages follow this rule.
+But what does the `+`-operator do
+if we are trying to add something other than numbers.
+What do you think the output would be of the following code?
+Do you think it differs between programming languages?
+
+```python
+'one' + 'two'
+```
+::: {.callout-tip collapse=true}
+
+### Solution
+
+The grammar of Python defines that the `+`-operator
+should perform concatenation when strings are added together,
+so the returned result would be `"onetwo"`.
+In contrast,
+the grammar of R says that there is no such thing as addition of strings,
+so it would throw an error complaining that non-numeric arguments were passed to the `+`-operator.
+
+:::
+
+::::
+
+As with the grammar of programming languages,
+visualization packages make different choices
+for what happens when different visual elements are added together.
+Key components of a graphical grammar often include:
+
+1. **Canvas**: The background or base of the chart.
+2. **Geometric marks**: Visual elements representing data (e.g. points, bars).
+3. **Visual encoding**: Rules for mapping data to visual properties (e.g. the column `'group'` to `color`).
+
+In the next session,
+we will see how these components can be added together using code.
+
+The following table illustrates the similarities between the grammars of programming, natural language and graphics:
+
+| Component    | Natural Language        | Programming Language    | Graphical Grammar                             |
+|--------------|-------------------------|-------------------------|-----------------------------------------------|
+| Basic Units  | Words                   | Variables, literals     | Marks (points, lines, bars)                   |
+| Syntax Rules | Word order, punctuation | Syntax rules, operators | Rules for combining marks, layers, aesthetics |
+| Semantics    | Word meanings, context  | Expression meanings     | Meanings of visual encodings                  |
+| Composition  | Sentences, paragraphs   | Statements, code blocks | Layers, facets                                |
+| Output       | Text                    | Executable code         | Data visualizations                           |
+| Modifiers    | Adjectives, adverbs     | Attributes, parameters  | Scales, legends, annotations                  |
+
+Understanding these parallels enables users to approach data visualization systematically,
+leveraging a defined set of components and rules.
+
+## Learning to speak with a grammar of graphics
+
+To start creating our own charts,
+we will work with two libraries that implement a grammar of graphics:
+Altair in Python, and ggplot in R.
+These two libraries both offer a powerful and concise visualization grammar
+for quickly building a wide range of statistical charts.
+
+What does these grammars look like?
+In brief,
+we first create a canvas/chart,
+then encode our data variables as different channels in this chart (x, y, color, etc)
+and add geometric marks to represent the data (points, lines, etc).
+You can see an illustration of this in the image below,
+together with how ggplot (top) and Altair (bottom) implements the grammatical components in their respective syntax.
+The exact syntax is slightly different, but the overall structure very much the same.
+
+![](/img/grammar-of-graphics.jpeg)
+<!--TODO Ideally remake this images using `+ aes()` instead -->
+<!--TODO Should I maybe replace it wirh a programmatic version? It is a fun image, not sure if it looks to informal -->
+
+As a result of the predictable structure,
+a grammar of graphics allows you to create an impressive range of visualizations
+from simple to sophisticated.
+A graphical grammar also makes it notably easier
+to change between different types of plots,
+as the code syntax follows a predictable structure
+and only parts of the grammar changes between charts.
+In fact,
+Altair and ggplot have been show to be two of the libraries
+that require the least amount of changes in the code
+between different types of visualizations.
+<!--TODO ref nic paper -->
+
+Let's get coding!
+
+Data in Altair and ggplot is built around ["tidy"](http://vita.had.co.nz/papers/tidy-data.html) dataframes,
+which consists of a set of named data *columns* (also referred to as *variables* or *fields*)
+with one feature each
+and rows with one observation each.
+Here,
+we will load in a small dataset relating to cars
+containing historical trends in automotive design, performance, and efficiency.
+
+:::: {.panel-tabset}
+
+### Altair
+
+```{python}
+#| output: false
+import altair as alt
+import pandas as pd
+
+
+url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
+cars = pd.read_csv(url)
+cars
+```
+
+```{python}
+#| echo: false
+show_df(cars)
+```
+
+::: {.column-margin}
+
+**Stellar charts**
+
+Altair is the name of a star in the same constellation as the star Vega, which is also the name of the Javascript library that Altair is built upon.
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
+
+:::
+
+### ggplot
+
+```{r}
+#| output: false
+library(tidyverse)
+
+
+url <- 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
+cars <- read_csv(url)
+cars
+```
+
+```{python}
+#| echo: false
+show_df(ro.r['cars'])
+```
+
+::: {.column-margin}
+
+**Grammatically correct**
+
+The "gg" in ggplot is a reference to the book "Grammar of Graphics",
+which inspired the creation of the ggplot library.
+
+![](https://pictures.abebooks.com/isbn/9780387987743-us.jpg)
+
+:::
+
+::::
+
+Now let's create our first charts!
+
+::: {.panel-tabset}
+
+### Altair
+
+The fundamental object in Altair is the `Chart`,
+which takes a data frame as a single argument `alt.Chart(cars)`.
+With a chart object in hand,
+we can now specify how we would like the data to be visualized.
+We first indicate what kind of geometric *mark* we want to use to represent the data.
+We can set the `mark` attribute of the chart object using any the `Chart.mark_*` methods.
+For example, we can show the data as points using `mark_point()`:
+
+```{python}
+alt.Chart(cars).mark_point()
+```
+
+Although it looks like there is only one point in the chart,
+there is actually one point per row in the dataset,
+all plotted on top of each other.
+To visually separate the points,
+we can map various *encoding channels*,
+(or just *encodings* or *channels* for short),
+to columns in the dataset.
+For example,
+we could *encode* the colum `Miles_per_Gallon`
+(how many miles a car can travel on each gallon of fuel)
+of the data using the `x` channel,
+which represents the x-axis position of the points.
+To specify this,
+we use the `encode` method:
+
+```{python}
+alt.Chart(cars).mark_point().encode(x='Miles_per_Gallon')
+```
+
+For all Altair charts,
+you can see that there is a button with three dots
+to the top right.
+If you click this you will have options to save the chart
+and to open the underlying Vega-Lite code.
+We will see how to save charts programmatically in a later chapter.
+
+### ggplot
+
+In ggplot2,
+we begin by creating a canvas linked with our dataset with `ggplot(cars)`
+and encode the *aesthetics* of the chart with the `aes()` function,
+which maps a column in the data frame to a dimension in the chart.
+
+```{r}
+ggplot(cars) + aes(x = Miles_per_Gallon)
+```
+
+To visualize the data,
+we need to tell ggplot which geometric mark to use for representing the data.
+Let's use points via the `geom_point()` function.
+You don't see any output here
+because `geom_point()` requires both
+an x and y aesthetic;
+we will see how to add these in the next code block
+(in fact this expression would raise an error if evaluated,
+so here we just show the code).
+
+```r
+ggplot(cars) + aes(x = Miles_per_Gallon) + geom_point()
+```
+Note that instead of `ggplot() + aes()`
+you will often see `ggplot(aes())`.
+These are functionally the same,
+but putting `aes()` outside `ggplot()`
+gives some additional flexibility as we will see later.
+
+:::
+
+::: {.column-margin}
+
+**To quote or not to quote**
+
+As you can see,
+in Altair you need to use quotes to refer to the column names
+while in ggplot you don't.
+Why is that?
+This is because Python is a stricter language than R,
+and requires that packages follow its fundamental rules
+and we can't reference a column as an unquoted variable name.
+In R,
+a package is more free to redefine the rules
+and essentially create a domain specific syntax for its purpose.
+This has both pros and cons:
+it is convenient to not have to type the quotes
+and to get tab completion for column names,
+but it is inconvenient to write functions and program with these constructs
+[as detailed in the dplyr documentation](https://dplyr.tidyverse.org/articles/programming.html).
+
+:::
+
+Though we've now separated the data by one attribute,
+we still have multiple points overlapping within each category.
+Let's further separate these
+by spreading the data out over the `y`-axis.
+With the addition of a second dimension in our chart,
+we're ready to ask our first question about the data.
+Let's say we're interested in
+how a car's fuel efficiency is related to its engine power.
+To answer this question,
+we would want to explore the relationship
+between the columns `Miles_per_Gallon` and `Horsepower`
+(how powerful the engine is),
+which we can do by assigning them to the x and y dimension,
+respectively.
+
+::: {.panel-tabset}
+
+## Altair
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x='Miles_per_Gallon',
+    y='Horsepower'
+)
+```
+
+## ggplot
+
+```{r}
+ggplot(cars) +
+    aes(
+        x = Miles_per_Gallon,
+        y = Horsepower
+    ) +
+    geom_point()
+```
+<!--TODO unsure what the best syntax is here, many just write the aes on one row, which is less clear -->
+
+:::
+
+::: {.column-margin}
+
+**Styling differences**
+
+The default style is quite different between the libraries.
+Both have advantages,
+and they are easy to customize to look however you want,
+which we will also get into later.
+It's worth noting
+that ggplot does not including the origin of the plot (x=0, y=0) by default,
+but Altair does in many cases.
+Both these defaults are sensible in different context,
+which we will learn more about in later chapters.
+<br>
+<br>
+You can also see that ggplot will print a warning
+when there are some observations that can be plotted
+due to missing values in one of the two columns.
+Altair also avoids plotting these observations,
+but is less verbose and does not print a warning.
+<br>
+<br>
+Finally, note that `=` for parameter assignment
+is surrounded by spaces in R but not in Python.
+
+:::
+
+This type of chart is often called a "scatter plot".
+Characteristic for a scatter plot
+is that there is one graphical element (often a point)
+per observations in the data
+and one column each on the x and y axis.
+We will learn more about for which purposes it is effective
+later in the book.
+
+:::: {.callout-note title='Exercise'}
+
+Study the chart above,
+what can you say about the relationship
+between Horsepower and Miles_per_Gallon?
+If you choose to use statistical terms such as talking
+about the correlation between the two variables,
+try to express yourself in common English
+as if you were explaining what the chart means
+to someone of the general public.
+Finally,
+it's always good to ask yourself
+if your interpretation of the chart makes sense,
+given your knowledge about how the world works.
+
+::: {.callout-tip title='Solution' collapse=true}
+
+From the chart,
+we can see that `Horsepower` and `Miles_per_Gallon`
+are negatively correlated.
+This means that cars with more powerful engines (higher Horsepower),
+have lower fuel efficiency (lower Miles_per_Gallon).
+This makes sense as more powerful engines often consume more gas
+than less powerful ones.
+Note that we can't make claims about a causal relationship from the chart alone,
+but in this case the observed relationship in the chart
+supports our mechanistic understanding of the world.
+
+:::
+
+::::
+
+Our conclusion above makes sense for the data we showed in chart.
+But remember that there are other variables in our dataframe,
+let's show it again as a reminder.
+
+```{python}
+#| echo: false
+
+show_df(cars)
+```
+
+What if one of the other columns also influence a car's fuel efficiency?
+For example, it seems likely that the weight of the car impacts fuel efficiency,
+since more force is needed to propel a larger mass.
+To explore this variable,
+we can add more dimensions to this chart,
+e.g. specifying which column we want to color the points by.
+
+::: {.panel-tabset}
+
+### Altair
+
+When using the `color` encoding channel,
+Altair will automatically figure out an appropriate colorscale to use.
+The `Weight_in_lbs` column contains continuous numerical data
+so a continuous gradient will be used for the colorscale.
+The largest value in the `Weight_in_lbs` column
+is represented with a dark color
+since this has the highest contrast to the light background of the chart.
+
+```{python}
+alt.Chart(cars).mark_point().encode(
+    x='Miles_per_Gallon',
+    y='Horsepower',
+    color='Weight_in_lbs'
+)
+```
+
+### ggplot
+
+When using the `color` encoding channel,
+ggplot will automatically figure out which colorscale to use.
+The `Weight_in_lbs` column contains continuous numerical data
+so a continuous gradient will be used for the colorscale.
+The largest value in the `Weight_in_lbs` column
+is represented with a light color
+since this has the highest contrast to the dark background of the chart.
+
+```{r}
+ggplot(cars) +
+    aes(
+        x = Miles_per_Gallon,
+        y = Horsepower,
+        color = Weight_in_lbs
+    ) +
+    geom_point()
+```
+
+:::
+
+::: {.column-margin}
+
+**Making space**
+
+Notice the difference in how the legend is added in the two libraries.
+In Altair the overall width of the figure was increased
+to keep the dimensions of the chart area the same,
+whereas in ggplot the width of the figure is kept constant
+so the chart area must narrow to accommodate the legend.
+In general,
+we don't want the chart area to shrink just because we are adding a legend,
+so here we would need to manually increase the width of the ggplot chart,
+which we will learn about in a future chapter.
+<!--TODO should we learn this here? depends on how many figs will need it before it is introduced in a chaprter -->
+:::
+
+:::: {.callout-note title='Exercise'}
+
+How does a car's weight relate to its fuel efficiency?
+
+::: {.callout-tip title='Solution' collapse=true}
+
+We can see that weight is correlated positively with `Horsepower`
+and negatively with `Miles_per_Gallon`.
+This aligns with our knowledge about the world:
+heavy cars require bigger engines
+and more fuel to propel them forward.
+However,
+remember that we can't say anything about causation from the chart alone,
+we can just note the correlation
+and that is what we would expect
+based on our knowledge about physics of moving objects.
+
+:::
+
+::::
+
+## Deep dive
+
+<details><summary>Click to expand the optional deep dive or proceed to the exercises.</summary>
+
+### The R and Python visualization ecosystems
+
+There are a wide variety of high-level and low-level tools for visualizing data in R and Python.
+While we have already outline the advantages of the libraries we chose,
+it can be helpful to be aware of which others are avaialble 
+since you are likely to encounter some of them in the wild.
+In this diagram
+you can see an overview of how which other libraries exist
+and how they are connected.
+
+```{mermaid}
+%%{init: {'flowchart': {'width': 800}}}%%
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+
+    %% R ecosystem
+    base[base]:::lowLevel
+    grid[grid]:::lowLevel
+    lattice[lattice]:::highLevel
+    ggplot[ggplot]:::highLevel
+    ggiraph[ggiraph]:::highLevel
+    ggplotly[ggplotly]:::highLevel
+    plotly_r[plotly]:::lowLevel
+    patchwork[patchwork/cowplot]:::alignmentTool
+    htmlwidgets[htmlwidgets]:::javascript
+    altair_r[Altair]:::highLevel
+
+    %% JavaScript-related
+    js[JavaScript]:::javascript
+    d3[D3]:::javascript
+    vega[Vega]:::javascript
+    vegalite[Vega-Lite]:::javascript
+
+    %% Python ecosystem
+    matplotlib[Matplotlib]:::lowLevel
+    plotnine[Plotnine]:::highLevel
+    pandas[Pandas]:::highLevel
+    seaborn[Seaborn]:::highLevel
+    holoviz[HoloViz]:::highLevel
+    bokeh[Bokeh]:::lowLevel
+    plotly_py[Plotly]:::lowLevel
+    plotly_express[Plotly Express]:::highLevel
+    altair[Altair]:::highLevel
+
+    %% Subgraph for R ecosystem
+    subgraph R_Ecosystem[R Ecosystem]
+        base --> grid
+        grid --> lattice & ggplot
+        lattice & ggplot --> patchwork
+        ggplot -.-> ggiraph & ggplotly
+        ggplotly --> plotly_r
+        htmlwidgets --> ggiraph & plotly_r & altair_r
+    end
+
+    %% Subgraph for JavaScript ecosystem
+    subgraph JS_Ecosystem[JavaScript Ecosystem]
+        js --> d3
+        d3 --> vega
+        vega --> vegalite
+    end
+
+    %% Subgraph for Python ecosystem
+    subgraph Python_Ecosystem[Python Ecosystem]
+        matplotlib --> plotnine & pandas & seaborn & holoviz
+        holoviz --> bokeh
+        plotly_py --> plotly_express
+        vegalite --> altair & altair_r
+    end
+
+    %% Connections between ecosystems
+    js --> htmlwidgets & bokeh & plotly_py
+```
+
+```{mermaid}
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+    %% Legend items
+    AT[Alignment Tool]:::alignmentTool
+    HL[High Level]:::highLevel
+    LL[Low Level]:::lowLevel
+    JS[JavaScript]:::javascript
+```
+
+```{=html}
+<div class="song-container">
+  <div class="song-details">
+    <div class="song-icon">🎵</div>
+    <div class="song-info">
+      <div class="song-title">Data Viz Ecosystem</div>
+      <div class="song-artist">Generated with artificial intelligence</div>
+    </div>
+  </div>
+  <div class="audio-player">
+    <audio controls>
+    <source src="/audio/data-viz-ecosystem.mp3" type="audio/mpeg"></source>
+    Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
+```
+
+</summary>
+
+## Exercise mission
+
+With a commitment to sustainability and a vision for a greener future,
+Viridia is taking proactive steps to investigate and mitigate its environmental impact.
+One significant area of focus is the emissions associated with food consumption and production.
+**Minister Reed**,
+head of the environment department,
+has called on you to step up to help
+and tasked with investigating emissions in the city of Viridia. 
+
+
+```{=html}
+<br>
+<div class="ministry-id-card">
+    <div class="accent-line"></div>
+    <div class="left-column">
+        <div class="logo">Ministry of Environment</div>
+        <div class="name">Minister Reed</div>
+        <div class="info">
+            <div class="info-item">
+                <span class="label">Position</span>
+                <span class="value">Head of Environment</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Department</span>
+                <span class="value">Urban Food Systems</span>
+            </div>
+            <div class="info-item">
+                <span class="label">ID Number</span>
+                <span class="value">EI-2024-0042</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Clearance</span>
+                <span class="value">Level 5</span>
+            </div>
+        </div>
+        <div class="footer">Protecting Our Future • Est. 2024</div>
+    </div>
+    <div class="right-column">
+        <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar">
+    </div>
+</div>
+<br>
+```
+
+To start with your investigation,
+you'll need to visualize the emissions data effectively.
+This will help unlock insights crucial for the Ministry of Environment.
+
+```{python}
+#| output: false
+
+food_emission = pd.read_csv("data/aggregated__food_data.csv")
+food_emission
+```
+
+```{python}
+#| echo: false
+
+show_df(food_emission)
+```
+
+<img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
+
+### Exercise 1: Planning your analysis
+
+Before you start, your boss **Minister Reed** has a few questions for you...
+
+```{ojs}
+//| echo: false
+
+{
+
+const apiUrl = "https://openaiproxy-621feba224c9.herokuapp.com/api/proxy";
+
+const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo.";
+
+const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?";
+
+let messageCount = 0;
+
+// Initialize messages array with system instructions and initial message
+let messages = [
+  { role: "system", content: instructions },
+  { role: "assistant", content: first_message }
+];
+
+async function sendOpenAIRequest(prompt) {
+  try {
+    // Add user message to conversation history
+    messages.push({ role: "user", content: prompt });
+
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: messages,
+        temperature: 1,
+        max_tokens: 100,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const assistantResponse = data.choices[0].message.content;
+
+    // Add assistant's response to conversation history
+    messages.push({ role: "assistant", content: assistantResponse });
+
+    return assistantResponse;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+}
+
+const container = html`<div id="chat-container">
+  <div class="highlight-line"></div>
+  <div id="chat-display"></div>
+  <textarea id="user-input" placeholder="Enter your message here"></textarea>
+  <button id="submit-button">Send Message</button>
+</div>`;
+
+const chatDisplay = container.querySelector('#chat-display');
+const userInput = container.querySelector('#user-input');
+const submitButton = container.querySelector('#submit-button');
+
+function createChatMessageHTML(content, isBoss) {
+  return html`
+    <div class="chat-message ${isBoss ? 'boss-message' : ''}">
+      <div class="chat-avatar" style="background-image: url('${isBoss ? '/img/environ_minister.jpg' : ''}')"></div>
+      <div class="chat-message-content">
+        <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'You'}</div>
+        <div>${content}</div>
+      </div>
+    </div>
+  `;
+}
+
+// Initial message
+chatDisplay.appendChild(createChatMessageHTML(first_message, true));
+
+submitButton.onclick = async () => {
+  const prompt = userInput.value;
+  if (prompt.trim() === '') return;
+
+  messageCount++;
+
+  // Display user's message
+  chatDisplay.appendChild(createChatMessageHTML(prompt, false));
+  userInput.value = '';
+  chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
+  try {
+    const response = await sendOpenAIRequest(prompt);
+    chatDisplay.appendChild(createChatMessageHTML(response, true));
+  } catch (error) {
+    chatDisplay.appendChild(createChatMessageHTML("Error: " + error.message, true));
+  }
+
+  // Scroll to the bottom of the chat display
+  chatDisplay.scrollTop = chatDisplay.scrollHeight;
+};
+
+chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
+return html`${container}`;
+}
+```
+
+
+### Exercise 2: Visualizing the data
+
+It's time to put the Grammar of Graphics to good use.
+Create a scatter plot of the food supply and emissions data by following these steps:
+
+1. Instantiate the chart from the `food_emission` dataframe
+2. Use the point mark to create a point for each observation in the data.
+3. Encode `Total Food Supply (kg/capita/yr)` in the x channel
+   and `Emissions (Kg CO2 / kg product)` in the y channel.
+
+
+::: {.callout-tip icon="false" collapse="true"}
+
+# Solution
+
+```{python}
+
+alt.Chart(food_emission).mark_point().encode(
+    x='Total Food Supply (kg/capita/yr)',
+    y='Emissions (Kg CO2 / kg product)',
+    tooltip='Food Item'
+)
+```
+
+:::
+
+### Exercise 3: Inspecting individual marks
+
+These are striking results! There are some clear clusters and outliers in the data. Add a tooltip to your chart to investigate which foods these are.
+
+### Exercise 4: Reporting your results
+
+```{ojs}
+//| echo: false
+{
+  const apiUrl = "https://openaiproxy-621feba224c9.herokuapp.com/api/proxy";
+  const instructions = "You are Minister Reed of the city of Viridia, a sharp witted, impatient but supportive environmental minister. You are talking with your colleague Zephyr who has been tasked with creating an Emissions Report. Don't give solution in first message, but you must provide it after 3 messages and end the conversation definitively when you do. The report found shocking findings: beef Emissions Kg CO2 / kg product are incredibly high (around 60) compared to other food and supply is also high for it. Another is milk, which has Total Food Supply of around 190 (kg/capita/yr) and moderate emissions. The exciting part is that many vegetables etc have extremely low emissions. You see HUGE potential in reducing beef consumption in Viridia given the climate disaster)";
+  const first_message = "Zephyr, I've been waiting! What patterns did you see in the food emissions data?";
+  let messageCount = 0;
+
+  let messages = [
+    { role: "system", content: instructions },
+    { role: "assistant", content: first_message }
+  ];
+
+  async function sendOpenAIRequest(prompt) {
+    try {
+      messages.push({ role: "user", content: prompt });
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: "gpt-4o",
+          messages: messages,
+          temperature: 1,
+          max_tokens: 100,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const assistantResponse = data.choices[0].message.content;
+      messages.push({ role: "assistant", content: assistantResponse });
+
+      return assistantResponse;
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
+    }
+  }
+
+  const container = html`<div id="chat-container">
+    <div class="highlight-line"></div>
+    <div id="chat-display"></div>
+    <textarea id="user-input" placeholder="Enter your message here"></textarea>
+    <button id="submit-button">Send Message</button>
+  </div>`;
+
+  const chatDisplay = container.querySelector('#chat-display');
+  const userInput = container.querySelector('#user-input');
+  const submitButton = container.querySelector('#submit-button');
+
+  function createChatMessageHTML(content, isBoss) {
+    return html`
+      <div class="chat-message ${isBoss ? 'boss-message' : ''}">
+        <div class="chat-avatar" style="background-image: url('${isBoss ? '/img/environ_minister.jpg' : '/img/zephyr.jpg'}')"></div>
+        <div class="chat-message-content">
+          <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'Zephyr Eco-Luna'}</div>
+          <div>${content}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Initial message
+  chatDisplay.appendChild(createChatMessageHTML(first_message, true));
+
+  submitButton.onclick = async () => {
+    const prompt = userInput.value;
+    if (prompt.trim() === '') return;
+    messageCount++;
+    chatDisplay.appendChild(createChatMessageHTML(prompt, false));
+    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    userInput.value = '';
+    try {
+      const response = await sendOpenAIRequest(prompt);
+      chatDisplay.appendChild(createChatMessageHTML(response, true));
+    } catch (error) {
+      chatDisplay.appendChild(createChatMessageHTML("Error: " + error.message, true));
+    }
+    // Scroll to the bottom of the chat display
+    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+  };
+
+  chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
+  return html`${container}`;
+}
+```
