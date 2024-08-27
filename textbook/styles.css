@@ -276,3 +276,9 @@
 h4 {
   margin-bottom: 1rem;
 }
+
+.figure-img {
+  max-width: 100%;
+  height: auto !important;
+}
+

@@ -868,6 +868,7 @@ you can see an overview of how which other libraries exist
 and how they are connected.
 
 ```{mermaid}
+%%| mermaid-format: png
 %%{init: {'flowchart': {'width': 800}}}%%
 graph TD
     %% Color definitions
@@ -935,6 +936,7 @@ graph TD
 ```
 
 ```{mermaid}
+%%| mermaid-format: png
 graph TD
     %% Color definitions
     classDef alignmentTool fill:#FF69B4,color:#000
@@ -966,7 +968,7 @@ graph TD
 </div>
 ```
 
-</summary>
+</details>
 
 ## Exercise mission
 
