@@ -1038,9 +1038,17 @@ show_df(food_emission)
 
 Before you start, your boss **Minister Reed** has a few questions for you...
 
+
+```{r}
+#| echo: false
+api = "{{< env URL >}}"
+ojs_define(apiUrl = api)
+```
+
 ```{ojs}
 //| echo: false
 import {createChatInterface} from "./chat.js"
+
 {
 
 const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo.";
@@ -1048,6 +1056,7 @@ const instructions = "You are Minister Reed of the city of Viridia, a sharp-witt
 const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?";
 
 const chatInterface = createChatInterface({
+  apiUrl,
   instructions: instructions,
   firstMessage: first_message,
   bossImage: '/img/environ_minister.jpg',
@@ -1102,6 +1111,7 @@ These are striking results! There are some clear clusters and outliers in the da
   const first_message = "Zephyr, I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?";
 
   const chatInterface = createChatInterface({
+    apiUrl,
     instructions: instructions,
     firstMessage: first_message,
     bossImage: '/img/environ_minister.jpg',

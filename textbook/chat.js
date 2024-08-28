@@ -1,4 +1,5 @@
 export function createChatInterface({
+  apiUrl,
   instructions,
   firstMessage,
   bossImage = '/img/environ_minister.jpg',
@@ -15,8 +16,6 @@ export function createChatInterface({
 
     try {
       messages.push({ role: "user", content: prompt });
-
-      const apiUrl = "https://openaiproxy-621feba224c9.herokuapp.com/api/proxy"
 
       const response = await fetch(apiUrl, {
         method: 'POST',
