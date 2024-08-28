@@ -1040,113 +1040,25 @@ Before you start, your boss **Minister Reed** has a few questions for you...
 
 ```{ojs}
 //| echo: false
-
+import {createChatInterface} from "./chat.js"
 {
-
-const apiUrl = "https://openaiproxy-621feba224c9.herokuapp.com/api/proxy";
 
 const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo.";
 
 const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?";
 
-let messageCount = 0;
+const chatInterface = createChatInterface({
+  instructions: instructions,
+  firstMessage: first_message,
+  bossImage: '/img/environ_minister.jpg',
+  bossName: 'Minister Reed',    
+  maxTokens: 100
+});
 
-// Initialize messages array with system instructions and initial message
-let messages = [
-  { role: "system", content: instructions },
-  { role: "assistant", content: first_message }
-];
+return html`${chatInterface}`;
 
-async function sendOpenAIRequest(prompt) {
-  try {
-    // Add user message to conversation history
-    messages.push({ role: "user", content: prompt });
-
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        messages: messages,
-        temperature: 1,
-        max_tokens: 100,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const assistantResponse = data.choices[0].message.content;
-
-    // Add assistant's response to conversation history
-    messages.push({ role: "assistant", content: assistantResponse });
-
-    return assistantResponse;
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
-  }
 }
 
-const container = html`<div id="chat-container">
-  <div class="highlight-line"></div>
-  <div id="chat-display"></div>
-  <textarea id="user-input" placeholder="Enter your message here"></textarea>
-  <button id="submit-button">Send Message</button>
-</div>`;
-
-const chatDisplay = container.querySelector('#chat-display');
-const userInput = container.querySelector('#user-input');
-const submitButton = container.querySelector('#submit-button');
-
-function createChatMessageHTML(content, isBoss) {
-  return html`
-    <div class="chat-message ${isBoss ? 'boss-message' : 'user-message'}">
-      ${isBoss ? html`<div class="chat-avatar" style="background-image: url('/img/environ_minister.jpg')"></div>` : ''}
-      <div class="chat-message-content">
-        <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'You'}</div>
-        <div>${content}</div>
-      </div>
-    </div>
-  `;
-}
-
-// Initial message
-chatDisplay.appendChild(createChatMessageHTML(first_message, true));
-
-submitButton.onclick = async () => {
-  const prompt = userInput.value;
-  if (prompt.trim() === '') return;
-
-  messageCount++;
-
-  // Display user's message
-  chatDisplay.appendChild(createChatMessageHTML(prompt, false));
-  userInput.value = '';
-  chatDisplay.scrollTop = chatDisplay.scrollHeight;
-
-  try {
-    const response = await sendOpenAIRequest(prompt);
-    chatDisplay.appendChild(createChatMessageHTML(response, true));
-  } catch (error) {
-    chatDisplay.appendChild(createChatMessageHTML("Error: " + error.message, true));
-  }
-
-  // Scroll to the bottom of the chat display
-  chatDisplay.scrollTop = chatDisplay.scrollHeight;
-};
-
-chatDisplay.scrollTop = chatDisplay.scrollHeight;
-
-return html`${container}`;
-}
 ```
 
 
@@ -1184,97 +1096,19 @@ These are striking results! There are some clear clusters and outliers in the da
 
 ```{ojs}
 //| echo: false
-{
-  const apiUrl = "https://openaiproxy-621feba224c9.herokuapp.com/api/proxy";
-  const instructions = "You are Minister Reed of the city of Viridia, a sharp witted, impatient but supportive environmental minister. You are talking with your colleague Zephyr who has been tasked with creating an Emissions Report. Don't give solution in first message, but you must provide it after 3 messages and end the conversation definitively when you do. The report found shocking findings: beef Emissions Kg CO2 / kg product are incredibly high (around 60) compared to other food and supply is also high for it. Another is milk, which has Total Food Supply of around 190 (kg/capita/yr) and moderate emissions. The exciting part is that many vegetables etc have extremely low emissions. You see HUGE potential in reducing beef consumption in Viridia given the climate disaster)";
-  const first_message = "Zephyr, I've been waiting! What patterns did you see in the food emissions data?";
-  let messageCount = 0;
+{  
+  const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. You are discussing a recent Emissions Report with your colleague Zephyr. The report reveals surprising findings: beef has an exceptionally high emissions rate (around 60 Kg CO2/kg product) compared to other foods, and its supply is also high. Milk has a high supply (190 kg/capita/yr) but moderate emissions. Many vegetables have very low emissions. You see great potential in reducing beef consumption in Viridia to combat climate change. Guide Zephyr to this conclusion. Do not give the solution in the first message; lead Zephyr to the answer over the course of three messages. Once Zephyr reaches the correct conclusion, end the conversation.";
 
-  let messages = [
-    { role: "system", content: instructions },
-    { role: "assistant", content: first_message }
-  ];
+  const first_message = "Zephyr, I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?";
 
-  async function sendOpenAIRequest(prompt) {
-    try {
-      messages.push({ role: "user", content: prompt });
+  const chatInterface = createChatInterface({
+    instructions: instructions,
+    firstMessage: first_message,
+    bossImage: '/img/environ_minister.jpg',
+    bossName: 'Minister Reed',    
+    maxTokens: 100
+  });
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: "gpt-4o",
-          messages: messages,
-          temperature: 1,
-          max_tokens: 100,
-          top_p: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const assistantResponse = data.choices[0].message.content;
-      messages.push({ role: "assistant", content: assistantResponse });
-
-      return assistantResponse;
-    } catch (error) {
-      console.error("Error:", error);
-      throw error;
-    }
-  }
-
-  const container = html`<div id="chat-container">
-    <div class="highlight-line"></div>
-    <div id="chat-display"></div>
-    <textarea id="user-input" placeholder="Enter your message here"></textarea>
-    <button id="submit-button">Send Message</button>
-  </div>`;
-
-  const chatDisplay = container.querySelector('#chat-display');
-  const userInput = container.querySelector('#user-input');
-  const submitButton = container.querySelector('#submit-button');
-
-  function createChatMessageHTML(content, isBoss) {
-    return html`
-      <div class="chat-message ${isBoss ? 'boss-message' : 'user-message'}">
-      ${isBoss ? html`<div class="chat-avatar" style="background-image: url('/img/environ_minister.jpg')"></div>` : ''}
-      <div class="chat-message-content">
-        <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'You'}</div>
-        <div>${content}</div>
-      </div>
-    </div>
-    `;
-  }
-
-  // Initial message
-  chatDisplay.appendChild(createChatMessageHTML(first_message, true));
-
-  submitButton.onclick = async () => {
-    const prompt = userInput.value;
-    if (prompt.trim() === '') return;
-    messageCount++;
-    chatDisplay.appendChild(createChatMessageHTML(prompt, false));
-    chatDisplay.scrollTop = chatDisplay.scrollHeight;
-    userInput.value = '';
-    try {
-      const response = await sendOpenAIRequest(prompt);
-      chatDisplay.appendChild(createChatMessageHTML(response, true));
-    } catch (error) {
-      chatDisplay.appendChild(createChatMessageHTML("Error: " + error.message, true));
-    }
-    // Scroll to the bottom of the chat display
-    chatDisplay.scrollTop = chatDisplay.scrollHeight;
-  };
-
-  chatDisplay.scrollTop = chatDisplay.scrollHeight;
-
-  return html`${container}`;
+  return html`${chatInterface}`;
 }
 ```
