@@ -1108,8 +1108,8 @@ const submitButton = container.querySelector('#submit-button');
 
 function createChatMessageHTML(content, isBoss) {
   return html`
-    <div class="chat-message ${isBoss ? 'boss-message' : ''}">
-      <div class="chat-avatar" style="background-image: url('${isBoss ? '/img/environ_minister.jpg' : ''}')"></div>
+    <div class="chat-message ${isBoss ? 'boss-message' : 'user-message'}">
+      ${isBoss ? html`<div class="chat-avatar" style="background-image: url('/img/environ_minister.jpg')"></div>` : ''}
       <div class="chat-message-content">
         <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'You'}</div>
         <div>${content}</div>
@@ -1243,13 +1243,13 @@ These are striking results! There are some clear clusters and outliers in the da
 
   function createChatMessageHTML(content, isBoss) {
     return html`
-      <div class="chat-message ${isBoss ? 'boss-message' : ''}">
-        <div class="chat-avatar" style="background-image: url('${isBoss ? '/img/environ_minister.jpg' : '/img/zephyr.jpg'}')"></div>
-        <div class="chat-message-content">
-          <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'Zephyr Eco-Luna'}</div>
-          <div>${content}</div>
-        </div>
+      <div class="chat-message ${isBoss ? 'boss-message' : 'user-message'}">
+      ${isBoss ? html`<div class="chat-avatar" style="background-image: url('/img/environ_minister.jpg')"></div>` : ''}
+      <div class="chat-message-content">
+        <div class="chat-sender-name">${isBoss ? 'Minister Reed' : 'You'}</div>
+        <div>${content}</div>
       </div>
+    </div>
     `;
   }
 
