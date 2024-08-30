@@ -232,6 +232,12 @@
 .boss-message .chat-message-content {
   background-color: #f0f0f0;
 }
+
+.user-message {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .chat-sender-name {
   font-weight: 600;
   margin-bottom: 8px;
@@ -276,3 +282,9 @@
 h4 {
   margin-bottom: 1rem;
 }
+
+.figure-img {
+  max-width: 100%;
+  height: auto !important;
+}
+
