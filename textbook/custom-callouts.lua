@@ -1,9 +1,14 @@
+local exercise_counter = 0  -- Global counter for exercises
+
 function Div(div)
   if div.classes:includes("ex-prompt") then
+    exercise_counter = exercise_counter + 1
+    local numbered_title = "Exercise " .. exercise_counter
+
     -- return a callout instead of the Div
     return quarto.Callout({
       type = "ex-prompt",
-      title = "Exercise",
+      title = numbered_title,
       collapse = false,
       icon = false,
       content = { div },
