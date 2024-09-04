@@ -1,3 +1,6 @@
+/*-- Importing fa icons --*/
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
+
 .boxed {
     background-color: #ffffff;
     border: 1px solid #ddd;
@@ -286,5 +289,46 @@ h4 {
 .figure-img {
   max-width: 100%;
   height: auto !important;
+}
+
+/* Callout styling */
+
+.callout-ex-prompt {
+  border-left-color: #2780e3 !important;
+}
+.callout-ex-prompt > .callout-header {
+  background-color: #ecf4fc !important;
+}
+.callout-ex-prompt > .callout-header::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f303";
+  margin-right: 5px;
+  font-size: 13px;
+}
+
+.callout-ex-hint {
+  border-left-color: #f0ad4e !important;
+}
+.callout-ex-hint > .callout-header {
+  background-color: #fef8ef !important;
+}
+.callout-ex-hint > .callout-header::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f059";
+  margin-right: 5px;
+  font-size: 13px;
+}
+
+.callout-ex-solution {
+  border-left-color: #ffe79a !important;
+}
+.callout-ex-solution > .callout-header {
+  background-color: #fff9e7 !important;
+}
+.callout-ex-solution > .callout-header::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f058";
+  margin-right: 5px;
+  font-size: 13px;
 }
 
