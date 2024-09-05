@@ -55,6 +55,7 @@ jobs:
         with:
           environment-file: environment.yaml
           init-shell: bash
+          cache-environment: true
       - run: quarto render textbook
         shell: bash -el {0}
       # - uses: quarto-dev/quarto-actions/setup@v2
