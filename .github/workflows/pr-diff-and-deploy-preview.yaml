@@ -62,7 +62,7 @@ jobs:
         with:
           path: textbook
 
-      # Push the PR version of the website to the gh-pages branch
+      # Push the PR version of the website to the gh-pages branch 
       # the PR version will be stored in a folder named pull### (where ### is the PR number)
       # WEBSITE_FOLDER below should be replaced with the folder in which the newly built website was stored
       - run: tree
