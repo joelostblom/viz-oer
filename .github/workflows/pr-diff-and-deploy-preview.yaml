@@ -54,7 +54,9 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: environment.yaml
+          init-shell: bash
       - run: quarto render textbook
+        shell: bash -el {0}
       # - uses: quarto-dev/quarto-actions/setup@v2
       # - uses: quarto-dev/quarto-actions/render@v2
       #   with:
