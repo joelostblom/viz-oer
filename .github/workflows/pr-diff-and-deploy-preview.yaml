@@ -72,12 +72,12 @@ jobs:
       # WEBSITE_FOLDER below should be replaced with the folder in which the newly built website was stored
       - name: Push the PR version of the website to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3.8.0
-        run: ls -al
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _book
           keep_files: true
           destination_dir: pull${{ github.event.number }}
+      - run: ls -al
 
       # Now that the website was built and pushed to gh-pages, checkout the gh-pages branch
       - name: Checkout the gh-pages branch
