@@ -90,7 +90,7 @@ jobs:
           pip install --upgrade pip
           pip install website_diff
           ls -la
-          website_diff --old _book --new pull${{ github.event.number }} --diff diff${{ github.event.number }}
+          website_diff --old . --new pull${{ github.event.number }} --diff diff${{ github.event.number }}
 
       # Push the diff version of the website to the gh-pages branch
       # the diff version will be stored in a folder named diff### (where ### is the PR number)
@@ -110,7 +110,7 @@ jobs:
         with:
           message: |
               Hello! I've built a preview of your PR so that you can compare it to the current `main` branch.
-              * PR deploy preview available [here](https://YOUR_SITE.com/pull${{ github.event.number }}/index.html)
-              * PR diff with `main` available [here](https://YOUR_SITE.com/diff${{ github.event.number }}/index.html)
-              * Current `main` deploy preview available [here](https://YOUR_SITE.com/OLD_SITE_FOLDER/index.html)
-              * Public production build available [here](https://YOUR_SITE.com)
+              * PR deploy preview available [here](https://joelostblom.github.io/viz-oer/pull${{ github.event.number }}/index.html)
+              * PR diff with `main` available [here](https://joelostblom.github.io/viz-oer/diff${{ github.event.number }}/index.html)
+              * Current `main` deploy preview available [here](https://joelostblom.github.io/viz-oer/index.html)
+              * Public production build available [here](https://joelostblom.github.io/viz-oer/)
