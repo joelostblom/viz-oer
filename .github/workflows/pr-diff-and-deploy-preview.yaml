@@ -45,7 +45,7 @@ jobs:
 
       # Build the PR version of the website
       # YOUR_BUILD_CODE below should be replaced with code that builds your website
-      - name: Build the PR version of the website
+      # - name: Build the PR version of the website
       - uses: conda-incubator/setup-miniconda@v3
         with:
           environment-file: environment.yaml
