@@ -29,7 +29,7 @@ jobs:
       # Build the PR version of the website
       # YOUR_BUILD_CODE below should be replaced with code that builds your website
       - name: Build the PR version of the website
-        run: quarto render textbook
+        uses: quarto-dev/quarto-actions/setup@v2
 
       # Push the PR version of the website to the gh-pages branch
       # the PR version will be stored in a folder named pull### (where ### is the PR number)
