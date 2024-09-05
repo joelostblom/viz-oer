@@ -74,7 +74,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: textbook/_book
+          publish_dir: ./
           keep_files: true
           destination_dir: pull${{ github.event.number }}
       - run: ls -al
