@@ -1,0 +1,32 @@
+name: 'viz-oer'
+channels:
+    - conda-forge
+    - r
+    - defaults
+dependencies:
+    - python=3.12.*
+    - pip
+    - ipykernel
+    - altair-all
+    - vega-datasets
+    - scipy
+    - matplotlib
+    - seaborn
+    - rpy2
+    - quarto
+    - r-base>=4.1
+    - r-essentials
+    - r-devtools
+    - r-gert
+    - r-usethis
+    - r-testthat
+    - r-startup
+    - r-rmarkdown
+    - r-stringi
+    - r-tidyverse
+    - r-hmisc
+    - r-rjson
+    - r-ggally
+    - r-ggthemes
+    - r-cowplot
+    - r-reticulate
