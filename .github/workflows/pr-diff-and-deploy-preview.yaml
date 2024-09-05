@@ -33,6 +33,8 @@ jobs:
 
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
+        with:
+          path: textbook
 
       # Push the PR version of the website to the gh-pages branch
       # the PR version will be stored in a folder named pull### (where ### is the PR number)
