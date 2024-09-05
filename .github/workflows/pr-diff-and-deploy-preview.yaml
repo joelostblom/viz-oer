@@ -62,10 +62,10 @@ jobs:
       - name: Build the PR version of the website
         run: quarto render textbook; ls -al textbook; tree
         shell: bash -el {0}  # Required to see the mamba init env
-      # - uses: quarto-dev/quarto-actions/setup@v2
-      # - uses: quarto-dev/quarto-actions/render@v2
-      #   with:
-      #     path: textbook
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - uses: quarto-dev/quarto-actions/render@v2
+        with:
+          path: textbook
 
       # Push the PR version of the website to the gh-pages branch
       # the PR version will be stored in a folder named pull### (where ### is the PR number)
@@ -74,7 +74,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: textbook
+          publish_dir: textbook/_book
           keep_files: true
           destination_dir: pull${{ github.event.number }}
       - run: ls -al
