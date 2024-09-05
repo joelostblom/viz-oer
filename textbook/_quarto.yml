@@ -7,7 +7,7 @@ book:
   date: "7/29/2024"
   chapters:
     - index.qmd
-    - chapter_1.qmd
+    # - chapter_1.qmd
     - summary.qmd
     
 format:
