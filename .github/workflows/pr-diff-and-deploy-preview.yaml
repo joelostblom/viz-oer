@@ -77,9 +77,7 @@ jobs:
           rustup update
           pip install --upgrade pip
           pip install website_diff
-          ls -la
-          ls -la textbook
-          ls -la textbook/_book
+          tree
           website_diff --old . --new pull${{ github.event.number }} --diff diff${{ github.event.number }}
 
       # Push the diff version of the website to the gh-pages branch
