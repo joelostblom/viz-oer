@@ -43,6 +43,12 @@ jobs:
           fetch-depth: '0'
           ref: ${{ github.head_ref }}
 
+      - name: Setup the environment
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: environment.yaml
+          init-shell: bash
+          cache-environment: true
       # Build the PR version of the website
       # YOUR_BUILD_CODE below should be replaced with code that builds your website
       # - name: Build the PR version of the website
@@ -51,13 +57,11 @@ jobs:
       #     environment-file: environment.yaml
       #     activate-environment: viz-oer
       #     auto-activate-base: false
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-file: environment.yaml
-          init-shell: bash
-          cache-environment: true
-      - run: quarto render textbook
-        shell: bash -el {0}
+
+
+      - name: Build the PR version of the website
+        run: quarto render textbook
+        shell: bash -el {0}  # Required to see the mamba init env
       # - uses: quarto-dev/quarto-actions/setup@v2
       # - uses: quarto-dev/quarto-actions/render@v2
       #   with:
