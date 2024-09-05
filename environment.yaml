@@ -30,3 +30,5 @@ dependencies:
     - r-ggthemes
     - r-cowplot
     - r-reticulate
+    - r-knitr
+    - r-rmarkdown
