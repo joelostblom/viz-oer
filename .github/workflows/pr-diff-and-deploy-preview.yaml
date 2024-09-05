@@ -54,10 +54,11 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: environment.yaml
-      - uses: quarto-dev/quarto-actions/setup@v2
-      - uses: quarto-dev/quarto-actions/render@v2
-        with:
-          path: textbook
+      - run: quarto render textbook
+      # - uses: quarto-dev/quarto-actions/setup@v2
+      # - uses: quarto-dev/quarto-actions/render@v2
+      #   with:
+      #     path: textbook
 
       # Push the PR version of the website to the gh-pages branch
       # the PR version will be stored in a folder named pull### (where ### is the PR number)
