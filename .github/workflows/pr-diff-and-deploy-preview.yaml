@@ -57,7 +57,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _book
+          publish_dir: .
           keep_files: true
           destination_dir: pull${{ github.event.number }}
       - run: tree
@@ -80,7 +80,7 @@ jobs:
           ls -la
           ls -la textbook
           ls -la textbook/_book
-          website_diff --old textbook/_book --new pull${{ github.event.number }} --diff diff${{ github.event.number }}
+          website_diff --old . --new pull${{ github.event.number }} --diff diff${{ github.event.number }}
 
       # Push the diff version of the website to the gh-pages branch
       # the diff version will be stored in a folder named diff### (where ### is the PR number)
