@@ -331,19 +331,19 @@ h4 {
   margin-right: 5px;
   font-size: 13px;
 }
+
 .callout-ex-prompt > .callout-header::after,
 .callout-ex-hint > .callout-header::after,
 .callout-ex-solution > .callout-header::after {
   font-family: "Font Awesome 5 Free";
   content: "\f054";
+  transition: transform .2s ease;
 }
-
 .callout-ex-prompt > .callout-header[aria-expanded="true"]::after,
 .callout-ex-hint > .callout-header[aria-expanded="true"]::after,
 .callout-ex-solution > .callout-header[aria-expanded="true"]::after {
-  content: "\f078";
+  transform: rotate(90deg);
 }
-
 .callout-header {
   user-select: none;
 }
