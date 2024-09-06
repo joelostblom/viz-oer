@@ -9,7 +9,10 @@ book:
     - index.qmd
     - chapter_1.qmd
     - summary.qmd
-    
+
+filters:
+  - custom-callouts.lua
+
 format:
   html:
     theme: cosmo
