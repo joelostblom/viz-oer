@@ -1072,36 +1072,36 @@ show_df(food_emission)
 Before you start, your boss **Minister Reed** has a few questions for you...
 
 
-```{r}
-#| echo: false
-api = "{{< env URL >}}"
-ojs_define(apiUrl = api)
-```
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- api = "{{< env URL >}}" -->
+<!-- ojs_define(apiUrl = api) -->
+<!-- ``` -->
 
-```{ojs}
-//| echo: false
-import {createChatInterface} from "./chat.js"
+<!-- ```{ojs} -->
+<!-- //| echo: false -->
+<!-- import {createChatInterface} from "./chat.js" -->
 
-{
+<!-- { -->
 
-const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo.";
+<!-- const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo."; -->
 
-const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?";
+<!-- const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?"; -->
 
-const chatInterface = createChatInterface({
-  apiUrl,
-  instructions: instructions,
-  firstMessage: first_message,
-  bossImage: '/img/environ_minister.jpg',
-  bossName: 'Minister Reed',    
-  maxTokens: 100
-});
+<!-- const chatInterface = createChatInterface({ -->
+<!--   apiUrl, -->
+<!--   instructions: instructions, -->
+<!--   firstMessage: first_message, -->
+<!--   bossImage: '/img/environ_minister.jpg', -->
+<!--   bossName: 'Minister Reed', -->    
+<!--   maxTokens: 100 -->
+<!-- }); -->
 
-return html`${chatInterface}`;
+<!-- return html`${chatInterface}`; -->
 
-}
+<!-- } -->
 
-```
+<!-- ``` -->
 
 
 ### Exercise 2: Visualizing the data
@@ -1136,22 +1136,22 @@ These are striking results! There are some clear clusters and outliers in the da
 
 ### Exercise 4: Reporting your results
 
-```{ojs}
-//| echo: false
-{  
-  const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. You are discussing a recent Emissions Report with your colleague. The report reveals surprising findings: beef has an exceptionally high emissions rate (around 60 Kg CO2/kg product) compared to other foods, and its supply is also high. Milk has a high supply (190 kg/capita/yr) but moderate emissions. Many vegetables have very low emissions. You see great potential in reducing beef consumption in Viridia to combat climate change. Guide your colleague to this conclusion. Do not give the solution in the first message; lead your colleague to the answer over the course of three messages. Once they reach the correct conclusion, end the conversation.";
+<!-- ```{ojs} -->
+<!-- //| echo: false -->
+<!-- { -->  
+<!--   const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. You are discussing a recent Emissions Report with your colleague. The report reveals surprising findings: beef has an exceptionally high emissions rate (around 60 Kg CO2/kg product) compared to other foods, and its supply is also high. Milk has a high supply (190 kg/capita/yr) but moderate emissions. Many vegetables have very low emissions. You see great potential in reducing beef consumption in Viridia to combat climate change. Guide your colleague to this conclusion. Do not give the solution in the first message; lead your colleague to the answer over the course of three messages. Once they reach the correct conclusion, end the conversation."; -->
 
-  const first_message = "I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?";
+<!--   const first_message = "I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?"; -->
 
-  const chatInterface = createChatInterface({
-    apiUrl,
-    instructions: instructions,
-    firstMessage: first_message,
-    bossImage: '/img/environ_minister.jpg',
-    bossName: 'Minister Reed',    
-    maxTokens: 100
-  });
+<!--   const chatInterface = createChatInterface({ -->
+<!--     apiUrl, -->
+<!--     instructions: instructions, -->
+<!--     firstMessage: first_message, -->
+<!--     bossImage: '/img/environ_minister.jpg', -->
+<!--     bossName: 'Minister Reed', -->    
+<!--     maxTokens: 100 -->
+<!--   }); -->
 
-  return html`${chatInterface}`;
-}
-```
+<!--   return html`${chatInterface}`; -->
+<!-- } -->
+<!-- ``` -->
