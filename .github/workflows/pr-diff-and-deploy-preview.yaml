@@ -36,7 +36,7 @@ jobs:
           post-cleanup: none
 
       - name: Build the PR version of the website
-        run: quarto render textbook; tree
+        run: quarto render textbook
         shell: bash -el {0}  # Required to see the mamba init env
 
       # Push the PR version of the website to the gh-pages branch 
@@ -47,7 +47,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: ./textbook/_book
           keep_files: true
           destination_dir: pull${{ github.event.number }}
       - run: tree
@@ -68,8 +68,7 @@ jobs:
           pip install --upgrade pip
           python -m pip install https://github.com/joelostblom/website_diff/archive/jquery-waitload-nohighlight.zip
           rm -rf diff${{ github.event.number }}
-          tree
-          website_diff --old . --new pull${{ github.event.number }}/textbook/_book --diff diff${{ github.event.number }}
+          website_diff --old . --new pull${{ github.event.number }} --diff diff${{ github.event.number }}
 
       # Push the diff version of the website to the gh-pages branch
       # the diff version will be stored in a folder named diff### (where ### is the PR number)
@@ -90,5 +89,5 @@ jobs:
           message: |
               Hello! I've built a preview of your PR so that you can compare it to the current `main` branch:
               * [PR deploy preview including highlighted diff with `main`](https://joelostblom.github.io/viz-oer/diff${{ github.event.number }}/index.html)
-              * [PR deploy preview](https://joelostblom.github.io/viz-oer/pull${{ github.event.number }}/textbook/_book/index.html)
-              * [Current live site](https://joelostblom.github.io/viz-oer/index.html) (just for convenience, not changed by CI)
+              * [PR deploy preview](https://joelostblom.github.io/viz-oer/pull${{ github.event.number }}/index.html)
+              * [Current main site](https://joelostblom.github.io/viz-oer/index.html) (just for convenience, not changed by CI)
