@@ -13,6 +13,7 @@ jobs:
   deploy-pr-preview:
     runs-on: ubuntu-latest
     env:
+      DBUS_SESSION_BUS_ADDRESS: /dev/null
       URL: ${{ secrets.OPENAI_PROXY_URL }}
     permissions:
       contents: write
