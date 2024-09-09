@@ -104,6 +104,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script type="ojs-define">
+{"contents":[{"name":"apiUrl","value":"https://infinite-fortress-04895-21187dda925c.herokuapp.com/api/proxy"}]}
+</script>
 <style>
   .table.dataframe {
     width: auto;
@@ -188,6 +191,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#which-visualization-library-should-we-pick" id="toc-which-visualization-library-should-we-pick" class="nav-link" data-scroll-target="#which-visualization-library-should-we-pick"><span class="header-section-number">1.4</span> Which visualization library should we pick?</a></li>
   <li><a href="#what-is-a-grammar-of-graphics" id="toc-what-is-a-grammar-of-graphics" class="nav-link" data-scroll-target="#what-is-a-grammar-of-graphics"><span class="header-section-number">1.5</span> What is a grammar of graphics?</a></li>
   <li><a href="#learning-to-speak-with-a-grammar-of-graphics" id="toc-learning-to-speak-with-a-grammar-of-graphics" class="nav-link" data-scroll-target="#learning-to-speak-with-a-grammar-of-graphics"><span class="header-section-number">1.6</span> Learning to speak with a grammar of graphics</a></li>
+  <li><a href="#exercise-mission" id="toc-exercise-mission" class="nav-link" data-scroll-target="#exercise-mission"><span class="header-section-number">1.7</span> Exercise mission</a>
+  <ul class="collapse">
+  <li><a href="#exercise-1-planning-your-analysis" id="toc-exercise-1-planning-your-analysis" class="nav-link" data-scroll-target="#exercise-1-planning-your-analysis"><span class="header-section-number">1.7.1</span> Exercise 1: Planning your analysis</a></li>
+  <li><a href="#exercise-2-visualizing-the-data" id="toc-exercise-2-visualizing-the-data" class="nav-link" data-scroll-target="#exercise-2-visualizing-the-data"><span class="header-section-number">1.7.2</span> Exercise 2: Visualizing the data</a></li>
+  <li><a href="#exercise-3-inspecting-individual-marks" id="toc-exercise-3-inspecting-individual-marks" class="nav-link" data-scroll-target="#exercise-3-inspecting-individual-marks"><span class="header-section-number">1.7.3</span> Exercise 3: Inspecting individual marks</a></li>
+  <li><a href="#exercise-4-reporting-your-results" id="toc-exercise-4-reporting-your-results" class="nav-link" data-scroll-target="#exercise-4-reporting-your-results"><span class="header-section-number">1.7.4</span> Exercise 4: Reporting your results</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -249,60 +259,60 @@ Learning outcomes
 <div class="dataframe-grid"><style type="text/css">
 </style>
 
-<table id="T_0e28a" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_d9203" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_0e28a_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
+<th colspan="2" id="T_d9203_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
 </tr>
 <tr class="odd">
-<th id="T_0e28a_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_0e28a_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_d9203_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_d9203_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_0e28a_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_0e28a_row0_col1" class="data row0 col1">8.04</td>
+<td id="T_d9203_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_d9203_row0_col1" class="data row0 col1">8.04</td>
 </tr>
 <tr class="even">
-<td id="T_0e28a_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_0e28a_row1_col1" class="data row1 col1">6.95</td>
+<td id="T_d9203_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_d9203_row1_col1" class="data row1 col1">6.95</td>
 </tr>
 <tr class="odd">
-<td id="T_0e28a_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_0e28a_row2_col1" class="data row2 col1">7.58</td>
+<td id="T_d9203_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_d9203_row2_col1" class="data row2 col1">7.58</td>
 </tr>
 <tr class="even">
-<td id="T_0e28a_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_0e28a_row3_col1" class="data row3 col1">8.81</td>
+<td id="T_d9203_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_d9203_row3_col1" class="data row3 col1">8.81</td>
 </tr>
 <tr class="odd">
-<td id="T_0e28a_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_0e28a_row4_col1" class="data row4 col1">8.33</td>
+<td id="T_d9203_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_d9203_row4_col1" class="data row4 col1">8.33</td>
 </tr>
 <tr class="even">
-<td id="T_0e28a_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_0e28a_row5_col1" class="data row5 col1">9.96</td>
+<td id="T_d9203_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_d9203_row5_col1" class="data row5 col1">9.96</td>
 </tr>
 <tr class="odd">
-<td id="T_0e28a_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_0e28a_row6_col1" class="data row6 col1">7.24</td>
+<td id="T_d9203_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_d9203_row6_col1" class="data row6 col1">7.24</td>
 </tr>
 <tr class="even">
-<td id="T_0e28a_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_0e28a_row7_col1" class="data row7 col1">4.26</td>
+<td id="T_d9203_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_d9203_row7_col1" class="data row7 col1">4.26</td>
 </tr>
 <tr class="odd">
-<td id="T_0e28a_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_0e28a_row8_col1" class="data row8 col1">10.84</td>
+<td id="T_d9203_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_d9203_row8_col1" class="data row8 col1">10.84</td>
 </tr>
 <tr class="even">
-<td id="T_0e28a_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_0e28a_row9_col1" class="data row9 col1">4.81</td>
+<td id="T_d9203_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_d9203_row9_col1" class="data row9 col1">4.81</td>
 </tr>
 <tr class="odd">
-<td id="T_0e28a_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_0e28a_row10_col1" class="data row10 col1">5.68</td>
+<td id="T_d9203_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_d9203_row10_col1" class="data row10 col1">5.68</td>
 </tr>
 </tbody>
 </table>
@@ -310,60 +320,60 @@ Learning outcomes
 <style type="text/css">
 </style>
 
-<table id="T_8558e" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_6efb8" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_8558e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
+<th colspan="2" id="T_6efb8_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
 </tr>
 <tr class="odd">
-<th id="T_8558e_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_8558e_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_6efb8_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_6efb8_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_8558e_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_8558e_row0_col1" class="data row0 col1">9.14</td>
+<td id="T_6efb8_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_6efb8_row0_col1" class="data row0 col1">9.14</td>
 </tr>
 <tr class="even">
-<td id="T_8558e_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_8558e_row1_col1" class="data row1 col1">8.14</td>
+<td id="T_6efb8_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_6efb8_row1_col1" class="data row1 col1">8.14</td>
 </tr>
 <tr class="odd">
-<td id="T_8558e_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_8558e_row2_col1" class="data row2 col1">8.74</td>
+<td id="T_6efb8_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_6efb8_row2_col1" class="data row2 col1">8.74</td>
 </tr>
 <tr class="even">
-<td id="T_8558e_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_8558e_row3_col1" class="data row3 col1">8.77</td>
+<td id="T_6efb8_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_6efb8_row3_col1" class="data row3 col1">8.77</td>
 </tr>
 <tr class="odd">
-<td id="T_8558e_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_8558e_row4_col1" class="data row4 col1">9.26</td>
+<td id="T_6efb8_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_6efb8_row4_col1" class="data row4 col1">9.26</td>
 </tr>
 <tr class="even">
-<td id="T_8558e_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_8558e_row5_col1" class="data row5 col1">8.10</td>
+<td id="T_6efb8_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_6efb8_row5_col1" class="data row5 col1">8.10</td>
 </tr>
 <tr class="odd">
-<td id="T_8558e_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_8558e_row6_col1" class="data row6 col1">6.13</td>
+<td id="T_6efb8_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_6efb8_row6_col1" class="data row6 col1">6.13</td>
 </tr>
 <tr class="even">
-<td id="T_8558e_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_8558e_row7_col1" class="data row7 col1">3.10</td>
+<td id="T_6efb8_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_6efb8_row7_col1" class="data row7 col1">3.10</td>
 </tr>
 <tr class="odd">
-<td id="T_8558e_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_8558e_row8_col1" class="data row8 col1">9.13</td>
+<td id="T_6efb8_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_6efb8_row8_col1" class="data row8 col1">9.13</td>
 </tr>
 <tr class="even">
-<td id="T_8558e_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_8558e_row9_col1" class="data row9 col1">7.26</td>
+<td id="T_6efb8_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_6efb8_row9_col1" class="data row9 col1">7.26</td>
 </tr>
 <tr class="odd">
-<td id="T_8558e_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_8558e_row10_col1" class="data row10 col1">4.74</td>
+<td id="T_6efb8_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_6efb8_row10_col1" class="data row10 col1">4.74</td>
 </tr>
 </tbody>
 </table>
@@ -371,60 +381,60 @@ Learning outcomes
 <style type="text/css">
 </style>
 
-<table id="T_018cd" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_9c07d" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_018cd_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
+<th colspan="2" id="T_9c07d_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
 </tr>
 <tr class="odd">
-<th id="T_018cd_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_018cd_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_9c07d_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_9c07d_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_018cd_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_018cd_row0_col1" class="data row0 col1">7.46</td>
+<td id="T_9c07d_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_9c07d_row0_col1" class="data row0 col1">7.46</td>
 </tr>
 <tr class="even">
-<td id="T_018cd_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_018cd_row1_col1" class="data row1 col1">6.77</td>
+<td id="T_9c07d_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_9c07d_row1_col1" class="data row1 col1">6.77</td>
 </tr>
 <tr class="odd">
-<td id="T_018cd_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_018cd_row2_col1" class="data row2 col1">8.50</td>
+<td id="T_9c07d_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_9c07d_row2_col1" class="data row2 col1">8.50</td>
 </tr>
 <tr class="even">
-<td id="T_018cd_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_018cd_row3_col1" class="data row3 col1">7.11</td>
+<td id="T_9c07d_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_9c07d_row3_col1" class="data row3 col1">7.11</td>
 </tr>
 <tr class="odd">
-<td id="T_018cd_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_018cd_row4_col1" class="data row4 col1">7.81</td>
+<td id="T_9c07d_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_9c07d_row4_col1" class="data row4 col1">7.81</td>
 </tr>
 <tr class="even">
-<td id="T_018cd_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_018cd_row5_col1" class="data row5 col1">8.84</td>
+<td id="T_9c07d_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_9c07d_row5_col1" class="data row5 col1">8.84</td>
 </tr>
 <tr class="odd">
-<td id="T_018cd_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_018cd_row6_col1" class="data row6 col1">6.08</td>
+<td id="T_9c07d_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_9c07d_row6_col1" class="data row6 col1">6.08</td>
 </tr>
 <tr class="even">
-<td id="T_018cd_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_018cd_row7_col1" class="data row7 col1">5.39</td>
+<td id="T_9c07d_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_9c07d_row7_col1" class="data row7 col1">5.39</td>
 </tr>
 <tr class="odd">
-<td id="T_018cd_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_018cd_row8_col1" class="data row8 col1">8.15</td>
+<td id="T_9c07d_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_9c07d_row8_col1" class="data row8 col1">8.15</td>
 </tr>
 <tr class="even">
-<td id="T_018cd_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_018cd_row9_col1" class="data row9 col1">6.42</td>
+<td id="T_9c07d_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_9c07d_row9_col1" class="data row9 col1">6.42</td>
 </tr>
 <tr class="odd">
-<td id="T_018cd_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_018cd_row10_col1" class="data row10 col1">5.73</td>
+<td id="T_9c07d_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_9c07d_row10_col1" class="data row10 col1">5.73</td>
 </tr>
 </tbody>
 </table>
@@ -432,60 +442,60 @@ Learning outcomes
 <style type="text/css">
 </style>
 
-<table id="T_76260" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_f6c9c" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_76260_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
+<th colspan="2" id="T_f6c9c_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
 </tr>
 <tr class="odd">
-<th id="T_76260_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_76260_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_f6c9c_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_f6c9c_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_76260_row0_col0" class="data row0 col0">8.00</td>
-<td id="T_76260_row0_col1" class="data row0 col1">6.58</td>
+<td id="T_f6c9c_row0_col0" class="data row0 col0">8.00</td>
+<td id="T_f6c9c_row0_col1" class="data row0 col1">6.58</td>
 </tr>
 <tr class="even">
-<td id="T_76260_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_76260_row1_col1" class="data row1 col1">5.76</td>
+<td id="T_f6c9c_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_f6c9c_row1_col1" class="data row1 col1">5.76</td>
 </tr>
 <tr class="odd">
-<td id="T_76260_row2_col0" class="data row2 col0">8.00</td>
-<td id="T_76260_row2_col1" class="data row2 col1">7.71</td>
+<td id="T_f6c9c_row2_col0" class="data row2 col0">8.00</td>
+<td id="T_f6c9c_row2_col1" class="data row2 col1">7.71</td>
 </tr>
 <tr class="even">
-<td id="T_76260_row3_col0" class="data row3 col0">8.00</td>
-<td id="T_76260_row3_col1" class="data row3 col1">8.84</td>
+<td id="T_f6c9c_row3_col0" class="data row3 col0">8.00</td>
+<td id="T_f6c9c_row3_col1" class="data row3 col1">8.84</td>
 </tr>
 <tr class="odd">
-<td id="T_76260_row4_col0" class="data row4 col0">8.00</td>
-<td id="T_76260_row4_col1" class="data row4 col1">8.47</td>
+<td id="T_f6c9c_row4_col0" class="data row4 col0">8.00</td>
+<td id="T_f6c9c_row4_col1" class="data row4 col1">8.47</td>
 </tr>
 <tr class="even">
-<td id="T_76260_row5_col0" class="data row5 col0">8.00</td>
-<td id="T_76260_row5_col1" class="data row5 col1">7.04</td>
+<td id="T_f6c9c_row5_col0" class="data row5 col0">8.00</td>
+<td id="T_f6c9c_row5_col1" class="data row5 col1">7.04</td>
 </tr>
 <tr class="odd">
-<td id="T_76260_row6_col0" class="data row6 col0">8.00</td>
-<td id="T_76260_row6_col1" class="data row6 col1">5.25</td>
+<td id="T_f6c9c_row6_col0" class="data row6 col0">8.00</td>
+<td id="T_f6c9c_row6_col1" class="data row6 col1">5.25</td>
 </tr>
 <tr class="even">
-<td id="T_76260_row7_col0" class="data row7 col0">19.00</td>
-<td id="T_76260_row7_col1" class="data row7 col1">12.50</td>
+<td id="T_f6c9c_row7_col0" class="data row7 col0">19.00</td>
+<td id="T_f6c9c_row7_col1" class="data row7 col1">12.50</td>
 </tr>
 <tr class="odd">
-<td id="T_76260_row8_col0" class="data row8 col0">8.00</td>
-<td id="T_76260_row8_col1" class="data row8 col1">5.56</td>
+<td id="T_f6c9c_row8_col0" class="data row8 col0">8.00</td>
+<td id="T_f6c9c_row8_col1" class="data row8 col1">5.56</td>
 </tr>
 <tr class="even">
-<td id="T_76260_row9_col0" class="data row9 col0">8.00</td>
-<td id="T_76260_row9_col1" class="data row9 col1">7.91</td>
+<td id="T_f6c9c_row9_col0" class="data row9 col0">8.00</td>
+<td id="T_f6c9c_row9_col1" class="data row9 col1">7.91</td>
 </tr>
 <tr class="odd">
-<td id="T_76260_row10_col0" class="data row10 col0">8.00</td>
-<td id="T_76260_row10_col1" class="data row10 col1">6.89</td>
+<td id="T_f6c9c_row10_col0" class="data row10 col0">8.00</td>
+<td id="T_f6c9c_row10_col1" class="data row10 col1">6.89</td>
 </tr>
 </tbody>
 </table>
@@ -501,24 +511,24 @@ Learning outcomes
 <div class="dataframe-grid"><style type="text/css">
 </style>
 
-<table id="T_102db" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_27184" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_102db_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
+<th colspan="2" id="T_27184_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
 </tr>
 <tr class="odd">
-<th id="T_102db_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_102db_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_27184_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_27184_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_102db_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_102db_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_27184_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_27184_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_102db_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_102db_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_27184_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_27184_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -526,24 +536,24 @@ Learning outcomes
 <style type="text/css">
 </style>
 
-<table id="T_f359b" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_3a501" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_f359b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
+<th colspan="2" id="T_3a501_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
 </tr>
 <tr class="odd">
-<th id="T_f359b_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_f359b_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_3a501_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_3a501_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_f359b_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_f359b_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_3a501_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_3a501_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_f359b_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_f359b_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_3a501_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_3a501_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -551,24 +561,24 @@ Learning outcomes
 <style type="text/css">
 </style>
 
-<table id="T_2ea7c" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_94dff" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_2ea7c_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
+<th colspan="2" id="T_94dff_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
 </tr>
 <tr class="odd">
-<th id="T_2ea7c_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_2ea7c_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_94dff_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_94dff_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_2ea7c_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_2ea7c_row0_col1" class="data row0 col1" style="background-color: #4853a4; color: #ffffff"><strong>7.11</strong></td>
+<td id="T_94dff_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_94dff_row0_col1" class="data row0 col1" style="background-color: #4853a4; color: #ffffff"><strong>7.11</strong></td>
 </tr>
 <tr class="even">
-<td id="T_2ea7c_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_2ea7c_row1_col1" class="data row1 col1" style="background-color: #4853a4; color: #ffffff"><strong>1.15</strong></td>
+<td id="T_94dff_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_94dff_row1_col1" class="data row1 col1" style="background-color: #4853a4; color: #ffffff"><strong>1.15</strong></td>
 </tr>
 </tbody>
 </table>
@@ -576,24 +586,24 @@ Learning outcomes
 <style type="text/css">
 </style>
 
-<table id="T_6165f" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_87f8b" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_6165f_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
+<th colspan="2" id="T_87f8b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
 </tr>
 <tr class="odd">
-<th id="T_6165f_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
-<th id="T_6165f_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
+<th id="T_87f8b_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">X</th>
+<th id="T_87f8b_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">Y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_6165f_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_6165f_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_87f8b_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_87f8b_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_6165f_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_6165f_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_87f8b_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_87f8b_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -1908,122 +1918,257 @@ Solution
 <!-- </div> -->
 <!-- ``` -->
 <!-- </details> -->
-<!-- ## Exercise mission -->
-<!-- With a commitment to sustainability and a vision for a greener future, -->
-<!-- Viridia is taking proactive steps to investigate and mitigate its environmental impact. -->
-<!-- One significant area of focus is the emissions associated with food consumption and production. -->
-<!-- **Minister Reed**, -->
-<!-- head of the environment department, -->
-<!-- has called on you to step up to help -->
-<!-- and tasked with investigating emissions in the city of Viridia. -->
-<!-- ```{=html} -->
-<!-- <br> -->
-<!-- <div class="ministry-id-card"> -->
-<!--     <div class="accent-line"></div> -->
-<!--     <div class="left-column"> -->
-<!--         <div class="logo">Ministry of Environment</div> -->
-<!--         <div class="name">Minister Reed</div> -->
-<!--         <div class="info"> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">Position</span> -->
-<!--                 <span class="value">Head of Environment</span> -->
-<!--             </div> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">Department</span> -->
-<!--                 <span class="value">Urban Food Systems</span> -->
-<!--             </div> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">ID Number</span> -->
-<!--                 <span class="value">EI-2024-0042</span> -->
-<!--             </div> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">Clearance</span> -->
-<!--                 <span class="value">Level 5</span> -->
-<!--             </div> -->
-<!--         </div> -->
-<!--         <div class="footer">Protecting Our Future • Est. 2024</div> -->
-<!--     </div> -->
-<!--     <div class="right-column"> -->
-<!--         <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar"> -->
-<!--     </div> -->
-<!-- </div> -->
-<!-- <br> -->
-<!-- ``` -->
-<!-- To start with your investigation, -->
-<!-- you'll need to visualize the emissions data effectively. -->
-<!-- This will help unlock insights crucial for the Ministry of Environment. -->
-<!-- ```{python} -->
-<!-- #| output: false -->
-<!-- food_emission = pd.read_csv("data/aggregated__food_data.csv") -->
-<!-- food_emission -->
-<!-- ``` -->
-<!-- ```{python} -->
-<!-- #| echo: false -->
-<!-- show_df(food_emission) -->
-<!-- ``` -->
-<!-- <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;"> -->
-<!-- ### Exercise 1: Planning your analysis -->
-<!-- Before you start, your boss **Minister Reed** has a few questions for you... -->
-<!-- <!-1- ```{r} -1-> -->
-<!-- <!-1- #| echo: false -1-> -->
-<!-- <!-1- api = "https://infinite-fortress-04895-21187dda925c.herokuapp.com/api/proxy" -1-> -->
-<!-- <!-1- ojs_define(apiUrl = api) -1-> -->
-<!-- <!-1- ``` -1-> -->
-<!-- <!-1- ```{ojs} -1-> -->
-<!-- <!-1- //| echo: false -1-> -->
-<!-- <!-1- import {createChatInterface} from "./chat.js" -1-> -->
-<!-- <!-1- { -1-> -->
-<!-- <!-1- const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo."; -1-> -->
-<!-- <!-1- const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?"; -1-> -->
-<!-- <!-1- const chatInterface = createChatInterface({ -1-> -->
-<!-- <!-1-   apiUrl, -1-> -->
-<!-- <!-1-   instructions: instructions, -1-> -->
-<!-- <!-1-   firstMessage: first_message, -1-> -->
-<!-- <!-1-   bossImage: '/img/environ_minister.jpg', -1-> -->
-<!-- <!-1-   bossName: 'Minister Reed', -1-> -->
-<!-- <!-1-   maxTokens: 100 -1-> -->
-<!-- <!-1- }); -1-> -->
-<!-- <!-1- return html`${chatInterface}`; -1-> -->
-<!-- <!-1- } -1-> -->
-<!-- <!-1- ``` -1-> -->
-<!-- ### Exercise 2: Visualizing the data -->
-<!-- It's time to put the Grammar of Graphics to good use. -->
-<!-- Create a scatter plot of the food supply and emissions data by following these steps: -->
-<!-- 1. Instantiate the chart from the `food_emission` dataframe -->
-<!-- 2. Use the point mark to create a point for each observation in the data. -->
-<!-- 3. Encode `Total Food Supply (kg/capita/yr)` in the x channel -->
-<!--    and `Emissions (Kg CO2 / kg product)` in the y channel. -->
-<!-- ::: {.callout-tip icon="false" collapse="true"} -->
-<!-- # Solution -->
-<!-- ```{python} -->
-<!-- alt.Chart(food_emission).mark_point().encode( -->
-<!--     x='Total Food Supply (kg/capita/yr)', -->
-<!--     y='Emissions (Kg CO2 / kg product)', -->
-<!--     tooltip='Food Item' -->
-<!-- ) -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- ### Exercise 3: Inspecting individual marks -->
-<!-- These are striking results! There are some clear clusters and outliers in the data. Add a tooltip to your chart to investigate which foods these are. -->
-<!-- ### Exercise 4: Reporting your results -->
-<!-- <!-1- ```{ojs} -1-> -->
-<!-- <!-1- //| echo: false -1-> -->
-<!-- <!-1- { -1-> -->
-<!-- <!-1-   const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. You are discussing a recent Emissions Report with your colleague. The report reveals surprising findings: beef has an exceptionally high emissions rate (around 60 Kg CO2/kg product) compared to other foods, and its supply is also high. Milk has a high supply (190 kg/capita/yr) but moderate emissions. Many vegetables have very low emissions. You see great potential in reducing beef consumption in Viridia to combat climate change. Guide your colleague to this conclusion. Do not give the solution in the first message; lead your colleague to the answer over the course of three messages. Once they reach the correct conclusion, end the conversation."; -1-> -->
-<!-- <!-1-   const first_message = "I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?"; -1-> -->
-<!-- <!-1-   const chatInterface = createChatInterface({ -1-> -->
-<!-- <!-1-     apiUrl, -1-> -->
-<!-- <!-1-     instructions: instructions, -1-> -->
-<!-- <!-1-     firstMessage: first_message, -1-> -->
-<!-- <!-1-     bossImage: '/img/environ_minister.jpg', -1-> -->
-<!-- <!-1-     bossName: 'Minister Reed', -1-> -->
-<!-- <!-1-     maxTokens: 100 -1-> -->
-<!-- <!-1-   }); -1-> -->
-<!-- <!-1-   return html`${chatInterface}`; -1-> -->
-<!-- <!-1- } -1-> -->
-<!-- <!-1- ``` -1-> -->
+</section>
+<section id="exercise-mission" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="exercise-mission"><span class="header-section-number">1.7</span> Exercise mission</h2>
+<p>With a commitment to sustainability and a vision for a greener future, Viridia is taking proactive steps to investigate and mitigate its environmental impact. One significant area of focus is the emissions associated with food consumption and production. <strong>Minister Reed</strong>, head of the environment department, has called on you to step up to help and tasked with investigating emissions in the city of Viridia.</p>
+<br>
+<div class="ministry-id-card">
+    <div class="accent-line"></div>
+    <div class="left-column">
+        <div class="logo">Ministry of Environment</div>
+        <div class="name">Minister Reed</div>
+        <div class="info">
+            <div class="info-item">
+                <span class="label">Position</span>
+                <span class="value">Head of Environment</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Department</span>
+                <span class="value">Urban Food Systems</span>
+            </div>
+            <div class="info-item">
+                <span class="label">ID Number</span>
+                <span class="value">EI-2024-0042</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Clearance</span>
+                <span class="value">Level 5</span>
+            </div>
+        </div>
+        <div class="footer">Protecting Our Future • Est. 2024</div>
+    </div>
+    <div class="right-column">
+        <img src="./img/environ_minister.jpg" alt="Avatar" class="avatar">
+    </div>
+</div>
+<br>
+<p>To start with your investigation, you’ll need to visualize the emissions data effectively. This will help unlock insights crucial for the Ministry of Environment.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>food_emission <span class="op">=</span> pd.read_csv(<span class="st">"data/aggregated__food_data.csv"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>food_emission</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
 
 
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Food Item</th>
+<th data-quarto-table-cell-role="th">Total Food Supply (kg/capita/yr)</th>
+<th data-quarto-table-cell-role="th">Emissions (Kg CO2 / kg product)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Apples</td>
+<td>21.33</td>
+<td>0.3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Bananas</td>
+<td>15.11</td>
+<td>0.8</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Barley (Beer)</td>
+<td>0.46</td>
+<td>1.1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">34</td>
+<td>Tomatoes</td>
+<td>18.60</td>
+<td>1.4</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">35</td>
+<td>Wheat &amp; Rye (Bread)</td>
+<td>84.96</td>
+<td>1.4</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">36</td>
+<td>Wine</td>
+<td>11.45</td>
+<td>1.4</td>
+</tr>
+</tbody>
+</table>
+
+<p>37 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<p><img src="./img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;"></p>
+<section id="exercise-1-planning-your-analysis" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="exercise-1-planning-your-analysis"><span class="header-section-number">1.7.1</span> Exercise 1: Planning your analysis</h3>
+<p>Before you start, your boss <strong>Minister Reed</strong> has a few questions for you…</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb18" data-startfrom="1083" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1082;"><span id="cb18-1083"><a href="#cb18-1083" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {createChatInterface} <span class="im">from</span> <span class="st">"./chat.js"</span></span>
+<span id="cb18-1084"><a href="#cb18-1084" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1085"><a href="#cb18-1085" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb18-1086"><a href="#cb18-1086" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1087"><a href="#cb18-1087" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> instructions <span class="op">=</span> <span class="st">"You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo."</span><span class="op">;</span></span>
+<span id="cb18-1088"><a href="#cb18-1088" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1089"><a href="#cb18-1089" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> first_message <span class="op">=</span> <span class="st">"I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?"</span><span class="op">;</span></span>
+<span id="cb18-1090"><a href="#cb18-1090" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1091"><a href="#cb18-1091" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> chatInterface <span class="op">=</span> <span class="fu">createChatInterface</span>({</span>
+<span id="cb18-1092"><a href="#cb18-1092" aria-hidden="true" tabindex="-1"></a>  apiUrl<span class="op">,</span></span>
+<span id="cb18-1093"><a href="#cb18-1093" aria-hidden="true" tabindex="-1"></a>  <span class="dt">instructions</span><span class="op">:</span> instructions<span class="op">,</span></span>
+<span id="cb18-1094"><a href="#cb18-1094" aria-hidden="true" tabindex="-1"></a>  <span class="dt">firstMessage</span><span class="op">:</span> first_message<span class="op">,</span></span>
+<span id="cb18-1095"><a href="#cb18-1095" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bossImage</span><span class="op">:</span> <span class="st">'/img/environ_minister.jpg'</span><span class="op">,</span></span>
+<span id="cb18-1096"><a href="#cb18-1096" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bossName</span><span class="op">:</span> <span class="st">'Minister Reed'</span><span class="op">,</span>    </span>
+<span id="cb18-1097"><a href="#cb18-1097" aria-hidden="true" tabindex="-1"></a>  <span class="dt">maxTokens</span><span class="op">:</span> <span class="dv">100</span></span>
+<span id="cb18-1098"><a href="#cb18-1098" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb18-1099"><a href="#cb18-1099" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1100"><a href="#cb18-1100" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="fu">html</span><span class="vs">`</span><span class="sc">${</span>chatInterface<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb18-1101"><a href="#cb18-1101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-1102"><a href="#cb18-1102" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-2-visualizing-the-data" class="level3" data-number="1.7.2">
+<h3 data-number="1.7.2" class="anchored" data-anchor-id="exercise-2-visualizing-the-data"><span class="header-section-number">1.7.2</span> Exercise 2: Visualizing the data</h3>
+<p>It’s time to put the Grammar of Graphics to good use. Create a scatter plot of the food supply and emissions data by following these steps:</p>
+<ol type="1">
+<li>Instantiate the chart from the <code>food_emission</code> dataframe</li>
+<li>Use the point mark to create a point for each observation in the data.</li>
+<li>Encode <code>Total Food Supply (kg/capita/yr)</code> in the x channel and <code>Emissions (Kg CO2 / kg product)</code> in the y channel.</li>
+</ol>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(food_emission).mark_point().encode(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Total Food Supply (kg/capita/yr)'</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Emissions (Kg CO2 / kg product)'</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span><span class="st">'Food Item'</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+
+
+  <style>
+    #unnamed-chunk-23-altair-viz.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #unnamed-chunk-23-altair-viz.vega-embed details,
+    #unnamed-chunk-23-altair-viz.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+
+  <div id="unnamed-chunk-23-altair-viz"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-82c048c9f7df157b43fbd9ad57b2bd18"}, "mark": {"type": "point"}, "encoding": {"tooltip": {"field": "Food Item", "type": "nominal"}, "x": {"field": "Total Food Supply (kg/capita/yr)", "type": "quantitative"}, "y": {"field": "Emissions (Kg CO2 / kg product)", "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-82c048c9f7df157b43fbd9ad57b2bd18": [{"Food Item": "Apples", "Total Food Supply (kg/capita/yr)": 21.33, "Emissions (Kg CO2 / kg product)": 0.3}, {"Food Item": "Bananas", "Total Food Supply (kg/capita/yr)": 15.11, "Emissions (Kg CO2 / kg product)": 0.7999999999999999}, {"Food Item": "Barley (Beer)", "Total Food Supply (kg/capita/yr)": 0.46, "Emissions (Kg CO2 / kg product)": 1.1}, {"Food Item": "Beef (beef herd)", "Total Food Supply (kg/capita/yr)": 30.25, "Emissions (Kg CO2 / kg product)": 59.6}, {"Food Item": "Beet Sugar", "Total Food Supply (kg/capita/yr)": 15.18, "Emissions (Kg CO2 / kg product)": 1.4}, {"Food Item": "Berries & Grapes", "Total Food Supply (kg/capita/yr)": 8.84, "Emissions (Kg CO2 / kg product)": 1.1}, {"Food Item": "Cane Sugar", "Total Food Supply (kg/capita/yr)": 32.29, "Emissions (Kg CO2 / kg product)": 2.6}, {"Food Item": "Cassava", "Total Food Supply (kg/capita/yr)": 0.36, "Emissions (Kg CO2 / kg product)": 0.9}, {"Food Item": "Coffee", "Total Food Supply (kg/capita/yr)": 7.53, "Emissions (Kg CO2 / kg product)": 16.500000000000004}, {"Food Item": "Dark Chocolate", "Total Food Supply (kg/capita/yr)": 2.19, "Emissions (Kg CO2 / kg product)": 18.7}, {"Food Item": "Eggs", "Total Food Supply (kg/capita/yr)": 12.95, "Emissions (Kg CO2 / kg product)": 4.5}, {"Food Item": "Fish (farmed)", "Total Food Supply (kg/capita/yr)": 5.08, "Emissions (Kg CO2 / kg product)": 5.1}, {"Food Item": "Groundnuts", "Total Food Supply (kg/capita/yr)": 2.87, "Emissions (Kg CO2 / kg product)": 2.4}, {"Food Item": "Lamb & Mutton", "Total Food Supply (kg/capita/yr)": 0.97, "Emissions (Kg CO2 / kg product)": 24.5}, {"Food Item": "Maize (Meal)", "Total Food Supply (kg/capita/yr)": 18.95, "Emissions (Kg CO2 / kg product)": 1.1}, {"Food Item": "Milk", "Total Food Supply (kg/capita/yr)": 187.77, "Emissions (Kg CO2 / kg product)": 2.8000000000000003}, {"Food Item": "Nuts", "Total Food Supply (kg/capita/yr)": 5.14, "Emissions (Kg CO2 / kg product)": 0.2}, {"Food Item": "Oatmeal", "Total Food Supply (kg/capita/yr)": 0.73, "Emissions (Kg CO2 / kg product)": 1.6}, {"Food Item": "Olive Oil", "Total Food Supply (kg/capita/yr)": 1.04, "Emissions (Kg CO2 / kg product)": 6.0}, {"Food Item": "Onions & Leeks", "Total Food Supply (kg/capita/yr)": 8.87, "Emissions (Kg CO2 / kg product)": 0.3}, {"Food Item": "Other Fruit", "Total Food Supply (kg/capita/yr)": 32.87, "Emissions (Kg CO2 / kg product)": 0.7}, {"Food Item": "Other Pulses", "Total Food Supply (kg/capita/yr)": 9.66, "Emissions (Kg CO2 / kg product)": 1.6}, {"Food Item": "Other Vegetables", "Total Food Supply (kg/capita/yr)": 81.0, "Emissions (Kg CO2 / kg product)": 0.5}, {"Food Item": "Palm Oil", "Total Food Supply (kg/capita/yr)": 0.77, "Emissions (Kg CO2 / kg product)": 7.6}, {"Food Item": "Peas", "Total Food Supply (kg/capita/yr)": 1.5, "Emissions (Kg CO2 / kg product)": 0.7999999999999999}, {"Food Item": "Pig Meat", "Total Food Supply (kg/capita/yr)": 22.81, "Emissions (Kg CO2 / kg product)": 7.2}, {"Food Item": "Potatoes", "Total Food Supply (kg/capita/yr)": 71.07, "Emissions (Kg CO2 / kg product)": 0.3}, {"Food Item": "Poultry Meat", "Total Food Supply (kg/capita/yr)": 36.68, "Emissions (Kg CO2 / kg product)": 6.1000000000000005}, {"Food Item": "Rapeseed Oil", "Total Food Supply (kg/capita/yr)": 15.21, "Emissions (Kg CO2 / kg product)": 3.7}, {"Food Item": "Rice", "Total Food Supply (kg/capita/yr)": 12.65, "Emissions (Kg CO2 / kg product)": 4.0}, {"Food Item": "Root Vegetables", "Total Food Supply (kg/capita/yr)": 0.21, "Emissions (Kg CO2 / kg product)": 0.3}, {"Food Item": "Shrimps (farmed)", "Total Food Supply (kg/capita/yr)": 4.49, "Emissions (Kg CO2 / kg product)": 11.8}, {"Food Item": "Soybean Oil", "Total Food Supply (kg/capita/yr)": 5.58, "Emissions (Kg CO2 / kg product)": 5.999999999999999}, {"Food Item": "Sunflower Oil", "Total Food Supply (kg/capita/yr)": 0.57, "Emissions (Kg CO2 / kg product)": 3.5000000000000004}, {"Food Item": "Tomatoes", "Total Food Supply (kg/capita/yr)": 18.6, "Emissions (Kg CO2 / kg product)": 1.4}, {"Food Item": "Wheat & Rye (Bread)", "Total Food Supply (kg/capita/yr)": 84.96, "Emissions (Kg CO2 / kg product)": 1.4000000000000004}, {"Food Item": "Wine", "Total Food Supply (kg/capita/yr)": 11.45, "Emissions (Kg CO2 / kg product)": 1.4}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('unnamed-chunk-23-altair-viz');
+      vegaEmbed("#unnamed-chunk-23-altair-viz", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-3-inspecting-individual-marks" class="level3" data-number="1.7.3">
+<h3 data-number="1.7.3" class="anchored" data-anchor-id="exercise-3-inspecting-individual-marks"><span class="header-section-number">1.7.3</span> Exercise 3: Inspecting individual marks</h3>
+<p>These are striking results! There are some clear clusters and outliers in the data. Add a tooltip to your chart to investigate which foods these are.</p>
+</section>
+<section id="exercise-4-reporting-your-results" class="level3" data-number="1.7.4">
+<h3 data-number="1.7.4" class="anchored" data-anchor-id="exercise-4-reporting-your-results"><span class="header-section-number">1.7.4</span> Exercise 4: Reporting your results</h3>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb20" data-startfrom="1140" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 1139;"><span id="cb20-1140"><a href="#cb20-1140" aria-hidden="true" tabindex="-1"></a>{  </span>
+<span id="cb20-1141"><a href="#cb20-1141" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> instructions <span class="op">=</span> <span class="st">"You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. You are discussing a recent Emissions Report with your colleague. The report reveals surprising findings: beef has an exceptionally high emissions rate (around 60 Kg CO2/kg product) compared to other foods, and its supply is also high. Milk has a high supply (190 kg/capita/yr) but moderate emissions. Many vegetables have very low emissions. You see great potential in reducing beef consumption in Viridia to combat climate change. Guide your colleague to this conclusion. Do not give the solution in the first message; lead your colleague to the answer over the course of three messages. Once they reach the correct conclusion, end the conversation."</span><span class="op">;</span></span>
+<span id="cb20-1142"><a href="#cb20-1142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-1143"><a href="#cb20-1143" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> first_message <span class="op">=</span> <span class="st">"I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?"</span><span class="op">;</span></span>
+<span id="cb20-1144"><a href="#cb20-1144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-1145"><a href="#cb20-1145" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> chatInterface <span class="op">=</span> <span class="fu">createChatInterface</span>({</span>
+<span id="cb20-1146"><a href="#cb20-1146" aria-hidden="true" tabindex="-1"></a>    apiUrl<span class="op">,</span></span>
+<span id="cb20-1147"><a href="#cb20-1147" aria-hidden="true" tabindex="-1"></a>    <span class="dt">instructions</span><span class="op">:</span> instructions<span class="op">,</span></span>
+<span id="cb20-1148"><a href="#cb20-1148" aria-hidden="true" tabindex="-1"></a>    <span class="dt">firstMessage</span><span class="op">:</span> first_message<span class="op">,</span></span>
+<span id="cb20-1149"><a href="#cb20-1149" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bossImage</span><span class="op">:</span> <span class="st">'/img/environ_minister.jpg'</span><span class="op">,</span></span>
+<span id="cb20-1150"><a href="#cb20-1150" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bossName</span><span class="op">:</span> <span class="st">'Minister Reed'</span><span class="op">,</span>    </span>
+<span id="cb20-1151"><a href="#cb20-1151" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxTokens</span><span class="op">:</span> <span class="dv">100</span></span>
+<span id="cb20-1152"><a href="#cb20-1152" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb20-1153"><a href="#cb20-1153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-1154"><a href="#cb20-1154" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">html</span><span class="vs">`</span><span class="sc">${</span>chatInterface<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb20-1155"><a href="#cb20-1155" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+
+
+</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
@@ -2036,7 +2181,7 @@ Solution
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W119
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7Y3JlYXRlQ2hhdEludGVyZmFjZX0gZnJvbSBcIi4vY2hhdC5qc1wiXG5cbntcblxuY29uc3QgaW5zdHJ1Y3Rpb25zID0gXCJZb3UgYXJlIE1pbmlzdGVyIFJlZWQgb2YgdGhlIGNpdHkgb2YgVmlyaWRpYSwgYSBzaGFycC13aXR0ZWQsIGltcGF0aWVudCBidXQgc3VwcG9ydGl2ZSBlbnZpcm9ubWVudGFsIG1pbmlzdGVyLiBZb3VyIGNvbGxlYWd1ZSBoYXMgYmVlbiB0YXNrZWQgd2l0aCBjcmVhdGluZyBhbiBFbWlzc2lvbnMgUmVwb3J0LiBHdWlkZSB0aGVtIHRvd2FyZCB1bmRlcnN0YW5kaW5nIHdoeSBhIGNvbXBsZXRlIHBpY3R1cmUgaXMgbmVjZXNzYXJ5IGFuZCB3aHkgaW5jbHVkaW5nIHRoZSBUb3RhbCBGb29kIFN1cHBseSAoa2cvY2FwaXRhL3lyKSBjb2x1bW4gbWF0dGVycyAoYWxvbmdzaWRlIHRoZSBFbWlzc2lvbnMgS2cgQ08yIC8ga2cgcHJvZHVjdCkuIE9uY2UgeW91IGdldCBhIHNhdGlzZmFjdG9yeSBhbnN3ZXIsIGVuZCB0aGUgY29udmVyc2F0aW9uIGltbWVkaWF0ZWx5IGFuZCBhc2sgdGhlbSB0byBwcm9jZWVkIHRvIHRoZSBuZXh0IHRhc2suIFlvdSBhcmUgaW4gYSBwaG9uZSB0ZXh0IGNvbnZvLlwiO1xuXG5jb25zdCBmaXJzdF9tZXNzYWdlID0gXCJJIG5lZWQgeW91ciBFbWlzc2lvbnMgUmVwb3J0IG9uIG15IGRlc2sgYnkgMiBwbS4gUmVtaW5kIG1lIHdoeSB5b3UgYXJlIGluY2x1ZGluZyB0aGUgVG90YWwgRm9vZCBTdXBwbHkgaW4geW91ciBhbmFseXNpcz9cIjtcblxuY29uc3QgY2hhdEludGVyZmFjZSA9IGNyZWF0ZUNoYXRJbnRlcmZhY2Uoe1xuICBhcGlVcmwsXG4gIGluc3RydWN0aW9uczogaW5zdHJ1Y3Rpb25zLFxuICBmaXJzdE1lc3NhZ2U6IGZpcnN0X21lc3NhZ2UsXG4gIGJvc3NJbWFnZTogJy9pbWcvZW52aXJvbl9taW5pc3Rlci5qcGcnLFxuICBib3NzTmFtZTogJ01pbmlzdGVyIFJlZWQnLCAgICBcbiAgbWF4VG9rZW5zOiAxMDBcbn0pO1xuXG5yZXR1cm4gaHRtbGAke2NoYXRJbnRlcmZhY2V9YDtcblxufVxuXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ7ICBcbiAgY29uc3QgaW5zdHJ1Y3Rpb25zID0gXCJZb3UgYXJlIE1pbmlzdGVyIFJlZWQgb2YgdGhlIGNpdHkgb2YgVmlyaWRpYSwgYSBzaGFycC13aXR0ZWQsIGltcGF0aWVudCBidXQgc3VwcG9ydGl2ZSBlbnZpcm9ubWVudGFsIG1pbmlzdGVyLiBZb3UgYXJlIGRpc2N1c3NpbmcgYSByZWNlbnQgRW1pc3Npb25zIFJlcG9ydCB3aXRoIHlvdXIgY29sbGVhZ3VlLiBUaGUgcmVwb3J0IHJldmVhbHMgc3VycHJpc2luZyBmaW5kaW5nczogYmVlZiBoYXMgYW4gZXhjZXB0aW9uYWxseSBoaWdoIGVtaXNzaW9ucyByYXRlIChhcm91bmQgNjAgS2cgQ08yL2tnIHByb2R1Y3QpIGNvbXBhcmVkIHRvIG90aGVyIGZvb2RzLCBhbmQgaXRzIHN1cHBseSBpcyBhbHNvIGhpZ2guIE1pbGsgaGFzIGEgaGlnaCBzdXBwbHkgKDE5MCBrZy9jYXBpdGEveXIpIGJ1dCBtb2RlcmF0ZSBlbWlzc2lvbnMuIE1hbnkgdmVnZXRhYmxlcyBoYXZlIHZlcnkgbG93IGVtaXNzaW9ucy4gWW91IHNlZSBncmVhdCBwb3RlbnRpYWwgaW4gcmVkdWNpbmcgYmVlZiBjb25zdW1wdGlvbiBpbiBWaXJpZGlhIHRvIGNvbWJhdCBjbGltYXRlIGNoYW5nZS4gR3VpZGUgeW91ciBjb2xsZWFndWUgdG8gdGhpcyBjb25jbHVzaW9uLiBEbyBub3QgZ2l2ZSB0aGUgc29sdXRpb24gaW4gdGhlIGZpcnN0IG1lc3NhZ2U7IGxlYWQgeW91ciBjb2xsZWFndWUgdG8gdGhlIGFuc3dlciBvdmVyIHRoZSBjb3Vyc2Ugb2YgdGhyZWUgbWVzc2FnZXMuIE9uY2UgdGhleSByZWFjaCB0aGUgY29ycmVjdCBjb25jbHVzaW9uLCBlbmQgdGhlIGNvbnZlcnNhdGlvbi5cIjtcblxuICBjb25zdCBmaXJzdF9tZXNzYWdlID0gXCJJJ3ZlIGJlZW4gcmV2aWV3aW5nIHRoZSBlbWlzc2lvbnMgZGF0YS4gV2hhdCBkaWQgeW91IG5vdGljZSBhYm91dCB0aGUgcGF0dGVybnMgaW4gb3VyIGZvb2QgZW1pc3Npb25zP1wiO1xuXG4gIGNvbnN0IGNoYXRJbnRlcmZhY2UgPSBjcmVhdGVDaGF0SW50ZXJmYWNlKHtcbiAgICBhcGlVcmwsXG4gICAgaW5zdHJ1Y3Rpb25zOiBpbnN0cnVjdGlvbnMsXG4gICAgZmlyc3RNZXNzYWdlOiBmaXJzdF9tZXNzYWdlLFxuICAgIGJvc3NJbWFnZTogJy9pbWcvZW52aXJvbl9taW5pc3Rlci5qcGcnLFxuICAgIGJvc3NOYW1lOiAnTWluaXN0ZXIgUmVlZCcsICAgIFxuICAgIG1heFRva2VuczogMTAwXG4gIH0pO1xuXG4gIHJldHVybiBodG1sYCR7Y2hhdEludGVyZmFjZX1gO1xufVxuIn1dfQ==
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
