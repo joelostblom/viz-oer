@@ -900,73 +900,73 @@ based on our knowledge about physics of moving objects.
 <!-- you can see an overview of how which other libraries exist -->
 <!-- and how they are connected. -->
 
-```{mermaid}
-%%| mermaid-format: png
-%%{init: {'flowchart': {'width': 800}}}%%
-graph TD
-    %% Color definitions
-    classDef alignmentTool fill:#FF69B4,color:#000
-    classDef highLevel fill:#87CEFA,color:#000
-    classDef lowLevel fill:#FFA500,color:#000
-    classDef javascript fill:#FFFFFF,color:#000
+<!-- ```{mermaid} -->
+<!-- %%| mermaid-format: png -->
+<!-- %%{init: {'flowchart': {'width': 800}}}%% -->
+<!-- graph TD -->
+<!--     %% Color definitions -->
+<!--     classDef alignmentTool fill:#FF69B4,color:#000 -->
+<!--     classDef highLevel fill:#87CEFA,color:#000 -->
+<!--     classDef lowLevel fill:#FFA500,color:#000 -->
+<!--     classDef javascript fill:#FFFFFF,color:#000 -->
 
-    %% R ecosystem
-    base[base]:::lowLevel
-    grid[grid]:::lowLevel
-    lattice[lattice]:::highLevel
-    ggplot[ggplot]:::highLevel
-    ggiraph[ggiraph]:::highLevel
-    ggplotly[ggplotly]:::highLevel
-    plotly_r[plotly]:::lowLevel
-    patchwork[patchwork/cowplot]:::alignmentTool
-    htmlwidgets[htmlwidgets]:::javascript
-    altair_r[Altair]:::highLevel
+<!--     %% R ecosystem -->
+<!--     base[base]:::lowLevel -->
+<!--     grid[grid]:::lowLevel -->
+<!--     lattice[lattice]:::highLevel -->
+<!--     ggplot[ggplot]:::highLevel -->
+<!--     ggiraph[ggiraph]:::highLevel -->
+<!--     ggplotly[ggplotly]:::highLevel -->
+<!--     plotly_r[plotly]:::lowLevel -->
+<!--     patchwork[patchwork/cowplot]:::alignmentTool -->
+<!--     htmlwidgets[htmlwidgets]:::javascript -->
+<!--     altair_r[Altair]:::highLevel -->
 
-    %% JavaScript-related
-    js[JavaScript]:::javascript
-    d3[D3]:::javascript
-    vega[Vega]:::javascript
-    vegalite[Vega-Lite]:::javascript
+<!--     %% JavaScript-related -->
+<!--     js[JavaScript]:::javascript -->
+<!--     d3[D3]:::javascript -->
+<!--     vega[Vega]:::javascript -->
+<!--     vegalite[Vega-Lite]:::javascript -->
 
-    %% Python ecosystem
-    matplotlib[Matplotlib]:::lowLevel
-    plotnine[Plotnine]:::highLevel
-    pandas[Pandas]:::highLevel
-    seaborn[Seaborn]:::highLevel
-    holoviz[HoloViz]:::highLevel
-    bokeh[Bokeh]:::lowLevel
-    plotly_py[Plotly]:::lowLevel
-    plotly_express[Plotly Express]:::highLevel
-    altair[Altair]:::highLevel
+<!--     %% Python ecosystem -->
+<!--     matplotlib[Matplotlib]:::lowLevel -->
+<!--     plotnine[Plotnine]:::highLevel -->
+<!--     pandas[Pandas]:::highLevel -->
+<!--     seaborn[Seaborn]:::highLevel -->
+<!--     holoviz[HoloViz]:::highLevel -->
+<!--     bokeh[Bokeh]:::lowLevel -->
+<!--     plotly_py[Plotly]:::lowLevel -->
+<!--     plotly_express[Plotly Express]:::highLevel -->
+<!--     altair[Altair]:::highLevel -->
 
-    %% Subgraph for R ecosystem
-    subgraph R_Ecosystem[R Ecosystem]
-        base --> grid
-        grid --> lattice & ggplot
-        lattice & ggplot --> patchwork
-        ggplot -.-> ggiraph & ggplotly
-        ggplotly --> plotly_r
-        htmlwidgets --> ggiraph & plotly_r & altair_r
-    end
+<!--     %% Subgraph for R ecosystem -->
+<!--     subgraph R_Ecosystem[R Ecosystem] -->
+<!--         base -1-> grid -->
+<!--         grid -1-> lattice & ggplot -->
+<!--         lattice & ggplot -1-> patchwork -->
+<!--         ggplot -.-> ggiraph & ggplotly -->
+<!--         ggplotly -1-> plotly_r -->
+<!--         htmlwidgets -1-> ggiraph & plotly_r & altair_r -->
+<!--     end -->
 
-    %% Subgraph for JavaScript ecosystem
-    subgraph JS_Ecosystem[JavaScript Ecosystem]
-        js --> d3
-        d3 --> vega
-        vega --> vegalite
-    end
+<!--     %% Subgraph for JavaScript ecosystem -->
+<!--     subgraph JS_Ecosystem[JavaScript Ecosystem] -->
+<!--         js -1-> d3 -->
+<!--         d3 -1-> vega -->
+<!--         vega -1-> vegalite -->
+<!--     end -->
 
-    %% Subgraph for Python ecosystem
-    subgraph Python_Ecosystem[Python Ecosystem]
-        matplotlib --> plotnine & pandas & seaborn & holoviz
-        holoviz --> bokeh
-        plotly_py --> plotly_express
-        vegalite --> altair & altair_r
-    end
+<!--     %% Subgraph for Python ecosystem -->
+<!--     subgraph Python_Ecosystem[Python Ecosystem] -->
+<!--         matplotlib -1-> plotnine & pandas & seaborn & holoviz -->
+<!--         holoviz -1-> bokeh -->
+<!--         plotly_py -1-> plotly_express -->
+<!--         vegalite -1-> altair & altair_r -->
+<!--     end -->
 
-    %% Connections between ecosystems
-    js --> htmlwidgets & bokeh & plotly_py
-```
+<!--     %% Connections between ecosystems -->
+<!--     js -1-> htmlwidgets & bokeh & plotly_py -->
+<!-- ``` -->
 
 <!-- ```{mermaid} -->
 <!-- %%| mermaid-format: png -->
@@ -1003,155 +1003,155 @@ graph TD
 
 <!-- </details> -->
 
-<!-- ## Exercise mission -->
+## Exercise mission
 
-<!-- With a commitment to sustainability and a vision for a greener future, -->
-<!-- Viridia is taking proactive steps to investigate and mitigate its environmental impact. -->
-<!-- One significant area of focus is the emissions associated with food consumption and production. -->
-<!-- **Minister Reed**, -->
-<!-- head of the environment department, -->
-<!-- has called on you to step up to help -->
-<!-- and tasked with investigating emissions in the city of Viridia. --> 
-
-
-<!-- ```{=html} -->
-<!-- <br> -->
-<!-- <div class="ministry-id-card"> -->
-<!--     <div class="accent-line"></div> -->
-<!--     <div class="left-column"> -->
-<!--         <div class="logo">Ministry of Environment</div> -->
-<!--         <div class="name">Minister Reed</div> -->
-<!--         <div class="info"> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">Position</span> -->
-<!--                 <span class="value">Head of Environment</span> -->
-<!--             </div> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">Department</span> -->
-<!--                 <span class="value">Urban Food Systems</span> -->
-<!--             </div> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">ID Number</span> -->
-<!--                 <span class="value">EI-2024-0042</span> -->
-<!--             </div> -->
-<!--             <div class="info-item"> -->
-<!--                 <span class="label">Clearance</span> -->
-<!--                 <span class="value">Level 5</span> -->
-<!--             </div> -->
-<!--         </div> -->
-<!--         <div class="footer">Protecting Our Future • Est. 2024</div> -->
-<!--     </div> -->
-<!--     <div class="right-column"> -->
-<!--         <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar"> -->
-<!--     </div> -->
-<!-- </div> -->
-<!-- <br> -->
-<!-- ``` -->
-
-<!-- To start with your investigation, -->
-<!-- you'll need to visualize the emissions data effectively. -->
-<!-- This will help unlock insights crucial for the Ministry of Environment. -->
-
-<!-- ```{python} -->
-<!-- #| output: false -->
-
-<!-- food_emission = pd.read_csv("data/aggregated__food_data.csv") -->
-<!-- food_emission -->
-<!-- ``` -->
-
-<!-- ```{python} -->
-<!-- #| echo: false -->
-
-<!-- show_df(food_emission) -->
-<!-- ``` -->
-
-<!-- <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;"> -->
-
-<!-- ### Exercise 1: Planning your analysis -->
-
-<!-- Before you start, your boss **Minister Reed** has a few questions for you... -->
+With a commitment to sustainability and a vision for a greener future,
+Viridia is taking proactive steps to investigate and mitigate its environmental impact.
+One significant area of focus is the emissions associated with food consumption and production.
+**Minister Reed**,
+head of the environment department,
+has called on you to step up to help
+and tasked with investigating emissions in the city of Viridia. 
 
 
-<!-- <!-1- ```{r} -1-> -->
-<!-- <!-1- #| echo: false -1-> -->
-<!-- <!-1- api = "{{< env URL >}}" -1-> -->
-<!-- <!-1- ojs_define(apiUrl = api) -1-> -->
-<!-- <!-1- ``` -1-> -->
+```{=html}
+<br>
+<div class="ministry-id-card">
+    <div class="accent-line"></div>
+    <div class="left-column">
+        <div class="logo">Ministry of Environment</div>
+        <div class="name">Minister Reed</div>
+        <div class="info">
+            <div class="info-item">
+                <span class="label">Position</span>
+                <span class="value">Head of Environment</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Department</span>
+                <span class="value">Urban Food Systems</span>
+            </div>
+            <div class="info-item">
+                <span class="label">ID Number</span>
+                <span class="value">EI-2024-0042</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Clearance</span>
+                <span class="value">Level 5</span>
+            </div>
+        </div>
+        <div class="footer">Protecting Our Future • Est. 2024</div>
+    </div>
+    <div class="right-column">
+        <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar">
+    </div>
+</div>
+<br>
+```
 
-<!-- <!-1- ```{ojs} -1-> -->
-<!-- <!-1- //| echo: false -1-> -->
-<!-- <!-1- import {createChatInterface} from "./chat.js" -1-> -->
+To start with your investigation,
+you'll need to visualize the emissions data effectively.
+This will help unlock insights crucial for the Ministry of Environment.
 
-<!-- <!-1- { -1-> -->
+```{python}
+#| output: false
 
-<!-- <!-1- const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo."; -1-> -->
+food_emission = pd.read_csv("data/aggregated__food_data.csv")
+food_emission
+```
 
-<!-- <!-1- const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?"; -1-> -->
+```{python}
+#| echo: false
 
-<!-- <!-1- const chatInterface = createChatInterface({ -1-> -->
-<!-- <!-1-   apiUrl, -1-> -->
-<!-- <!-1-   instructions: instructions, -1-> -->
-<!-- <!-1-   firstMessage: first_message, -1-> -->
-<!-- <!-1-   bossImage: '/img/environ_minister.jpg', -1-> -->
-<!-- <!-1-   bossName: 'Minister Reed', -1-> -->    
-<!-- <!-1-   maxTokens: 100 -1-> -->
-<!-- <!-1- }); -1-> -->
+show_df(food_emission)
+```
 
-<!-- <!-1- return html`${chatInterface}`; -1-> -->
+<img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
 
-<!-- <!-1- } -1-> -->
+### Exercise 1: Planning your analysis
 
-<!-- <!-1- ``` -1-> -->
+Before you start, your boss **Minister Reed** has a few questions for you...
 
 
-<!-- ### Exercise 2: Visualizing the data -->
+```{r}
+#| echo: false
+api = "{{< env URL >}}"
+ojs_define(apiUrl = api)
+```
 
-<!-- It's time to put the Grammar of Graphics to good use. -->
-<!-- Create a scatter plot of the food supply and emissions data by following these steps: -->
+```{ojs}
+//| echo: false
+import {createChatInterface} from "./chat.js"
 
-<!-- 1. Instantiate the chart from the `food_emission` dataframe -->
-<!-- 2. Use the point mark to create a point for each observation in the data. -->
-<!-- 3. Encode `Total Food Supply (kg/capita/yr)` in the x channel -->
-<!--    and `Emissions (Kg CO2 / kg product)` in the y channel. -->
+{
+
+const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. Your colleague has been tasked with creating an Emissions Report. Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. You are in a phone text convo.";
+
+const first_message = "I need your Emissions Report on my desk by 2 pm. Remind me why you are including the Total Food Supply in your analysis?";
+
+const chatInterface = createChatInterface({
+  apiUrl,
+  instructions: instructions,
+  firstMessage: first_message,
+  bossImage: '/img/environ_minister.jpg',
+  bossName: 'Minister Reed',    
+  maxTokens: 100
+});
+
+return html`${chatInterface}`;
+
+}
+
+```
 
 
-<!-- ::: {.callout-tip icon="false" collapse="true"} -->
+### Exercise 2: Visualizing the data
 
-<!-- # Solution -->
+It's time to put the Grammar of Graphics to good use.
+Create a scatter plot of the food supply and emissions data by following these steps:
 
-<!-- ```{python} -->
+1. Instantiate the chart from the `food_emission` dataframe
+2. Use the point mark to create a point for each observation in the data.
+3. Encode `Total Food Supply (kg/capita/yr)` in the x channel
+   and `Emissions (Kg CO2 / kg product)` in the y channel.
 
-<!-- alt.Chart(food_emission).mark_point().encode( -->
-<!--     x='Total Food Supply (kg/capita/yr)', -->
-<!--     y='Emissions (Kg CO2 / kg product)', -->
-<!--     tooltip='Food Item' -->
-<!-- ) -->
-<!-- ``` -->
 
-<!-- ::: -->
+::: {.callout-tip icon="false" collapse="true"}
 
-<!-- ### Exercise 3: Inspecting individual marks -->
+# Solution
 
-<!-- These are striking results! There are some clear clusters and outliers in the data. Add a tooltip to your chart to investigate which foods these are. -->
+```{python}
 
-<!-- ### Exercise 4: Reporting your results -->
+alt.Chart(food_emission).mark_point().encode(
+    x='Total Food Supply (kg/capita/yr)',
+    y='Emissions (Kg CO2 / kg product)',
+    tooltip='Food Item'
+)
+```
 
-<!-- <!-1- ```{ojs} -1-> -->
-<!-- <!-1- //| echo: false -1-> -->
-<!-- <!-1- { -1-> -->  
-<!-- <!-1-   const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. You are discussing a recent Emissions Report with your colleague. The report reveals surprising findings: beef has an exceptionally high emissions rate (around 60 Kg CO2/kg product) compared to other foods, and its supply is also high. Milk has a high supply (190 kg/capita/yr) but moderate emissions. Many vegetables have very low emissions. You see great potential in reducing beef consumption in Viridia to combat climate change. Guide your colleague to this conclusion. Do not give the solution in the first message; lead your colleague to the answer over the course of three messages. Once they reach the correct conclusion, end the conversation."; -1-> -->
+:::
 
-<!-- <!-1-   const first_message = "I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?"; -1-> -->
+### Exercise 3: Inspecting individual marks
 
-<!-- <!-1-   const chatInterface = createChatInterface({ -1-> -->
-<!-- <!-1-     apiUrl, -1-> -->
-<!-- <!-1-     instructions: instructions, -1-> -->
-<!-- <!-1-     firstMessage: first_message, -1-> -->
-<!-- <!-1-     bossImage: '/img/environ_minister.jpg', -1-> -->
-<!-- <!-1-     bossName: 'Minister Reed', -1-> -->    
-<!-- <!-1-     maxTokens: 100 -1-> -->
-<!-- <!-1-   }); -1-> -->
+These are striking results! There are some clear clusters and outliers in the data. Add a tooltip to your chart to investigate which foods these are.
 
-<!-- <!-1-   return html`${chatInterface}`; -1-> -->
-<!-- <!-1- } -1-> -->
-<!-- <!-1- ``` -1-> -->
+### Exercise 4: Reporting your results
+
+```{ojs}
+//| echo: false
+{  
+  const instructions = "You are Minister Reed of the city of Viridia, a sharp-witted, impatient but supportive environmental minister. You are discussing a recent Emissions Report with your colleague. The report reveals surprising findings: beef has an exceptionally high emissions rate (around 60 Kg CO2/kg product) compared to other foods, and its supply is also high. Milk has a high supply (190 kg/capita/yr) but moderate emissions. Many vegetables have very low emissions. You see great potential in reducing beef consumption in Viridia to combat climate change. Guide your colleague to this conclusion. Do not give the solution in the first message; lead your colleague to the answer over the course of three messages. Once they reach the correct conclusion, end the conversation.";
+
+  const first_message = "I've been reviewing the emissions data. What did you notice about the patterns in our food emissions?";
+
+  const chatInterface = createChatInterface({
+    apiUrl,
+    instructions: instructions,
+    firstMessage: first_message,
+    bossImage: '/img/environ_minister.jpg',
+    bossName: 'Minister Reed',    
+    maxTokens: 100
+  });
+
+  return html`${chatInterface}`;
+}
+```
