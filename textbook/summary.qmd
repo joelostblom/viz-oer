@@ -1,3 +1,5 @@
 # Summary
 
-In summary, this book has no content whatsoever.
+New line
+
+In summary, this book has no content.
