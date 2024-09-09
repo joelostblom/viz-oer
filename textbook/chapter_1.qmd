@@ -900,73 +900,73 @@ based on our knowledge about physics of moving objects.
 <!-- you can see an overview of how which other libraries exist -->
 <!-- and how they are connected. -->
 
-<!-- ```{mermaid} -->
-<!-- %%| mermaid-format: png -->
-<!-- %%{init: {'flowchart': {'width': 800}}}%% -->
-<!-- graph TD -->
-<!--     %% Color definitions -->
-<!--     classDef alignmentTool fill:#FF69B4,color:#000 -->
-<!--     classDef highLevel fill:#87CEFA,color:#000 -->
-<!--     classDef lowLevel fill:#FFA500,color:#000 -->
-<!--     classDef javascript fill:#FFFFFF,color:#000 -->
+```{mermaid}
+%%| mermaid-format: png
+%%{init: {'flowchart': {'width': 800}}}%%
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
 
-<!--     %% R ecosystem -->
-<!--     base[base]:::lowLevel -->
-<!--     grid[grid]:::lowLevel -->
-<!--     lattice[lattice]:::highLevel -->
-<!--     ggplot[ggplot]:::highLevel -->
-<!--     ggiraph[ggiraph]:::highLevel -->
-<!--     ggplotly[ggplotly]:::highLevel -->
-<!--     plotly_r[plotly]:::lowLevel -->
-<!--     patchwork[patchwork/cowplot]:::alignmentTool -->
-<!--     htmlwidgets[htmlwidgets]:::javascript -->
-<!--     altair_r[Altair]:::highLevel -->
+    %% R ecosystem
+    base[base]:::lowLevel
+    grid[grid]:::lowLevel
+    lattice[lattice]:::highLevel
+    ggplot[ggplot]:::highLevel
+    ggiraph[ggiraph]:::highLevel
+    ggplotly[ggplotly]:::highLevel
+    plotly_r[plotly]:::lowLevel
+    patchwork[patchwork/cowplot]:::alignmentTool
+    htmlwidgets[htmlwidgets]:::javascript
+    altair_r[Altair]:::highLevel
 
-<!--     %% JavaScript-related -->
-<!--     js[JavaScript]:::javascript -->
-<!--     d3[D3]:::javascript -->
-<!--     vega[Vega]:::javascript -->
-<!--     vegalite[Vega-Lite]:::javascript -->
+    %% JavaScript-related
+    js[JavaScript]:::javascript
+    d3[D3]:::javascript
+    vega[Vega]:::javascript
+    vegalite[Vega-Lite]:::javascript
 
-<!--     %% Python ecosystem -->
-<!--     matplotlib[Matplotlib]:::lowLevel -->
-<!--     plotnine[Plotnine]:::highLevel -->
-<!--     pandas[Pandas]:::highLevel -->
-<!--     seaborn[Seaborn]:::highLevel -->
-<!--     holoviz[HoloViz]:::highLevel -->
-<!--     bokeh[Bokeh]:::lowLevel -->
-<!--     plotly_py[Plotly]:::lowLevel -->
-<!--     plotly_express[Plotly Express]:::highLevel -->
-<!--     altair[Altair]:::highLevel -->
+    %% Python ecosystem
+    matplotlib[Matplotlib]:::lowLevel
+    plotnine[Plotnine]:::highLevel
+    pandas[Pandas]:::highLevel
+    seaborn[Seaborn]:::highLevel
+    holoviz[HoloViz]:::highLevel
+    bokeh[Bokeh]:::lowLevel
+    plotly_py[Plotly]:::lowLevel
+    plotly_express[Plotly Express]:::highLevel
+    altair[Altair]:::highLevel
 
-<!--     %% Subgraph for R ecosystem -->
-<!--     subgraph R_Ecosystem[R Ecosystem] -->
-<!--         base -1-> grid -->
-<!--         grid -1-> lattice & ggplot -->
-<!--         lattice & ggplot -1-> patchwork -->
-<!--         ggplot -.-> ggiraph & ggplotly -->
-<!--         ggplotly -1-> plotly_r -->
-<!--         htmlwidgets -1-> ggiraph & plotly_r & altair_r -->
-<!--     end -->
+    %% Subgraph for R ecosystem
+    subgraph R_Ecosystem[R Ecosystem]
+        base --> grid
+        grid --> lattice & ggplot
+        lattice & ggplot --> patchwork
+        ggplot -.-> ggiraph & ggplotly
+        ggplotly --> plotly_r
+        htmlwidgets --> ggiraph & plotly_r & altair_r
+    end
 
-<!--     %% Subgraph for JavaScript ecosystem -->
-<!--     subgraph JS_Ecosystem[JavaScript Ecosystem] -->
-<!--         js -1-> d3 -->
-<!--         d3 -1-> vega -->
-<!--         vega -1-> vegalite -->
-<!--     end -->
+    %% Subgraph for JavaScript ecosystem
+    subgraph JS_Ecosystem[JavaScript Ecosystem]
+        js --> d3
+        d3 --> vega
+        vega --> vegalite
+    end
 
-<!--     %% Subgraph for Python ecosystem -->
-<!--     subgraph Python_Ecosystem[Python Ecosystem] -->
-<!--         matplotlib -1-> plotnine & pandas & seaborn & holoviz -->
-<!--         holoviz -1-> bokeh -->
-<!--         plotly_py -1-> plotly_express -->
-<!--         vegalite -1-> altair & altair_r -->
-<!--     end -->
+    %% Subgraph for Python ecosystem
+    subgraph Python_Ecosystem[Python Ecosystem]
+        matplotlib --> plotnine & pandas & seaborn & holoviz
+        holoviz --> bokeh
+        plotly_py --> plotly_express
+        vegalite --> altair & altair_r
+    end
 
-<!--     %% Connections between ecosystems -->
-<!--     js -1-> htmlwidgets & bokeh & plotly_py -->
-<!-- ``` -->
+    %% Connections between ecosystems
+    js --> htmlwidgets & bokeh & plotly_py
+```
 
 <!-- ```{mermaid} -->
 <!-- %%| mermaid-format: png -->
