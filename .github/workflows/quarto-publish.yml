@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 name: Render and Publish
 
@@ -17,6 +18,8 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
 
     steps:
+      - uses: actions/checkout@v4  # Checkout the repo to find files, such as the env
+      
       - name: Setup the environment
         uses: mamba-org/setup-micromamba@v1
         with:
