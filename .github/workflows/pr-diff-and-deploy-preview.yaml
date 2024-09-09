@@ -34,6 +34,7 @@ jobs:
           environment-file: environment.yaml
           init-shell: bash
           cache-environment: true
+          post-cleanup: none
 
       - name: Build the PR version of the website
         run: quarto render textbook; tree
