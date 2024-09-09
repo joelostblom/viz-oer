@@ -224,7 +224,7 @@ but looking at the data graphically shows us how different these datasets actual
 Now that we have experienced the benefits of visualizing data,
 let's figure out how to create such visualizations!
 
-## Which visualization library should we pick? 
+## Which visualization library should we pick?
 
 There is a lot we can learn about visualization
 without using coding,
@@ -240,9 +240,7 @@ that most visualization libraries can be classified as
 taking either a high level declarative approach
 or a low level imperative approach to creating visualization.
 
-:::: {.callout-note icon="false"}
-
-## Exercise
+::::: {.callout-default .ex-prompt}
 
 To understand the difference between these two approaches,
 let's start with an example,
@@ -315,14 +313,20 @@ alt.Chart(df, width=200, height=200).mark_point().encode(
 
 Although the same chart is created from both these pseudocode examples,
 the syntax looks widely different.
-Before clicking on the solution below to read our explanation of the two approaches,
+Before clicking on the hint and solution below to read our explanation of the two approaches,
 pause here and try to describe the differences between the two
 in your own words^[Actively engaging your brain in exercises like this
 instead of simply trying to memorize an explanation you read,
 aids in recalling the information later].
  <!--TODO ref? -->
+ <!--TODO should this be moved to an intro chapter? -->
 
-::: {.callout-tip title='Solution' collapse=true}
+:::: {.callout-default .ex-hint}
+
+Does one of the approaches focus more on the data
+and the other more on the plot-specific details?
+
+::: {.callout-default .ex-solution}
 
 Based on the syntax of the exercise above,
 we can say that a declarative approach to visualization
@@ -334,6 +338,8 @@ and then assigning them to groups by looping through the data.
 :::
 
 ::::
+
+:::::
 
 A related way to understand declarative vs imperative approaches
 is to consider the difference between giving an instruction in each:
@@ -384,9 +390,7 @@ to convey particular meanings.
 Programming languages also have a grammatical structure,
 let's see how they work in the following exercise:
 
-:::: {.callout-note}
-
-## Exercise
+::::: {.callout-default .ex-prompt}
 
 What do you think the output would be of the following Python code?
 
@@ -408,9 +412,14 @@ Do you think it differs between programming languages?
 ```python
 'one' + 'two'
 ```
-::: {.callout-tip collapse=true}
+:::: {.callout-default .ex-hint}
 
-### Solution
+Just like that addition of numbers
+contain all counts of the individual numbers,
+maye the addition of two strings
+would contain all the characters from both the strings?
+
+::: {.callout-default .ex-solution}
 
 The grammar of Python defines that the `+`-operator
 should perform concatenation when strings are added together,
@@ -422,6 +431,8 @@ so it would throw an error complaining that non-numeric arguments were passed to
 :::
 
 ::::
+
+:::::
 
 As with the grammar of programming languages,
 visualization packages make different choices
@@ -726,7 +737,7 @@ and one column each on the x and y axis.
 We will learn more about for which purposes it is effective
 later in the book.
 
-:::: {.callout-note title='Exercise'}
+::::: {.callout-default .ex-prompt}
 
 Study the chart above,
 what can you say about the relationship
@@ -741,12 +752,22 @@ it's always good to ask yourself
 if your interpretation of the chart makes sense,
 given your knowledge about how the world works.
 
-::: {.callout-tip title='Solution' collapse=true}
+:::: {.callout-default .ex-hint}
+
+It can be helpful to start with a particular area of the chart.
+For example,
+look at the cars with the most powerful engines (highest horsepower),
+what is their fuel efficiency?
+Now do the same for the cars with the least powerful engines 
+and compare the two.
+
+::: {.callout-default .ex-solution}
 
 From the chart,
 we can see that `Horsepower` and `Miles_per_Gallon`
-are negatively correlated.
-This means that cars with more powerful engines (higher Horsepower),
+are "negatively correlated".
+In plain English,
+this means that cars with more powerful engines (higher Horsepower),
 have lower fuel efficiency (lower Miles_per_Gallon).
 This makes sense as more powerful engines often consume more gas
 than less powerful ones.
@@ -757,6 +778,8 @@ supports our mechanistic understanding of the world.
 :::
 
 ::::
+
+:::::
 
 Our conclusion above makes sense for the data we showed in chart.
 But remember that there are other variables in our dataframe,
@@ -833,11 +856,19 @@ which we will learn about in a future chapter.
 <!--TODO should we learn this here? depends on how many figs will need it before it is introduced in a chaprter -->
 :::
 
-:::: {.callout-note title='Exercise'}
+::::: {.callout-default .ex-prompt}
 
 How does a car's weight relate to its fuel efficiency?
 
-::: {.callout-tip title='Solution' collapse=true}
+:::: {.callout-default .ex-hint}
+
+As with the previous exercise,
+you can try to start with a specific area of the chart,
+first focusing on finding the fuel efficiency
+of the cars with the highest horsepower,
+and then compare it to the cars with the lowest horsepower.
+
+::: {.callout-default .ex-solution}
 
 We can see that weight is correlated positively with `Horsepower`
 and negatively with `Miles_per_Gallon`.
@@ -853,6 +884,8 @@ based on our knowledge about physics of moving objects.
 :::
 
 ::::
+
+:::::
 
 ## Deep dive
 
