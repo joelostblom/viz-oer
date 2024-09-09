@@ -90,6 +90,6 @@ jobs:
         with:
           message: |
               Hello! I've built a preview of your PR so that you can compare it to the current `main` branch:
-              * [PR deploy preview including highlighted diff with `main`](https://joelostblom.github.io/viz-oer/diff${{ github.event.number }}/pull${{ github.event.number }}/textbook/_book/index.html)
+              * [PR deploy preview including highlighted diff with `main`](https://joelostblom.github.io/viz-oer/diff${{ github.event.number }}/index.html)
               * [PR deploy preview](https://joelostblom.github.io/viz-oer/pull${{ github.event.number }}/textbook/_book/index.html)
               * [Current live site](https://joelostblom.github.io/viz-oer/index.html) (just for convenience, not changed by CI)
