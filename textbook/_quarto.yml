@@ -8,7 +8,7 @@ book:
   chapters:
     - index.qmd
     - chapter-key.qmd
-    # - chapter_1.qmd
+    - chapter_1.qmd
     - summary.qmd
 
 filters:
