@@ -93,12 +93,11 @@ jobs:
       # Post a message on the PR thread with links to the PR preview, the diff, the base version, and the production version of the website
       # YOUR_SITE below should be replaced with your website's URL
       # OLD_SITE_FOLDER should be replaced with the folder where the "base" version of the website is stored
-      - name: Post PR preview, diff, current main, and production URLS to PR thread
+      - name: Post PR preview, diff, and current main URLS to PR thread
         uses: mshick/add-pr-comment@v2.8.1
         with:
           message: |
-              Hello! I've built a preview of your PR so that you can compare it to the current `main` branch.
-              * PR deploy preview available [here](https://joelostblom.github.io/viz-oer/pull${{ github.event.number }}/index.html)
-              * PR diff with `main` available [here](https://joelostblom.github.io/viz-oer/diff${{ github.event.number }}/index.html)
-              * Current `main` deploy preview available [here](https://joelostblom.github.io/viz-oer/index.html)
-              * Public production build available [here](https://joelostblom.github.io/viz-oer/)
+              Hello! I've built a preview of your PR so that you can compare it to the current `main` branch:
+              * [PR deploy preview including highlighted diff with `main`](https://joelostblom.github.io/viz-oer/diff${{ github.event.number }}/index.html)
+              * [PR deploy preview](https://joelostblom.github.io/viz-oer/pull${{ github.event.number }}/textbook/_book/index.html)
+              * [Current live site](https://joelostblom.github.io/viz-oer/index.html) (just for convenience, not changed by CI)
