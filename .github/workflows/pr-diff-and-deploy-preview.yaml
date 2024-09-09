@@ -12,6 +12,8 @@ on:
 jobs:
   deploy-pr-preview:
     runs-on: ubuntu-latest
+    env:
+      DBUS_SESSION_BUS_ADDRESS: /dev/null
     permissions:
       contents: write
       packages: write
@@ -33,12 +35,7 @@ jobs:
           cache-environment: true
 
       - name: Build the PR version of the website
-        run: |
-          export XDG_RUNTIME_DIR=/run/user/$(id -u)
-          export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
-          dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only &
-          quarto render textbook
-          tree
+        run: quarto render textbook; tree
         shell: bash -el {0}  # Required to see the mamba init env
 
       # Push the PR version of the website to the gh-pages branch 
