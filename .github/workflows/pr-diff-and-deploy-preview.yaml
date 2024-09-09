@@ -77,6 +77,7 @@ jobs:
           rustup update
           pip install --upgrade pip
           python -m pip install https://github.com/trevorcampbell/website_diff/archive/jquery-waitload-nohighlight.zip
+          rm -rf diff${{ github.event.number }}
           tree
           website_diff --old . --new pull${{ github.event.number }}/textbook/_book --diff diff${{ github.event.number }}
 
