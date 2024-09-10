@@ -1097,7 +1097,6 @@ const chatInterface = createChatInterface({
   firstMessage: first_message,
   bossImage: 'img/environ_minister.jpg',
   bossName: 'Minister Reed',    
-  maxTokens: 100
 });
 
 return html`${chatInterface}`;
@@ -1152,7 +1151,6 @@ These are striking results! There are some clear clusters and outliers in the da
     firstMessage: first_message,
     bossImage: 'img/environ_minister.jpg',
     bossName: 'Minister Reed',    
-    maxTokens: 100
   });
 
   return html`${chatInterface}`;
