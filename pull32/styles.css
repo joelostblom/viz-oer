@@ -332,16 +332,31 @@ h4 {
   font-size: 13px;
 }
 
+.callout-optional {
+  border-left-color: #52575C !important;
+}
+.callout-optional > .callout-header {
+  background-color: #F1F3F5 !important;
+}
+.callout-optional > .callout-header::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f14e";
+  margin-right: 5px;
+  font-size: 13px;
+}
+
 .callout-ex-prompt > .callout-header::after,
 .callout-ex-hint > .callout-header::after,
-.callout-ex-solution > .callout-header::after {
+.callout-ex-solution > .callout-header::after,
+.callout-optional > .callout-header::after {
   font-family: "Font Awesome 5 Free";
   content: "\f054";
   transition: transform .2s ease;
 }
 .callout-ex-prompt > .callout-header[aria-expanded="true"]::after,
 .callout-ex-hint > .callout-header[aria-expanded="true"]::after,
-.callout-ex-solution > .callout-header[aria-expanded="true"]::after {
+.callout-ex-solution > .callout-header[aria-expanded="true"]::after,
+.callout-optional > .callout-header[aria-expanded="true"]::after {
   transform: rotate(90deg);
 }
 .callout-header {
