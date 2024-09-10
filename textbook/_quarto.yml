@@ -8,8 +8,7 @@ book:
   chapters:
     - index.qmd
     - chapter-key.qmd
-    # - chapter_1.qmd
-    - summary.qmd
+    - chapter_1.qmd
 
 filters:
   - custom-callouts.lua
