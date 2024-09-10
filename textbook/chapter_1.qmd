@@ -1,5 +1,5 @@
 ---
-title: "Intro to data visualization and graphical grammars"
+title: "Introduction"
 include-in-header:
   - text: |
       <style>
