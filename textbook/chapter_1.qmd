@@ -888,7 +888,7 @@ based on our knowledge about physics of moving objects.
 
 ## Deep dive
 
-<details><summary>Click to expand the optional deep dive or proceed to the exercises.</summary>
+::: {.callout-default .optional}
 
 ### The R and Python visualization ecosystems
 
@@ -1004,7 +1004,7 @@ of the visualization landscapes in R and Python.
 </div>
 ```
 
-</details>
+:::
 
 ## Exercise mission
 
