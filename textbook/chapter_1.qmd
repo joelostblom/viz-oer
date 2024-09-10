@@ -982,6 +982,9 @@ graph TD
     LL[Low Level]:::lowLevel
     JS[JavaScript]:::javascript
 ```
+As a reward for checking out the deep dive,
+enjoy this genAI composition
+of the visualization landscapes in R and Python.
 
 ```{=html}
 <div class="song-container">
