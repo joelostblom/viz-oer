@@ -1070,7 +1070,7 @@ show_df(food_emission)
 
 <img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
 
-### Exercise 1: Planning your analysis
+### Planning your analysis
 
 Before you start, your boss **Minister Reed** has a few questions for you...
 
@@ -1106,7 +1106,7 @@ return html`${chatInterface}`;
 ```
 
 
-### Exercise 2: Visualizing the data
+### Visualizing the data
 
 It's time to put the Grammar of Graphics to good use.
 Create a scatter plot of the food supply and emissions data by following these steps:
@@ -1132,11 +1132,11 @@ alt.Chart(food_emission).mark_point().encode(
 
 :::
 
-### Exercise 3: Inspecting individual marks
+### Inspecting individual marks
 
 These are striking results! There are some clear clusters and outliers in the data. Add a tooltip to your chart to investigate which foods these are.
 
-### Exercise 4: Reporting your results
+### Reporting your results
 
 ```{ojs}
 //| echo: false
