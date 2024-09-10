@@ -1051,9 +1051,6 @@ and tasked with investigating emissions in the city of Viridia.
 <br>
 ```
 
-
-<img src="/img/environ_minister.jpg" alt="Avatar" class="avatar" style="display: none;">
-
 ::::: {.callout-default .ex-prompt}
 
 To start with your investigation,
