@@ -1,4 +1,4 @@
-# {.unnumbered .hidden}
+# Welcome {.unnumbered}
 
 This landing page will contain an image
 and a short text about the reasoning behind the book and what it is trying to achieve.
