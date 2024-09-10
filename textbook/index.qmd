@@ -1,5 +1,4 @@
-# Preface {.unnumbered}
+# Welcome {.unnumbered}
 
-This is a Quarto book.
-
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+This landing page will contain an image
+and a short text about the reasoning behind the book and what it is trying to achieve.
