@@ -2,8 +2,8 @@ export function createChatInterface({
   apiUrl,
   instructions,
   firstMessage,
-  bossImage = 'viz-oer/img/environ_minister.jpg',
-  bossName = 'Minister Reed',
+  bossImage,
+  bossName,
   maxTokens = 100
 }) {
   let messageCount = 0;
