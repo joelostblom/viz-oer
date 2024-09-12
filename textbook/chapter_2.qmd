@@ -1,0 +1,139 @@
+---
+title: "Grouping"
+include-in-header:
+  - text: |
+      <style>
+        .table.dataframe {
+          width: auto;
+          text-align: right;
+        }
+      </style>
+fig-width: 4
+fig-height: 4
+---
+
+::: {.callout-note title="Learning outcomes"}
+- **Explain** how grouping allows you to directly compare categories and helps you to avoid making incorrectly generalized conclusions (e.g., Simpson’s Paradox).
+
+- **Apply** grouping strategies using color, size, shape and position to visually distinguish between categories via `.encode(color='category')` and `aes(color=category)`.
+
+- **Apply** the `facet` method to split data into separate subplots, revealing patterns in each group.
+
+- **Select** the grouping strategy that best highlights your key comparison. Use color to focus on specific values, and apply faceting to reveal broader trends across categories.
+
+:::
+
+## The case for grouping
+
+We now know how to create basic declarative visualizations, representing each data point as an identical ‘mark’ on a canvas. But as we shall find out, this approach can paint a woefully incomplete picture.
+
+Consider the following example:
+
+::::: {.callout-default .ex-prompt}
+
+In Viridia, historians have been studying datasets from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors.
+
+During their research, they uncovered records of a toxic beverage known as “alcohol.” 
+
+They discovered a puzzling correlation: countries on Earth with higher average life expectancies often a greater proportion of heavy alcohol drinkers. They now plan to introduce alcohol into Viridia.
+
+Below is a chart illustrating their findings:
+
+
+```{python}
+#| label: fig-polar
+#| fig-cap: "Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data"
+import altair as alt
+import pandas as pd
+
+life_expectancy_df = pd.read_csv("data/life_expectancy_alcohol.csv")
+
+alt.Chart(life_expectancy_df).mark_circle().encode(
+    x=alt.X('average_life_expectancy', scale=alt.Scale(zero=False)),
+    y=alt.Y('percentage_heavy_drinkers'),
+    tooltip=['country', 'average_life_expectancy', 'percentage_heavy_drinkers']
+)
+```
+
+*Try hovering over a data point to see its country.*
+
+Suggest one change to the scatterplot that could provide a more nuanced picture of the relationship between alcohol consumption and life expectancy.
+
+
+:::: {.callout-default .ex-hint}
+
+Alcohol consumption is influenced by cultural norms. How could we color the data points to show this?
+
+::: {.callout-default .ex-solution}
+
+We can color each country by its geographical region:  
+
+```{python}
+
+alt.Chart(life_expectancy_df).mark_circle().encode(
+    color='region',
+    x=alt.X('average_life_expectancy', scale=alt.Scale(zero=False)),
+    y=alt.Y('percentage_heavy_drinkers'),
+    tooltip=['country', 'average_life_expectancy', 'percentage_heavy_drinkers']
+)
+```
+
+
+
+Notice that the data points form clusters by continent?
+
+While countries in both <span style="color: #E37F7E; font-weight: bold">Asia</span> and <span style="color: #9CCCC8; font-weight: bold">Europe</span> tend to have high life expectancies, heavy drinking is more common in <span style="color: #9CCCC8; font-weight: bold">Europe</span>. This makes sense - European countries often have more pronounced drinking cultures. 
+
+Meanwhile, most of the countries with low life expectancies are in <span style="color: #5D84A8; font-weight: bold">Africa</span>. Regional public health problems such as high rates of infant mortality can reduce life expectancy.
+
+By grouping the data, we have revealed that world region influences both life expectancy and alcohol consumption. This is sobering news for Viridia.
+
+:::
+
+::::
+
+:::::
+
+
+Coloring data points is a classic grouping strategy. Grouping means setting the visual appearance of data points based on the value of categorical variable. This allows us to distinguish between groups in the visualization and make more informed decisions.
+
+As we have seen, it has two significant benefits for our analysis:
+
+1. **It allows us to directly compare the values for distinct groups and identify differing trends**
+
+2. **It helps us avoid making hasty generalizations about our dataset**
+
+
+
+
+
+## Strategies for grouping
+
+Several grouping strategies exist, utilizing the visual aesthetics: color, shape, size and position. 
+
+![](img/grouping-strategies.gif)
+
+Lets examine each strategy.
+
+### Color
+
+Color can easily be combined with other grouping techniques.
+
+### Shape
+
+Often combined with color. Helps for colorblind people.
+
+### Size
+
+Size is more useful for ordinal categories.
+
+### Position
+
+
+
+## Introduction to faceting
+
+
+Include summary sheet with strengths and weaknesses of each grouping strategy.
+
+## Mission
