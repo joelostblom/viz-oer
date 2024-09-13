@@ -14,7 +14,7 @@ filters:
   - custom-callouts.lua
 
 format:
-  html:
+  live-html:
     theme: cosmo
     css: styles.css
     monofont: "Ubuntu Mono"
