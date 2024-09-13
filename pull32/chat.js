@@ -76,7 +76,7 @@ export function createChatInterface({
 
   chatDisplay.innerHTML += createChatMessageHTML(firstMessage, true);
 
-  submitButton.onclick = async () => {
+  async function handleSubmit() {
     const prompt = userInput.value;
     if (prompt.trim() === '') return;
     messageCount++;
@@ -90,7 +90,10 @@ export function createChatInterface({
       chatDisplay.innerHTML += createChatMessageHTML("Error: " + error.message, true);
     }
     chatDisplay.scrollTop = chatDisplay.scrollHeight;
-  };
+  }
+
+  submitButton.onclick = handleSubmit;
+  userInput.addEventListener('keypress', e => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), handleSubmit()));
 
   chatDisplay.scrollTop = chatDisplay.scrollHeight;
   return container;
