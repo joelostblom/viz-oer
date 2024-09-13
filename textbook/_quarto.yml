@@ -17,3 +17,11 @@ format:
   html:
     theme: cosmo
     css: styles.css
+    monofont: "Ubuntu Mono"
+    mainfont: Ubuntu
+    number-depth: 2
+webr:
+  packages:
+    - dplyr
+    - readr
+    - ggplot2
