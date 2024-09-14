@@ -1,0 +1,82 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Textbook",
+    "section": "",
+    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "chapter-key.html",
+    "href": "chapter-key.html",
+    "title": "Chapter key",
+    "section": "",
+    "text": "A heading\nThe main text will go here. This can cover both practical and theoretical aspects of data visualization.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "chapter-key.html#a-heading",
+    "href": "chapter-key.html#a-heading",
+    "title": "Chapter key",
+    "section": "",
+    "text": "A sub-heading\nThese will be used to divide content further.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "chapter-key.html#exercises",
+    "href": "chapter-key.html#exercises",
+    "title": "Chapter key",
+    "section": "Exercises",
+    "text": "Exercises\n\n\n\n\n\n\nExercise 1\n\n\n\n\n\n\nExercises aim to engage you actively with the material, both to make it more fun to learn and to improve your learning. Try to solve the exercise on your own first, before looking at the hint and the solution; this active engagement is what aids your learning. Click the hint below to expand it.\n\n\n\n\n\n\nHint\n\n\n\n\n\n\nBefore looking at the solution, try to use the hint to figure out the answer.\n\n\n\n\n\n\nSolution\n\n\n\n\n\n\nThe solution is inside the “Hint” section, to encourage you to first try to use the hint to solve the exercise.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "chapter-key.html#coding-content",
+    "href": "chapter-key.html#coding-content",
+    "title": "Chapter key",
+    "section": "Coding content",
+    "text": "Coding content\nCoding content will often include a panel with multiple tabs, so that you can easily see what the same code looks like for different visualization packages. These sections also include explanations that are specific to the code of a certain package, rather than being about data visualization in general.\n\nPackage OnePackage Two\n\n\n\n# Code for the first package, e.g.:\nrange(5)\n\nrange(0, 5)\n\n\n\n\n\n# Code for the second package, e.g.:\nseq(5)\n\n[1] 1 2 3 4 5\n\n\n\n\n\n\n\nOptional content\nContent in the margin is optional and can include fun factual tidbits, historical explanations, etymology, and more.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "chapter-key.html#deep-dive",
+    "href": "chapter-key.html#deep-dive",
+    "title": "Chapter key",
+    "section": "Deep dive",
+    "text": "Deep dive\n\n\nClick to expand the optional deep dive or proceed to the exercise mission.\n\nEvery chapter contains a deep dive with optional content. This section elaborates on a concept that was learned in the chapter, and often contains more challenging content.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "chapter-key.html#exercise-mission",
+    "href": "chapter-key.html#exercise-mission",
+    "title": "Chapter key",
+    "section": "Exercise mission",
+    "text": "Exercise mission\nIn addition to the exercises spread throughout the content, each chapter contains a set of connected exercises in the end that interweaves the content learned throughout the chapter. This challenges you to deepen your understanding as it requires comprehension of how the content fit together rather than solely mastering each section in isolation.\nTo help you along the way on these exercises, you will be able to converse with an avatar from the fictional setting of the book. These will make it clear what your goal is for each section and help you along the way if you get stuck.\nBefore you get started with this section, make sure you review the chapter summary in the learning outcomes and that you understand each of the items there.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "1  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  }
+]
