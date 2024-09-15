@@ -7,13 +7,21 @@ book:
   date: today
   chapters:
     - index.qmd
-    - chapter-key.qmd
-    - chapter_1.qmd
+    - 0_chapter-key.qmd
+    - 1_intro.qmd
 
 filters:
   - custom-callouts.lua
 
 format:
-  html:
+  live-html:
     theme: cosmo
     css: styles.css
+    monofont: "Ubuntu Mono"
+    mainfont: Ubuntu
+    number-depth: 2
+webr:
+  packages:
+    - dplyr
+    - readr
+    - ggplot2
