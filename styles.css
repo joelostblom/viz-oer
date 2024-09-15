@@ -1,5 +1,17 @@
 /*-- Importing fa icons --*/
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
+/*-- Importing Ubuntu fonts --*/
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+/* Regular code blocks */
+code {
+    font-size: 16px !important;
+}
+/* Code in quarto live blocks */
+.cm-content {
+    font-size: 16px;
+    font-family: Ubuntu Mono;
+}
 
 .boxed {
     background-color: #ffffff;
@@ -332,16 +344,31 @@ h4 {
   font-size: 13px;
 }
 
+.callout-optional {
+  border-left-color: #52575C !important;
+}
+.callout-optional > .callout-header {
+  background-color: #F1F3F5 !important;
+}
+.callout-optional > .callout-header::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f14e";
+  margin-right: 5px;
+  font-size: 13px;
+}
+
 .callout-ex-prompt > .callout-header::after,
 .callout-ex-hint > .callout-header::after,
-.callout-ex-solution > .callout-header::after {
+.callout-ex-solution > .callout-header::after,
+.callout-optional > .callout-header::after {
   font-family: "Font Awesome 5 Free";
   content: "\f054";
   transition: transform .2s ease;
 }
 .callout-ex-prompt > .callout-header[aria-expanded="true"]::after,
 .callout-ex-hint > .callout-header[aria-expanded="true"]::after,
-.callout-ex-solution > .callout-header[aria-expanded="true"]::after {
+.callout-ex-solution > .callout-header[aria-expanded="true"]::after,
+.callout-optional > .callout-header[aria-expanded="true"]::after {
   transform: rotate(90deg);
 }
 .callout-header {
