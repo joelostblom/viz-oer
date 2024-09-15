@@ -1248,8 +1248,8 @@ With altair you can add a `tooltip` just as you have been using
 Try it out to investigate which foods these are.
 
 ```{pyodide}
-#| exercise: tooltip_chart
-alt.Chart(food_emission).______.______
+#| exercise: tooltip_chart_alt
+alt.Chart(food_emission).______.______(
     ______
     ______
     tooltip=______,
@@ -1257,10 +1257,15 @@ alt.Chart(food_emission).______.______
 ```
 
 :::: {.callout-default .ex-hint}
-
+Take a closer look at the emissions data table - you'll need the correct column name for the tooltip.
 
 ::: {.callout-default .ex-solution}
-
+```{python}
+alt.Chart(food_emission).mark_point().encode(
+    x='Total Food Supply (kg/capita/yr)',
+    y='Emissions (Kg CO2 / kg product)',
+    tooltip='Food Item',
+)
 ```{pyodide}
 #| exercise: tooltip_chart_alt
 #| check: true
