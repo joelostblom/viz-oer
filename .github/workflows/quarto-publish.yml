@@ -29,9 +29,11 @@ jobs:
           post-cleanup: none
 
       - name: Build the website
-        run: quarto render textbook
+        run: quarto render textbook; echo "quarto is done"
         shell: bash -el {0}  # Required to see the mamba init env
 
+      - run: echo "Next step worked"
+      
       # Push the website to the gh-pages branch 
       - name: Push the PR version of the website to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3.8.0
