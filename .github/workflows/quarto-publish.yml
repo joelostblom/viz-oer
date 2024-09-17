@@ -1,10 +1,10 @@
+name: "Render and Publish"
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
-name: Render and Publish
 
 # you need these permissions to publish to GitHub pages
 permissions: 
