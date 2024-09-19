@@ -10,6 +10,9 @@ include-in-header:
       </style>
 fig-width: 4
 fig-height: 4
+resources:
+  - data
+  - utils.py
 ---
 
 ::: {.callout-note title="Learning outcomes"}
@@ -25,7 +28,7 @@ fig-height: 4
 
 ## The case for grouping
 
-We now know how to create basic declarative visualizations, representing each data point as an identical ‘mark’ on a canvas. But as we shall find out, this approach can paint a woefully incomplete picture.
+ So far you have created declarative visualizations by representing them as 'marks' on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
 
 Consider the following example:
 
@@ -35,7 +38,7 @@ In Viridia, historians have been studying datasets from Earth to identify what w
 
 During their research, they uncovered records of a toxic beverage known as “alcohol.” 
 
-They discovered a puzzling correlation: countries on Earth with higher average life expectancies often a greater proportion of heavy alcohol drinkers. They now plan to introduce alcohol into Viridia.
+They discovered a glorious correlation: countries with higher life expectancies often have a greater percentage of heavy alcohol drinkers. They now plan to introduce alcohol into Viridia.
 
 Below is a chart illustrating their findings:
 
@@ -57,7 +60,7 @@ alt.Chart(life_expectancy_df).mark_circle().encode(
 
 *Try hovering over a data point to see its country.*
 
-Suggest one change to the scatterplot that could provide a more nuanced picture of the relationship between alcohol consumption and life expectancy.
+Why is the scatterplot misleading? Suggest one change that could provide a more nuanced picture of the relationship between alcohol consumption and life expectancy.
 
 
 :::: {.callout-default .ex-hint}
@@ -94,38 +97,143 @@ By grouping the data, we have revealed that world region influences both life ex
 
 :::::
 
+Coloring data points is a powerful example of a technique known as **grouping**. The goal of grouping is to distinguish between groups by basing the visual appearance of data points on the value of categorical variable. 
 
-Coloring data points is a classic grouping strategy. Grouping means setting the visual appearance of data points based on the value of categorical variable. This allows us to distinguish between groups in the visualization and make more informed decisions.
+As we have seen with alcohol consumption and life expectancy, grouping has major benefits. It allows us to:
 
-As we have seen, it has two significant benefits for our analysis:
+1. **Directly compare** trends and values for distinct groups
 
-1. **It allows us to directly compare the values for distinct groups and identify differing trends**
+2. **Discover trends** in the data that were previously obscured
 
-2. **It helps us avoid making hasty generalizations about our dataset**
+3. **Avoid making inaccurate conclusions** about the relationships in our data
 
+To understand these benefits, let's consider Simpson's Paradox. The paradox was not invented by Homer Simpson et al., but rather Edward H. Simpson, a British codebreaker. 
 
+Simpson reported a curious phenomenon where a trend present in several different groups of data disappears when they are combined. 
 
+Below is an illustration of the Simpson's Paradox at play. Notice how the overall dataset does not have a clear direction but when you color by group, both groups exhibit the same negative trend. 
 
+::: {.panel-tabset}
+
+### Overall
+
+```{python}
+simpsons_df = pd.read_csv("data/simpsons_paradox_data_l.csv")
+alt.Chart(simpsons_df).mark_circle().encode(
+  x=alt.X('X'),
+  y=alt.Y('Y'),
+)
+```
+
+### By group
+
+```{python}
+alt.Chart(simpsons_df).mark_circle().encode(
+  color='Group',
+  x=alt.X('X'),
+  y=alt.Y('Y'),
+)
+```
+
+:::
+
+In this case, grouping makes the insidious Simpson's Paradox visually unmistakable. This is a prime example of the dual purpose of data visualization. It doesn't just present our data to others; it deepens our understanding of it. 
 
 ## Strategies for grouping
 
-Several grouping strategies exist, utilizing the visual aesthetics: color, shape, size and position. 
+The grammar of graphics gives us a convenient syntax for grouping. We simply define the encoding channel that should represent a categorical variable, using `aes()` in ggplot and `.encode()` in Altair. Color, shape, size and position are the most effective channels for grouping, and they can be easily interchanged:
 
-![](img/grouping-strategies.gif)
+::: {.panel-tabset}
 
-Lets examine each strategy.
+# Altair
+::: {.panel-tabset}
+
+# Color
+
+```python
+.encode(color = 'category_column')
+```
+
+# Shape
+
+```python
+.encode(shape = 'category_column')
+```
+
+# Size
+
+```python
+.encode(size = 'category_column')
+```
+
+# Position
+
+```python
+.encode(x = 'category_column')
+```
+
+```python
+.encode(y = 'category_column')
+```
+:::
+
+# ggplot
+::: {.panel-tabset}
+# Color
+
+```python
+aes(color = category_column)
+```
+
+# Shape
+
+```python
+aes(shape = category_column)
+```
+
+# Size
+
+```python
+aes(size = category_column)
+```
+
+# Position
+
+```python
+aes(x = category_column)
+```
+
+```python
+aes(y = category_column)
+```
+:::
+:::
+
+The main challenge in applying grouping is understanding which encoding channel to use to facilitate the comparisons we want to make. Each grouping strategy has unique strengths and pitfalls, which we shall discuss in detail.
 
 ### Color
 
-Color can easily be combined with other grouping techniques.
+*Strengths:*
+
+The human brain can detect and process color differences quickly and subconsciously. Color is a *pre-attentive feature* which means that the brain distinguishes between colors even without conscious attention. This effect is even more pronounced when there is a high contrast between the colors, as is the case with complimentary colors like blue and orange.
+
+This is good news for grouping. By encoding our categorical variable as color, we can leverage the brain's ability to infer the groups in our data. For scatterplots, this works particularly well when you have a small number of clusters. Color can be easy added without altering the layout or structure of the data visualization. This makes it a powerful way to compare the exact values of data points between groups.
+
+*Pitfalls:*
+
+- It is critical that each color be clearly distinct from the others, as too-similar colors can confuse the viewer and make categorization difficult
+- Colorblindness affects approximately 8% of men and 0.5% of women globally, with the most common variant being deuteranopia, which impairs the ability to distinguish between red and green hues
+- While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
+- It is wise to limit the number of distinct categories represented by color: adding too many different colors overwhelms the visualization and makes them harder to distinguish
+
 
 ### Shape
 
-Often combined with color. Helps for colorblind people.
+![](/img/traffic.png)
 
 ### Size
 
-Size is more useful for ordinal categories.
+Size is more useful for ordinal categories. Hello.
 
 ### Position
 
@@ -134,6 +242,6 @@ Size is more useful for ordinal categories.
 ## Introduction to faceting
 
 
-Include summary sheet with strengths and weaknesses of each grouping strategy.
+Include summary sheet with strengths and weaknesses of each grouping strategy. 2
 
 ## Mission
