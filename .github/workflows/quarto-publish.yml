@@ -1,10 +1,10 @@
+name: "Render and Publish"
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
-name: Render and Publish
 
 # you need these permissions to publish to GitHub pages
 permissions: 
@@ -15,7 +15,7 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
+      URL: ${{ secrets.OPENAI_PROXY_URL }}
 
     steps:
       - uses: actions/checkout@v4  # Checkout the repo to find files, such as the env
@@ -29,12 +29,14 @@ jobs:
           post-cleanup: none
 
       - name: Build the website
-        run: quarto render textbook
+        run: quarto render textbook; echo "quarto is done"
         shell: bash -el {0}  # Required to see the mamba init env
 
+      - run: echo "Next step worked"
+      
       # Push the website to the gh-pages branch 
       - name: Push the PR version of the website to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v3.8.0
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./textbook/_book

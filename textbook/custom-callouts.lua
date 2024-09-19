@@ -34,4 +34,14 @@ function Div(div)
       content = { div },
     })
   end
+
+  if div.classes:includes("optional") then
+    return quarto.Callout({
+      type = "optional",
+      title = "Click to expand this optional content or proceed to the next section",
+      collapse = true,
+      icon = false,
+      content = { div },
+    })
+  end
 end
