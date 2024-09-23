@@ -219,6 +219,32 @@ The human brain can detect and process color differences quickly and subconsciou
 
 This is good news for grouping. By encoding our categorical variable as color, we can leverage the brain's ability to infer the groups in our data. For scatterplots, this works particularly well when you have a small number of clusters. Color can be easy added without altering the layout or structure of the data visualization. This makes it a powerful way to compare the exact values of data points between groups.
 
+- Hue is the most important for categorical colormaps, very effective
+
+::: {.panel-tabset}
+
+# Altair
+```{python}
+alt.Chart(simpsons_df).mark_circle().encode(
+  color='Group',
+  x=alt.X('X'),
+  y=alt.Y('Y'),
+)
+```
+
+# ggplot
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+simpsons_df <- read.csv("data/simpsons_paradox_data_l.csv")
+
+ggplot(simpsons_df, aes(x = X, y = Y, color = Group)) +
+  geom_point()
+```
+
+:::
+
 *Pitfalls:*
 
 - It is critical that each color be clearly distinct from the others, as too-similar colors can confuse the viewer and make categorization difficult
@@ -229,11 +255,73 @@ This is good news for grouping. By encoding our categorical variable as color, w
 
 ### Shape
 
+Shape can be used strategically in combination with color to provide an additional visual cue. This is particularly effective in contexts where colors may be difficult to distinguish. 
+
+A classic example of the power of this combination is the humble traffic light. At first glance, traffic lights seem poorly designed: they use the worst possible colors for people the most common form of colorblindess: red and green. However, in many cities, traffic lights are encoded with using both color and shape. The combination of these encoding channels, alongside the use of predictable y-axis positions for both 'Stop' and 'Go' signals creates a powerful effect that has undoubtedly prevented many accidents.
+
 ![](/img/traffic.png)
+
+We can encode shapes aesthetics the same way as color, this can make it easier to distinguish the groups. 
+
+::: {.panel-tabset}
+
+# Altair
+```{python}
+alt.Chart(simpsons_df).mark_circle().encode(
+  shape='Group',
+  color='Group',
+  x=alt.X('X'),
+  y=alt.Y('Y'),
+)
+```
+
+# ggplot
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+simpsons_df <- read.csv("data/simpsons_paradox_data_l.csv")
+
+ggplot(simpsons_df, aes(x = X, y = Y, shape = Group, color=Group)) +
+  geom_point()
+```
+
+:::
+
+The combination of shape and color can make grouping clearer than either of these categories alone. However, there are some important caveats. At line-drawings or outlines can make color difficult to distinguish as it reduces the area that is colored. It is preferable to use filled shapes when combining these encoding channels. 
+
+Another important consideration is the size of the shapes. It is much easier for the viewer to distinguish between larger shapes than smaller ones. If you have a scatterplot with tiny marks, you may want to restrict the number of unique shapes you show, or consider avoiding shape altogether.
+
 
 ### Size
 
 Size is more useful for ordinal categories. Hello.
+
+We are not great at judging areas. 
+
+::: {.panel-tabset}
+
+# Altair
+```{python}
+alt.Chart(simpsons_df).mark_circle().encode(
+  size='Group',
+  x=alt.X('X'),
+  y=alt.Y('Y'),
+)
+```
+
+# ggplot
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+simpsons_df <- read.csv("data/simpsons_paradox_data_l.csv")
+
+ggplot(simpsons_df, aes(x = X, y = Y, size = Group)) +
+  geom_point()
+```
+
+:::
 
 ### Position
 
