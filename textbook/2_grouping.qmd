@@ -213,13 +213,9 @@ The main challenge in applying grouping is understanding which encoding channel 
 
 ### Color
 
-*Strengths:*
-
 The human brain can detect and process color differences quickly and subconsciously. Color is a *pre-attentive feature* which means that the brain distinguishes between colors even without conscious attention. This effect is even more pronounced when there is a high contrast between the colors, as is the case with complimentary colors like blue and orange.
 
 This is good news for grouping. By encoding our categorical variable as color, we can leverage the brain's ability to infer the groups in our data. For scatterplots, this works particularly well when you have a small number of clusters. Color can be easy added without altering the layout or structure of the data visualization. This makes it a powerful way to compare the exact values of data points between groups.
-
-- Hue is the most important for categorical colormaps, very effective
 
 ::: {.panel-tabset}
 
@@ -245,12 +241,9 @@ ggplot(simpsons_df, aes(x = X, y = Y, color = Group)) +
 
 :::
 
-*Pitfalls:*
+It is critical that each color be clearly distinct from the others, as too-similar colors can confuse the viewer and make differentiation difficult. Similarly, it is wise to limit the number of distinct categories represented by color: adding too many different colors overwhelms the visualization and makes them harder to distinguish.
 
-- It is critical that each color be clearly distinct from the others, as too-similar colors can confuse the viewer and make categorization difficult
-- Colorblindness affects approximately 8% of men and 0.5% of women globally, with the most common variant being deuteranopia, which impairs the ability to distinguish between red and green hues
-- While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
-- It is wise to limit the number of distinct categories represented by color: adding too many different colors overwhelms the visualization and makes them harder to distinguish
+Accessibility is another key concern when using color. Colorblindness affects approximately 8% of men and 0.5% of women globally, with the most common variant being deuteranopia, which impairs the ability to distinguish between red and green hues. While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
 
 
 ### Shape
