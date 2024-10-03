@@ -41,7 +41,7 @@ def show_df(df):
 
 - **Understand** that the advantage of using a high level level visualization syntax is that it allows us to think in terms of the data, rather than focusing on graphical details.
 
-- **Understand** that a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks, such geometric marks and aesthetic encodings.
+- **Understand** that a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks, such as geometric marks and aesthetic encodings.
 
 - **Apply** the visualization grammars in Altair and ggplot to create a basic chart via `alt.Chart().mark_point().encode(x='...', y='...', color='...')` and <br> `ggplot() + aes(x=..., y=..., color=...) + geom_point()`
 
@@ -76,7 +76,7 @@ on the other hand,
 have undergone refinement during 500,000,000 years of evolution,
 so we can instinctively recognize visual patterns
 and accurately estimate visual properties
-such as colours and distances.
+such as colors and distances.
 
 Practically,
 this means that we can arrive at correct conclusions faster
@@ -206,7 +206,7 @@ This is one of the main reasons why data visualization
 is such a powerful tool for data exploration and communication.
 
 In our example above,
-we would come to widely different conclusions about the behaviour of the data
+we would come to widely different conclusions about the behavior of the data
 for the four different data sets.
 Sets A and C are roughly linearly increasing at similar rates,
 whereas set B reaches a plateau and starts to drop,
@@ -372,7 +372,7 @@ rather than coding out the details of *how* to implement the visualization.
 Another way to state this would be that high level libraries
 focus on **data and relationships**,
 whereas low level libraries focus on **plot construction details.**
-<!--TODO explain jargon delcariative/imperative? -->
+<!--TODO explain jargon declarative/imperative? -->
 
 Among declarative visualization libraries,
 there are still a few different approaches
@@ -421,7 +421,7 @@ Do you think it differs between programming languages?
 
 Just like that addition of numbers
 contain all counts of the individual numbers,
-maye the addition of two strings
+maybe the addition of two strings
 would contain all the characters from both the strings?
 
 ::: {.callout-default .ex-solution}
@@ -473,7 +473,7 @@ Altair in Python, and ggplot in R.
 These two libraries both offer a powerful and concise visualization grammar
 for quickly building a wide range of statistical charts.
 
-What does these grammars look like?
+What do these grammars look like?
 In brief,
 we first create a canvas/chart,
 then encode our data variables as different channels in this chart (x, y, color, etc)
@@ -484,7 +484,7 @@ The exact syntax is slightly different, but the overall structure very much the 
 
 ![](/img/grammar-of-graphics.jpeg)
 <!--TODO Ideally remake this images using `+ aes()` instead -->
-<!--TODO Should I maybe replace it wirh a programmatic version? It is a fun image, not sure if it looks to informal -->
+<!--TODO Should I maybe replace it with a programmatic version? It is a fun image, not sure if it looks to informal -->
 
 As a result of the predictable structure,
 a grammar of graphics allows you to create an impressive range of visualizations
@@ -595,7 +595,7 @@ we can map various *encoding channels*,
 (or just *encodings* or *channels* for short),
 to columns in the dataset.
 For example,
-we could *encode* the colum `Miles_per_Gallon`
+we could *encode* the column `Miles_per_Gallon`
 (how many miles a car can travel on each gallon of fuel)
 of the data using the `x` channel,
 which represents the x-axis position of the points.
@@ -808,9 +808,9 @@ e.g. specifying which column we want to color the points by.
 ### Altair
 
 When using the `color` encoding channel,
-Altair will automatically figure out an appropriate colorscale to use.
+Altair will automatically figure out an appropriate color scale to use.
 The `Weight_in_lbs` column contains continuous numerical data
-so a continuous gradient will be used for the colorscale.
+so a continuous gradient will be used for the color scale.
 The largest value in the `Weight_in_lbs` column
 is represented with a dark color
 since this has the highest contrast to the light background of the chart.
@@ -826,9 +826,9 @@ alt.Chart(cars).mark_point().encode(
 ### ggplot
 
 When using the `color` encoding channel,
-ggplot will automatically figure out which colorscale to use.
+ggplot will automatically figure out which color scale to use.
 The `Weight_in_lbs` column contains continuous numerical data
-so a continuous gradient will be used for the colorscale.
+so a continuous gradient will be used for the color scale.
 The largest value in the `Weight_in_lbs` column
 is represented with a light color
 since this has the highest contrast to the dark background of the chart.
@@ -858,7 +858,7 @@ In general,
 we don't want the chart area to shrink just because we are adding a legend,
 so here we would need to manually increase the width of the ggplot chart,
 which we will learn about in a future chapter.
-<!--TODO should we learn this here? depends on how many figs will need it before it is introduced in a chaprter -->
+<!--TODO should we learn this here? depends on how many figs will need it before it is introduced in a chapter -->
 :::
 
 ::::: {.callout-default .ex-prompt}
@@ -900,7 +900,7 @@ based on our knowledge about physics of moving objects.
 
 There are a wide variety of high-level and low-level tools for visualizing data in R and Python.
 While we have already outline the advantages of the libraries we chose,
-it can be helpful to be aware of which others are avaialble 
+it can be helpful to be aware of which others are available 
 since you are likely to encounter some of them in the wild.
 In this diagram
 you can see an overview of how which other libraries exist
