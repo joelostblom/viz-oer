@@ -26,7 +26,7 @@ resources:
 
 :::
 
-## The case for grouping
+## Why grouping matters
 
  So far you have created declarative visualizations by representing them as 'marks' on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
 
@@ -36,32 +36,33 @@ Consider the following example:
 
 In Viridia, historians have been studying datasets from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors.
 
-During their research, they uncovered records of a toxic beverage known as “alcohol.” 
+During their research, they uncovered records of a beverage known as “alcohol.” 
 
-They discovered a glorious correlation: countries with higher life expectancies often have a greater percentage of heavy alcohol drinkers. They now plan to introduce alcohol into Viridia.
+The researchers decided to create a scatterplot of countries, with the x-axis showing the percentage of heavy alcohol drinkers and the y-axis showing the average number of years left to live after reaching age 50.^[Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data]
 
-Below is a chart illustrating their findings:
+Try to imagine what this chart could look like. What trend would you expect to see in this data?
 
+:::: {.callout-default .ex-hint}
+
+A surprising correlation emerged: 50 year olds can expect to live longer in countries with a greater percentage of heavy alcohol drinkers. Great news! The researchers now plan to introduce alcohol into Viridia.
 
 ```{python}
 #| label: fig-polar
-#| fig-cap: "Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data"
 import altair as alt
 import pandas as pd
 
-life_expectancy_df = pd.read_csv("data/life_expectancy_alcohol.csv")
+death_rate_df = pd.read_csv("data/life_expectancy_at_50_alcohol.csv")
 
-alt.Chart(life_expectancy_df).mark_circle().encode(
-    x=alt.X('average_life_expectancy', scale=alt.Scale(zero=False)),
-    y=alt.Y('percentage_heavy_drinkers'),
-    tooltip=['country', 'average_life_expectancy', 'percentage_heavy_drinkers']
+alt.Chart(death_rate_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+    tooltip=['country', 'life_expectancy_at_50', 'percentage_heavy_drinkers']
 )
 ```
 
-*Try hovering over a data point to see its country.*
+Try hovering over the data points to see which mark corresponds to each country. Can you see any patterns?
 
-Why is the scatterplot misleading? Suggest one change that could provide a more nuanced picture of the relationship between alcohol consumption and life expectancy.
-
+Suggest one visual change that could provide a more nuanced picture of the relationship between alcohol consumption and life expectancy.
 
 :::: {.callout-default .ex-hint}
 
@@ -73,14 +74,13 @@ We can color each country by its geographical region:
 
 ```{python}
 
-alt.Chart(life_expectancy_df).mark_circle().encode(
+alt.Chart(death_rate_df).mark_point().encode(
     color='region',
-    x=alt.X('average_life_expectancy', scale=alt.Scale(zero=False)),
-    y=alt.Y('percentage_heavy_drinkers'),
-    tooltip=['country', 'average_life_expectancy', 'percentage_heavy_drinkers']
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+    tooltip=['country', 'life_expectancy_at_50', 'percentage_heavy_drinkers']
 )
 ```
-
 
 
 Notice that the data points form clusters by continent?
@@ -92,6 +92,8 @@ Meanwhile, most of the countries with low life expectancies are in <span style="
 By grouping the data, we have revealed that world region influences both life expectancy and alcohol consumption. This is sobering news for Viridia.
 
 :::
+
+::::
 
 ::::
 
@@ -288,14 +290,13 @@ Another important consideration is the size of the shapes. It is much easier for
 
 ### Size
 
-Size is more useful for ordinal categories. Hello.
-
-We are not great at judging areas. 
+While size is more commonly used to represent quantitative data, it can under limited circumstances be effective in distinguishing between categories. It works better for **ordinal** categories that have a clear order. 
 
 ::: {.panel-tabset}
 
 # Altair
 ```{python}
+
 alt.Chart(simpsons_df).mark_circle().encode(
   size='Group',
   x=alt.X('X'),
@@ -326,3 +327,5 @@ ggplot(simpsons_df, aes(x = X, y = Y, size = Group)) +
 Include summary sheet with strengths and weaknesses of each grouping strategy. 2
 
 ## Mission
+
+
