@@ -1,0 +1,504 @@
+---
+title: "Grouping"
+include-in-header:
+  - text: |
+      <style>
+        .table.dataframe {
+          width: auto;
+          text-align: right;
+        }
+      </style>
+fig-width: 4
+fig-height: 4
+resources:
+  - data
+  - utils.py
+---
+
+<!-- Temporarily needed for live coding exercises -->
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+::: {.callout-note title="Learning outcomes"}
+- **Explain** how grouping allows you to directly compare categories and helps you to avoid making incorrectly generalized conclusions (e.g., Simpson’s Paradox).
+
+- **Apply** grouping strategies using color, size, shape and position to visually distinguish between categories via `.encode(color='category')` and `aes(color=category)`.
+
+- **Apply** the `facet` method to split data into separate subplots, revealing patterns in each group.
+
+- **Select** the grouping strategy that best highlights your key comparison. Use color to focus on specific values, and apply faceting to reveal broader trends across categories.
+
+:::
+
+## Why grouping matters
+
+ So far you have created declarative visualizations by representing them as 'marks' on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
+
+Consider the following example:
+
+::::: {.callout-default .ex-prompt}
+
+In Viridia, historians have been studying datasets from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors.
+
+During their research, they uncovered records of a beverage known as “alcohol.” 
+
+The researchers decided to create a scatterplot of countries, with the x-axis showing the percentage of heavy alcohol drinkers and the y-axis showing the average number of years left to live after reaching age 50.^[Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data]
+
+Try to imagine what this chart could look like. What trend would you expect to see in this data?
+
+:::: {.callout-default .ex-hint}
+
+There seems to be a slight positive correlation. Below is the plot:
+```{python}
+#| label: fig-polar
+import altair as alt
+import pandas as pd
+
+income_df = pd.read_csv('data/income_lifeexp_alcohol_1.csv')
+
+alt.Chart(income_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+    tooltip='country'
+)
+```
+
+Suprisingly, 50 year olds can expect to live longer in countries with a greater percentage of heavy alcohol drinkers. This is great news! The researchers now plan to introduce alcohol into Viridia.
+
+**Exercise:**
+
+*Hover over the data points to see which mark corresponds to each country.*
+
+Suggest one visual change that would create a more accurate picture of the relationship between alcohol consumption and life expectancy.
+
+:::: {.callout-default .ex-hint}
+
+Alcohol consumption is influenced by income. How could we slightly alter the chart to show this?
+
+::: {.callout-default .ex-solution}
+
+The simplest solution is to color each country by its World Bank income group.
+
+```{python}
+
+alt.Chart(income_df).mark_point().encode(
+    color='income_group',
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+)
+```
+
+
+Notice that the data points form clusters by income group?
+
+Coloring reveals that both national alcoholism and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. 
+
+We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income</span>, where both indicators are lower. 
+
+That could explain our mysterious correlation!
+
+By grouping the data, we have revealed that a **confounding variable**: income influences both life expectancy and alcohol consumption. This is sobering news for Viridia...
+
+:::
+
+::::
+
+::::
+
+:::::
+
+Coloring data points is a powerful example of a technique known as **grouping**. The goal of grouping is to distinguish between groups by basing the visual appearance of data points on the value of categorical variable. 
+
+As we have seen with alcohol consumption and life expectancy, grouping has major benefits. It allows us to:
+
+1. **Directly compare** trends and values for distinct groups
+
+2. **Discover trends** in the data that were previously obscured
+
+3. **Avoid making inaccurate conclusions** about the relationships in our data
+
+To understand these benefits, let's consider Simpson's Paradox. The paradox was not invented by Homer Simpson et al., but rather Edward H. Simpson, a British codebreaker. 
+
+Simpson reported a curious phenomenon where a trend present in several different groups of data disappears when they are combined. 
+
+Below is an illustration of the Simpson's Paradox at play. Notice how the overall dataset does not have a clear direction but when you color by group, both groups exhibit the same negative trend. 
+
+::: {.panel-tabset}
+
+### Overall
+
+
+```{python}
+simpsons_df = pd.read_csv("data/simpsons_paradox_data_l.csv")
+alt.Chart(simpsons_df).mark_point().encode(
+  x='X',
+  y='Y',
+)
+```
+
+### By group
+
+```{python}
+alt.Chart(simpsons_df).mark_point().encode(
+  color='Group',
+  x='X',
+  y='Y',
+)
+```
+
+:::
+
+In this case, grouping makes the insidious Simpson's Paradox visually unmistakable. This is a prime example of the dual purpose of data visualization. It doesn't just present our data to others; it deepens our understanding of it. 
+
+## Strategies for grouping
+
+The grammar of graphics gives us a convenient syntax for grouping. We simply define the encoding channel that should represent a categorical variable, using `aes()` in ggplot and `.encode()` in Altair. Color, shape, size and position are the most effective channels for grouping, and they can be easily interchanged:
+
+::: {.panel-tabset}
+
+# Altair
+::: {.panel-tabset}
+
+# Color
+
+```python
+.encode(color='category_column')
+```
+
+# Shape
+
+```python
+.encode(shape='category_column')
+```
+
+# Size
+
+```python
+.encode(size='category_column')
+```
+
+# Position
+
+```python
+.encode(x='category_column')
+```
+
+```python
+.encode(y='category_column')
+```
+:::
+
+# ggplot
+::: {.panel-tabset}
+# Color
+
+```python
+aes(color=category_column)
+```
+
+# Shape
+
+```python
+aes(shape=category_column)
+```
+
+# Size
+
+```python
+aes(size=category_column)
+```
+
+# Position
+
+```python
+aes(x=category_column)
+```
+
+```python
+aes(y=category_column)
+```
+:::
+:::
+
+The main challenge in applying grouping is understanding which encoding channel to use to facilitate the comparisons we want to make. Each grouping strategy has unique strengths and pitfalls, which we shall discuss in detail.
+
+### Color
+
+The human brain can detect and process color differences quickly and subconsciously. Color is a *pre-attentive feature* which means that the brain distinguishes between colors even without conscious attention. This effect is even more pronounced when there is a high contrast between the colors, as is the case with complimentary colors like blue and orange.
+
+This is good news for grouping. By encoding our categorical variable as color, we can leverage the brain's ability to infer the groups in our data. For scatterplots, this works particularly well when you have a small number of clusters. Color can be easy added without altering the layout or structure of the data visualization. This makes it a powerful way to compare the exact values of data points between groups.
+
+For example, we can color our life expectancy data by world region:
+
+::: {.panel-tabset}
+
+# Altair
+
+Here we use `color='region'`:
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+    color='region',
+)
+```
+
+# ggplot
+
+Here we use `color=region`:
+```{r}
+library(readr)
+library(ggplot2)
+income_df <- read_csv('data/income_lifeexp_alcohol_1.csv', show_col_types = FALSE)
+
+ggplot(income_df, aes(
+    x=percentage_heavy_drinkers, 
+    y=life_expectancy_at_50, 
+    color=region
+)) + 
+geom_point()
+```
+
+:::
+
+It is critical that each color be clearly distinct from the others, as too-similar colors can confuse the viewer and make differentiation difficult. Similarly, it is wise to limit the number of distinct categories represented by color: adding too many different colors overwhelms the visualization and makes them harder to distinguish.
+
+Accessibility is another key concern when using color. Colorblindness affects approximately 8% of men and 0.5% of women globally, with the most common variant being deuteranopia, which impairs the ability to distinguish between red and green hues. While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
+
+
+### Shape
+
+Shape can be used strategically in combination with color to provide an additional visual cue. This is particularly effective in contexts where colors may be difficult to distinguish. 
+
+A classic example of the power of this combination is the humble traffic light. At first glance, traffic lights seem poorly designed: they use the worst possible colors for people the most common form of colorblindess: red and green. However, in many cities, traffic lights are encoded with using both color and shape. The combination of these encoding channels, alongside the use of predictable y-axis positions for both 'Stop' and 'Go' signals creates a powerful effect that has undoubtedly prevented many accidents.
+
+![](/img/traffic.png)
+
+We can encode shapes aesthetics the same way as color, this can make it easier to distinguish the groups. 
+
+::: {.panel-tabset}
+
+# Altair
+
+Here we use `shape='region'`:
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+    shape='region',
+    color='region',
+)
+```
+
+# ggplot
+
+Here we use `shape=region`:
+
+```{r}
+ggplot(income_df, aes(
+    x=percentage_heavy_drinkers, 
+    y=life_expectancy_at_50, 
+    shape=region,
+    color=region
+)) + 
+geom_point()
+```
+
+:::
+
+The combination of shape and color can make grouping clearer than either of these categories alone. However, there are some important caveats. At line-drawings or outlines can make color difficult to distinguish as it reduces the area that is colored. It is preferable to use filled shapes when combining these encoding channels. 
+
+Another important consideration is the size of the shapes. It is much easier for the viewer to distinguish between larger shapes than smaller ones. If you have a scatterplot with tiny marks, you may want to restrict the number of unique shapes you show, or consider avoiding shape altogether.
+
+
+### Size
+
+While size is far more effective when used to represent quantitative data, it can under limited circumstances be used for grouping. Because size has an inherent direction, it works better for **ordinal** categories - those with a clear order. 
+
+One example is World Bank income level, which ranges from low to high. We can enhance our life expectancy and alcoholism chart, using size to encode the income level of countries in sub-Saharan Africa.
+
+::: {.panel-tabset}
+
+# Altair
+
+Here we use `size='income_group'`:
+
+```{python}
+income_df_subset = income_df[income_df['sub-region'].isin(['Sub-Saharan Africa'])]
+
+alt.Chart(income_df_subset).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+    size='income_group',
+)
+```
+
+# ggplot
+
+Here we use `size=income_group'`:
+
+```{r}
+
+income_df_subset <- subset(income_df, `sub-region` %in% c('Sub-Saharan Africa'))
+
+# Create the scatter plot
+ggplot(income_df_subset, aes(
+    x=percentage_heavy_drinkers, 
+    y=life_expectancy_at_50, 
+    size=income_group,
+)) + 
+geom_point()
+
+```
+
+:::
+
+### Position
+
+Position is a highly effective grouping strategy. It involves mapping a categorical variable directly onto the x or y axis, turning each group into a clear visual lane. By keeping the same scale for the other axis, it allows you to compare distributions across categories. It also makes outliers within each category easier to spot than when you plot all data points on the same line.
+
+::: {.panel-tabset}
+
+# Altair
+
+Here we use `y='region'`:
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='region',
+)
+```
+
+# ggplot
+
+Here we use `y=region`:
+
+```{r}
+ggplot(income_df, aes(
+    x=percentage_heavy_drinkers, 
+    y=region, 
+)) + 
+geom_point()
+```
+
+:::
+
+Position is the most visually intuitive grouping method but it can be overkill. 
+
+Splitting the visualization onto separate lanes can make it more difficult to see overall patterns in the dataset. It also requires significant space, so works better when you have fewer than 10 categories. Another limitation of using position is that you sacrifice use the x or y axis for another continuous variable. Not only does this limit the amount of information, it can also cause data points to overlap. One solution is to use **jittering**, which introduces solely aesthetic variation in position within each lane. 
+
+Position can be harnessed in combination with color to group on two different categorical variables. Here, the choice of which encoding channel to assign to each variable should be motivated by the comparison you are trying to make. Position is more effective than color for comparing between categories, so you should assign the most important variable to position. 
+
+
+
+## Introduction to faceting
+
+
+
+## Mission
+
+
+::::: {.callout-default .ex-prompt}
+
+Viridians pride themselves on being part of the #1 Happiest Colony in the Galaxy. They have won medals and trophies for it. But this year is *extremely competitive*. To make sure they come out on top, Viridian politicians are investigating the history of happiness on Earth.
+
+![](/img/medal.jpg){width=200px height=200px}
+
+They have discovered a 2023 report that asked hundreds of thousands of Earthlings about their mental wellbeing. The average results for seven countries have been gathered. Each `Country` received a `Score` out of 100 for five mental wellbeing `Criteria` from mood to cognition
+^[Cognition, 
+Mind-Body Connection,
+Drive & Motivation, 
+Mood & Outlook, 
+Self & Resilience,
+Social Adaptability].
+
+Answer the following questions:
+
+1. In your opinion, what is the most interesting comparison to visualize in this data?
+2. What is the second most interesting comparison?
+3. Which categorical variable would you encode as position (x/y) and which as color?
+
+:::: {.callout-default .ex-hint}
+
+Your choice of encoding channel depends on the 
+
+Grouping by position makes it easier to compare the central trend or distribution of values for that categorical variable. 
+
+So assigning country to position allows you to see the central trend for each country. 
+
+Grouping criteria by position makes it easier to compare criteria :
+
+1. Overall central trend of each criteria
+2. How the same country performs on each criteria
+
+Grouping country by position makes it easier to compare countries :
+
+1. Overall central trend of each country
+2. How the same criteria differs by country
+
+
+
+It also makes it easier to compare Scores across categories for the same country. 
+
+::::
+
+Complete the following code, assigning `Score`, `Country` and `Criteria` to appropriate encoding channels.
+
+
+```{pyodide}
+#| setup: true
+#| exercise:
+#|   - mental_chart_alt
+import altair as alt
+import pandas as pd
+from utils import assert_chart_equal
+
+url = 'data/mental_health_long.csv'
+mental_health_df = pd.read_csv(url)
+```
+
+```{pyodide}
+#| exercise: mental_chart_alt
+
+alt.Chart(mental_health_df).mark_point().encode(
+    
+)
+```
+
+:::: {.callout-default .ex-solution}
+
+::: {.panel-tabset}
+
+# Altair
+```{python}
+
+mental_health_df = pd.read_csv("data/mental_health_long.csv")
+
+alt.Chart(mental_health_df).mark_point().encode(
+  x='Score',
+  y='Country',
+  color='Criteria'
+)
+
+```
+
+# ggplot
+
+```{r fig.height=5,fig.width=8}
+# Load necessary libraries
+mental_health_df <- read.csv("data/mental_health_long.csv")
+ggplot(mental_health_df, aes(
+  x = Score, 
+  y = Country, 
+  color = Criteria
+)) + geom_point()
+```
+
+:::
+
+::::
+
+
+:::::
