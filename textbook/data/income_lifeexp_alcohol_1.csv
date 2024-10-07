@@ -1,0 +1,192 @@
+code,income_group,country,average_life_expectancy,cause,rei,percentage_heavy_drinkers,life_expectancy_at_50,region,sub-region
+AFG,1. Low income,Afghanistan,61.98,All causes,Alcohol use,0.13,18.9,Asia,Southern Asia
+ALB,3. Upper middle income,Albania,76.46,All causes,Alcohol use,1.98,28.72,Europe,Southern Europe
+DZA,3. Upper middle income,Algeria,76.38,All causes,Alcohol use,0.25,27.37,Africa,Northern Africa
+ASM,4. High income,American Samoa,72.54,All causes,Alcohol use,0.43,25.55,Oceania,Polynesia
+AND,4. High income,Andorra,80.37,All causes,Alcohol use,4.18,34.26,Europe,Southern Europe
+AGO,2. Lower middle income,Angola,61.64,All causes,Alcohol use,3.09,20.42,Africa,Sub-Saharan Africa
+ATG,4. High income,Antigua and Barbuda,78.5,All causes,Alcohol use,3.13,27.62,Americas,Latin America and the Caribbean
+ARG,3. Upper middle income,Argentina,75.39,All causes,Alcohol use,2.59,28.99,Americas,Latin America and the Caribbean
+ARM,3. Upper middle income,Armenia,72.04,All causes,Alcohol use,1.98,27.81,Asia,Western Asia
+AUS,4. High income,Australia,84.53,All causes,Alcohol use,4.39,35.04,Oceania,Australia and New Zealand
+AUT,4. High income,Austria,81.58,All causes,Alcohol use,4.87,33.03,Europe,Western Europe
+AZE,3. Upper middle income,Azerbaijan,69.37,All causes,Alcohol use,2.34,24.75,Asia,Western Asia
+BHR,4. High income,Bahrain,78.76,All causes,Alcohol use,0.33,25.73,Asia,Western Asia
+BGD,2. Lower middle income,Bangladesh,72.38,All causes,Alcohol use,0.75,27.08,Asia,Southern Asia
+BRB,4. High income,Barbados,77.57,All causes,Alcohol use,3.07,29.3,Americas,Latin America and the Caribbean
+BLR,3. Upper middle income,Belarus,72.44,All causes,Alcohol use,4.69,24.53,Europe,Eastern Europe
+BEL,4. High income,Belgium,81.88,All causes,Alcohol use,4.62,33.38,Europe,Western Europe
+BLZ,3. Upper middle income,Belize,70.47,All causes,Alcohol use,3.2,27.91,Americas,Latin America and the Caribbean
+BEN,2. Lower middle income,Benin,59.82,All causes,Alcohol use,1.6,22.84,Africa,Sub-Saharan Africa
+BMU,4. High income,Bermuda,79.28,All causes,Alcohol use,2.9,31.43,Americas,Northern America
+BTN,2. Lower middle income,Bhutan,71.82,All causes,Alcohol use,1.19,28.39,Asia,Southern Asia
+BOL,2. Lower middle income,Bolivia,63.63,All causes,Alcohol use,1.85,21.83,Americas,Latin America and the Caribbean
+BIH,3. Upper middle income,Bosnia and Herzegovina,75.3,All causes,Alcohol use,3.21,27.39,Europe,Southern Europe
+BWA,3. Upper middle income,Botswana,61.14,All causes,Alcohol use,1.31,19.11,Africa,Sub-Saharan Africa
+BRA,3. Upper middle income,Brazil,72.75,All causes,Alcohol use,2.85,28.31,Americas,Latin America and the Caribbean
+BRN,4. High income,Brunei,74.64,All causes,Alcohol use,0.57,29.28,Asia,South-eastern Asia
+BGR,4. High income,Bulgaria,71.8,All causes,Alcohol use,4.62,23.08,Europe,Eastern Europe
+BFA,1. Low income,Burkina Faso,59.27,All causes,Alcohol use,2.85,21.61,Africa,Sub-Saharan Africa
+BDI,1. Low income,Burundi,61.66,All causes,Alcohol use,3.57,21.5,Africa,Sub-Saharan Africa
+KHM,2. Lower middle income,Cambodia,69.58,All causes,Alcohol use,4.3,23.99,Asia,South-eastern Asia
+CMR,2. Lower middle income,Cameroon,60.33,All causes,Alcohol use,2.88,20.9,Africa,Sub-Saharan Africa
+CAN,4. High income,Canada,82.66,All causes,Alcohol use,3.96,33.87,Americas,Northern America
+CAF,1. Low income,Central African Republic,53.89,All causes,Alcohol use,2.29,16.48,Africa,Sub-Saharan Africa
+TCD,1. Low income,Chad,52.53,All causes,Alcohol use,2.37,21.26,Africa,Sub-Saharan Africa
+CHL,4. High income,Chile,78.94,All causes,Alcohol use,4.23,31.45,Americas,Latin America and the Caribbean
+CHN,3. Upper middle income,China,78.21,All causes,Alcohol use,2.96,29.9,Asia,Eastern Asia
+COL,3. Upper middle income,Colombia,72.83,All causes,Alcohol use,1.42,30.09,Americas,Latin America and the Caribbean
+COM,2. Lower middle income,Comoros,63.42,All causes,Alcohol use,0.95,23.77,Africa,Sub-Saharan Africa
+COD,1. Low income,Democratic Republic of Congo,59.19,All causes,Alcohol use,2.18,20.68,Africa,Sub-Saharan Africa
+COG,2. Lower middle income,Congo,63.52,All causes,Alcohol use,3.26,20.28,Africa,Sub-Saharan Africa
+CRI,3. Upper middle income,Costa Rica,77.02,All causes,Alcohol use,3.0,31.31,Americas,Latin America and the Caribbean
+HRV,4. High income,Croatia,77.58,All causes,Alcohol use,4.2,28.94,Europe,Southern Europe
+CUB,3. Upper middle income,Cuba,73.68,All causes,Alcohol use,2.52,26.64,Americas,Latin America and the Caribbean
+CYP,4. High income,Cyprus,81.2,All causes,Alcohol use,2.24,32.34,Asia,Western Asia
+CZE,4. High income,Czechia,77.73,All causes,Alcohol use,4.28,29.28,Europe,Eastern Europe
+DNK,4. High income,Denmark,81.38,All causes,Alcohol use,4.9,32.78,Europe,Northern Europe
+DJI,2. Lower middle income,Djibouti,62.3,All causes,Alcohol use,0.72,21.82,Africa,Sub-Saharan Africa
+DOM,3. Upper middle income,Dominican Republic,72.61,All causes,Alcohol use,2.68,28.93,Americas,Latin America and the Caribbean
+DOM,3. Upper middle income,Dominican Republic,72.61,All causes,Alcohol use,3.12,28.93,Americas,Latin America and the Caribbean
+ECU,3. Upper middle income,Ecuador,73.67,All causes,Alcohol use,1.88,28.11,Americas,Latin America and the Caribbean
+EGY,2. Lower middle income,Egypt,70.22,All causes,Alcohol use,0.35,21.93,Africa,Northern Africa
+SLV,3. Upper middle income,El Salvador,70.75,All causes,Alcohol use,4.14,28.03,Americas,Latin America and the Caribbean
+GNQ,3. Upper middle income,Equatorial Guinea,60.59,All causes,Alcohol use,2.39,21.25,Africa,Sub-Saharan Africa
+ERI,1. Low income,Eritrea,66.54,All causes,Alcohol use,1.46,20.35,Africa,Sub-Saharan Africa
+EST,4. High income,Estonia,77.14,All causes,Alcohol use,6.03,29.26,Europe,Northern Europe
+ETH,1. Low income,Ethiopia,64.97,All causes,Alcohol use,2.08,22.66,Africa,Sub-Saharan Africa
+FJI,3. Upper middle income,Fiji,67.11,All causes,Alcohol use,0.66,21.35,Oceania,Melanesia
+FIN,4. High income,Finland,82.04,All causes,Alcohol use,5.53,33.76,Europe,Northern Europe
+FRA,4. High income,France,82.5,All causes,Alcohol use,5.33,34.21,Europe,Western Europe
+GAB,3. Upper middle income,Gabon,65.82,All causes,Alcohol use,3.66,21.15,Africa,Sub-Saharan Africa
+GEO,3. Upper middle income,Georgia,71.69,All causes,Alcohol use,3.24,24.86,Asia,Western Asia
+DEU,4. High income,Germany,80.63,All causes,Alcohol use,5.68,32.38,Europe,Western Europe
+GHA,2. Lower middle income,Ghana,63.8,All causes,Alcohol use,2.67,22.36,Africa,Sub-Saharan Africa
+GRC,4. High income,Greece,80.11,All causes,Alcohol use,2.41,31.68,Europe,Southern Europe
+GRL,4. High income,Greenland,72.35,All causes,Alcohol use,5.74,27.95,Americas,Northern America
+GRD,3. Upper middle income,Grenada,74.94,All causes,Alcohol use,2.47,23.96,Americas,Latin America and the Caribbean
+GUM,4. High income,Guam,76.66,All causes,Alcohol use,1.97,32.45,Oceania,Micronesia
+GTM,3. Upper middle income,Guatemala,69.24,All causes,Alcohol use,3.16,25.56,Americas,Latin America and the Caribbean
+GIN,2. Lower middle income,Guinea,58.89,All causes,Alcohol use,1.22,21.13,Africa,Sub-Saharan Africa
+GNB,1. Low income,Guinea-Bissau,59.65,All causes,Alcohol use,2.57,18.76,Africa,Sub-Saharan Africa
+GUY,4. High income,Guyana,65.67,All causes,Alcohol use,3.11,21.56,Americas,Latin America and the Caribbean
+HTI,2. Lower middle income,Haiti,63.19,All causes,Alcohol use,2.37,20.54,Americas,Latin America and the Caribbean
+HND,2. Lower middle income,Honduras,70.12,All causes,Alcohol use,2.12,23.02,Americas,Latin America and the Caribbean
+HUN,4. High income,Hungary,74.53,All causes,Alcohol use,5.32,26.61,Europe,Eastern Europe
+ISL,4. High income,Iceland,82.68,All causes,Alcohol use,3.05,35.16,Europe,Northern Europe
+IND,2. Lower middle income,India,67.24,All causes,Alcohol use,1.88,24.48,Asia,Southern Asia
+IDN,3. Upper middle income,Indonesia,67.57,All causes,Alcohol use,0.88,24.3,Asia,South-eastern Asia
+IRN,3. Upper middle income,Iran,73.87,All causes,Alcohol use,0.26,27.4,Asia,Southern Asia
+IRQ,3. Upper middle income,Iraq,70.38,All causes,Alcohol use,0.15,24.42,Asia,Western Asia
+IRL,4. High income,Ireland,82.0,All causes,Alcohol use,2.96,34.0,Europe,Northern Europe
+ISR,4. High income,Israel,82.26,All causes,Alcohol use,1.31,34.43,Asia,Western Asia
+ITA,4. High income,Italy,82.85,All causes,Alcohol use,3.63,33.86,Europe,Southern Europe
+JAM,3. Upper middle income,Jamaica,70.5,All causes,Alcohol use,1.69,28.04,Americas,Latin America and the Caribbean
+JPN,4. High income,Japan,84.78,All causes,Alcohol use,3.65,36.37,Asia,Eastern Asia
+JOR,2. Lower middle income,Jordan,74.26,All causes,Alcohol use,0.14,28.57,Asia,Western Asia
+KAZ,3. Upper middle income,Kazakhstan,69.36,All causes,Alcohol use,3.35,23.7,Asia,Central Asia
+KEN,2. Lower middle income,Kenya,61.43,All causes,Alcohol use,3.41,21.43,Africa,Sub-Saharan Africa
+KIR,2. Lower middle income,Kiribati,67.42,All causes,Alcohol use,0.78,21.94,Oceania,Micronesia
+PRK,1. Low income,North Korea,73.28,All causes,Alcohol use,2.78,27.03,Asia,Eastern Asia
+KOR,4. High income,South Korea,83.7,All causes,Alcohol use,4.99,34.67,Asia,Eastern Asia
+KWT,4. High income,Kuwait,78.67,All causes,Alcohol use,0.14,32.79,Asia,Western Asia
+KGZ,2. Lower middle income,Kyrgyzstan,69.98,All causes,Alcohol use,4.31,26.65,Asia,Central Asia
+LAO,2. Lower middle income,Laos,68.06,All causes,Alcohol use,3.4,24.26,Asia,South-eastern Asia
+LVA,4. High income,Latvia,73.58,All causes,Alcohol use,6.62,26.53,Europe,Northern Europe
+LBN,2. Lower middle income,Lebanon,75.05,All causes,Alcohol use,0.43,27.9,Asia,Western Asia
+LSO,2. Lower middle income,Lesotho,53.06,All causes,Alcohol use,2.52,13.77,Africa,Sub-Saharan Africa
+LBR,1. Low income,Liberia,60.75,All causes,Alcohol use,2.44,22.36,Africa,Sub-Saharan Africa
+LBY,3. Upper middle income,Libya,71.91,All causes,Alcohol use,0.27,25.77,Africa,Northern Africa
+LTU,4. High income,Lithuania,73.72,All causes,Alcohol use,5.24,27.28,Europe,Northern Europe
+LUX,4. High income,Luxembourg,82.63,All causes,Alcohol use,4.7,33.84,Europe,Western Europe
+MDG,1. Low income,Madagascar,64.49,All causes,Alcohol use,1.38,21.0,Africa,Sub-Saharan Africa
+MWI,1. Low income,Malawi,62.9,All causes,Alcohol use,1.98,18.57,Africa,Sub-Saharan Africa
+MYS,3. Upper middle income,Malaysia,74.88,All causes,Alcohol use,0.88,26.08,Asia,South-eastern Asia
+MDV,3. Upper middle income,Maldives,79.92,All causes,Alcohol use,0.69,31.95,Asia,Southern Asia
+MLI,1. Low income,Mali,58.94,All causes,Alcohol use,1.13,20.93,Africa,Sub-Saharan Africa
+MLT,4. High income,Malta,83.78,All causes,Alcohol use,2.09,34.24,Europe,Southern Europe
+MHL,3. Upper middle income,Marshall Islands,65.27,All causes,Alcohol use,1.68,21.75,Oceania,Micronesia
+MRT,2. Lower middle income,Mauritania,64.36,All causes,Alcohol use,0.73,24.95,Africa,Sub-Saharan Africa
+MUS,3. Upper middle income,Mauritius,73.56,All causes,Alcohol use,1.97,27.5,Africa,Sub-Saharan Africa
+MEX,3. Upper middle income,Mexico,70.21,All causes,Alcohol use,3.17,26.05,Americas,Latin America and the Caribbean
+FSM,2. Lower middle income,Micronesia (country),70.71,All causes,Alcohol use,1.17,22.94,Oceania,Micronesia
+MDA,3. Upper middle income,Moldova,68.85,All causes,Alcohol use,6.69,25.8,Europe,Eastern Europe
+MCO,4. High income,Monaco,85.95,All causes,Alcohol use,3.25,30.97,Europe,Western Europe
+MNG,3. Upper middle income,Mongolia,70.98,All causes,Alcohol use,7.42,24.9,Asia,Eastern Asia
+MNE,3. Upper middle income,Montenegro,76.34,All causes,Alcohol use,2.85,24.91,Europe,Southern Europe
+MAR,2. Lower middle income,Morocco,74.04,All causes,Alcohol use,0.16,25.71,Africa,Northern Africa
+MOZ,1. Low income,Mozambique,59.32,All causes,Alcohol use,1.7,18.47,Africa,Sub-Saharan Africa
+MMR,2. Lower middle income,Myanmar,65.67,All causes,Alcohol use,3.04,24.28,Asia,South-eastern Asia
+NAM,3. Upper middle income,Namibia,59.27,All causes,Alcohol use,3.06,18.74,Africa,Sub-Saharan Africa
+NRU,4. High income,Nauru,63.62,All causes,Alcohol use,2.05,20.16,Oceania,Micronesia
+NPL,2. Lower middle income,Nepal,68.45,All causes,Alcohol use,1.68,23.74,Asia,Southern Asia
+NLD,4. High income,Netherlands,81.69,All causes,Alcohol use,3.44,32.85,Europe,Western Europe
+NZL,4. High income,New Zealand,82.45,All causes,Alcohol use,3.48,34.23,Oceania,Australia and New Zealand
+NIC,2. Lower middle income,Nicaragua,73.84,All causes,Alcohol use,2.53,27.27,Americas,Latin America and the Caribbean
+NER,1. Low income,Niger,61.58,All causes,Alcohol use,0.76,22.59,Africa,Sub-Saharan Africa
+NGA,2. Lower middle income,Nigeria,52.68,All causes,Alcohol use,2.4,24.17,Africa,Sub-Saharan Africa
+MNP,4. High income,Northern Mariana Islands,77.19,All causes,Alcohol use,1.81,25.6,Oceania,Micronesia
+NOR,4. High income,Norway,83.23,All causes,Alcohol use,2.87,34.47,Europe,Northern Europe
+OMN,4. High income,Oman,72.54,All causes,Alcohol use,0.19,25.63,Asia,Western Asia
+PAK,2. Lower middle income,Pakistan,66.1,All causes,Alcohol use,0.49,23.11,Asia,Southern Asia
+PLW,4. High income,Palau,66.02,All causes,Alcohol use,1.53,24.89,Oceania,Micronesia
+PAN,4. High income,Panama,76.22,All causes,Alcohol use,2.61,32.13,Americas,Latin America and the Caribbean
+PNG,2. Lower middle income,Papua New Guinea,65.35,All causes,Alcohol use,0.61,21.72,Oceania,Melanesia
+PRY,3. Upper middle income,Paraguay,70.26,All causes,Alcohol use,3.1,26.24,Americas,Latin America and the Caribbean
+PER,3. Upper middle income,Peru,72.38,All causes,Alcohol use,1.98,25.79,Americas,Latin America and the Caribbean
+PHL,2. Lower middle income,Philippines,69.27,All causes,Alcohol use,2.63,23.7,Asia,South-eastern Asia
+POL,4. High income,Poland,76.46,All causes,Alcohol use,5.24,28.11,Europe,Eastern Europe
+PRT,4. High income,Portugal,81.04,All causes,Alcohol use,4.73,33.04,Europe,Southern Europe
+PRI,4. High income,Puerto Rico,80.16,All causes,Alcohol use,3.63,33.76,Americas,Latin America and the Caribbean
+QAT,4. High income,Qatar,79.27,All causes,Alcohol use,0.55,28.93,Asia,Western Asia
+ROU,4. High income,Romania,74.18,All causes,Alcohol use,5.51,25.64,Europe,Eastern Europe
+RUS,4. High income,Russia,69.42,All causes,Alcohol use,5.43,24.42,Europe,Eastern Europe
+RWA,1. Low income,Rwanda,66.07,All causes,Alcohol use,3.4,22.27,Africa,Sub-Saharan Africa
+WSM,2. Lower middle income,Samoa,72.77,All causes,Alcohol use,1.05,25.31,Oceania,Polynesia
+SMR,4. High income,San Marino,80.88,All causes,Alcohol use,4.07,37.33,Europe,Southern Europe
+STP,2. Lower middle income,Sao Tome and Principe,67.59,All causes,Alcohol use,3.84,24.61,Africa,Sub-Saharan Africa
+SAU,4. High income,Saudi Arabia,76.94,All causes,Alcohol use,0.25,26.55,Asia,Western Asia
+SEN,2. Lower middle income,Senegal,67.09,All causes,Alcohol use,0.69,22.73,Africa,Sub-Saharan Africa
+SRB,3. Upper middle income,Serbia,74.19,All causes,Alcohol use,3.45,25.97,Europe,Southern Europe
+SYC,4. High income,Seychelles,71.29,All causes,Alcohol use,2.47,27.25,Africa,Sub-Saharan Africa
+SLE,1. Low income,Sierra Leone,60.06,All causes,Alcohol use,1.99,22.44,Africa,Sub-Saharan Africa
+SGP,4. High income,Singapore,82.75,All causes,Alcohol use,0.6,36.69,Asia,South-eastern Asia
+SVK,4. High income,Slovakia,74.91,All causes,Alcohol use,4.03,27.04,Europe,Eastern Europe
+SVN,4. High income,Slovenia,80.69,All causes,Alcohol use,5.11,32.18,Europe,Southern Europe
+SLB,2. Lower middle income,Solomon Islands,70.35,All causes,Alcohol use,0.75,22.35,Oceania,Melanesia
+SOM,1. Low income,Somalia,55.28,All causes,Alcohol use,0.58,16.52,Africa,Sub-Saharan Africa
+ZAF,3. Upper middle income,South Africa,62.34,All causes,Alcohol use,2.53,21.29,Africa,Sub-Saharan Africa
+SSD,1. Low income,South Sudan,54.98,All causes,Alcohol use,0.69,19.69,Africa,Sub-Saharan Africa
+ESP,4. High income,Spain,83.01,All causes,Alcohol use,3.61,34.13,Europe,Southern Europe
+LKA,2. Lower middle income,Sri Lanka,76.4,All causes,Alcohol use,2.06,29.46,Asia,Southern Asia
+KNA,4. High income,Saint Kitts and Nevis,71.68,All causes,Alcohol use,3.31,25.68,Americas,Latin America and the Caribbean
+LCA,3. Upper middle income,Saint Lucia,71.11,All causes,Alcohol use,3.95,27.31,Americas,Latin America and the Caribbean
+VCT,3. Upper middle income,Saint Vincent and the Grenadines,69.63,All causes,Alcohol use,4.33,26.97,Americas,Latin America and the Caribbean
+SDN,1. Low income,Sudan,65.27,All causes,Alcohol use,0.14,24.23,Africa,Northern Africa
+SUR,3. Upper middle income,Suriname,70.27,All causes,Alcohol use,2.5,26.59,Americas,Latin America and the Caribbean
+SWE,4. High income,Sweden,82.98,All causes,Alcohol use,3.58,34.67,Europe,Northern Europe
+CHE,4. High income,Switzerland,83.99,All causes,Alcohol use,4.07,35.65,Europe,Western Europe
+SYR,1. Low income,Syria,72.06,All causes,Alcohol use,0.25,25.78,Asia,Western Asia
+TJK,2. Lower middle income,Tajikistan,71.59,All causes,Alcohol use,1.49,24.9,Asia,Central Asia
+TZA,2. Lower middle income,Tanzania,66.2,All causes,Alcohol use,2.76,22.16,Africa,Sub-Saharan Africa
+THA,3. Upper middle income,Thailand,78.72,All causes,Alcohol use,4.16,30.79,Asia,South-eastern Asia
+TGO,1. Low income,Togo,61.62,All causes,Alcohol use,1.75,21.92,Africa,Sub-Saharan Africa
+TON,3. Upper middle income,Tonga,70.99,All causes,Alcohol use,1.02,26.92,Oceania,Polynesia
+TTO,4. High income,Trinidad and Tobago,72.97,All causes,Alcohol use,2.25,26.14,Americas,Latin America and the Caribbean
+TUN,2. Lower middle income,Tunisia,73.77,All causes,Alcohol use,0.46,26.84,Africa,Northern Africa
+TUR,3. Upper middle income,Turkey,76.03,All causes,Alcohol use,0.49,27.86,Asia,Western Asia
+TKM,3. Upper middle income,Turkmenistan,69.26,All causes,Alcohol use,3.86,23.67,Asia,Central Asia
+TUV,3. Upper middle income,Tuvalu,64.55,All causes,Alcohol use,1.26,23.84,Oceania,Polynesia
+UGA,1. Low income,Uganda,62.7,All causes,Alcohol use,3.08,21.16,Africa,Sub-Saharan Africa
+UKR,3. Upper middle income,Ukraine,71.62,All causes,Alcohol use,4.86,25.37,Europe,Eastern Europe
+ARE,4. High income,United Arab Emirates,78.71,All causes,Alcohol use,0.76,26.86,Asia,Western Asia
+GBR,4. High income,United Kingdom,80.74,All causes,Alcohol use,3.49,32.12,Europe,Northern Europe
+USA,4. High income,United States,77.2,All causes,Alcohol use,3.68,30.49,Americas,Northern America
+URY,4. High income,Uruguay,75.44,All causes,Alcohol use,3.13,28.83,Americas,Latin America and the Caribbean
+UZB,2. Lower middle income,Uzbekistan,70.86,All causes,Alcohol use,2.35,26.73,Asia,Central Asia
+VUT,2. Lower middle income,Vanuatu,70.45,All causes,Alcohol use,1.18,22.07,Oceania,Melanesia
+VNM,2. Lower middle income,Vietnam,73.62,All causes,Alcohol use,5.81,27.31,Asia,South-eastern Asia
+PSE,2. Lower middle income,Palestine,73.47,All causes,Alcohol use,0.34,26.55,Asia,Western Asia
+YEM,1. Low income,Yemen,63.75,All causes,Alcohol use,0.17,22.95,Asia,Western Asia
+ZMB,2. Lower middle income,Zambia,61.22,All causes,Alcohol use,2.28,18.03,Africa,Sub-Saharan Africa
+ZWE,2. Lower middle income,Zimbabwe,59.25,All causes,Alcohol use,2.06,16.13,Africa,Sub-Saharan Africa

@@ -100,4 +100,15 @@ merged_df_with_continents['average_life_expectancy'] = merged_df_with_continents
 merged_df_with_continents['percentage_heavy_drinkers'] = merged_df_with_continents['percentage_heavy_drinkers'].round(2)
 merged_df_with_continents['life_expectancy_at_50'] = merged_df_with_continents['life_expectancy_at_50'].round(2)
 
-merged_df_with_continents.to_csv('textbook/data/life_expectancy_at_50_alcohol.csv', index=False)
+income_df = pd.read_excel('../data/world_bank_income.xlsx')
+income_df = income_df.rename(columns={'Code': 'code', 'Income group': 'income_group'})
+income_df = income_df[['code', 'income_group']]
+
+merged_df_with_continents_income = pd.merge(income_df, merged_df_with_continents, on='code')
+
+income_order = ['Low income', 'Lower middle income', 'Upper middle income', 'High income']
+numbered_labels = {income: f"{i+1}. {income}" for i, income in enumerate(income_order)}
+
+merged_df_with_continents_income['income_group'] = merged_df_with_continents_income['income_group'].map(numbered_labels)
+
+merged_df.to_csv('../data/income_lifeexp_alcohol_1.csv', index=False)
