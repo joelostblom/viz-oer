@@ -31,15 +31,13 @@ resources:
 
 ## Why grouping matters
 
- So far you have created declarative visualizations by representing them as 'marks' on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
+So far you have created declarative visualizations by representing them as 'marks' on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
 
 Consider the following example:
 
 ::::: {.callout-default .ex-prompt}
 
-In Viridia, historians have been studying datasets from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors.
-
-During their research, they uncovered records of a beverage known as “alcohol.” 
+In Viridia, historians have been studying datasets from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors. During their research, they uncovered records of a beverage known as “alcohol.” 
 
 The researchers decided to create a scatterplot of countries, with the x-axis showing the percentage of heavy alcohol drinkers and the y-axis showing the average number of years left to live after reaching age 50.^[Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data]
 
@@ -151,7 +149,7 @@ In this case, grouping makes the insidious Simpson's Paradox visually unmistakab
 
 ## Strategies for grouping
 
-The grammar of graphics gives us a convenient syntax for grouping. We simply define the encoding channel that should represent a categorical variable, using `aes()` in ggplot and `.encode()` in Altair. Color, shape, size and position are the most effective channels for grouping, and they can be easily interchanged:
+The grammar of graphics gives us a convenient syntax for grouping. We simply define the encoding channel that should represent a categorical variable. Color, shape, size and position are the most effective channels for grouping, and they can be easily interchanged:
 
 ::: {.panel-tabset}
 
@@ -265,6 +263,7 @@ It is critical that each color be clearly distinct from the others, as too-simil
 
 Accessibility is another key concern when using color. Colorblindness affects approximately 8% of men and 0.5% of women globally, with the most common variant being deuteranopia, which impairs the ability to distinguish between red and green hues. While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
 
+We will learn much more about colors later in chapter ...including specifics around which color are safe to use together and which are suitable to represent different data types.
 
 ### Shape
 
@@ -307,7 +306,7 @@ geom_point()
 
 :::
 
-The combination of shape and color can make grouping clearer than either of these categories alone. However, there are some important caveats. At line-drawings or outlines can make color difficult to distinguish as it reduces the area that is colored. It is preferable to use filled shapes when combining these encoding channels. 
+The combination of shape and color can make grouping clearer than either of these categories alone. However, there are some important caveats. Outlined shapes can make color difficult to distinguish as it reduces the area that is colored. It is preferable to use filled shapes when combining these encoding channels. 
 
 Another important consideration is the size of the shapes. It is much easier for the viewer to distinguish between larger shapes than smaller ones. If you have a scatterplot with tiny marks, you may want to restrict the number of unique shapes you show, or consider avoiding shape altogether.
 
@@ -487,8 +486,7 @@ alt.Chart(mental_health_df).mark_point().encode(
 # ggplot
 
 ```{r fig.height=5,fig.width=8}
-# Load necessary libraries
-mental_health_df <- read.csv("data/mental_health_long.csv")
+mental_health_df <- read_csv("data/mental_health_long.csv")
 ggplot(mental_health_df, aes(
   x = Score, 
   y = Country, 
