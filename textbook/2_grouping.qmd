@@ -31,7 +31,7 @@ resources:
 
 ## Why grouping matters
 
-So far you have created declarative visualizations by representing them as 'marks' on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
+So far you have created declarative visualizations by representing them as identical **marks** on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
 
 Consider the following example:
 
@@ -88,7 +88,7 @@ alt.Chart(income_df).mark_point().encode(
 
 Notice that the data points form clusters by income group?
 
-Coloring reveals that both national alcoholism and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. 
+Coloring reveals that both national alcoholism levels and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. 
 
 We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income</span>, where both indicators are lower. 
 
@@ -110,7 +110,7 @@ As we have seen with alcohol consumption and life expectancy, grouping has major
 
 1. **Directly compare** trends and values for distinct groups
 
-2. **Discover trends** in the data that were previously obscured
+2. **Discover patterns** in the data that were previously obscured
 
 3. **Avoid making inaccurate conclusions** about the relationships in our data
 
@@ -221,9 +221,9 @@ The main challenge in applying grouping is understanding which encoding channel 
 
 ### Color
 
-The human brain can detect and process color differences quickly and subconsciously. Color is a *pre-attentive feature* which means that the brain distinguishes between colors even without conscious attention. This effect is even more pronounced when there is a high contrast between the colors, as is the case with complimentary colors like blue and orange.
+The human brain can detect and process color differences with very little cognitive effort. Color is a **pre-attentive feature** which means that the brain distinguishes between colors even without conscious attention. This ability is heightened when there is a high contrast between the colors, as is the case with complimentary colors like blue and orange.
 
-This is good news for grouping. By encoding our categorical variable as color, we can leverage the brain's ability to infer the groups in our data. For scatterplots, this works particularly well when you have a small number of clusters. Color can be easy added without altering the layout or structure of the data visualization. This makes it a powerful way to compare the exact values of data points between groups.
+This is great news for grouping. By encoding our categorical variable as color, we leverage the brain's ability to infer groups in our visualization. For scatterplots, this works particularly well when there fewer than eight categories. Conveniently, color can be applied without altering the layout or structure of the data visualization, making it an efficient way to compare the exact values of data points between groups.
 
 For example, we can color our life expectancy data by world region:
 
@@ -259,21 +259,19 @@ geom_point()
 
 :::
 
-It is critical that each color be clearly distinct from the others, as too-similar colors can confuse the viewer and make differentiation difficult. Similarly, it is wise to limit the number of distinct categories represented by color: adding too many different colors overwhelms the visualization and makes them harder to distinguish.
+The power of color fades without accessibility. It's best to avoid using overly similar colors as this blurs the difference between groups. Apply color when you have a small number of groups: adding too many different colors overwhelms the visualization and it harder to intepret. Finally,  be cognizant of visual impairments. Colorblindness affects approximately 8% of men and 0.5% of women globally. The most common variant is deuteranopia, which impairs the ability to distinguish between red and green hues. A word of caution: while Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
 
-Accessibility is another key concern when using color. Colorblindness affects approximately 8% of men and 0.5% of women globally, with the most common variant being deuteranopia, which impairs the ability to distinguish between red and green hues. While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
-
-We will learn much more about colors later in chapter ...including specifics around which color are safe to use together and which are suitable to represent different data types.
+We will learn much more about accessibility in chapter ...including specifics around which colors are safe to use together and which are suitable to represent different data types.
 
 ### Shape
 
-Shape can be used strategically in combination with color to provide an additional visual cue. This is particularly effective in contexts where colors may be difficult to distinguish. 
+Shape can be used strategically in combination with color to provide an additional visual cue.
 
-A classic example of the power of this combination is the humble traffic light. At first glance, traffic lights seem poorly designed: they use the worst possible colors for people the most common form of colorblindess: red and green. However, in many cities, traffic lights are encoded with using both color and shape. The combination of these encoding channels, alongside the use of predictable y-axis positions for both 'Stop' and 'Go' signals creates a powerful effect that has undoubtedly prevented many accidents.
+A classic example of this is the humble traffic light. At first glance, traffic lights seem terribly designed: they use the worst possible hues for people with deuteranopia (red and green). Thankfully, in many countries, traffic lights are encoded using both color and shape. A third encoding channel - position - is then used to establish predictable y-axis positions for both 'Stop' and 'Go' signals. Grouping by three encoding channels reinforces the visual contrast and has prevented many accidents.
 
 ![](/img/traffic.png)
 
-We can encode shapes aesthetics the same way as color, this can make it easier to distinguish the groups. 
+We can use the same syntax to encode both color and shape aesthetics: 
 
 ::: {.panel-tabset}
 
@@ -306,16 +304,16 @@ geom_point()
 
 :::
 
-The combination of shape and color can make grouping clearer than either of these categories alone. However, there are some important caveats. Outlined shapes can make color difficult to distinguish as it reduces the area that is colored. It is preferable to use filled shapes when combining these encoding channels. 
+While this combined approach makes grouping clearer, beware of the pitfalls. Line icons limit the total area that can be colored, reducing the effectiveness of color, so is preferable to opt for solid shapes when combining these encoding channels. 
 
-Another important consideration is the size of the shapes. It is much easier for the viewer to distinguish between larger shapes than smaller ones. If you have a scatterplot with tiny marks, you may want to restrict the number of unique shapes you show, or consider avoiding shape altogether.
+Size matters more than you'd think. Larger shapes are easier to distinguish. When plotting a dense scatterplot of microscopic marks, try restricting the number of unique shapes, or consider avoiding using shape altogether.
 
 
 ### Size
 
-While size is far more effective when used to represent quantitative data, it can under limited circumstances be used for grouping. Because size has an inherent direction, it works better for **ordinal** categories - those with a clear order. 
+While size usually represents the magnitude of quantitative data, it can, under limited circumstances, be applied to grouping. Because size has an inherent direction, it works better for **ordinal** categories - those with a clear order. 
 
-One example is World Bank income level, which ranges from low to high. We can enhance our life expectancy and alcoholism chart, using size to encode the income level of countries in sub-Saharan Africa.
+One example is World Bank income level, ranging from low to high. Let's shake up our life expectancy chart, encoding income level of countries in sub-Saharan Africa as size:
 
 ::: {.panel-tabset}
 
@@ -335,7 +333,7 @@ alt.Chart(income_df_subset).mark_point().encode(
 
 # ggplot
 
-Here we use `size=income_group'`:
+Here we use `size=income_group`:
 
 ```{r}
 
@@ -353,9 +351,13 @@ geom_point()
 
 :::
 
+As you've probably noticed, it takes more cognitive effort to interpret size-based groupings compared to colors. Restricting size to four or fewer levels is a good rule of thumb, and for most visualizations grouping by size should be avoided.
+
 ### Position
 
-Position is a highly effective grouping strategy. It involves mapping a categorical variable directly onto the x or y axis, turning each group into a clear visual lane. By keeping the same scale for the other axis, it allows you to compare distributions across categories. It also makes outliers within each category easier to spot than when you plot all data points on the same line.
+Position is the most interpretable grouping strategy. It involves mapping a categorical variable directly onto the x or y axis, turning each group into a clear visual lane. By keeping the same scale for the other axis, it allows you to compare distributions across categories. It also emphasizes outliers within each category, making them easier to spot.
+
+Notice how grouping by position on the y-axis makes it easy to compare the distributions of heavy alcohol consumption across world regions:
 
 ::: {.panel-tabset}
 
@@ -384,12 +386,45 @@ geom_point()
 
 :::
 
-Position is the most visually intuitive grouping method but it can be overkill. 
-
-Splitting the visualization onto separate lanes can make it more difficult to see overall patterns in the dataset. It also requires significant space, so works better when you have fewer than 10 categories. Another limitation of using position is that you sacrifice use the x or y axis for another continuous variable. Not only does this limit the amount of information, it can also cause data points to overlap. One solution is to use **jittering**, which introduces solely aesthetic variation in position within each lane. 
-
 Position can be harnessed in combination with color to group on two different categorical variables. Here, the choice of which encoding channel to assign to each variable should be motivated by the comparison you are trying to make. Position is more effective than color for comparing between categories, so you should assign the most important variable to position. 
 
+Grouping by position is not all bunnies and rainbows. It sacrifices an axis that could have been used for a continuous variable, losing information. Visually separating each group can also obscure overall trends in the dataset and requires significant space.
+
+As you saw in the visualization above, plotting data points along a single axis leads to significant overlap. That's where **jittering** comes to the rescue. It introduces slight variation in position of data points within each lane, making them easier to distinguish. 
+
+::: {.panel-tabset}
+
+# Altair
+
+In Altair, we append the `.transform_calculate()` function to our chart to create a calculated variable called `jitter`. We then use the `yOffset` encoding channel. By setting `yOffset='jitter:Q'` we shift the `yOffset` of each point by a random value. The `:Q` simply tells Altair that `jitter` continuous quantitative variable.
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='region',
+    color='region',
+    yOffset="jitter:Q"
+).transform_calculate(
+    jitter="random()"
+)
+```
+
+# ggplot
+
+In ggplot2, you can achieve the same effect with jittering by using the `position_jitter()` function. Jitter is directly applied to the marks through the position argument within `geom_point()`.
+
+```{r}
+ggplot(income_df, aes(
+    x=percentage_heavy_drinkers, 
+    y=region, 
+    color=region
+)) + 
+geom_point(position = position_jitter(width = 0, height = 0.2))
+```
+
+:::
+
+While jittering is an attractive strategy, it can cause confusion. Jittering can easily be mistaken for a scatterplot with variation in the underlying data.
 
 
 ## Introduction to faceting
