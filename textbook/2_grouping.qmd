@@ -60,7 +60,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-Suprisingly, 50 year olds can expect to live longer in countries with a greater percentage of heavy alcohol drinkers. This is great news! The researchers now plan to introduce alcohol into Viridia.
+Suprisingly, 50 year olds tend to live longer in countries with higher rates of heavy alcohol consumption. This is great news! The researchers now plan to introduce alcohol into Viridia.
 
 **Exercise:**
 
@@ -215,13 +215,15 @@ aes(y=category_column)
 :::
 :::
 
-The main challenge in applying grouping is understanding which encoding channel to use to facilitate the comparisons we want to make. Each grouping strategy has unique strengths and pitfalls, which we shall discuss in detail.
+The main challenge in applying grouping is understanding which encoding channel best supports the comparisons we want to make. Each grouping strategy has unique strengths and pitfalls, which we shall discuss in detail.
 
 ### Color
 
-The human brain can detect and process color differences with very little cognitive effort. Color is a **pre-attentive feature** which means that the brain distinguishes between colors even without conscious attention. This is heightened when there is a high contrast, such as with complimentary colors like blue and orange.
+The human brain can detect color differences with little cognitive effort. Color is a **pre-attentive feature** which means that the brain can tell apart colors even without conscious attention. This is heightened when there is a high contrast, such as between the complimentary colors blue and orange.
 
-This is great news for grouping! By encoding our categorical variable as color, we can leverage the brain's ability to infer groups. For scatterplots, this works best with fewer than eight categories. Conveniently, color doesn't alter the layout or structure of the data visualization, so it's an efficient way to compare the exact values of data points between groups.
+This is great news for grouping! By encoding our categorical variable as color, we can leverage the brain's ability to infer groups. For scatterplots, this works best with fewer than eight categories. 
+
+Conveniently, color doesn't alter the layout or structure of the data visualization, so it's an efficient way to compare the exact values of data points between groups.
 
 Let's use color to group our life expectancy data by world region:
 
@@ -257,17 +259,23 @@ geom_point()
 
 :::
 
-But beware... The power of color fades when used irresponsibly. Overly similar colors can blur the difference between groups. Color works best when you have a small number of groups, otherwise your rainbow mess becomes overwhelming to interpret. And that's not to mention accessibility. Colorblindness affects approximately 8% of men and 0.5% of women globally. The most common variant is deuteranopia, which impairs the ability to distinguish between red and green hues. While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
+Notice how you naturally interpret points of same color as clusters?
+
+But beware... The power of color fades when used irresponsibly. Using   colors that are too similar can blur the difference between groups. The more colors you include, the harder it is to stick to distinct hues.
+
+There is also the challenge of accessibility. Colorblindness affects approximately 8% of men and 0.5% of women globally. The most common variant is deuteranopia. This impairs the ability to distinguish between red and green hues, so designing your data visualization with this in mind is essential. While Altair’s default color palette is designed to be color-blind friendly, ggplot’s is not.
 
 We will learn much more about accessibility in chapter ...including specifics around which colors are safe to use together and which are suitable to represent different data types.
 
 ### Shape
 
-Now our visualizations are really taking shape... Shape can be used strategically in combination with color to provide an additional visual cue.
+Now our visualizations are really taking shape! Shape can be combined with color to provide an additional visual cue. Let's take a look at a classic example: the infamous traffic light. 
 
-A classic example of this is the humble traffic light. At first glance, traffic lights seem poorly designed: they use the worst possible hues for people with deuteranopia (red and green). Thankfully, in many countries, traffic lights are encoded using both color and shape. A third encoding channel - position - is then used to establish predictable y-axis positions for both 'Stop' and 'Go' signals. Grouping by three encoding channels reinforces the visual contrast and has probably prevented many accidents.
+Do you think that traffic lights are well designed? At first glance,  they break a major rules of accessibility, using the worst possible colors for people with deuteranopia (red and green). Thankfully, in many countries, traffic lights are encoded using both color and shape. A third encoding channel - position - is then used to establish predictable y-axis positions for both 'Stop' and 'Go' signals. 
 
 ![](/img/traffic.png)
+
+Grouping by three encoding channels reinforces the visual contrast and has probably prevented many accidents.
 
 We can use the same syntax to encode both color and shape aesthetics: 
 
@@ -302,16 +310,16 @@ geom_point()
 
 :::
 
-While this combined approach makes grouping clearer, watch out for some pitfalls. Line icons limit the total area that can be colored. This reduces the effectiveness of color, so its preferable to use solid shapes.
+While this combined approach makes grouping clearer, there are some pitfalls. For instance, line icons limit the total area that can be colored, reducing the impact of color. It is better to use solid shapes when combining shape and color.
 
-Size matters more than you'd think. Smaller shapes are difficult to distinguish. When plotting a dense scatterplot of small marks, try restricting the number of unique shapes, or consider avoiding using shape altogether.
+Additionally, size matters more than you'd think. Smaller shapes are difficult to distinguish. When plotting a dense scatterplot of small marks, try restricting the number of unique shapes to three or fewer, or consider avoiding using shape altogether.
 
 
 ### Size
 
-Size is often used to represent the magnitude of quantitative data. But it can under limited circumstances be used for grouping. Because size has an inherent direction, it works better for **ordinal** categories - those with a clear order. 
+Size is often used to represent the magnitude of quantitative data. But it can under limited circumstances be used for grouping. Size has an inherent direction, so it works better for **ordinal** categories - those with a clear order. 
 
-One example is World Bank income level, ranging from low to high. Let's shake up our life expectancy chart, encoding income level of countries in sub-Saharan Africa as size:
+One example is World Bank income level, ranging from low to high. Let's shake up our life expectancy chart, encoding the income level of countries in sub-Saharan Africa as size:
 
 ::: {.panel-tabset}
 
@@ -349,13 +357,15 @@ geom_point()
 
 :::
 
-As you can see, size-based groupings are not very intuitive. Restricting size to four or fewer levels is a good rule of thumb, and for most visualizations grouping by size should be avoided.
+::: {.callout-caution}
+In general, size-based groupings are not very intuitive. Restricting size to four or fewer levels is a good rule of thumb, and for most visualizations grouping by size should be avoided.
+:::
 
 ### Position
 
-Position is a powerful grouping strategy. To do it, we encode a categorical variable as the x or y axis, turning each group into a clear visual lane. This makes it easy to compare distributions across categories. It also emphasizes outliers within each category, making them easier to spot.
+Position is a powerful grouping strategy. It works by encoding our categorical variable as the x or y axis. Each group has its own visual lane, making it easier to compare overall distributions across categories. It  also emphasizes the outliers within each category.
 
-Notice how grouping on the y-axis allows us to compare the distributions of heavy alcohol consumption across world regions:
+Below, we group on the y-axis to compare heavy alcohol consumption across world regions:
 
 ::: {.panel-tabset}
 
@@ -384,25 +394,139 @@ geom_point()
 
 :::
 
-Position can be combined with color to reinforce grouping in a category, or to group by a second categorical variable. As position is more visually obvious than color, try to reserve it for the primary comparison you are trying to make. 
+Notice how easy it is to compare the distributions between regions?
 
-::: {.column-margin}
+We can even take it one step further. Position can be combined with color to reinforce grouping on one variable or to introduce grouping on a second variable. 
 
-**Think before you group**
+When grouping by two categorical variables, which should you assign to position and which to color? Position is more effective than color. This means that we assign our primary comparison to position and our secondary comparison to color. 
 
-In general, before applying grouping, consider how critical each 
-categorical comparison is to your analysis. The most important comparisons should be assigned to the most effective grouping channels, which in order are position, color, shape and size.
-:::
+Let's apply this to a real world example.
 
-Grouping by position has drawbacks. For one, it occupies an axis that could have represented a continuous variable. This reduces the information density of your visualization. Visually separating each group by position can also obscure overall trends in the dataset and requires significant space.
+::::: {.callout-default .ex-prompt}
 
-There is another potential problem. As you saw in the visualization above, plotting data points along a single axis can lead to substantial overlap. That's where **jittering** comes to the rescue. It introduces slight variation in position of data points within each lane, making them easier to tell apart. 
+You are trying to understand how life expectancy varies across income groups globally, and the role world region plays in these differences.
+
+Define the primary and secondary comparisons for this research question.
+
+:::: {.callout-default .ex-hint}
+
+The primary comparison is comparing life expectancy across income groups. The secondary comparison is between world regions.
+
+Now, using the variables `region`, `income_group` and `life_expectancy_at_50`, create a plot that reflects these priorities, showing all countries grouped using position and color. 
 
 ::: {.panel-tabset}
 
 # Altair
 
-In Altair, we append the `.transform_calculate()` function to our chart to create a calculated variable called `jitter`. We then use the `yOffset` encoding channel. By setting `yOffset='jitter:Q'` we shift the `yOffset` of each point by a random value. The `:Q` simply tells Altair that `jitter` is a continuous quantitative variable.
+```{pyodide}
+#| setup: true
+#| exercise:
+#|   - position_alt
+#|   - facet_alt
+import altair as alt
+import pandas as pd
+from utils import assert_chart_equal
+
+url = 'data/income_lifeexp_alcohol_1.csv'
+
+```
+
+```{pyodide}
+#| exercise: position_alt
+income_df = pd.read_csv(url)
+
+
+
+
+
+# Write code above to create the chart 
+```
+
+# ggplot
+
+```{webr}
+#| setup: true
+#| exercise:
+#|   - position_ggplot
+#|   - facet_ggplot
+library(ggplot2)
+
+url <- 'data/income_lifeexp_alcohol_1.csv'
+```
+
+```{webr}
+#| exercise: position_ggplot
+income_df <- readr::read_csv(url, show_col_types=FALSE)
+
+
+
+
+
+# Write code above to create the chart 
+```
+
+:::
+
+::: {.callout-default .ex-solution}
+
+You are primarily comparing the `income_group` variable, so it should be grouped by position on either the `x` or `y` axis. The secondary comparison, `region`, should be encoded as color. 
+
+::: {.panel-tabset}
+
+# Altair
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='life_expectancy_at_50',
+    y='income_group',
+    color='region',
+)
+```
+
+# ggplot
+
+```{r}
+ggplot(income_df, aes(
+    x=life_expectancy_at_50, 
+    y=income_group, 
+    color=region
+)) + 
+geom_point()
+```
+
+:::
+
+:::
+
+::::
+
+
+
+:::::
+
+For all of these benefits, there are some drawbacks of grouping by position. For one, it occupies an axis that could have represented a continuous variable. This reduces the information density of your visualization. More worryingly, visually separating each group by position can hide overall trends in the dataset. It also requires significant space.
+
+Lastly, plotting data points along a single axis can lead to  overlap. That's where **jittering** comes to the rescue. Jittering introduces slight variation, or 'jitter', in the position of data points in each lane, making them easier to see. 
+
+::: {.column-margin}
+
+**Jitterbug**
+
+Back in the 1930s, the jitterbug was a lively, often wild, dance style that matched the fast-paced, unpredictable energy of swing music. In data visualization, jittering serves a similar purpose: to add a touch of randomness to points in a plot.
+
+![](/img/640px-Jitterbug_Wolcott_FSA.jpg)
+
+:::
+
+Let's examine how jittering works.
+
+::: {.panel-tabset}
+
+# Altair
+
+In Altair, we create a random calculated variable called `jitter` by appending the `.transform_calculate()` function to our chart. By setting the encoding channel `yOffset='jitter:Q'` we shift the `yOffset` of each point by a random value. 
+
+The `:Q` simply tells Altair that `jitter` is a continuous quantitative variable.
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
@@ -429,50 +553,130 @@ geom_point(position = position_jitter(width = 0, height = 0.2))
 ```
 
 :::
-While jittering is an attractive strategy, it can cause confusion. Jittered points can easily be mistaken for a scatterplot with true variation in the underlying data.
 
 
-::: {.column-margin}
-
-**Jitterbug**
-
-Back in the 1930s, the jitterbug was a lively, often wild, dance style that matched the fast-paced, unpredictable energy of swing music. In data visualization, jittering serves a similar purpose: to add a touch of randomness to points in a plot.
+::: {.callout-caution}
+Jittering can be confusing! It can easily be mistaken for a scatterplot with true variation in the underlying data.
 :::
 
 ## Faceting
 
-Faceting is a radical alternative to grouping. Rather than using encoding channels, it creates a separate chart for each group. You can think of it like an extreme version of grouping by position, with the added benefit of not sacrificing an axis for a categorical variable.
+Faceting takes the concept of grouping to the next level by generating multiple small charts, each dedicated to a subset of the data. It is particularly effective for highlighting distinct trends and patterns in each subset, as well as identifying extreme values or outliers within groups. And unlike grouping by position, faceting keeps both the x and y axis free for other variables.
+
+Let's check out the syntax:
 
 ::: {.panel-tabset}
 
 # Altair
 
-In Altair, to facet by income group we simply append `.facet('income_group')` to our chart.
+In Altair, faceting by World Bank income group is straightforward. We simply append `.facet('income_group')` to our chart. Additionally, we can control the layout by setting the number of columns using the `columns` argument:
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_50',
 ).facet(
-    'income_group'
+    'income_group',
+    columns=2
 )
 ```
 
 # ggplot
 
-Here we use `shape=region`:
+Facetting works via `facet_wrap`. By default it tries to create an even num of cols and rows, rather than putting all plot in one row like Altair. However, you can specify the desired number of columns with the `ncol` argument.
+
 
 ```{r}
 ggplot(income_df, aes(
+    x = percentage_heavy_drinkers, 
+    y = life_expectancy_at_50
+)) +
+geom_point() +
+facet_wrap(~ income_group, ncol=2)
+```
+
+:::
+
+Faceting makes it easy to see the overall shape of the distribution for each income group and how tightly clustered the values are. It also reveals outliers in the Upper Middle Income facet – we can easily spot two countries with a higher percentage of heavy drinkers.
+
+Another advantage is that we can apply additional layers of grouping within each facet. Now its your turn!
+
+::::: {.callout-default .ex-prompt}
+
+Edit this chart to use both faceting and grouping.
+Facet by world region (`region`) and group by World Bank income group (`income_group`). 
+Ensure that only two facets are shown per row.
+
+::: {.panel-tabset}
+
+# Altair
+
+
+```{pyodide}
+#| exercise: facet_alt
+income_df = pd.read_csv(url)
+
+alt.Chart(income_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+)
+
+```
+
+# ggplot
+
+
+```{webr}
+#| exercise: facet_ggplot
+income_df <- readr::read_csv(url, show_col_types=FALSE)
+
+ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
     y=life_expectancy_at_50, 
-    shape=region,
-    color=region
 )) + 
 geom_point()
 ```
 
 :::
+
+::: {.callout-default .ex-solution}
+
+::: {.panel-tabset}
+
+# Altair
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='percentage_heavy_drinkers',
+    y='life_expectancy_at_50',
+    color='income_group'
+).facet(
+    'region',
+    columns=2
+)
+```
+
+# ggplot
+
+```{r}
+ggplot(income_df, aes(
+    x = percentage_heavy_drinkers, 
+    y = life_expectancy_at_50,
+    color=income_group
+)) +
+geom_point() +
+facet_wrap(~ region, ncol=2)
+```
+
+:::
+
+:::
+
+
+
+:::::
+
+So where does faceting fall short? For one, presenting each group on a separate chart makes it difficult to estimate the overlap between distributions. Its also harder to compare individual values across facets. 
 
 
 
