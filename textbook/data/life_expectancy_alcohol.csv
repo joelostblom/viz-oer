@@ -1,0 +1,201 @@
+country,code,average_life_expectancy,percentage_heavy_drinkers,region,sub-region
+Afghanistan,AFG,61.98,0.13,Asia,Southern Asia
+Albania,ALB,76.46,1.98,Europe,Southern Europe
+Algeria,DZA,76.38,0.25,Africa,Northern Africa
+American Samoa,ASM,72.54,0.43,Oceania,Polynesia
+Andorra,AND,80.37,4.18,Europe,Southern Europe
+Angola,AGO,61.64,3.09,Africa,Sub-Saharan Africa
+Antigua and Barbuda,ATG,78.5,3.13,Americas,Latin America and the Caribbean
+Argentina,ARG,75.39,2.59,Americas,Latin America and the Caribbean
+Armenia,ARM,72.04,1.98,Asia,Western Asia
+Australia,AUS,84.53,4.39,Oceania,Australia and New Zealand
+Austria,AUT,81.58,4.87,Europe,Western Europe
+Azerbaijan,AZE,69.37,2.34,Asia,Western Asia
+Bahamas,BHS,71.6,2.85,Americas,Latin America and the Caribbean
+Bahrain,BHR,78.76,0.33,Asia,Western Asia
+Bangladesh,BGD,72.38,0.75,Asia,Southern Asia
+Barbados,BRB,77.57,3.07,Americas,Latin America and the Caribbean
+Belarus,BLR,72.44,4.69,Europe,Eastern Europe
+Belgium,BEL,81.88,4.62,Europe,Western Europe
+Belize,BLZ,70.47,3.2,Americas,Latin America and the Caribbean
+Benin,BEN,59.82,1.6,Africa,Sub-Saharan Africa
+Bermuda,BMU,79.28,2.9,Americas,Northern America
+Bhutan,BTN,71.82,1.19,Asia,Southern Asia
+Bolivia,BOL,63.63,1.85,Americas,Latin America and the Caribbean
+Bosnia and Herzegovina,BIH,75.3,3.21,Europe,Southern Europe
+Botswana,BWA,61.14,1.31,Africa,Sub-Saharan Africa
+Brazil,BRA,72.75,2.85,Americas,Latin America and the Caribbean
+Brunei,BRN,74.64,0.57,Asia,South-eastern Asia
+Bulgaria,BGR,71.8,4.62,Europe,Eastern Europe
+Burkina Faso,BFA,59.27,2.85,Africa,Sub-Saharan Africa
+Burundi,BDI,61.66,3.57,Africa,Sub-Saharan Africa
+Cambodia,KHM,69.58,4.3,Asia,South-eastern Asia
+Cameroon,CMR,60.33,2.88,Africa,Sub-Saharan Africa
+Canada,CAN,82.66,3.96,Americas,Northern America
+Central African Republic,CAF,53.89,2.29,Africa,Sub-Saharan Africa
+Chad,TCD,52.53,2.37,Africa,Sub-Saharan Africa
+Chile,CHL,78.94,4.23,Americas,Latin America and the Caribbean
+China,CHN,78.21,2.96,Asia,Eastern Asia
+Colombia,COL,72.83,1.42,Americas,Latin America and the Caribbean
+Comoros,COM,63.42,0.95,Africa,Sub-Saharan Africa
+Congo,COG,63.52,3.26,Africa,Sub-Saharan Africa
+Cook Islands,COK,74.76,3.94,Oceania,Polynesia
+Costa Rica,CRI,77.02,3.0,Americas,Latin America and the Caribbean
+Croatia,HRV,77.58,4.2,Europe,Southern Europe
+Cuba,CUB,73.68,2.52,Americas,Latin America and the Caribbean
+Cyprus,CYP,81.2,2.24,Asia,Western Asia
+Czechia,CZE,77.73,4.28,Europe,Eastern Europe
+Democratic Republic of Congo,COD,59.19,2.18,Africa,Sub-Saharan Africa
+Denmark,DNK,81.38,4.9,Europe,Northern Europe
+Djibouti,DJI,62.3,0.72,Africa,Sub-Saharan Africa
+Dominican Republic,DOM,72.61,2.68,Americas,Latin America and the Caribbean
+Dominican Republic,DOM,72.61,3.12,Americas,Latin America and the Caribbean
+Ecuador,ECU,73.67,1.88,Americas,Latin America and the Caribbean
+Egypt,EGY,70.22,0.35,Africa,Northern Africa
+El Salvador,SLV,70.75,4.14,Americas,Latin America and the Caribbean
+Equatorial Guinea,GNQ,60.59,2.39,Africa,Sub-Saharan Africa
+Eritrea,ERI,66.54,1.46,Africa,Sub-Saharan Africa
+Estonia,EST,77.14,6.03,Europe,Northern Europe
+Eswatini,SWZ,57.07,1.91,Africa,Sub-Saharan Africa
+Ethiopia,ETH,64.97,2.08,Africa,Sub-Saharan Africa
+Fiji,FJI,67.11,0.66,Oceania,Melanesia
+Finland,FIN,82.04,5.53,Europe,Northern Europe
+France,FRA,82.5,5.33,Europe,Western Europe
+Gabon,GAB,65.82,3.66,Africa,Sub-Saharan Africa
+Gambia,GMB,62.08,2.24,Africa,Sub-Saharan Africa
+Georgia,GEO,71.69,3.24,Asia,Western Asia
+Germany,DEU,80.63,5.68,Europe,Western Europe
+Ghana,GHA,63.8,2.67,Africa,Sub-Saharan Africa
+Greece,GRC,80.11,2.41,Europe,Southern Europe
+Greenland,GRL,72.35,5.74,Americas,Northern America
+Grenada,GRD,74.94,2.47,Americas,Latin America and the Caribbean
+Guam,GUM,76.66,1.97,Oceania,Micronesia
+Guatemala,GTM,69.24,3.16,Americas,Latin America and the Caribbean
+Guinea,GIN,58.89,1.22,Africa,Sub-Saharan Africa
+Guinea-Bissau,GNB,59.65,2.57,Africa,Sub-Saharan Africa
+Guyana,GUY,65.67,3.11,Americas,Latin America and the Caribbean
+Haiti,HTI,63.19,2.37,Americas,Latin America and the Caribbean
+Honduras,HND,70.12,2.12,Americas,Latin America and the Caribbean
+Hungary,HUN,74.53,5.32,Europe,Eastern Europe
+Iceland,ISL,82.68,3.05,Europe,Northern Europe
+India,IND,67.24,1.88,Asia,Southern Asia
+Indonesia,IDN,67.57,0.88,Asia,South-eastern Asia
+Iran,IRN,73.87,0.26,Asia,Southern Asia
+Iraq,IRQ,70.38,0.15,Asia,Western Asia
+Ireland,IRL,82.0,2.96,Europe,Northern Europe
+Israel,ISR,82.26,1.31,Asia,Western Asia
+Italy,ITA,82.85,3.63,Europe,Southern Europe
+Jamaica,JAM,70.5,1.69,Americas,Latin America and the Caribbean
+Japan,JPN,84.78,3.65,Asia,Eastern Asia
+Jordan,JOR,74.26,0.14,Asia,Western Asia
+Kazakhstan,KAZ,69.36,3.35,Asia,Central Asia
+Kenya,KEN,61.43,3.41,Africa,Sub-Saharan Africa
+Kiribati,KIR,67.42,0.78,Oceania,Micronesia
+Kuwait,KWT,78.67,0.14,Asia,Western Asia
+Kyrgyzstan,KGZ,69.98,4.31,Asia,Central Asia
+Laos,LAO,68.06,3.4,Asia,South-eastern Asia
+Latvia,LVA,73.58,6.62,Europe,Northern Europe
+Lebanon,LBN,75.05,0.43,Asia,Western Asia
+Lesotho,LSO,53.06,2.52,Africa,Sub-Saharan Africa
+Liberia,LBR,60.75,2.44,Africa,Sub-Saharan Africa
+Libya,LBY,71.91,0.27,Africa,Northern Africa
+Lithuania,LTU,73.72,5.24,Europe,Northern Europe
+Luxembourg,LUX,82.63,4.7,Europe,Western Europe
+Madagascar,MDG,64.49,1.38,Africa,Sub-Saharan Africa
+Malawi,MWI,62.9,1.98,Africa,Sub-Saharan Africa
+Malaysia,MYS,74.88,0.88,Asia,South-eastern Asia
+Maldives,MDV,79.92,0.69,Asia,Southern Asia
+Mali,MLI,58.94,1.13,Africa,Sub-Saharan Africa
+Malta,MLT,83.78,2.09,Europe,Southern Europe
+Marshall Islands,MHL,65.27,1.68,Oceania,Micronesia
+Mauritania,MRT,64.36,0.73,Africa,Sub-Saharan Africa
+Mauritius,MUS,73.56,1.97,Africa,Sub-Saharan Africa
+Mexico,MEX,70.21,3.17,Americas,Latin America and the Caribbean
+Micronesia (country),FSM,70.71,1.17,Oceania,Micronesia
+Moldova,MDA,68.85,6.69,Europe,Eastern Europe
+Monaco,MCO,85.95,3.25,Europe,Western Europe
+Mongolia,MNG,70.98,7.42,Asia,Eastern Asia
+Montenegro,MNE,76.34,2.85,Europe,Southern Europe
+Morocco,MAR,74.04,0.16,Africa,Northern Africa
+Mozambique,MOZ,59.32,1.7,Africa,Sub-Saharan Africa
+Myanmar,MMR,65.67,3.04,Asia,South-eastern Asia
+Namibia,NAM,59.27,3.06,Africa,Sub-Saharan Africa
+Nauru,NRU,63.62,2.05,Oceania,Micronesia
+Nepal,NPL,68.45,1.68,Asia,Southern Asia
+Netherlands,NLD,81.69,3.44,Europe,Western Europe
+New Zealand,NZL,82.45,3.48,Oceania,Australia and New Zealand
+Nicaragua,NIC,73.84,2.53,Americas,Latin America and the Caribbean
+Niger,NER,61.58,0.76,Africa,Sub-Saharan Africa
+Nigeria,NGA,52.68,2.4,Africa,Sub-Saharan Africa
+Niue,NIU,70.82,1.66,Oceania,Polynesia
+North Korea,PRK,73.28,2.78,Asia,Eastern Asia
+North Macedonia,MKD,73.84,2.77,Europe,Southern Europe
+Northern Mariana Islands,MNP,77.19,1.81,Oceania,Micronesia
+Norway,NOR,83.23,2.87,Europe,Northern Europe
+Oman,OMN,72.54,0.19,Asia,Western Asia
+Pakistan,PAK,66.1,0.49,Asia,Southern Asia
+Palau,PLW,66.02,1.53,Oceania,Micronesia
+Palestine,PSE,73.47,0.34,Asia,Western Asia
+Panama,PAN,76.22,2.61,Americas,Latin America and the Caribbean
+Papua New Guinea,PNG,65.35,0.61,Oceania,Melanesia
+Paraguay,PRY,70.26,3.1,Americas,Latin America and the Caribbean
+Peru,PER,72.38,1.98,Americas,Latin America and the Caribbean
+Philippines,PHL,69.27,2.63,Asia,South-eastern Asia
+Poland,POL,76.46,5.24,Europe,Eastern Europe
+Portugal,PRT,81.04,4.73,Europe,Southern Europe
+Puerto Rico,PRI,80.16,3.63,Americas,Latin America and the Caribbean
+Qatar,QAT,79.27,0.55,Asia,Western Asia
+Romania,ROU,74.18,5.51,Europe,Eastern Europe
+Russia,RUS,69.42,5.43,Europe,Eastern Europe
+Rwanda,RWA,66.07,3.4,Africa,Sub-Saharan Africa
+Saint Kitts and Nevis,KNA,71.68,3.31,Americas,Latin America and the Caribbean
+Saint Lucia,LCA,71.11,3.95,Americas,Latin America and the Caribbean
+Saint Vincent and the Grenadines,VCT,69.63,4.33,Americas,Latin America and the Caribbean
+Samoa,WSM,72.77,1.05,Oceania,Polynesia
+San Marino,SMR,80.88,4.07,Europe,Southern Europe
+Sao Tome and Principe,STP,67.59,3.84,Africa,Sub-Saharan Africa
+Saudi Arabia,SAU,76.94,0.25,Asia,Western Asia
+Senegal,SEN,67.09,0.69,Africa,Sub-Saharan Africa
+Serbia,SRB,74.19,3.45,Europe,Southern Europe
+Seychelles,SYC,71.29,2.47,Africa,Sub-Saharan Africa
+Sierra Leone,SLE,60.06,1.99,Africa,Sub-Saharan Africa
+Singapore,SGP,82.75,0.6,Asia,South-eastern Asia
+Slovakia,SVK,74.91,4.03,Europe,Eastern Europe
+Slovenia,SVN,80.69,5.11,Europe,Southern Europe
+Solomon Islands,SLB,70.35,0.75,Oceania,Melanesia
+Somalia,SOM,55.28,0.58,Africa,Sub-Saharan Africa
+South Africa,ZAF,62.34,2.53,Africa,Sub-Saharan Africa
+South Korea,KOR,83.7,4.99,Asia,Eastern Asia
+South Sudan,SSD,54.98,0.69,Africa,Sub-Saharan Africa
+Spain,ESP,83.01,3.61,Europe,Southern Europe
+Sri Lanka,LKA,76.4,2.06,Asia,Southern Asia
+Sudan,SDN,65.27,0.14,Africa,Northern Africa
+Suriname,SUR,70.27,2.5,Americas,Latin America and the Caribbean
+Sweden,SWE,82.98,3.58,Europe,Northern Europe
+Switzerland,CHE,83.99,4.07,Europe,Western Europe
+Syria,SYR,72.06,0.25,Asia,Western Asia
+Tajikistan,TJK,71.59,1.49,Asia,Central Asia
+Tanzania,TZA,66.2,2.76,Africa,Sub-Saharan Africa
+Thailand,THA,78.72,4.16,Asia,South-eastern Asia
+Togo,TGO,61.62,1.75,Africa,Sub-Saharan Africa
+Tokelau,TKL,75.23,1.21,Oceania,Polynesia
+Tonga,TON,70.99,1.02,Oceania,Polynesia
+Trinidad and Tobago,TTO,72.97,2.25,Americas,Latin America and the Caribbean
+Tunisia,TUN,73.77,0.46,Africa,Northern Africa
+Turkey,TUR,76.03,0.49,Asia,Western Asia
+Turkmenistan,TKM,69.26,3.86,Asia,Central Asia
+Tuvalu,TUV,64.55,1.26,Oceania,Polynesia
+Uganda,UGA,62.7,3.08,Africa,Sub-Saharan Africa
+Ukraine,UKR,71.62,4.86,Europe,Eastern Europe
+United Arab Emirates,ARE,78.71,0.76,Asia,Western Asia
+United Kingdom,GBR,80.74,3.49,Europe,Northern Europe
+United States,USA,77.2,3.68,Americas,Northern America
+United States Virgin Islands,VIR,74.72,4.07,Americas,Latin America and the Caribbean
+Uruguay,URY,75.44,3.13,Americas,Latin America and the Caribbean
+Uzbekistan,UZB,70.86,2.35,Asia,Central Asia
+Vanuatu,VUT,70.45,1.18,Oceania,Melanesia
+Venezuela,VEN,70.55,2.1,Americas,Latin America and the Caribbean
+Vietnam,VNM,73.62,5.81,Asia,South-eastern Asia
+Yemen,YEM,63.75,0.17,Asia,Western Asia
+Zambia,ZMB,61.22,2.28,Africa,Sub-Saharan Africa
+Zimbabwe,ZWE,59.25,2.06,Africa,Sub-Saharan Africa
