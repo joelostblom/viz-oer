@@ -262,7 +262,7 @@ alt.Chart(income_df).mark_point().encode(
 # ggplot
 
 Here we use `color=region`:
-```{r}
+```{r fig.width=8, fig.height=6}
 library(readr)
 library(ggplot2)
 income_df <- read_csv('data/income_lifeexp_alcohol_1.csv', show_col_types = FALSE)
@@ -316,7 +316,7 @@ alt.Chart(income_df).mark_point().encode(
 
 Here we use `shape=region`:
 
-```{r}
+```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
     y=life_expectancy_at_50, 
@@ -359,7 +359,7 @@ alt.Chart(income_df_subset).mark_point().encode(
 
 Here we use `size=income_group`:
 
-```{r}
+```{r fig.width=8, fig.height=6}
 
 income_df_subset <- subset(income_df, `sub-region` %in% c('Sub-Saharan Africa'))
 
@@ -402,7 +402,7 @@ alt.Chart(income_df).mark_point().encode(
 
 Here we use `y=region`:
 
-```{r}
+```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
     y=region, 
@@ -464,9 +464,22 @@ income_df = pd.read_csv(url)
 # Write code above to create the chart 
 ```
 
+::: {.callout-default .ex-solution}
+
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='life_expectancy_at_50',
+    y='income_group',
+    color='region',
+)
+```
+
+:::
+
 # ggplot
 
-```{webr}
+```{webr fig.width=8, fig.height=6}
 #| setup: true
 #| exercise:
 #|   - position_ggplot
@@ -476,7 +489,7 @@ library(ggplot2)
 url <- 'data/income_lifeexp_alcohol_1.csv'
 ```
 
-```{webr}
+```{webr fig.width=8, fig.height=6}
 #| exercise: position_ggplot
 income_df <- readr::read_csv(url, show_col_types=FALSE)
 
@@ -487,27 +500,10 @@ income_df <- readr::read_csv(url, show_col_types=FALSE)
 # Write code above to create the chart 
 ```
 
-:::
-
 ::: {.callout-default .ex-solution}
 
 You are primarily comparing the `income_group` variable, so it should be grouped by position on either the `x` or `y` axis. The secondary comparison, `region`, should be encoded as color. 
-
-::: {.panel-tabset}
-
-# Altair
-
-```{python}
-alt.Chart(income_df).mark_point().encode(
-    x='life_expectancy_at_50',
-    y='income_group',
-    color='region',
-)
-```
-
-# ggplot
-
-```{r}
+```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x=life_expectancy_at_50, 
     y=income_group, 
@@ -519,8 +515,6 @@ geom_point()
 :::
 
 :::
-
-
 
 :::::
 
@@ -563,7 +557,7 @@ alt.Chart(income_df).mark_point().encode(
 
 In ggplot2, you can achieve the same effect with jittering by using the `position_jitter()` function. Jitter is directly applied to the marks through the position argument within `geom_point()`.
 
-```{r}
+```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
     y=region, 
@@ -606,7 +600,7 @@ alt.Chart(income_df).mark_point().encode(
 Facetting works via `facet_wrap`. By default it tries to create an even num of cols and rows, rather than putting all plot in one row like Altair. However, you can specify the desired number of columns with the `ncol` argument.
 
 
-```{r}
+```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x = percentage_heavy_drinkers, 
     y = life_expectancy_at_50
@@ -646,7 +640,7 @@ alt.Chart(income_df).mark_point().encode(
 # ggplot
 
 
-```{webr}
+```{webr fig.width=8, fig.height=6}
 #| exercise: facet_ggplot
 income_df <- readr::read_csv(url, show_col_types=FALSE)
 
@@ -678,7 +672,7 @@ alt.Chart(income_df).mark_point().encode(
 
 # ggplot
 
-```{r}
+```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x = percentage_heavy_drinkers, 
     y = life_expectancy_at_50,
@@ -765,7 +759,7 @@ show_df(wellbeing_df)
 ```
 
 Before you start your analysis, **Grumble Thorax** has some questions for you.
-```{r}
+```{r fig.width=8, fig.height=6}
 #| echo: false
 api = "{{< env URL >}}"
 ojs_define(apiUrl = api)
@@ -799,6 +793,11 @@ It's time to use everything you've learnt in this chapter.
 
 **Create a visualization comparing how mental wellbeing varies across age groups within each region. You should use a combination of faceting, position and color.**
 
+
+::: {.panel-tabset}
+
+# Altair
+
 ```{pyodide}
 #| setup: true
 #| exercise:
@@ -827,6 +826,8 @@ wellbeing_df = pd.read_csv(url)
 :::: {.callout-default .ex-hint}
 Faceting isolates each group make it easier to compare values within each group. Which categorical variable are you looking within?
 
+
+
 :::: {.callout-default .ex-solution}
 
 ```{python}
@@ -841,10 +842,70 @@ alt.Chart(wellbeing_df).mark_point().encode(
 
 ::::
 
+::::
+
+
+# ggplot
+
+```{webr fig.width=8, fig.height=6}
+#| setup: true
+#| exercise:
+#|   - mission_1_ggplot
+#|   - mission_2_ggplot
+library(ggplot2)
+
+url <- 'data/MH_data_processed_3.csv'
+```
+
+```{webr fig.width=8, fig.height=6}
+#| exercise: mission_1_ggplot
+wellbeing_df <- readr::read_csv(url, show_col_types=FALSE)
+
+
+
+
+
+# Write code above to create the chart 
+```
+
+
+:::: {.callout-default .ex-hint}
+Faceting isolates each group make it easier to compare values within each group. Which categorical variable are you looking within?
+
+
+:::: {.callout-default .ex-solution}
+
+```{r fig.width=8, fig.height=6}
+#| echo: false
+
+wellbeing_df <- readr::read_csv('data/MH_data_processed_3.csv', show_col_types=FALSE)
+```
+
+```{r fig.width=8, fig.height=6}
+ggplot(wellbeing_df, aes(
+    x = region, 
+    y = MHQ_score, 
+    color = region)) +
+  geom_point() +
+  facet_wrap(~ age_group)
+```
+
 ::::  
+
+::::
+
+:::
+
+
+
+
+
 
 **Great work! Now create the opposite visualization, comparing how mental wellbeing varies across regions within each age group.**
 
+::: {.panel-tabset}
+
+# Altair
 
 ```{pyodide}
 #| exercise: mission_2_alt
@@ -857,7 +918,9 @@ wellbeing_df = pd.read_csv(url)
 # Write code above to create the chart 
 ```
 
+
 :::: {.callout-default .ex-solution}
+
 
 ```{python}
 alt.Chart(wellbeing_df).mark_point().encode(
@@ -870,6 +933,39 @@ alt.Chart(wellbeing_df).mark_point().encode(
 ```
 
 :::: 
+
+# ggplot
+
+
+
+```{webr fig.width=8, fig.height=6}
+#| exercise: mission_2_ggplot
+wellbeing_df <- readr::read_csv(url, show_col_types=FALSE)
+
+
+
+
+
+# Write code above to create the chart 
+```
+
+
+:::: {.callout-default .ex-solution}
+
+
+```{r fig.width=8, fig.height=6}
+
+ggplot(wellbeing_df, aes(
+    x = region, 
+    y = MHQ_score, 
+    color = region)) +
+  geom_point() +
+  facet_wrap(~ age_group)
+```
+
+:::: 
+
+:::
 
 **It's time to report your findings back to Grumble Thorax...**
 
