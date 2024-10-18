@@ -18,6 +18,24 @@ resources:
 <!-- Temporarily needed for live coding exercises -->
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
+```{python setup}
+#| echo: false
+#| output: false
+
+import pandas as pd
+import rpy2.robjects as ro
+from rpy2.robjects import pandas2ri
+from IPython.display import HTML
+
+pd.set_option('display.max_rows', 6)
+
+def show_df(df):
+    if isinstance(df, ro.vectors.DataFrame):
+        with (ro.default_converter + pandas2ri.converter).context():
+            df = ro.conversion.get_conversion().rpy2py(df)
+    return HTML(df._repr_html_())
+```
+
 ::: {.callout-note title="Learning outcomes"}
 - **Explain** how grouping allows you to directly compare categories and helps you to avoid making incorrectly generalized conclusions (e.g., Simpson’s Paradox).
 
@@ -60,7 +78,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-Suprisingly, 50 year olds tend to live longer in countries with higher rates of heavy alcohol consumption. This is great news! The researchers now plan to introduce alcohol into Viridia.
+Suprisingly, 50 year olds can expect to live longer in countries with higher rates of heavy alcohol consumption. This is great news! The researchers now plan to introduce alcohol into Viridia.
 
 **Exercise:**
 
@@ -398,7 +416,7 @@ Notice how easy it is to compare the distributions between regions?
 
 We can even take it one step further. Position can be combined with color to reinforce grouping on one variable or to introduce grouping on a second variable. 
 
-When grouping by two categorical variables, which should you assign to position and which to color? Position is more effective than color. This means that we assign our primary comparison to position and our secondary comparison to color. 
+When grouping by two categorical variables, which should you assign to position and which to color? Position is more visually obvious than color. This means that we assign our primary comparison to position and our secondary comparison to color. 
 
 Let's apply this to a real world example.
 
@@ -408,9 +426,13 @@ You are trying to understand how life expectancy varies across income groups glo
 
 Define the primary and secondary comparisons for this research question.
 
-:::: {.callout-default .ex-hint}
+
+
+:::: {.callout-default .ex-solution}
 
 The primary comparison is comparing life expectancy across income groups. The secondary comparison is between world regions.
+
+::::
 
 Now, using the variables `region`, `income_group` and `life_expectancy_at_50`, create a plot that reflects these priorities, showing all countries grouped using position and color. 
 
@@ -498,8 +520,6 @@ geom_point()
 
 :::
 
-::::
-
 
 
 :::::
@@ -524,7 +544,7 @@ Let's examine how jittering works.
 
 # Altair
 
-In Altair, we create a random calculated variable called `jitter` by appending the `.transform_calculate()` function to our chart. By setting the encoding channel `yOffset='jitter:Q'` we shift the `yOffset` of each point by a random value. 
+In Altair, we create a random calculated variable called `jitter` by appending the `.transform_calculate()` method to our chart. We use our newly created `jitter` variable, encoding it as the `yOffset` of each data point using `yOffset='jitter:Q'`. This shifts the `yOffset` of each point by a random value. 
 
 The `:Q` simply tells Altair that `jitter` is a continuous quantitative variable.
 
@@ -599,7 +619,7 @@ facet_wrap(~ income_group, ncol=2)
 
 Faceting makes it easy to see the overall shape of the distribution for each income group and how tightly clustered the values are. It also reveals outliers in the Upper Middle Income facet – we can easily spot two countries with a higher percentage of heavy drinkers.
 
-Another advantage is that we can apply additional layers of grouping within each facet. Now its your turn!
+Another advantage is that we can apply additional layers of grouping within each facet. Now its your turn to try this!
 
 ::::: {.callout-default .ex-prompt}
 
@@ -678,109 +698,201 @@ facet_wrap(~ region, ncol=2)
 
 So where does faceting fall short? For one, presenting each group on a separate chart makes it difficult to estimate the overlap between distributions. Its also harder to compare individual values across facets. 
 
+## Deep dive
 
+::: {.callout-default .optional}
+
+:::
 
 ## Mission
 
+Viridians pride themselves on being part of the #1 Happiest Colony in the Galaxy. They have won medals and trophies for it. But this year is *extremely competitive*. To make sure they come out on top, Viridians are investigating the history of mental wellbeing on Earth.
 
-::::: {.callout-default .ex-prompt}
-
-Viridians pride themselves on being part of the #1 Happiest Colony in the Galaxy. They have won medals and trophies for it. But this year is *extremely competitive*. To make sure they come out on top, Viridian politicians are investigating the history of happiness on Earth.
+::: {.column-margin}
 
 ![](/img/medal.jpg){width=200px height=200px}
 
-They have discovered a 2023 report that asked hundreds of thousands of Earthlings about their mental wellbeing. The average results for seven countries have been gathered. Each `Country` received a `Score` out of 100 for five mental wellbeing `Criteria` from mood to cognition
-^[Cognition, 
-Mind-Body Connection,
-Drive & Motivation, 
-Mood & Outlook, 
-Self & Resilience,
-Social Adaptability].
-
-Answer the following questions:
-
-1. In your opinion, what is the most interesting comparison to visualize in this data?
-2. What is the second most interesting comparison?
-3. Which categorical variable would you encode as position (x/y) and which as color?
-
-:::: {.callout-default .ex-hint}
-
-Your choice of encoding channel depends on the 
-
-Grouping by position makes it easier to compare the central trend or distribution of values for that categorical variable. 
-
-So assigning country to position allows you to see the central trend for each country. 
-
-Grouping criteria by position makes it easier to compare criteria :
-
-1. Overall central trend of each criteria
-2. How the same country performs on each criteria
-
-Grouping country by position makes it easier to compare countries :
-
-1. Overall central trend of each country
-2. How the same criteria differs by country
+:::
 
 
 
-It also makes it easier to compare Scores across categories for the same country. 
+You will be working with **Grumble Thorax**, a seasoned Happiness Compliance Officer. 
 
-::::
+```{=html}
+<br>
+<div class="ministry-id-card">
+    <div class="accent-line"></div>
+    <div class="left-column">
+        <div class="logo">Ministry of Wellbeing</div>
+        <div class="name">Grumble Thorax</div>
+        <div class="info">
+            <div class="info-item">
+                <span class="label">Position</span>
+                <span class="value">Happiness Compliance Officer</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Department</span>
+                <span class="value">Wellbeing and Flourishing</span>
+            </div>
+            <div class="info-item">
+                <span class="label">ID Number</span>
+                <span class="value">EI-2024-2313</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Clearance</span>
+                <span class="value">Level 3</span>
+            </div>
+        </div>
+        <div class="footer">Protecting Our Future • Est. 2024</div>
+    </div>
+    <div class="right-column">
+        <img src="/img/grumble_thorax.jpg" alt="Avatar" class="avatar">
+    </div>
+</div>
+<br>
+```
 
-Complete the following code, assigning `Score`, `Country` and `Criteria` to appropriate encoding channels.
+::::: {.callout-default .ex-prompt}
 
+Grumble Thorax has discovered an ancient document called 'Mental State of the World Report 2024'.^[Source: Sapien Labs (2024): https://sapienlabs.org/whats_new/sapien-labs-releases-the-4th-annual-mental-state-of-the-world-report/] Its creators asked hundreds of thousands of Earthlings about their mental wellbeing. Each `age_group` within each `country` received an average mental health quotient score (`MHQ_score`) - the higher number, the better wellbeing. 
+
+We also have a categorical variable for the world `region`.
+```{python}
+#| echo: false
+wellbeing_df = pd.read_csv('data/MH_data_processed_3.csv')
+
+show_df(wellbeing_df)
+```
+
+Before you start your analysis, **Grumble Thorax** has some questions for you.
+```{r}
+#| echo: false
+api = "{{< env URL >}}"
+ojs_define(apiUrl = api)
+```
+
+```{ojs}
+//| echo: false
+import {createChatInterface} from "./chat.js"
+
+{
+
+const instructions = "You are Grumble Thorax, a Happiness Compliance Officer. You are black-humoured, sarcastic. You supervising a new worker to analyze the 'Mental State of the World Report', which has the variables `age_group`, mental health score `MHQ_score` and `region` (these are continents not countries, e.g, Africa). Be supportive and help them to answer your question fully and specifically. If they talk about totally unrelated things like countries shut them down and steer them back. Do not provide answers as this is an open ended question more about testing their reasoning (any hypothesis is fine, support it). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. Ensure that the user's ideas cover both age groups and regions. Be succinct - are in a phone text convo.";
+
+const first_message = "A new recruit... I can hardly contain my joy. If you're so clever, what trends do you expect to see in the data?";
+
+const chatInterface = createChatInterface({
+  apiUrl,
+  instructions: instructions,
+  firstMessage: first_message,
+  bossImage: 'img/grumble_thorax.jpg',
+  bossName: 'Grumble Thorax',
+});
+
+return html`${chatInterface}`;
+
+}
+```
+
+
+It's time to use everything you've learnt in this chapter. 
+
+**Create a visualization comparing how mental wellbeing varies across age groups within each region. You should use a combination of faceting, position and color.**
 
 ```{pyodide}
 #| setup: true
 #| exercise:
-#|   - mental_chart_alt
+#|   - mission_1_alt
+#|   - mission_2_alt
+
 import altair as alt
 import pandas as pd
 from utils import assert_chart_equal
 
-url = 'data/mental_health_long.csv'
-mental_health_df = pd.read_csv(url)
+url = 'data/MH_data_processed_3.csv'
+
 ```
 
 ```{pyodide}
-#| exercise: mental_chart_alt
+#| exercise: mission_1_alt
+wellbeing_df = pd.read_csv(url)
 
-alt.Chart(mental_health_df).mark_point().encode(
-    
+
+
+
+
+# Write code above to create the chart 
+```
+
+:::: {.callout-default .ex-hint}
+Faceting isolates each group make it easier to compare values within each group. Which categorical variable are you looking within?
+
+:::: {.callout-default .ex-solution}
+
+```{python}
+alt.Chart(wellbeing_df).mark_point().encode(
+    y='MHQ_score',
+    x='age_group',
+    color="age_group"
+).facet(
+    'region'
 )
+```
+
+::::
+
+::::  
+
+**Great work! Now create the opposite visualization, comparing how mental wellbeing varies across regions within each age group.**
+
+
+```{pyodide}
+#| exercise: mission_2_alt
+wellbeing_df = pd.read_csv(url)
+
+
+
+
+
+# Write code above to create the chart 
 ```
 
 :::: {.callout-default .ex-solution}
 
-::: {.panel-tabset}
-
-# Altair
 ```{python}
-
-mental_health_df = pd.read_csv("data/mental_health_long.csv")
-
-alt.Chart(mental_health_df).mark_point().encode(
-  x='Score',
-  y='Country',
-  color='Criteria'
+alt.Chart(wellbeing_df).mark_point().encode(
+    y='MHQ_score',
+    x='region',
+    color="region"
+).facet(
+    'age_group'
 )
-
 ```
 
-# ggplot
+:::: 
 
-```{r fig.height=5,fig.width=8}
-mental_health_df <- read_csv("data/mental_health_long.csv")
-ggplot(mental_health_df, aes(
-  x = Score, 
-  y = Country, 
-  color = Criteria
-)) + geom_point()
+**It's time to report your findings back to Grumble Thorax...**
+
+```{ojs}
+//| echo: false
+
+{
+
+const instructions = "You are Grumble Thorax, a Happiness Compliance Officer. You are black-humoured, sarcastic. You supervising a new worker who has just analyzed the 'Mental State of the World Report'. You are looking for the following answers: generally mental wellbeing increases as people get older (higher age groups). In younger people Africa seems to have the highest MHQ scores, and in older its the Americas. Europe and Oceania consistently have the lowest across all age groups. Asia is medium-high. Be supportive and help them to answer your question fully and specifically. If they talk about totally unrelated things shut them down and steer them back. Do not provide answers as this is an open ended question more about testing their reasoning (any hypothesis is fine, support it). Use probing questions, do not give the answers away unless they are totally stuck after 3 responses. Once you get a satisfactory answer, end the conversation immediately and tell them their mission is complete and that you actually don't hate them. Say goodbye. Ensure that the user's ideas cover both age groups and regions. Be succinct - are in a phone text convo.";
+
+const first_message = "Oh, look who decided to show up again. Well, spill it—what did you find out?";
+
+const chatInterface = createChatInterface({
+  apiUrl,
+  instructions: instructions,
+  firstMessage: first_message,
+  bossImage: 'img/grumble_thorax.jpg',
+  bossName: 'Grumble Thorax',
+});
+
+return html`${chatInterface}`;
+
+}
 ```
-
-:::
-
-::::
-
 
 :::::
