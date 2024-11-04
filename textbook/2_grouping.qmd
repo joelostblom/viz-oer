@@ -83,7 +83,7 @@ This is the chart that the historians created:
 import altair as alt
 import pandas as pd
 
-income_df = pd.read_csv('data/income_lifeexp_alcohol_1.csv')['income_group', 'country', 'percentage_heavy_drinkers', 'life_expectancy_at_50,region']
+income_df = pd.read_csv('data/income_lifeexp_alcohol_1.csv')
 
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
@@ -97,8 +97,6 @@ From this scatter plot, the Viridians observe that nations with a high percentag
 :::
 
 ::::
-
-:::::
 
 
 ::::: {.callout-default .ex-prompt}
@@ -174,7 +172,7 @@ Another name for this purpose is Simpson's Paradox, named not after Homer Simpso
 
 
 ```{python}
-#| echo:false
+#| echo: false
 simpsons_df = pd.read_csv("data/simpsons_paradox_data_l.csv")
 alt.Chart(simpsons_df).mark_point().encode(
   x='X',
@@ -185,7 +183,7 @@ alt.Chart(simpsons_df).mark_point().encode(
 ### By group
 
 ```{python}
-#| echo:false
+#| echo: false
 alt.Chart(simpsons_df).mark_point().encode(
   color='Group',
   x='X',
@@ -396,6 +394,10 @@ The many combinations of income group and region in this chart
 are hard to separate visually,
 which makes this chart ineffective:
 
+::: {.panel-tabset}
+
+# Altair
+
 ```{python}
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
@@ -404,6 +406,7 @@ alt.Chart(income_df).mark_point(filled=True).encode(
     shape='region'
 )
 ```
+
 # ggplot
 
 The many combinations of income group and region in this chart
@@ -419,6 +422,8 @@ ggplot(income_df, aes(
 )) + 
 geom_point()
 ```
+
+:::
 
 ### Size
 
@@ -698,7 +703,6 @@ facet_wrap(~ income_group, ncol=1)
 ```
 
 In addition to faceting on a single variable in the data, faceting can also be done over two variables: one spread horizontally and one spread out vertically in the faceted charts. In ggplot, we would swap out `facet_wrap` to `facet_grid` in order to do this. For example, to have facets that are grouped by both income group and region, we could use `facet_grid(vars(income_group), vars(region))`. This can be effective when we need to group our data further, but it does risk making the chart hard to overview, so it is best used when there are fewer categories in the faceting variables.
-```
 
 :::
 
