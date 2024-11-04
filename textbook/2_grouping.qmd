@@ -195,6 +195,25 @@ alt.Chart(simpsons_df).mark_point().encode(
 
 In this case, grouping makes the insidious Simpson's Paradox visually unmistakable. This is a prime example of the utility of visualization in deepening our understanding of a data set. 
 
+We can also use grouping to directly compare trends and values for distinct groups. Here, grouping by position on the y-axis reveals that life expectancies are higher in countries in the higher income groups. 
+
+```{python}
+#| echo: false
+import altair as alt
+import pandas as pd
+
+
+income_df = pd.read_csv('data/income_lifeexp_alcohol.csv')
+
+alt.Chart(income_df).mark_point().encode(
+    x='life_expectancy_at_65',
+    y='income_group',
+)
+```
+
+While position and color are generally the most effective grouping strategies, it is important to understand the unique strengths and pitfalls of each strategy to chose the one that best supports the comparisons we want to make. This is what we will learn about next.
+
+
 ## Strategies for grouping
 
 The grammar of graphics gives us a convenient syntax for grouping where we define the visual channel that should represent a categorical variable. Generally speaking, position and color are the two most effective channels to use for grouping. Shape and size are also use, but often either in combination with one of the other two or for a specific purpose. The grammar of graphics allows for these to conveniently interchanged in the syntax:
@@ -265,7 +284,6 @@ aes(y=category_column)
 :::
 :::
 
-While position and color are generally the most effective grouping strategies, it is important to understand the unique strengths and pitfalls of each strategy to chose the one that best supports the comparisons we want to make. This is what we will learn about next.
 
 ### Color
 
