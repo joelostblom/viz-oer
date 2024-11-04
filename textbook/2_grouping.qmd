@@ -287,7 +287,7 @@ aes(y=category_column)
 
 ### Color
 
-The human brain can detect color differences with little cognitive effort. Color is a **pre-attentive feature** which means that the brain can tell apart colors even without conscious attention. This is heightened when there is a high contrast, such as between the complimentary colors blue and orange.
+The human brain can detect color differences with little cognitive effort. Color is a **preattentive feature**^[Wolfe JM, Utochkin IS. What is a preattentive feature? Curr Opin Psychol. 2019 Oct;29:19-26. doi: 10.1016/j.copsyc.2018.11.005. Epub 2018 Nov 13. PMID: 30472539; PMCID: PMC6513732.] which means that the brain can tell apart colors even without conscious attention. This is heightened when there is a high contrast, such as between the complimentary colors blue and orange.
 
 This is great news for grouping! By encoding our categorical variable as color, we can leverage the brain's ability to infer groups. Conveniently, color doesn't alter the layout or structure of the data visualization, so it's an efficient way to compare the exact values of data points between groups.
 
