@@ -55,53 +55,88 @@ def show_df(df):
 
 ## Why grouping matters
 
-So far you have created declarative visualizations by representing them as identical **marks** on a canvas with encoded x- and y-axis positions. But this approach doesn't always tell the whole story. Real-world data is inherently messy, and trends that emerge in one context may evaporate in another. 
-
-Consider the following example:
+So far you have created declarative visualizations by representing them as identical point **marks** on a canvas with encoded x- and y-axis positions. This is the foundation for all the visualizations we will make, but it is rarely sufficient on its own to give a complete picture of the data. In particular, messy real-world data might show overall trends in the datasets, that evaporate when explored more closely. The goal of grouping is to distinguish between groups by basing the visual appearance of points in a chart on the value of categorical variable. Let's see this in action in the following exercise.
 
 ::::: {.callout-default .ex-prompt}
 
-In Viridia, historians have been studying datasets from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors. During their research, they uncovered records of a beverage known as “alcohol.” 
+In Viridia, historians have been studying the remains from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors. During their research, they uncovered records of a beverage known as "alcohol".
 
-The researchers decided to create a scatterplot of countries, with the x-axis showing the percentage of heavy alcohol drinkers and the y-axis showing the average number of years left to live after reaching age 50.^[Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data]
+Given the high prevalence of alcohol drinking in many of Earth's nations, the Viridians thought the drink must have had many positive effects and allowed humans to live long and healthy lives. Curious to explore whether this was indeed the case, Viridian historians were excited to uncover a dataset containing the percent of heavy drinkers in each nation together with the average number of years people lived after retirement^[Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data].
 
-Try to imagine what this chart could look like. What trend would you expect to see in this data?
+To assess whether nations with a high percentage of heavy drinkers did indeed also tend to live longer lives, the historians created a scatterplot where each point represented a country, the x-axis showing the percentage of heavy alcohol drinkers, and the y-axis showing the average number of years left to live after reaching age 50.
+
+Before viewing what this chart looks like in the solution, draw out (either on paper or in your mind) what you think this chart would look like.
 
 :::: {.callout-default .ex-hint}
 
-There seems to be a slight positive correlation. Below is the plot:
+Think about what trend would you expect to see in this data? Do you think nations with a high percentage of heavy drinkers have long or short life spans?
+
+::::
+
+::: {.callout-default .ex-solution}
+
+This is the chart that the historians created:
+
 ```{python}
 #| label: fig-polar
+#| echo: false
 import altair as alt
 import pandas as pd
 
-income_df = pd.read_csv('data/income_lifeexp_alcohol_1.csv')
+income_df = pd.read_csv('data/income_lifeexp_alcohol_1.csv')['income_group', 'country', 'percentage_heavy_drinkers', 'life_expectancy_at_50,region']
 
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_50',
-    tooltip='country'
+    tooltip=['country', 'income_group', 'region']
 )
 ```
 
-Suprisingly, 50 year olds can expect to live longer in countries with higher rates of heavy alcohol consumption. This is great news! The researchers now plan to introduce alcohol into Viridia.
+From this scatter plot, the Viridians observe that nations with a high percentage of heavy drinkers does indeed tend to also have longer lifespans, such great news! Excited about their findings, the historians hurry to find out how to produce this noble alcohol beverage to hopefully introduce it into Viridian society as soon as possible.
 
-**Exercise:**
+:::
 
-*Hover over the data points to see which mark corresponds to each country.*
+::::
 
-Suggest one visual change that would create a more accurate picture of the relationship between alcohol consumption and life expectancy.
+:::::
+
+
+::::: {.callout-default .ex-prompt}
+
+"Not so fast" you caution the Viridian historians.
+Your memories of alcohol are dim,
+particularly from those nights when you ingested the substance,
+but you have a vague recollection of that it is not the health solution
+that the Viridians are looking for.
+You ask to see the raw data,
+something you should always look at before taking any rash decisions.
+Confident in their findings,
+the historians show you the first few rows of the data in the table below,
+and inform you that you can hover over the points
+in the chart above to see additional information for each observations.
+
+```python
+show_df(income_df)
+```
+
+Study the table and the tooltip of the previous chart.
+What do you think might be the reason
+that countries with a higher percentage of heavy drinkers
+also have a higher life expectancy?
+Suggest one visual change to the chart
+that would help you explore if your suggested reason
+could influence the relationship between alcohol consumption and lifespan.
 
 :::: {.callout-default .ex-hint}
 
-Alcohol consumption is influenced by income. How could we slightly alter the chart to show this?
+Do you think other variables in the dataset could influence alcohol consumption? E.g. the average income of the country or the region of the world where it is located? To see this in the chart could you include some type of grouping according to that column, e.g. shape or color?
 
 ::: {.callout-default .ex-solution}
 
-The simplest solution is to color each country by its World Bank income group.
+Both the country's income group and region might have an effect on the alcohol consumption and the lifespan. Here, we will explore this for the income group only, and you are free to explore the region on your own. We could change the chart to color each point by its income group:
 
 ```{python}
-
+#| echo: false
 alt.Chart(income_df).mark_point().encode(
     color='income_group',
     x='percentage_heavy_drinkers',
@@ -109,18 +144,14 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
+Notice how the data points form clusters by income group. Coloring reveals that both national alcoholism levels and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income</span>, where both indicators are lower. 
 
-Notice how the data points form clusters by income group. Coloring reveals that both national alcoholism levels and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. 
+This could explain the mysterious relationship the historians found between heavy drinkers and life expectancy! It seems like countries that have a higher average income are likely to both have people who drink more and people who live longer. By using color to group the data, we have revealed that income level is a **confounding variable**: it influences both life expectancy and alcohol consumption. If we had data at finer resolution, which contained each individual, we would likely see that they people who drink a lot don't live the longest lives, but we don't have access to that data here.
 
-We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income</span>, where both indicators are lower. 
-
-That could explain our mysterious correlation!
-
-By grouping the data, we have revealed that a **confounding variable**: income influences both life expectancy and alcohol consumption. This is sobering news for Viridia...
+The insights you have found are sobering news for the Viridian historians,
+who are sure to proceed more cautiously in future project.
 
 :::
-
-::::
 
 ::::
 
