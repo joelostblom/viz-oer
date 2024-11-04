@@ -63,7 +63,7 @@ In Viridia, historians have been studying the remains from Earth to identify wha
 
 Given the high prevalence of alcohol drinking in many of Earth's nations, the Viridians thought the drink must have had many positive effects and allowed humans to live long and healthy lives. Curious to explore whether this was indeed the case, Viridian historians were excited to uncover a dataset containing the percent of heavy drinkers in each nation together with the average number of years people lived after retirement^[Source: Global Burden of Disease Study 2021 (GBD 2021) Results; Human Mortality Database (2023), United Nations - World Population Prospects (2022) – processed by Our World in Data].
 
-To assess whether nations with a high percentage of heavy drinkers did indeed also tend to live longer lives, the historians created a scatterplot where each point represented a country, the x-axis showing the percentage of heavy alcohol drinkers, and the y-axis showing the average number of years left to live after reaching age 50.
+To assess whether nations with a high percentage of heavy drinkers did indeed also tend to live longer lives, the historians created a scatterplot where each point represented a country, the x-axis showing the percentage of heavy alcohol drinkers, and the y-axis showing the average number of years left to live after reaching age 65.^[Retirement age differs between countries. We have used age 65 as it is close to the average in OECD countries. https://www.oecd-ilibrary.org/docserver/9bf0cb7f-en.pdf]
 
 Before viewing what this chart looks like in the solution, draw out (either on paper or in your mind) what you think this chart would look like.
 
@@ -83,11 +83,11 @@ This is the chart that the historians created:
 import altair as alt
 import pandas as pd
 
-income_df = pd.read_csv('data/income_lifeexp_alcohol_1.csv')
+income_df = pd.read_csv('data/income_lifeexp_alcohol.csv')
 
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
     tooltip=['country', 'income_group', 'region']
 )
 ```
@@ -138,7 +138,7 @@ Both the country's income group and region might have an effect on the alcohol c
 alt.Chart(income_df).mark_point().encode(
     color='income_group',
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
 )
 ```
 
@@ -286,11 +286,11 @@ import altair as alt
 import pandas as pd
 
 
-income_df = pd.read_csv('data/income_lifeexp_alcohol_1.csv')
+income_df = pd.read_csv('data/income_lifeexp_alcohol.csv')
 
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
     color='income_group',
 )
 ```
@@ -302,11 +302,11 @@ Here we use `color=region`:
 library(tidyverse)
 
 
-income_df <- read_csv('data/income_lifeexp_alcohol_1.csv', show_col_types = FALSE)
+income_df <- read_csv('data/income_lifeexp_alcohol.csv', show_col_types = FALSE)
 
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_50, 
+    y=life_expectancy_at_65, 
     color=income_group
 )) + 
 geom_point()
@@ -349,7 +349,7 @@ The syntax for encoding a shape aesthetic, is the same as for color:
 ```{python}
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
     color='income_group',
     shape='income_group'
 )
@@ -361,7 +361,7 @@ making the shapes easier to distinguish:
 ```{python}
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
     color='income_group',
     shape='income_group'
 )
@@ -372,7 +372,7 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_50, 
+    y=life_expectancy_at_65, 
     color=income_group,
     shape=income_group
 )) + 
@@ -401,7 +401,7 @@ which makes this chart ineffective:
 ```{python}
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
     color='income_group',
     shape='region'
 )
@@ -416,7 +416,7 @@ which makes this chart ineffective:
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_50, 
+    y=life_expectancy_at_65, 
     color=income_group,
     shape=region
 )) + 
@@ -441,7 +441,7 @@ than the four different colors in the chart above.
 ```{python}
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
     size='income_group',
 )
 ```
@@ -459,7 +459,7 @@ when using size for categorical variable.
 
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_50, 
+    y=life_expectancy_at_65, 
     size=income_group,
 )) + 
 geom_point()
@@ -511,10 +511,9 @@ Let's apply this to a real world example.
 
 ::::: {.callout-default .ex-prompt}
 
-You are trying to understand how life expectancy varies across income groups globally, and the role world region plays in these differences.
+The Virdians are trying to understand how life expectancy varies across income groups globally, and the role world region plays in these differences.
 
 Define the primary and secondary comparisons for this research question.
-
 
 
 :::: {.callout-default .ex-solution}
@@ -523,7 +522,7 @@ The primary comparison is comparing life expectancy across income groups. The se
 
 ::::
 
-Now, using the variables `region`, `income_group` and `life_expectancy_at_50`, create a plot that reflects these priorities, showing all countries grouped using position and color. 
+Now, using the variables `region`, `income_group` and `life_expectancy_at_65`, create a plot that reflects these priorities, showing all countries grouped using position and color. 
 
 ::: {.panel-tabset}
 
@@ -538,7 +537,7 @@ import altair as alt
 import pandas as pd
 from utils import assert_chart_equal
 
-url = 'data/income_lifeexp_alcohol_1.csv'
+url = 'data/income_lifeexp_alcohol.csv'
 
 ```
 
@@ -558,7 +557,7 @@ income_df = pd.read_csv(url)
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
-    x='life_expectancy_at_50',
+    x='life_expectancy_at_65',
     y='income_group',
     color='region',
 )
@@ -575,7 +574,7 @@ alt.Chart(income_df).mark_point().encode(
 #|   - facet_ggplot
 library(ggplot2)
 
-url <- 'data/income_lifeexp_alcohol_1.csv'
+url <- 'data/income_lifeexp_alcohol.csv'
 ```
 
 ```{webr fig.width=8, fig.height=6}
@@ -594,7 +593,7 @@ income_df <- readr::read_csv(url, show_col_types=FALSE)
 You are primarily comparing the `income_group` variable, so it should be grouped by position on either the `x` or `y` axis. The secondary comparison, `region`, should be encoded as color. 
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
-    x=life_expectancy_at_50, 
+    x=life_expectancy_at_65, 
     y=income_group, 
     color=region
 )) + 
@@ -607,7 +606,7 @@ geom_point()
 
 :::::
 
-For all of these benefits, there are some drawbacks of grouping by position. For one, it occupies an axis that could have represented a continuous variable. This reduces the information density of your visualization. More worryingly, visually separating each group by position can hide overall trends in the dataset. It also requires significant space.
+For all of these benefits, there are some drawbacks of grouping by position. For one, it occupies an axis that could have represented a continuous variable. This reduces the information density of your visualization. More worryingly, while other grouping methods, such as color, allow you visualize both overall and group-level trends,  overall trends are difficult to see when grouping by position. It also requires significant space.
 
 Lastly, plotting data points along a single axis can lead to  overlap. That's where **jittering** comes to the rescue. Jittering introduces slight variation, or 'jitter', in the position of data points in each lane, making them easier to see. 
 
@@ -677,7 +676,7 @@ To facet by income group, we can append `.facet('income_group')` to our chart. W
 ```{python}
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
 ).facet(
     'income_group',
     columns=1
@@ -696,7 +695,7 @@ When we are faceting the xy-axes are the same for all the grouped facets/subchar
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x = percentage_heavy_drinkers, 
-    y = life_expectancy_at_50
+    y = life_expectancy_at_65
 )) +
 geom_point() +
 facet_wrap(~ income_group, ncol=1)
@@ -729,7 +728,7 @@ income_df = pd.read_csv(url)
 
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
 )
 
 ```
@@ -743,7 +742,7 @@ income_df <- readr::read_csv(url, show_col_types=FALSE)
 
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_50, 
+    y=life_expectancy_at_65, 
 )) + 
 geom_point()
 ```
@@ -759,7 +758,7 @@ geom_point()
 ```{python}
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
-    y='life_expectancy_at_50',
+    y='life_expectancy_at_65',
     color='income_group'
 ).facet(
     'region',
@@ -772,7 +771,7 @@ alt.Chart(income_df).mark_point().encode(
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df, aes(
     x = percentage_heavy_drinkers, 
-    y = life_expectancy_at_50,
+    y = life_expectancy_at_65,
     color=income_group
 )) +
 geom_point() +

@@ -1,8 +1,8 @@
 import pandas as pd
 
-life_expectancy_df = pd.read_csv('textbook/data/life-expectancy-hmd-unwpp.csv')
-alcohol_df = pd.read_csv('textbook/data/IHME-GBD_2021_DATA-446de514-1.csv')
-life_span_50_df = pd.read_csv('textbook/data/IHME-GBD_2021_DATA-6b19deba-1.csv')
+life_expectancy_df = pd.read_csv('../data/life-expectancy-hmd-unwpp.csv')
+alcohol_df = pd.read_csv('../data/IHME-GBD_2021_DATA-446de514-1.csv')
+life_span_65_df = pd.read_csv('../data/IHME-GBD_2021_DATA-dfbd7b8b-1.csv')
 
 life_expectancy_df = life_expectancy_df.query('Year == 2021')
 life_expectancy_df = life_expectancy_df.rename(columns={
@@ -83,12 +83,12 @@ def process_dataset(df, value_column_name):
 
 alcohol_df = process_dataset(alcohol_df, 'percentage_heavy_drinkers')
 
-life_span_50_df = process_dataset(life_span_50_df, 'life_expectancy_at_50')  # Adjust 'life_expectancy_at_50' to the appropriate column name
+life_span_65_df = process_dataset(life_span_65_df, 'life_expectancy_at_65') 
 
 merged_df = life_expectancy_df.merge(alcohol_df, on='country', how='inner')
-merged_df = merged_df.merge(life_span_50_df, on='country', how='inner')
+merged_df = merged_df.merge(life_span_65_df, on='country', how='inner')
 
-continents_df = pd.read_csv('textbook/data/continents.csv')
+continents_df = pd.read_csv('../data/continents.csv')
 continents_df = continents_df.drop(columns=['alpha-2', 'country-code', 'iso_3166-2', 'intermediate-region', 'region-code', 'sub-region-code', 'intermediate-region-code', 'name'])
 
 merged_df_with_continents = merged_df.merge(continents_df, left_on='code', right_on='alpha-3', how='inner')
@@ -98,7 +98,7 @@ merged_df_with_continents['percentage_heavy_drinkers'] *= 100
 
 merged_df_with_continents['average_life_expectancy'] = merged_df_with_continents['average_life_expectancy'].round(2)
 merged_df_with_continents['percentage_heavy_drinkers'] = merged_df_with_continents['percentage_heavy_drinkers'].round(2)
-merged_df_with_continents['life_expectancy_at_50'] = merged_df_with_continents['life_expectancy_at_50'].round(2)
+merged_df_with_continents['life_expectancy_at_65'] = merged_df_with_continents['life_expectancy_at_65'].round(2)
 
 income_df = pd.read_excel('../data/world_bank_income.xlsx')
 income_df = income_df.rename(columns={'Code': 'code', 'Income group': 'income_group'})
@@ -111,4 +111,4 @@ numbered_labels = {income: f"{i+1}. {income}" for i, income in enumerate(income_
 
 merged_df_with_continents_income['income_group'] = merged_df_with_continents_income['income_group'].map(numbered_labels)
 
-merged_df.to_csv('../data/income_lifeexp_alcohol_1.csv', index=False)
+merged_df_with_continents_income.to_csv('../data/income_lifeexp_alcohol.csv', index=False)
