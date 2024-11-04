@@ -521,109 +521,6 @@ geom_point()
 
 Notice how easy it is to compare the distributions between regions? This is because the separation between the groups is much clearer when using distinct positions than when using distinct colors, shapes, or sizes for points with overlapping positions.
 
-We can even take it one step further. Position can be combined with color to reinforce grouping on one variable or to introduce grouping on a second variable. 
-
-When grouping by two categorical variables, which should you assign to position and which to color? Position is more visually obvious than color. This means that we assign our primary comparison to position and our secondary comparison to color. 
-
-Let's apply this to a real world example.
-
-::::: {.callout-default .ex-prompt}
-
-The Virdians are trying to understand how life expectancy varies across income groups globally, and the role world region plays in these differences.
-
-Define the primary and secondary comparisons for this research question.
-
-
-:::: {.callout-default .ex-solution}
-
-The primary comparison is comparing life expectancy across income groups. The secondary comparison is between world regions.
-
-::::
-
-Now, using the variables `region`, `income_group` and `life_expectancy_at_65`, create a plot that reflects these priorities, showing all countries grouped using position and color. 
-
-::: {.panel-tabset}
-
-# Altair
-
-```{pyodide}
-#| setup: true
-#| exercise:
-#|   - position_alt
-#|   - facet_alt
-import altair as alt
-import pandas as pd
-from utils import assert_chart_equal
-
-url = 'data/income_lifeexp_alcohol.csv'
-
-```
-
-```{pyodide}
-#| exercise: position_alt
-income_df = pd.read_csv(url)
-
-
-
-
-
-# Write code above to create the chart 
-```
-
-::: {.callout-default .ex-solution}
-
-
-```{python}
-alt.Chart(income_df).mark_point().encode(
-    x='life_expectancy_at_65',
-    y='income_group',
-    color='region',
-)
-```
-
-:::
-
-# ggplot
-
-```{webr fig.width=8, fig.height=6}
-#| setup: true
-#| exercise:
-#|   - position_ggplot
-#|   - facet_ggplot
-library(ggplot2)
-
-url <- 'data/income_lifeexp_alcohol.csv'
-```
-
-```{webr fig.width=8, fig.height=6}
-#| exercise: position_ggplot
-income_df <- readr::read_csv(url, show_col_types=FALSE)
-
-
-
-
-
-# Write code above to create the chart 
-```
-
-::: {.callout-default .ex-solution}
-
-You are primarily comparing the `income_group` variable, so it should be grouped by position on either the `x` or `y` axis. The secondary comparison, `region`, should be encoded as color. 
-```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x=life_expectancy_at_65, 
-    y=income_group, 
-    color=region
-)) + 
-geom_point()
-```
-
-:::
-
-:::
-
-:::::
-
 For all of these benefits, there are some drawbacks of grouping by position. For one, it occupies an axis that could have represented a continuous variable. This reduces the information density of your visualization. More worryingly, while other grouping methods, such as color, allow you visualize both overall and group-level trends,  overall trends are difficult to see when grouping by position. It also requires significant space.
 
 Lastly, plotting data points along a single axis can lead to  overlap. That's where **jittering** comes to the rescue. Jittering introduces slight variation, or 'jitter', in the position of data points in each lane, making them easier to see. 
@@ -674,10 +571,116 @@ geom_jitter()
 
 :::
 
-
 ::: {.callout-caution}
 Jittering can be confusing! It can easily be mistaken for a scatterplot with true variation in the underlying data.
 :::
+
+By separating the points through jittering, we make it easier to distinguish individual data points. This clarity allows us to add additional grouping, such as color. By coloring our jittered data points as a second categorical variable, we can highlight a secondary grouping. This allows us to better understand complex relationships and interpret multiple levels of comparison in the data.
+
+When grouping by two categorical variables, which should you assign to position and which to color? Position is more visually obvious than color. This means that we assign our primary comparison to position and our secondary comparison to color. 
+
+Let's apply this to a real world example.
+
+::::: {.callout-default .ex-prompt}
+
+The Virdians are trying to understand how life expectancy varies across income groups globally, and the role world region plays in these differences.
+
+Define the primary and secondary comparisons for this research question.
+
+
+:::: {.callout-default .ex-solution}
+
+The primary comparison is comparing life expectancy across income groups. The secondary comparison is between world regions.
+
+::::
+
+Now, using the variables `region`, `income_group` and `life_expectancy_at_65`, create a plot that reflects these priorities, showing all countries grouped using position and color. Make sure to add jittering too!
+
+::: {.panel-tabset}
+
+# Altair
+
+```{pyodide}
+#| setup: true
+#| exercise:
+#|   - position_alt
+#|   - facet_alt
+import altair as alt
+import pandas as pd
+from utils import assert_chart_equal
+
+url = 'data/income_lifeexp_alcohol.csv'
+
+```
+
+```{pyodide}
+#| exercise: position_alt
+income_df = pd.read_csv(url)
+
+
+
+
+
+# Write code above to create the chart 
+```
+
+::: {.callout-default .ex-solution}
+
+
+```{python}
+alt.Chart(income_df).mark_point().encode(
+    x='life_expectancy_at_65',
+    y='income_group',
+    color='region',
+    yOffset='jitter:Q'
+).transform_calculate(
+    jitter='random()'
+)
+```
+
+:::
+
+# ggplot
+
+```{webr fig.width=8, fig.height=6}
+#| setup: true
+#| exercise:
+#|   - position_ggplot
+#|   - facet_ggplot
+library(ggplot2)
+
+url <- 'data/income_lifeexp_alcohol.csv'
+```
+
+```{webr fig.width=8, fig.height=6}
+#| exercise: position_ggplot
+income_df <- readr::read_csv(url, show_col_types=FALSE)
+
+
+
+
+
+# Write code above to create the chart 
+```
+
+::: {.callout-default .ex-solution}
+
+You are primarily comparing the `income_group` variable, so it should be grouped by position on either the `x` or `y` axis. The secondary comparison, `region`, should be encoded as color. 
+```{r fig.width=8, fig.height=6}
+ggplot(income_df, aes(
+    x=life_expectancy_at_65,
+    y=income_group,
+    color=region
+)) +
+geom_jitter()
+```
+
+:::
+
+:::
+
+:::::
+
 
 ### Faceting
 
