@@ -63,9 +63,7 @@ Before viewing what this chart looks like in the solution, draw out (either on p
 
 :::: {.callout-default .ex-hint}
 
-Think about what trend would you expect to see in this data? Do you think nations with a high percentage of heavy drinkers have long or short life spans?
-
-::::
+Think about what trend would you expect to see in this data. Do you think nations with a high percentage of heavy drinkers have long or short life spans?
 
 ::: {.callout-default .ex-solution}
 
@@ -92,6 +90,11 @@ From this scatter plot, the Viridians observe that nations with a high percentag
 
 ::::
 
+:::::
+
+Did the conclusions above match your expectations?
+Proceed to the next exercise
+to find out if there is more to this dataset than meets the eye!
 
 ::::: {.callout-default .ex-prompt}
 
@@ -101,7 +104,7 @@ particularly from those nights when you ingested the substance,
 but you have a vague recollection of that it is not the health solution
 that the Viridians are looking for.
 You ask to see the raw data,
-something you should always look at before taking any rash decisions.
+which you should always inspect before taking any rash decisions.
 Confident in their findings,
 the historians show you the first few rows of the data in the table below,
 and inform you that you can hover over the points
@@ -121,11 +124,11 @@ could influence the relationship between alcohol consumption and lifespan.
 
 :::: {.callout-default .ex-hint}
 
-Do you think other variables in the dataset could influence alcohol consumption? E.g. the average income of the country or the region of the world where it is located? To see this in the chart could you include some type of grouping according to that column, e.g. shape or color?
+Do you think other variables in the dataset could influence alcohol consumption? E.g. the average income of the country or the region of the world where it is located? To see this in the chart, could you include some type of grouping according to that column, e.g. shape or color?
 
 ::: {.callout-default .ex-solution}
 
-Both the country's income group and region might have an effect on the alcohol consumption and the lifespan. Here, we will explore this for the income group only, and you are free to explore the region on your own. We could change the chart to color each point by its income group:
+Both the country's income group and region might have an effect on the alcohol consumption and the lifespan. Here, we will explore this for the income group only, and you are free to explore the region on your own. To effectively add this information to the chart, we could use different colors to visually group the points by the income group variable:
 
 ```{python}
 #| echo: false
