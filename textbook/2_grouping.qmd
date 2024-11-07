@@ -110,8 +110,9 @@ the historians show you the first few rows of the data in the table below,
 and inform you that you can hover over the points
 in the chart above to see additional information for each observations.
 
-```python
-show_df(income_df)
+```{python}
+#| echo: false
+show_df(income_df[['country', 'region', 'income_group', 'percentage_heavy_drinkers', 'life_expectancy_at_65']])
 ```
 
 Study the table and the tooltip of the previous chart.
