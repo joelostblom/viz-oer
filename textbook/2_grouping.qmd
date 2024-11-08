@@ -47,6 +47,8 @@ def show_df(df):
 - **Apply** the faceting grouping strategy via `facet` and `facet_wrap` method to split data into separate facets/subplots.
 :::
 
+<!--TODO Should there be more LOs? Such as good number of colors? -->
+
 ## Why grouping matters
 
 So far you have created declarative visualizations by representing them as identical point **marks** on a canvas with encoded x- and y-axis positions. This is the foundation for all the visualizations we will make, but it is rarely sufficient on its own to give a complete picture of the data. In particular, messy real-world data might show overall trends in the datasets, that evaporate when explored more closely. The goal of grouping is to distinguish between groups by basing the visual appearance of points in a chart on the value of categorical variable. Let's see this in action in the following exercise.
@@ -320,7 +322,7 @@ Here we use `color=region`:
 
 ```{r}
 #| echo: false
-#| output:false
+#| output: false
 # Tidyverse is so noisy when imported the first time, so let's do it here in silence
 library(tidyverse)
 options(readr.show_col_types = FALSE)
