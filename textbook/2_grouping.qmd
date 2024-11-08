@@ -314,11 +314,20 @@ alt.Chart(income_df).mark_point().encode(
 # ggplot
 
 Here we use `color=region`:
+
+```{r}
+#| echo: false
+#| output:false
+# Tidyverse is so noisy when imported the first time, so let's do it here in silence
+library(tidyverse)
+options(readr.show_col_types = FALSE)
+```
+
 ```{r fig.width=8, fig.height=6}
 library(tidyverse)
 
 
-income_df <- read_csv('data/income_lifeexp_alcohol.csv', show_col_types = FALSE)
+income_df <- read_csv('data/income_lifeexp_alcohol.csv')
 
 ggplot(income_df, aes(
     x=percentage_heavy_drinkers, 
