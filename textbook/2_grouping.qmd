@@ -580,7 +580,7 @@ alt.Chart(income_df).mark_point().encode(
 
 In ggplot2, you can jitter points by using the `geom_jitter`, which is a combination of `geom_point` together with a function called `position_jitter`.
 
-```{r fig.width=8, fig.height=6}
+```{r fig.width=8, fig.height=4}
 ggplot(income_df) + 
     aes(
         x=percentage_heavy_drinkers, 
@@ -588,6 +588,16 @@ ggplot(income_df) +
         color=region
     ) + 
     geom_jitter()
+```
+
+```{r fig.width=8, fig.height=4}
+ggplot(income_df) + 
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=region, 
+        color=region
+    ) + 
+    geom_jitter(height=0.2)
 ```
 
 :::
