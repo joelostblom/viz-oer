@@ -332,12 +332,13 @@ library(tidyverse)
 
 income_df <- read_csv('data/income_lifeexp_alcohol.csv')
 
-ggplot(income_df, aes(
-    x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_65, 
-    color=income_group
-)) + 
-geom_point()
+ggplot(income_df) +
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=life_expectancy_at_65, 
+        color=income_group
+    ) +
+    geom_point()
 ```
 
 :::
@@ -397,13 +398,14 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 # ggplot
 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_65, 
-    color=income_group,
-    shape=income_group
-)) + 
-geom_point()
+ggplot(income_df) +
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=life_expectancy_at_65, 
+        color=income_group,
+        shape=income_group
+    ) + 
+    geom_point()
 ```
 
 :::
@@ -443,13 +445,14 @@ are hard to separate visually,
 which makes this chart ineffective:
 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_65, 
-    color=income_group,
-    shape=region
-)) + 
-geom_point()
+ggplot(income_df) +
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=life_expectancy_at_65, 
+        color=income_group,
+        shape=region
+    ) + 
+    geom_point()
 ```
 
 :::
@@ -487,12 +490,13 @@ when using size for categorical variable.
 
 ```{r fig.width=8, fig.height=6}
 
-ggplot(income_df, aes(
-    x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_65, 
-    size=income_group,
-)) + 
-geom_point()
+ggplot(income_df) +
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=life_expectancy_at_65, 
+        size=income_group,
+    ) + 
+    geom_point()
 ```
 
 :::
@@ -574,12 +578,13 @@ alt.Chart(income_df).mark_point().encode(
 In ggplot2, you can jitter points by using the `geom_jitter`, which is a combination of `geom_point` together with a function called `position_jitter`.
 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x=percentage_heavy_drinkers, 
-    y=region, 
-    color=region
-)) + 
-geom_jitter()
+ggplot(income_df) + 
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=region, 
+        color=region
+    ) + 
+    geom_jitter()
 ```
 
 :::
@@ -680,12 +685,13 @@ income_df <- readr::read_csv(url, show_col_types=FALSE)
 
 You are primarily comparing the `income_group` variable, so it should be grouped by position on either the `x` or `y` axis. The secondary comparison, `region`, should be encoded as color. 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x=life_expectancy_at_65,
-    y=income_group,
-    color=region
-)) +
-geom_jitter()
+ggplot(income_df) + 
+    aes(
+        x=life_expectancy_at_65,
+        y=income_group,
+        color=region
+    ) +
+    geom_jitter()
 ```
 
 :::
@@ -731,12 +737,13 @@ When we are faceting the xy-axes are the same for all the grouped facets/subchar
 
 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x = percentage_heavy_drinkers, 
-    y = life_expectancy_at_65
-)) +
-geom_point() +
-facet_wrap(~ income_group, ncol=1)
+ggplot(income_df) +
+    aes(
+        x = percentage_heavy_drinkers, 
+        y = life_expectancy_at_65
+    ) +
+    geom_point() +
+    facet_wrap(vars(income_group), ncol=1)
 ```
 
 In addition to faceting on a single variable in the data, faceting can also be done over two variables: one spread horizontally and one spread out vertically in the faceted charts. In ggplot, we would swap out `facet_wrap` to `facet_grid` in order to do this. For example, to have facets that are grouped by both income group and region, we could use `facet_grid(vars(income_group), vars(region))`. This can be effective when we need to group our data further, but it does risk making the chart hard to overview, so it is best used when there are fewer categories in the faceting variables.
@@ -778,11 +785,12 @@ alt.Chart(income_df).mark_point().encode(
 #| exercise: facet_ggplot
 income_df <- readr::read_csv(url, show_col_types=FALSE)
 
-ggplot(income_df, aes(
-    x=percentage_heavy_drinkers, 
-    y=life_expectancy_at_65, 
-)) + 
-geom_point()
+ggplot(income_df) +
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=life_expectancy_at_65, 
+    ) + 
+    geom_point()
 ```
 
 :::
@@ -807,13 +815,14 @@ alt.Chart(income_df).mark_point().encode(
 # ggplot
 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x = percentage_heavy_drinkers, 
-    y = life_expectancy_at_65,
-    color=income_group
-)) +
-geom_point() +
-facet_wrap(~ region, ncol=2)
+ggplot(income_df) +
+    aes(
+        x = percentage_heavy_drinkers, 
+        y = life_expectancy_at_65,
+        color=income_group
+    ) +
+    geom_point() +
+    facet_wrap(vars(region), ncol=2)
 ```
 
 :::
@@ -1014,12 +1023,14 @@ wellbeing_df <- readr::read_csv('data/MH_data_processed_3.csv', show_col_types=F
 ```
 
 ```{r fig.width=8, fig.height=6}
-ggplot(wellbeing_df, aes(
-    x = region, 
-    y = MHQ_score, 
-    color = region)) +
-  geom_point() +
-  facet_wrap(~ age_group)
+ggplot(wellbeing_df) +
+    aes(
+        x = region, 
+        y = MHQ_score, 
+        color = region
+    ) +
+    geom_point() +
+    facet_wrap(~ age_group)
 ```
 
 ::::  
@@ -1087,12 +1098,14 @@ wellbeing_df <- readr::read_csv(url, show_col_types=FALSE)
 
 ```{r fig.width=8, fig.height=6}
 
-ggplot(wellbeing_df, aes(
-    x = region, 
-    y = MHQ_score, 
-    color = region)) +
-  geom_point() +
-  facet_wrap(~ age_group)
+ggplot(wellbeing_df) +
+    aes(
+        x = region, 
+        y = MHQ_score, 
+        color = region
+    ) +
+    geom_point() +
+    facet_wrap(~ age_group)
 ```
 
 :::: 
