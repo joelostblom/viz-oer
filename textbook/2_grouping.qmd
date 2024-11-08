@@ -538,11 +538,14 @@ ggplot(income_df) +
 
 :::
 
-Notice how easy it is to compare the distributions between regions? This is because the separation between the groups is much clearer when using distinct positions than when using distinct colors, shapes, or sizes for points with overlapping positions. In general, if we are interested in comparing groups for a single continuous variable (such as `percentage_heavy_drinkers` above), position is the most efficient grouping method.
+Notice how easy it is to compare the distributions between regions? This is because the separation between the groups is much clearer when using distinct positions than when using distinct colors, shapes, or sizes for points with overlapping positions. However, since the the categorical variable now occupies one of the axes, we can not use position-based grouping when we are interesting in visualizaing a pairwise relationships between two continuos variables as we did in the first few exercises.
 
-For all of these benefits, there are some drawbacks of grouping by position. For one, it occupies an axis that could have represented a continuous variable. This reduces the information density of your visualization. More worryingly, while other grouping methods, such as color, allow you visualize both overall and group-level trends,  overall trends are difficult to see when grouping by position. It also requires significant space.
+::: {.callout-note}
+If we are interested in comparing groups for a single continuous variable (such as `percentage_heavy_drinkers` above), position is often the most effective grouping method.
+If we are interested in comparing groups while visualizing a pairwise relationship between two continuous variables
+:::
 
-Lastly, plotting data points along a single axis can lead to  overlap. That's where **jittering** comes to the rescue. Jittering introduces slight variation, or 'jitter', in the position of data points in each lane, making them easier to see. 
+Another caution when using position for grouping, is that plotting data points along a single axis can lead to overlap. That's where **jittering** comes to the rescue. Jittering introduces slight variation, or 'jitter', in the position of data points in each lane, making them easier to see. 
 
 ::: {.column-margin}
 
@@ -560,9 +563,7 @@ Let's examine how jittering works.
 
 # Altair
 
-In Altair, we create a random calculated variable called `jitter` by appending the `.transform_calculate()` method to our chart. We use our newly created `jitter` variable, encoding it as the `yOffset` of each data point using `yOffset='jitter:Q'`. This shifts the `yOffset` of each point by a random value. 
-
-The `:Q` simply tells Altair that `jitter` is a continuous quantitative variable.
+In Altair, we create a random calculated variable called `jitter` by appending the `.transform_calculate()` method to our chart. We use our newly created `jitter` variable, encoding it as the `yOffset` of each data point using `yOffset='jitter:Q'`. This shifts the `yOffset` of each point by a random value. The `:Q` tells Altair that `jitter` is a continuous quantitative variable, which we need since it is not part of the pandas dataframe, so the data type can't be inferred from the data frame.
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
