@@ -289,7 +289,10 @@ The human brain can detect color differences with little cognitive effort. Color
 
 This is great news for grouping! By encoding our categorical variable as color, we can leverage the brain's ability to infer groups. Conveniently, color doesn't alter the layout or structure of the data visualization, so it's an efficient way to compare the exact values of data points between groups.
 
-Let's use color to group our life expectancy data by world region:
+In the second exercise of this chapter
+we already saw how color could be used to group
+our life expectancy data by income group.
+Let's now see what the code to create this charts looks like:
 
 ::: {.panel-tabset}
 
@@ -339,22 +342,21 @@ geom_point()
 
 :::
 
-Notice how you naturally interpret points of same color as clusters?
-But beware... The power of color fades when used irresponsibly. Using colors that are too similar can blur the difference between groups. The more colors you include, the harder it is to stick to distinct hues. The exact number of colors you can use depends on your data: if there is a lot of overlap, then it is harder to distinguish multiple colors. A helpful guideline is that around five distinct categories/colors you should consider if the visualization is still effective or if you need to break it down into multiple charts instead. Once you reach eight distinct categories/colors, it is most certainly the case that it will be hard to distinguish some groups from each other.
+Note that the power of grouping by color fades when used irresponsibly. Using colors that are too similar can blur the difference between groups and the more colors you include, the harder it is to stick to distinct hues. The exact number of colors you can use depends on your data: if there is a lot of overlap, then it is harder to distinguish multiple colors. A helpful guideline is that around five distinct categories/colors you should consider if the visualization is still effective or if you need to break it down into multiple charts instead. Once you reach eight distinct categories/colors, it is most certainly the case that it will be hard to distinguish some groups from each other.
 
-There is also the challenge of accessibility. Colorblindness affects approximately 8% of men and 0.5% of women globally. The most common variant is deuteranopia. This impairs the ability to distinguish between red and green hues, so designing your data visualization with this in mind is essential. We will learn more about the specific considerations regarding this when we go more in depth into color theory, including specifics around which colors are safe to use together. In that chapter we will also learn how to represent ordered categories with different color choices than unordered categories, e.g. as with the case of the income groups here.
+There are several other important aspects of using colors effectively, such as how to ensure accessibility, particularly for people with color vision deficiencies. We will learn more about the these considerations when we go in depth into color theory, including specifics around which colors are safe to use together. In that chapter we will also learn how to represent ordered categories with different color choices than unordered categories, e.g. as with the case of the income groups here.
 <!-- TODO add section ref -->
 
 ### Shape
 
 Shape is less a effective grouping strategy on its own, but it can be combined with color to provide an additional visual cue. Let's take a look at a classic example: the infamous traffic light. 
 
-Do you think that traffic lights are well designed? At first glance, they break a major rule of accessibility, using the worst possible color combination for people with deuteranopia (red and green). Thankfully, in many countries, traffic lights are encoded using both position (vertically along the "y-axis"), color, and shape.
+Do you think that traffic lights are well designed? At first glance, they break a major rule of accessibility, using the worst possible color combination for people with red/green color vision deficiency. Thankfully, in many countries, traffic lights are encoded using both position (vertically along the "y-axis"), color, and shape.
 
 ![](/img/traffic.png)
 
 Grouping by three encoding channels reinforces the visual contrast and has probably prevented many accidents.
-Even in traffic light signals for cars that often lack the shape encoding, the vertical positioning of the different signals is effective enough so it is not a major hazard.
+Even in traffic light signals for cars that often lack the shape encoding, the vertical positioning of the different signals is effective enough so that the lack of a shape encoding is not a major hazard.
 
 ::: {.column-margin}
 **Shape up**
@@ -365,7 +367,7 @@ Some regions around the world has noticed that car traffic lights would be even 
 
 :::
 
-The syntax for encoding a shape aesthetic, is the same as for color: 
+The syntax for encoding a shape aesthetic, is similar to that for color: 
 
 ::: {.panel-tabset}
 
@@ -407,9 +409,10 @@ geom_point()
 :::
 
 While this combined approach makes grouping clearer, there are some pitfalls. For instance, line icons limit the total area that can be colored, reducing the impact of color. It is better to use solid shapes when combining shape and color.
-Additionally, size matters more than you'd think. Smaller shapes are difficult to distinguish. When plotting a dense scatterplot of small marks, try restricting the number of unique shapes to three or fewer, or consider avoiding using shape altogether.
+Additionally, smaller shapes are difficult to distinguish, so when plotting a dense scatterplot of small marks, try restricting the number of unique shapes to three or fewer, or consider avoiding using shape altogether.
+<!--TODO number of shapes -->
 
-It is rarely effective to encode a different data set variable
+It is rarely effective to encode a different data variable
 in the `color` and `shape` channels.
 This tends to lead to
 too much visual information 
@@ -418,6 +421,7 @@ and it is difficult to distinguish the many different combinations visually.
 The many combinations of income group and region in this chart
 are hard to separate visually,
 which makes this chart ineffective:
+<!--TODO Include some coloring of the background to cleary show bad examples? Too similar to book ufdndation? -->
 
 ::: {.panel-tabset}
 
@@ -450,18 +454,23 @@ geom_point()
 
 :::
 
+::: {.callout-caution}
+
+Avoid using color and shape for different variables
+since the combination can be difficult to distinguish
+
+:::
+
 ### Size
 
-Size is often used to represent the magnitude of quantitative data. But it can under limited circumstances be used for grouping. Size has an inherent direction from small to large, so it works better for ordered categorical data. One example is World Bank income level, ranging from low to high. Let's shake up our life expectancy chart, encoding the income level of countries in sub-Saharan Africa as size:
+Size is often used to represent the magnitude of quantitative data. But it can under limited circumstances be used for grouping. Size has an inherent direction from small to large, so it works better for ordered categorical data. One example is World Bank income level, ranging from low to high. In the next chart
+you can see that it is notably more difficult
+to tell apart the four different sizes,
+than the four different colors in the previous chart.
 
 ::: {.panel-tabset}
 
 # Altair
-
-You can see in this chart
-that it is notably more difficult
-to tell apart the four different sizes,
-than the four different colors in the chart above.
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
@@ -473,10 +482,6 @@ alt.Chart(income_df).mark_point().encode(
 
 # ggplot
 
-You can see in this chart
-that it is notably more difficult
-to tell apart the four different sizes,
-than the four different colors in the chart above.
 `ggplot` even displays a warning to be cautious
 when using size for categorical variable.
 
@@ -517,16 +522,17 @@ alt.Chart(income_df).mark_point().encode(
 # ggplot
 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df, aes(
-    x=percentage_heavy_drinkers, 
-    y=region, 
-)) + 
-geom_point()
+ggplot(income_df) + 
+    aes(
+        x=percentage_heavy_drinkers, 
+        y=region, 
+    ) + 
+    geom_point()
 ```
 
 :::
 
-Notice how easy it is to compare the distributions between regions? This is because the separation between the groups is much clearer when using distinct positions than when using distinct colors, shapes, or sizes for points with overlapping positions.
+Notice how easy it is to compare the distributions between regions? This is because the separation between the groups is much clearer when using distinct positions than when using distinct colors, shapes, or sizes for points with overlapping positions. In general, if we are interested in comparing groups for a single continuous variable (such as `percentage_heavy_drinkers` above), position is the most efficient grouping method.
 
 For all of these benefits, there are some drawbacks of grouping by position. For one, it occupies an axis that could have represented a continuous variable. This reduces the information density of your visualization. More worryingly, while other grouping methods, such as color, allow you visualize both overall and group-level trends,  overall trends are difficult to see when grouping by position. It also requires significant space.
 
@@ -687,6 +693,10 @@ geom_jitter()
 :::
 
 :::::
+
+<!--TODO talk about using categorical via offset/dodge + jittering, doesn't work in altair currenlty -->
+<!-- Position also allows us to group by more than one categorical variable -->
+<!-- by using different approaches to nesting the labels on the  -->
 
 
 ### Faceting
