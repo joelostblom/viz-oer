@@ -140,12 +140,12 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-Notice how the data points form clusters by income group. Coloring reveals that both national alcoholism levels and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income</span>, where both indicators are lower. 
+Notice how the data points form clusters by income group. Coloring reveals that both national alcoholism levels and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income countries</span>, where both indicators are lower. 
 
-This could explain the mysterious relationship the historians found between heavy drinkers and life expectancy! It seems like countries that have a higher average income are likely to both have people who drink more and people who live longer. By using color to group the data, we have revealed that income level is a **confounding variable**: it influences both life expectancy and alcohol consumption. If we had data at finer resolution, which contained each individual, we would likely see that they people who drink a lot don't live the longest lives, but we don't have access to that data here.
+This could explain the mysterious relationship the historians found between heavy drinkers and life expectancy! It seems like countries that have a higher average income are likely to both have people who drink more and people who live longer. By using color to group the data, we have revealed that income level could be a **confounding variable**: it likely influences both life expectancy and alcohol consumption. If we had data at finer resolution, which contained each individual, we would probably see that they people who drink a lot don't live the longest lives, but we don't have access to that data here.
 
-The insights you have found are sobering news for the Viridian historians,
-who are sure to proceed more cautiously in future project.
+The insights you have revealed are sobering news for the Viridian historians,
+who are sure to proceed more cautiously in future projects!
 
 :::
 
@@ -155,14 +155,14 @@ who are sure to proceed more cautiously in future project.
 
 ## The two main purposes of grouping
 
-As we have seen in the exercises above, grouping can have major benefits. There are two main purposes where grouping is useful:
+As we have seen in the exercises above, grouping can have major benefits. We can divide this benefits into to two main categories which both support us in making more accurate conclusions about our data:
 
 1. **Directly compare** trends and values for distinct groups.
 2. **Reveal patterns** in the data that are obscured when looking at all points together.
 
-These purposes are often connected and can be explored simultaneously through a common grouping strategy. They supports us in making more accurate conclusions about our data. The example from the exercises on alcohol consumption and life expectancy fall under the second category: the data seemed to have a certain pattern when we looked at all the points together, but when grouping by another variable in the dataset, we discovered that this overall pattern could be due to confounding from another variable. 
+These main benefits are often connected and can be explored simultaneously through a common grouping strategy. The example from the exercises on alcohol consumption and life expectancy fall under the second category: the data seemed to have a certain pattern when we looked at all the points together, but when grouping by another variable in the dataset, we discovered that this overall pattern could be due to confounding from another variable (income group). 
 
-Another name for this purpose is Simpson's Paradox, named not after Homer Simpson et al., but rather its inventor Edward H. Simpson, a British codebreaker.  Simpson reported a curious phenomenon where a trend present in several different groups of data disappears when they are combined. Below is a more general and simplified illustration of Simpson's Paradox than the one in our exercise. Notice how the overall dataset does not have a clear direction but when you color by group, both groups exhibit the same negative trend between X and Y.
+Revealing obscured patterns by grouping data is also referred to as Simpson's Paradox; named not after Homer Simpson et al., but rather its inventor Edward H. Simpson, a British codebreaker.  Simpson reported a curious phenomenon where a trend present in several different groups of data can disappear when they are combined. Below we show a more general and simplified illustration of Simpson's Paradox than the one in our earlier exercise. Notice how the overall dataset does not have a clear direction but when you color by group, both groups exhibit the same negative trend between X and Y.
 
 ::: {.panel-tabset}
 
@@ -191,9 +191,9 @@ alt.Chart(simpsons_df).mark_point().encode(
 
 :::
 
-In this case, grouping makes the insidious Simpson's Paradox visually unmistakable. This is a prime example of the utility of visualization in deepening our understanding of a data set. 
+In this case, grouping makes the insidious Simpson's Paradox visually unmistakable. This is a prime example of the utility of visualization in deepening our understanding of a data set, since without the grouping by color, we would have drawn different (and uninformative) conclusions about this data set. 
 
-We can also use grouping to directly compare trends and values for distinct groups. Here, grouping by position on the y-axis reveals that life expectancies are higher in countries in the higher income groups. 
+An example of the first benefit, directly comparing groups, can be seen in the next chart where grouping by position on the y-axis reveals that life expectancies tend to be higher in countries belonging to the higher income groups. 
 
 ```{python}
 #| echo: false
@@ -214,7 +214,7 @@ While position and color are generally the most effective grouping strategies, i
 
 ## Strategies for grouping
 
-The grammar of graphics gives us a convenient syntax for grouping where we define the visual channel that should represent a categorical variable. Generally speaking, position and color are the two most effective channels to use for grouping. Shape and size are also use, but often either in combination with one of the other two or for a specific purpose. The grammar of graphics allows for these to conveniently interchanged in the syntax:
+The grammar of graphics gives us a convenient syntax for grouping where we define the visual channel that should represent a categorical variable. Generally speaking, position and color are the two most effective channels to use for grouping. Shape and size are also used, but often either in combination with one of the other two or for a specific purpose. The grammar of graphics allows for these to conveniently interchanged in the syntax:
 
 ::: {.panel-tabset}
 
