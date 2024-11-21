@@ -36,6 +36,9 @@ def show_df(df):
     return HTML(df._repr_html_())
 ```
 
+
+{{< video https://www.youtube.com/watch?v=R-SWNlj1gy4 >}}
+
 ::: {.callout-note title="Learning outcomes"}
 - **Explain** that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
 
