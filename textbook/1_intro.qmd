@@ -37,7 +37,15 @@ def show_df(df):
 ```
 
 
-{{< video https://www.youtube.com/watch?v=R-SWNlj1gy4 >}}
+## Arrival in Viridia
+
+<i>
+The rusty doors of your spaceship creak open. Through blurry eyes, you see metal spires curving up into the sky. You have landed in the colony of Viridia. Strange faces surround you, eyeing you with disbelief. The Viridians whisper "how could an Earthling get here"? But Earth is gone. Its demise was a warning for civilizations across the galaxy. And you? You are its last messenger. 
+
+What happened in the last days of Earth? Why did it spiral out of control? In the next chapters of your life, you will help the Viridians to answer these questions, to visualize the history of your home planet. And maybe, just maybe, to avoid the same fate.
+<i/>
+
+![](img/spiral.png)
 
 ::: {.callout-note title="Learning outcomes"}
 - **Explain** that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
