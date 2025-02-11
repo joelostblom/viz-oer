@@ -36,6 +36,26 @@ def show_df(df):
     return HTML(df._repr_html_())
 ```
 
+
+## Arrival in Viridia
+
+
+*The rusty doors of your spaceship creak open. Through blurry eyes, you see metal spires curving up into a green sky. You've landed in the colony of Viridia.*
+
+*Strange faces gather around you, their eyes wide with disbelief. The whispers spread: “How could an Earthling get here?” But Earth is gone—its demise a stark warning to civilizations across the galaxy.*
+
+*And you? You are its last messenger.*
+
+*What happened in the final days of Earth? Why did it spiral out of control?* 
+
+*In the coming chapters of your life, you will help the Viridians answer these questions, to visualize the history of your home planet. And maybe,  together you can prevent them from meeting the same fate.*
+
+**A Journey Through Data**
+
+This book uses visualization to explore the forces that shape society—health, economy, environment, and culture. Through visualization, we will map these forces, reveal their connections, and discover insights to build a better future.
+
+![](img/spiral.png)
+
 ::: {.callout-note title="Learning outcomes"}
 - **Explain** that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
 
@@ -1243,9 +1263,10 @@ ggplot(food_emission) +
 ::::: {.callout-default .ex-prompt}
 
 These are striking results! There are some clear clusters and outliers in the data.
-With altair you can add a `tooltip` just as you have been using
-`x`, `y`, and `color`.
-Try it out to investigate which foods these are.
+
+With altair you can add a `tooltip` to your chart. Tooltips are labels that pop up when you hover over a datapoint. You can choose which variable is shown in your tooltip just as you have been using `x`, `y`, and `color`.
+
+Add a `tooltip` to investigate which foods stand out.
 
 ```{pyodide}
 #| exercise: tooltip_chart_alt
