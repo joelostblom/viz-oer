@@ -9,6 +9,7 @@ book:
     - index.qmd
     - 0_chapter-key.qmd
     - 1_intro.qmd
+    - 2_grouping.qmd
 
 filters:
   - custom-callouts.lua
