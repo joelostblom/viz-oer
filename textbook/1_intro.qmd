@@ -36,34 +36,23 @@ def show_df(df):
     return HTML(df._repr_html_())
 ```
 
-
-## Arrival in Viridia
-
-
-*The rusty doors of your spaceship creak open. Through blurry eyes, you see metal spires curving up into a green sky. You've landed in the colony of Viridia.*
-
-*Strange faces gather around you, their eyes wide with disbelief. The whispers spread: “How could an Earthling get here?” But Earth is gone—its demise a stark warning to civilizations across the galaxy.*
-
-*And you? You are its last messenger.*
-
-*What happened in the final days of Earth? Why did it spiral out of control?* 
-
-*In the coming chapters of your life, you will help the Viridians answer these questions, to visualize the history of your home planet. And maybe,  together you can prevent them from meeting the same fate.*
-
-**A Journey Through Data**
-
-This book uses visualization to explore the forces that shape society—health, economy, environment, and culture. Through visualization, we will map these forces, reveal their connections, and discover insights to build a better future.
-
-![](img/spiral.png)
-
 ::: {.callout-note title="Learning outcomes"}
-- **Explain** that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
+- **Explain** that the main advantage of visualizing data
+  instead of presenting it with numbers
+  is that they are easier to interpret for humans.
 
-- **Understand** that the advantage of using a high level level visualization syntax is that it allows us to think in terms of the data, rather than focusing on graphical details.
+- **Understand** that the advantage of using a high level level visualization syntax
+  is that it allows us to think in terms of the data,
+  rather than focusing on graphical details.
 
-- **Understand** that a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks, such as geometric marks and aesthetic encodings.
+- **Understand** that a grammar of graphics defines grammatical rules
+  that can be used to construct entire visualizations from smaller building blocks,
+  such as geometric marks and aesthetic encodings.
 
-- **Apply** the visualization grammars in Altair and ggplot to create a basic chart via `alt.Chart().mark_point().encode(x='...', y='...', color='...')` and <br> `ggplot() + aes(x=..., y=..., color=...) + geom_point()`
+- **Apply** the visualization grammars in Altair and ggplot
+  to create a basic chart via
+  `alt.Chart(data).mark_point().encode(x='...', y='...', color='...')`
+  and <br> `ggplot(data, aes(x=..., y=..., color=...)) + geom_point()`
 
 :::
 
@@ -497,6 +486,7 @@ What do you think the output would be of the following code?
 Do you think it differs between programming languages?
 
 <!-- For some reason, syntax highlighting is messed up if this is a python block -->
+
 ```{.js}
 'one' + 'two'
 ```
