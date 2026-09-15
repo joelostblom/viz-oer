@@ -75,18 +75,22 @@ such as the position of a point, the length of a bar, or the color of a line.
 
 ## What is the purpose of visualizing data?
 
-We can use visualizations both to improve own understanding of data
-and to effectively communicate our data insights to others.
+Broadly speaking,
+we can say that there are two main uses for visualization.
+Either we employ it
+to improve own understanding of a dataset
+or to effectively communicate our data insights to others.
 While we often use visualization
-to help us answer a specific question
-we have about our dataset,
-it can also help us generate new questions.
+to answer a specific question about a dataset,
+it can also be more exploratory
+and help us generate new questions.
 
 ## Why bother visualizing data instead of showing raw numbers?
 
 To understand why visualizations are so powerful,
 it is helpful to remember that to answer a question,
-we often have to put the data in a format that is easy for us humans to interpret.
+we often have to put the data in a format
+that is easy for us humans to interpret.
 Because our number systems have only been around for about 5,000 years,
 we need to assert effort and train ourselves
 to recognize structure in numerical data.
@@ -96,36 +100,42 @@ on the other hand,
 have undergone refinement during 500,000,000 years of evolution,
 so we can instinctively recognize visual patterns
 and accurately estimate visual properties
-such as colors and distances.
+such as colors and distances
+without much conscious cognitive effort.
 
-Practically,
-this means that we can arrive at correct conclusions faster
-from studying visual rather than numerical
-representations of the same data.
-For example, have a look at the
-four sets of numbers in the table on the slide.
-Can you see the differences in the general trends between these four sets of numbers?
-This is a slightly modified version of the original,
-<a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="_blank">which was put together by statistician Francis Anscombe in the
-70s.</a>
+In practice,
+this means that we can arrive at
+correct conclusions faster
+by studying graphical
+rather than numerical representations
+of the same data.
+For example,
+have a look at the four sets of data
+in the table below.
+Can you describe the datasets
+just from looking at the numbers?
+How are they different from one another?
 
 ```{python}
 #| echo: false
+#| label: tbl-anscombe
+#| tbl-cap: "This is a slightly modified version of <a href='https://en.wikipedia.org/wiki/Anscombe%27s_quartet' target='_blank'>Anscombe's quartet</a>, which was put together by statistician Francis Anscombe in the 70s."
 
 import altair as alt
 import pandas as pd
-from vega_datasets import data
+from altair.datasets import data
 from IPython.display import HTML
 
-anscombe = data.anscombe()
+anscombe = data.anscombe().rename(columns={'X': 'x', 'Y': 'y'})
 anscombe['Set'] = anscombe['Series'].map({'I': 'A', 'II': 'B', 'III': 'C', 'IV': 'D'})
 anscombe = anscombe.drop(columns='Series')
-anscombe.loc[anscombe['Y'] == anscombe['Y'].max(), 'Y'] = 8.5
+# Adjust C to show a diff in the summary statistics
+anscombe.loc[anscombe['y'] == anscombe['y'].max(), 'y'] = 8.5
 
 s = ''
 for set_name, df in anscombe.groupby('Set'):
     df = df.drop(columns='Set')
-    df.columns = pd.MultiIndex.from_tuples([(set_name, 'X'), (set_name, 'Y')])
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'x'), (set_name, 'y')])
     s = s + (
         df
         .style
@@ -139,11 +149,12 @@ html_content = '<div class="dataframe-grid">' + s + '</div>'
 HTML(html_content)
 ```
 
-### Summary statistics don't tell the whole story
+### Summary statistics don't tell the whole story either
 
 You are likely not able to see much difference between the data sets
 in the table above.
-What about if I showed you a few commonly used numerical summaries of the data?
+What about if we looked at
+a few commonly used statistical summaries of the data?
 
 ```{python}
 #| echo: false
@@ -151,7 +162,7 @@ What about if I showed you a few commonly used numerical summaries of the data?
 s = ''
 for set_name, df in anscombe.groupby('Set'):
     df = df.drop(columns='Set')
-    df.columns = pd.MultiIndex.from_tuples([(set_name, 'X'), (set_name, 'Y')])
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'x'), (set_name, 'y')])
     s += (
         df
         .agg(['mean', 'std'])
@@ -170,67 +181,73 @@ HTML(html_content)
 ```
 
 <br>
+Above,
+the mean and standard deviation indicate that set C
+is slightly different from the other three datasets
+in terms of the centre and spread of the sample distribution,
+while the remaining three sets of data have a similar centre and spread.
+
 Summaries,
 such as the mean and standard deviation,
 are helpful statistical tools
-that are often useful for detecting the differences between datasets.
+that are often useful for summarizing
+and detecting the differences between datasets.
 However,
 since they collapse the data into just a few numbers,
 statistical summaries can't tell the whole story about the data
 and there can be important differences between datasets
 that summaries fail to reveal.
 
-Above,
-the mean and standard deviation indicate that set C
-is slightly different from the other sets of data
-in terms of the centre of the sample distribution and the spread of that distribution,
-while the remaining three sets of data have a similar centre and spread.
+### Plotting immediately reveals patterns in the data
 
-### Plotting the data immediately reveals patterns in the data 
-
-So if you can't really see any patterns in the data
-and the statistical summaries are the same,
+So if you can't really see any patterns in the table
+and the statistical summaries are nearly all the same,
 that must mean that the four sets are pretty similar, right?
-Sounds about right to me so let's go ahead and plot them to have a quick look and...
+Sounds about right
+so let's go ahead
+and plot them to have a quick look...
 
 ```{python}
 #| echo: false
 
-alt.Chart(anscombe).mark_circle(size=80, opacity=1).encode(
-    x='X',
-    y='Y'
+alt.Chart(anscombe).mark_circle(size=80).encode(
+    x='x',
+    y='y'
 ).properties(
-  width=300,
+  width=200,
   height=200
 ).facet(
   'Set',
   columns=2
-).configure_axis(
-  grid=True
 ).configure_header(
   title=None
 )
 ```
 
-... what... how can they be so different... there must be something wrong, right?
-Well what is wrong is that humans are not good at detecting patterns in raw numbers,
+... what... how can they be so different...
+there must be something wrong, right?
+Well what is wrong is that
+humans are not good at detecting patterns in raw numbers,
 and we don't have good intuition about which combination of numbers
 can contribute to the same statistical summaries.
-But guess what we excel at? Detecting visual patterns!
+But remember what we excel at? Detecting visual patterns!
 
-It is immediately clear to us how these sets of numbers differ
-once they are shown as graphical objects 
+It is immediately clear to us
+how the four datasets differ
+once they are shown as graphical objects
 instead of textual objects.
-We could not detect these patterns from only looking at the raw numbers or summary statistics
-This is one of the main reasons why data visualization
-is such a powerful tool for data exploration and communication.
-
-In our example above,
-we would come to widely different conclusions about the behavior of the data
-for the four different data sets.
 Sets A and C are roughly linearly increasing at similar rates,
 whereas set B reaches a plateau and starts to drop,
 and set D has a constant X-value for all numbers except one big outlier.
+We could only detect these patterns
+after visualizing the data.
+Importantly,
+if we only had looked at the raw data or the summary statistics,
+we would have come to the wrong conclusions
+about how the datasets differ,
+and any research or business level decision
+based on solely a numerical analysis
+would have been misinformed.
 
 ### A modern take on Anscombe's quartet
 
@@ -238,32 +255,30 @@ For a more recent and dynamic illustration
 of how graphical representations are much easier for us to interpret,
 check out the [Datasaurus Dozen animation](https://www.autodesk.com/research/publications/same-stats-different-graphs) below.
 It displays several different datasets,
-all with the same mean, standard deviation and correlation between X and Y,
-but looking at the data graphically shows us how different these datasets actually are.
+all with nearly the same mean, standard deviation and correlation between X and Y,
+but looking at the data graphically shows us how different these datasets actually are:
 
-<figure>
-  <img src="https://blog.revolutionanalytics.com/downloads/DataSaurus%20Dozen.gif" alt="Datasaurus Dozen Animation" style="width:100%; max-width:600px;">
-  <figcaption>The Datasaurus Dozen: Datasets with identical summary statistics but very different distributions.</figcaption>
-</figure>
+![The Datasaurus Dozen: Datasets with near identical summary statistics but widely different distributions.](img/DinoSequentialSmaller.gif){#fig-datasaurus fig-alt="Data Taurus Dozen Animation"}
 
-Now that we have experienced the benefits of visualizing data,
+Now that you have experienced the benefits of visualizing data,
 let's figure out how to create such visualizations!
+
+<!--TODO Maybe make this a separate chapter? -->
 
 ## Which visualization library should we pick?
 
 There is a lot we can learn about visualization
 without using coding,
-but in order to make this learning experience interactive,
-we will create charts programmatically
-as we learn about new visualization concepts.
+but to make this learning experience interactive,
+we will learn how to programmatically create charts
+together with learning about new visualization concepts.
 
-In order to do so,
-we will start by selecting which visualization library to use.
+We will start by selecting which visualization library to use.
 To make an informed decision,
 it is helpful to understand
 that most visualization libraries can be classified as
 taking either a high level declarative approach
-or a low level imperative approach to creating visualization.
+or a low level imperative approach to creating visualizations.
 
 ::::: {.callout-default .ex-prompt}
 
@@ -294,8 +309,8 @@ that illustrates this difference:
 
 ### Declarative syntax
 
-```python
-create_chart(
+```{.python}
+chart(
     x='x',
     y='y',
     color='group'
@@ -316,7 +331,7 @@ alt.Chart(df, width=200, height=200).mark_point().encode(
 
 ### Imperative syntax
 
-```python
+```{.python}
 fig = create_figure()
 colors = ['blue', 'yellow']
 for color, group in zip(colors, df['group'].unique()):
@@ -336,15 +351,19 @@ alt.Chart(df, width=200, height=200).mark_point().encode(
 
 :::
 
-Although the same chart is created from both these pseudocode examples,
+Although the same chart is created
+from both these pseudocode examples,
 the syntax looks widely different.
-Before clicking on the hint and solution below to read our explanation of the two approaches,
-pause here and try to describe the differences between the two
-in your own words^[Actively engaging your brain in exercises like this
-instead of simply trying to memorize an explanation you read,
-aids in recalling the information later].
- <!--TODO ref? -->
- <!--TODO should this be moved to an intro chapter? -->
+Pause here
+and try to describe the differences
+between the two in your own words
+Then, click on the hint and solution below
+to read our explanation of the two approaches,
+
+*Actively engaging the brain in exercises like this one
+is proven to help remembering and understanding the information.
+The key is the act of trying to come up with the answer yourself
+compared to skipping straight to read the solution.*
 
 :::: {.callout-default .ex-hint}
 
@@ -375,13 +394,20 @@ is to consider the difference between giving an instruction in each:
 
 **"Color by the column `group` in the dataframe."**
 
-**Focus**: Declaring links between data variables (e.g., `group`) and graphical properties (e.g. `color`). The rest of the plot details (such as which colors to use) are handled automatically.
+**Focus**: Declaring links between data variables (e.g., `group`)
+and graphical properties (e.g. `color`).
+The rest of the plot details
+(such as which colors to use)
+are handled automatically.
 
 ### Imperative instruction
 
-**"Loop over the dataframe and plot any observations of group `A` in blue and any observations of group `B` in yellow."**
+**"Loop over the dataframe
+and plot any observations of group `A` in blue
+and any observations of group `B` in yellow."**
 
-**Focus**: Being explicit with all the details for creating the chart via for-loops and low-level drawing commands.
+**Focus**: Being explicit with all the details
+for creating the chart via for-loops and low-level drawing commands.
 :::
 
 In this book we will learn about
@@ -390,37 +416,73 @@ since these allow us to code a high-level specification
 of *what* we want the visualization to include,
 rather than coding out the details of *how* to implement the visualization.
 Another way to state this would be that high level libraries
-focus on **data and relationships**,
-whereas low level libraries focus on **plot construction details.**
-<!--TODO explain jargon declarative/imperative? -->
+lets our minds focus on **data and relationships**,
+which is the right level of abstraction for a data scientist.
+Low level libraries focus more on **plot construction details**,
+which is often more appropriate
+when making a highly customized visualization,
+data art, or an application with complex plotting logic.
 
 Among declarative visualization libraries,
-there are still a few different approaches
-to how visualization is created.
-Here,
+there are still a few different subcategories.
+In this book,
 we are going to learn about libraries that implement
-a so called "grammar of graphics".
+a so called "grammar of graphics",
+since this framework makes visualizations
+easy to both create and to reason about.
 
 ## What is a grammar of graphics?
 
-A graphical grammar is a system for creating visualizations
-by combining basic elements according to specific rules.
-It parallels the grammars of natural and programming languages,
-but applies to visual components.
+There is a plethora of names
+used to refer to specific types of chart.
+While referring to charts by name
+can be convenient in some context,
+it is often confusing.
+For example,
+a scatterplot, a dotplot, a stripplot, a bubble plot, and a forestplot
+all use points to represent data,
+but what's the difference between them?
+Memorizing exactly which chart corresponds to which name
+is not as important as developing an understanding
+for what the points represent in each type of visualization.
 
-We are all familiar with the grammatical rules for natural languages^[
-What you typically think of as "a language": English, Mandarin, Hindi, Swedish, etc],
-where they tell us how to combine words into sentences
-to convey particular meanings.
-Programming languages also have a grammatical structure,
-let's see how they work in the following exercise:
+A grammar of graphics let's us focus
+on understanding the common building blocks of all charts
+and how to compose these together
+according to predicable rules
+to create bespoke visualizations.
+It parallels the grammars of natural[^natural-language]
+and programming languages,
+but applies to visual components.
+While we're all familiar with
+how the grammatical rules of natural languages
+describe compose meaningful sentences from words,
+it might not be as clear
+what grammatical structure look like in programming languages,
+so let's see an example in the following exercise:
+
+
+[^natural-language]: A "natural" language is
+    what you typically think of as just "a language":
+    Cantonese, Zulu, Swedish, etc.
+
+::: {.column-margin}
+
+**Grammatical origins**
+
+The idea of a grammar of graphics originates from
+[Leland Wilkinson's 2001 publication "The Grammar of Graphics"](https://en.wikipedia.org/wiki/Wilkinson%27s_Grammar_of_Graphics).
+
+![](https://pictures.abebooks.com/isbn/9780387987743-us.jpg)
+
+:::
 
 ::::: {.callout-default .ex-prompt}
 
 What do you think the output would be of the following Python code?
 
 
-```python
+```{.python}
 1 + 2
 ```
 
@@ -434,9 +496,11 @@ if we are trying to add something other than numbers.
 What do you think the output would be of the following code?
 Do you think it differs between programming languages?
 
-```python
+<!-- For some reason, syntax highlighting is messed up if this is a python block -->
+```{.js}
 'one' + 'two'
 ```
+
 :::: {.callout-default .ex-hint}
 
 Just like that addition of numbers
@@ -451,7 +515,8 @@ should perform concatenation when strings are added together,
 so the returned result would be `"onetwo"`.
 In contrast,
 the grammar of R says that there is no such thing as addition of strings,
-so it would throw an error complaining that non-numeric arguments were passed to the `+`-operator.
+so it would throw an error complaining that non-numeric arguments
+were passed to the `+`-operator.
 
 :::
 
@@ -459,74 +524,146 @@ so it would throw an error complaining that non-numeric arguments were passed to
 
 :::::
 
-As with the grammar of programming languages,
-visualization packages make different choices
-for what happens when different visual elements are added together.
-Key components of a graphical grammar often include:
+## Learning the grammar of graphics {#sec-learning-to-speak}
 
-1. **Canvas**: The background or base of the chart.
-2. **Geometric marks**: Visual elements representing data (e.g. points, bars).
-3. **Visual encoding**: Rules for mapping data to visual properties (e.g. the column `'group'` to `color`).
+So what does the grammar of graphics look like?
+Well, "it depends".
+Just like linguistic grammars vary between languages,
+visualization grammars are implemented differently
+in different pacakges.
+However,
+there are some core steps
+which are present in most
+grammars of graphics:
 
-In the next session,
-we will see how these components can be added together using code.
-
-The following table illustrates the similarities between the grammars of programming, natural language and graphics:
-
-| Component    | Natural Language        | Programming Language    | Graphical Grammar                             |
-|--------------|-------------------------|-------------------------|-----------------------------------------------|
-| Basic Units  | Words                   | Variables, literals     | Marks (points, lines, bars)                   |
-| Syntax Rules | Word order, punctuation | Syntax rules, operators | Rules for combining marks, layers, aesthetics |
-| Semantics    | Word meanings, context  | Expression meanings     | Meanings of visual encodings                  |
-| Composition  | Sentences, paragraphs   | Statements, code blocks | Layers, facets                                |
-| Output       | Text                    | Executable code         | Data visualizations                           |
-| Modifiers    | Adjectives, adverbs     | Attributes, parameters  | Scales, legends, annotations                  |
-
-Understanding these parallels enables users to approach data visualization systematically,
-leveraging a defined set of components and rules.
-
-## Learning to speak with a grammar of graphics {#sec-learning-to-speak}
-
-To start creating our own charts,
-we will work with two libraries that implement a grammar of graphics:
-Altair in Python, and ggplot in R.
-These two libraries both offer a powerful and concise visualization grammar
-for quickly building a wide range of statistical charts.
-
-What do these grammars look like?
-In brief,
-we first create a canvas/chart,
-then encode our data variables as different channels in this chart (x, y, color, etc)
-and add geometric marks to represent the data (points, lines, etc).
-You can see an illustration of this in the image below,
-together with how ggplot (top) and Altair (bottom) implements the grammatical components in their respective syntax.
-The exact syntax is slightly different, but the overall structure very much the same.
-
-![](/img/grammar-of-graphics.jpeg)
-<!--TODO Ideally remake this images using `+ aes()` instead -->
-<!--TODO Should I maybe replace it with a programmatic version? It is a fun image, not sure if it looks to informal -->
+1. **Create a data-informed canvas**:
+    This step creates a background canvas
+    that other graphical componens are drawn upon
+    and links it to the relevant dataset.
+2. **Encode visual aesthetics**:
+    This step defines how data will be mapped to graphical channels
+    (e.g. the column `'group'`
+    might be mapped to the `color` of each mark).
+3. **Add geometric marks**:
+    This step selects the graphical elements
+    used to represent the data (e.g. points, bars, etc).
 
 As a result of the predictable structure,
-a grammar of graphics allows you to create an impressive range of visualizations
-from simple to sophisticated.
-A graphical grammar also makes it notably easier
+a grammar of graphics allows you to create
+an impressive range of visualizations
+in an intuitive manner
+and aids in reasoning about these visualizations.
+It also makes it notably easier
 to change between different types of plots,
 as the code syntax follows a predictable structure
 and only parts of the grammar changes between charts.
 In fact,
-Altair and ggplot have been show to be two of the libraries
-that require the least amount of changes in the code
-between different types of visualizations.
-<!--TODO ref nic paper -->
+libraries that implement a grammar of graphics
+often require a fewer changes in the code
+to create different types of visualizations.^[https://arxiv.org/abs/2308.16353]
 
-Let's get coding!
+### Implementations of the grammar of graphics
 
-Data in Altair and ggplot is built around ["tidy"](http://vita.had.co.nz/papers/tidy-data.html) dataframes,
-which consists of a set of named data *columns* (also referred to as *variables* or *fields*)
+You can think of the grammar of graphics
+as an underlying theory of how to make visualizations.
+But to actually create a visualization,
+we need to use a package the *implements* this theory in code.
+This book shows several programmatic implementations;
+and lets you choose which package you prefer to learn,
+while also allowing for quick comparisons between libraries.
+Before creating a visualization,
+let's see how the structure of these implementations
+is similar to the general structure
+we described above.
+
+::: {.panel-tabset}
+
+### Altair
+
+In the Python package Altair,
+a general representation of the core chart components
+would look like this:
+
+```{.python}
+alt.Chart(data).encode().mark()
+```
+
+1. `alt.Chart(data)` creates the data-linked canvas.
+2. `encode()` encodes the visual aesthetics, such as `x`, `y`, etc.
+3. `mark()` adds geometric marks, such as points, bars, etc.
+
+Note that we wrote the Altair syntax in the same form
+as in our general grammar of graphics example above
+to help you see how it maps onto that structure.
+It is perfectly fine to keep writing this way
+if you prefer it,
+but the canonical way to write Altair chart specifications
+is in the form `alt.Chart(data).mark().encode()`.
+We will follow that order from now on
+since most examples you will see elsewhere
+follow this syntax.
+
+:::: {.column-margin}
+
+<br><br>
+**Stellar naming**
+Altair is the name of a star
+in the same constellation as the star Vega,
+which is the name of the Javascript library
+that Altair is built upon.
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
+
+::::
+
+### ggplot
+
+In the R library ggplot2,
+a general representation of the core chart components
+would look like this:
+
+```{.r}
+ggplot(data) + aes() + geom()
+```
+
+1. `ggplot(data)` creates the data-linked canvas.
+2. `aes()` encodes the visual aesthetics, such as `x`, `y`, etc.
+3. `geom()` adds geometric marks, such as points, bars, etc.
+
+Note that we wrote the ggplot syntax in the same form
+as in our general grammar of graphics example above
+to help you see how it maps onto that structure.
+It is perfectly fine to keep writing this way
+if you prefer it,
+but the canonical way to write R chart specifications
+is in the form `ggplot(data, aes()) + geom()`.
+We will follow that order from now on
+since most examples you will see elsewhere
+follow this syntax.
+
+:::: {.column-margin}
+
+<br><br>
+**A nod in the name**
+The "gg" in ggplot is a reference Wilkinson's "The Grammar of Graphics",
+which was the direct inspiration for the creation of the ggplot library.
+
+::::
+
+:::
+
+### Creating our first chart
+
+Now its time to start coding!
+Let's start by defining some example data to visualize.
+The use of data in libraries that implements a grammar of graphics
+generally follow the principles of ["tidy"](http://vita.had.co.nz/papers/tidy-data.html) data.
+Tidy data is defined as a set of named data *columns*
+(also referred to as *variables* or *fields*)
 with one feature each
 and rows with one observation each.
-Here,
-we will load in a small dataset relating to cars
+We will start by,
+loading in a small dataset relating to cars
 containing historical trends in automotive design, performance, and efficiency.
 
 :::: {.panel-tabset}
@@ -549,16 +686,6 @@ cars
 show_df(cars)
 ```
 
-::: {.column-margin}
-
-**Stellar charts**
-
-Altair is the name of a star in the same constellation as the star Vega, which is also the name of the Javascript library that Altair is built upon.
-
-![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
-
-:::
-
 ### ggplot
 
 ```{r}
@@ -575,18 +702,6 @@ cars
 #| echo: false
 show_df(ro.r['cars'])
 ```
-
-::: {.column-margin}
-
-**Grammatically correct**
-
-The "gg" in ggplot is a reference to the book "Grammar of Graphics",
-which inspired the creation of the ggplot library.
-
-![](https://pictures.abebooks.com/isbn/9780387987743-us.jpg)
-
-:::
-
 ::::
 
 Now let's create our first charts!
@@ -946,7 +1061,6 @@ graph TD
     plotly_r[plotly]:::lowLevel
     patchwork[patchwork/cowplot]:::alignmentTool
     htmlwidgets[htmlwidgets]:::javascript
-    altair_r[Altair]:::highLevel
 
     %% JavaScript-related
     js[JavaScript]:::javascript
@@ -972,7 +1086,7 @@ graph TD
         lattice & ggplot --> patchwork
         ggplot -.-> ggiraph & ggplotly
         ggplotly --> plotly_r
-        htmlwidgets --> ggiraph & plotly_r & altair_r
+        htmlwidgets --> ggiraph & plotly_r
     end
 
     %% Subgraph for JavaScript ecosystem
@@ -987,7 +1101,7 @@ graph TD
         matplotlib --> plotnine & pandas & seaborn & holoviz
         holoviz --> bokeh
         plotly_py --> plotly_express
-        vegalite --> altair & altair_r
+        vegalite --> altair
     end
 
     %% Connections between ecosystems

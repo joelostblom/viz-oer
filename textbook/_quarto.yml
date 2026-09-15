@@ -21,6 +21,7 @@ format:
     monofont: "Ubuntu Mono"
     mainfont: Ubuntu
     number-depth: 2
+    tbl-cap-location: bottom
 webr:
   packages:
     - dplyr
