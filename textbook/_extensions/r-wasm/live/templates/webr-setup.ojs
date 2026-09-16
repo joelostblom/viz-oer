@@ -1,5 +1,5 @@
 webROjs = {
-  const { WebR } = window._exercise_ojs_runtime.WebR;
+  const { WebR, ChannelType } = window._exercise_ojs_runtime.WebR;
   const {
     WebREvaluator,
     WebREnvironmentManager,
@@ -10,12 +10,28 @@ webROjs = {
 
   const statusContainer = document.getElementById("exercise-loading-status");
   const indicatorContainer = document.getElementById("exercise-loading-indicator");
-  indicatorContainer.classList.remove("d-none");
 
-  let statusText = document.createElement("div")
-  statusText.classList = "exercise-loading-details";
-  statusText = statusContainer.appendChild(statusText);
-  statusText.textContent = `Initialise`;
+  let statusText;
+
+  // Keep the editor available without downloading webR until it is used.
+  const activationPromise = new Promise((resolve) => {
+    const selector = `.exercise-cell[id^="webr-"]`;
+    const eventNames = ["pointerdown", "focusin", "keydown"];
+    const activate = (event) => {
+      if (!(event.target instanceof Element) || !event.target.closest(selector)) {
+        return;
+      }
+      document.querySelectorAll(selector).forEach((cell) => {
+        cell.querySelector('.exercise-editor-activation-message')
+          ?.classList.add('d-none');
+        cell.querySelector('.exercise-editor-eval-indicator')
+          ?.classList.remove('d-none');
+      });
+      eventNames.forEach((name) => document.removeEventListener(name, activate, true));
+      resolve();
+    };
+    eventNames.forEach((name) => document.addEventListener(name, activate, true));
+  });
 
   // Hoist indicator out from final slide when running under reveal
   const revealStatus = document.querySelector(".reveal .exercise-loading-indicator");
@@ -23,6 +39,11 @@ webROjs = {
     revealStatus.remove();
     document.querySelector(".reveal > .slides").appendChild(revealStatus);
   }
+
+  // Make any reveal slides with live cells scrollable
+  document.querySelectorAll(".reveal .exercise-cell").forEach((el) => {
+    el.closest('section.slide').classList.add("scrollable");
+  })
 
   // webR supplemental data and options
   const dataContent = document.querySelector(`script[type=\"webr-data\"]`).textContent;
@@ -34,6 +55,11 @@ webROjs = {
 
   // Initialise webR and setup for R code evaluation
   let webRPromise = (async (webR) => {
+    await activationPromise;
+    indicatorContainer.classList.remove("d-none");
+    statusText = document.createElement("div");
+    statusText.classList = "exercise-loading-details";
+    statusText = statusContainer.appendChild(statusText);
     statusText.textContent = `Downloading webR`;
     await webR.init();
 
@@ -74,11 +100,12 @@ webROjs = {
       let path = '';
       while (parts.length > 0) {
         path += parts.shift() + '/';
-        try {
-          await webR.FS.mkdir(path);
-        } catch (e) {
-          if (!e.message.includes("FS error")) {
-            throw e;
+        const analysis = await webR.FS.analyzePath(path);
+        if (!analysis.exists) {
+          try {
+            await webR.FS.mkdir(path);
+          } catch (e) {
+            throw new Error(`Filesystem Error: "${e.message}".`);
           }
         }
       }
@@ -95,7 +122,7 @@ webROjs = {
 
     statusText.remove();
     if (statusContainer.children.length == 0) {
-      statusContainer.parentNode.remove();
+      indicatorContainer.classList.add("d-none");
     }
     return webR;
   })(new WebR(data.options));
