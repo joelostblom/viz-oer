@@ -297,7 +297,7 @@ where we color the points according to their group.
 Here is pseudocode^["pseudocode" is an informal way of writing code that is often used to explain a concept to the reader]
 that illustrates this difference:
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 ### Declarative syntax
 
@@ -380,7 +380,7 @@ and then assigning them to groups by looping through the data.
 A related way to understand declarative vs imperative approaches
 is to consider the difference between giving an instruction in each:
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 ### Declarative instruction
 
@@ -569,7 +569,7 @@ let's see how the structure of these implementations
 is similar to the general structure
 we described above.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 ### Altair
 
@@ -661,7 +661,7 @@ We will start by,
 loading in a small dataset relating to cars
 containing historical trends in automotive design, performance, and efficiency.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ### Altair
 
@@ -713,7 +713,7 @@ relate to each other,
 we can map them to two visual channels in the chart,
 such as `x` and `y`.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 ## Altair
 
@@ -843,7 +843,7 @@ will automatically figure out an appropriate color scale to use.
 Since `Weight_in_lbs` column contains continuous numerical data,
 a continuous gradient will be used here.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 ### Altair
 
@@ -1161,7 +1161,7 @@ Create a scatter plot of the food supply and emissions data by following these s
 
 You can use the code cells below to code your answer:
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 ### Altair
 
@@ -1247,7 +1247,7 @@ review section @sec-learning-to-speak.
 
 ::: {.callout-default .ex-solution}
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 ### Altair
 
