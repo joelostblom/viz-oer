@@ -39,23 +39,23 @@ def show_df(df):
     return HTML(df._repr_html_())
 ```
 
-::: {.callout-note title="Learning outcomes"}
-- **Explain** that the main advantage of visualizing data
-  instead of presenting it with numbers
-  is that they are easier to interpret for humans.
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+1. **Explain** that the main advantage of visualizing data
+   instead of presenting it with numbers
+   is that they are easier to interpret for humans.
 
-- **Understand** that the advantage of using a high level level visualization syntax
-  is that it allows us to think in terms of the data,
-  rather than focusing on graphical details.
+2. **Understand** that the advantage of using a high level level visualization syntax
+   is that it allows us to think in terms of the data,
+   rather than focusing on graphical details.
 
-- **Understand** that a grammar of graphics defines grammatical rules
-  that can be used to construct entire visualizations from smaller building blocks,
-  such as geometric marks and aesthetic encodings.
+3. **Understand** that a grammar of graphics defines grammatical rules
+   that can be used to construct entire visualizations from smaller building blocks,
+   such as geometric marks and aesthetic encodings.
 
-- **Apply** the visualization grammars in Altair and ggplot
-  to create a basic chart via
-  `alt.Chart(data).mark_point().encode(x='...', y='...', color='...')`
-  and <br> `ggplot(data, aes(x=..., y=..., color=...)) + geom_point()`
+4. **Apply** the visualization grammars in Altair and ggplot
+   to create a basic chart via
+   `alt.Chart(data).mark_point().encode(x='...', y='...', color='...')`
+   and <br> `ggplot(data, aes(x=..., y=..., color=...)) + geom_point()`
 
 :::
 
@@ -796,7 +796,7 @@ It can be helpful to start with a particular area of the chart.
 For example,
 look at the cars with the most powerful engines (highest horsepower),
 what is their fuel efficiency?
-Now do the same for the cars with the least powerful engines 
+Now do the same for the cars with the least powerful engines
 and compare the two.
 
 ::: {.callout-default .ex-solution}
@@ -943,9 +943,10 @@ in a future chapter.
 
 ### The R and Python visualization ecosystems
 
-There are a wide variety of high-level and low-level tools for visualizing data in R and Python.
+There are a wide variety of high-level and low-level tools
+for visualizing data in R and Python.
 While we have already outline the advantages of the libraries we chose,
-it can be helpful to be aware of which others are available 
+it can be helpful to be aware of which others are available
 since you are likely to encounter some of them in the wild.
 In this diagram
 you can see an overview of how which other libraries exist
@@ -1032,6 +1033,7 @@ graph TD
     LL[Low Level]:::lowLevel
     JS[JavaScript]:::javascript
 ```
+
 As a reward for checking out the deep dive,
 enjoy this genAI composition
 of the visualization landscapes in R and Python.
