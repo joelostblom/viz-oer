@@ -13,6 +13,9 @@ fig-height: 4
 resources:
   - data
   - utils.py
+webr:
+  packages:
+    - readr
 ---
 
 <!-- Temporarily needed for live coding exercises -->
