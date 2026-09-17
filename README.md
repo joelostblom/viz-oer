@@ -16,7 +16,7 @@ make preview  # Start the live preview
 make book     # Render the textbook
 ```
 
-Both commands use the shared `activate-uvr` recipe fragment to activate the
+Preview and book builds use the shared `activate-uvr` recipe fragment to activate the
 project's R environment, then launch Quarto in the Python environment managed
 by uv. For example, `make preview` is equivalent to:
 

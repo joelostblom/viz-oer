@@ -13,7 +13,6 @@ fig-height: 4
 resources:
   - data
   - utils.py
-  - channel_figures.py
 ---
 
 <!-- Temporarily needed for live coding exercises -->
@@ -27,7 +26,6 @@ import pandas as pd
 import rpy2.robjects as ro
 from rpy2.robjects import pandas2ri
 from IPython.display import HTML
-from channel_figures import grouping_channels
 
 pd.set_option('display.max_rows', 6)
 
@@ -266,13 +264,7 @@ Shape and size can also be used,
 but often either in combination with one of the other two or
 for a specific purpose.
 
-```{python}
-#| label: fig-grouping-channels
-#| echo: false
-#| fig-alt: "Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles."
-#| fig-cap: "Classical ordering of static identity channels for grouping; effectiveness depends on the task and design. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0); motion omitted."
-grouping_channels()
-```
+![Classical ordering of static identity channels for grouping; effectiveness depends on the task and design. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0); motion omitted.](img/grouping-channels-direct.svg){#fig-grouping-channels width=451.2 fig-alt="Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles."}
 
 The grammar of graphics allows
 for these to be conveniently defined via an easily interchangeable syntax:

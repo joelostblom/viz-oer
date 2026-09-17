@@ -4,16 +4,9 @@ fig-width: 5
 fig-height: 3.75
 resources:
   - slides-lec2.pdf
-  - channel_figures.py
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-
-```{python}
-#| label: channel-diagram-setup
-#| include: false
-from channel_figures import magnitude_channels
-```
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
@@ -105,13 +98,7 @@ there has been plenty of research in this area,
 which is summarized in the schematic below,
 from the most to least effective visual channel.
 
-```{python}
-#| label: fig-magnitude-channels
-#| echo: false
-#| fig-alt: "Ten channels in classical magnitude order: common-scale position, unaligned-scale position, length, tilt or angle, area, depth, luminance, saturation, curvature, and volume."
-#| fig-cap: "Classical visual-channel ranking for quantitative magnitude judgments, not a universal ordering of chart effectiveness. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0)."
-magnitude_channels(scale=0.55)
-```
+![Classical visual-channel ranking for quantitative magnitude judgments, not a universal ordering of chart effectiveness. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0).](img/magnitude-channels-direct.svg){#fig-magnitude-channels width=633.6 fig-alt="Ten channels in classical magnitude order: common-scale position, unaligned-scale position, length, tilt or angle, area, depth, luminance, saturation, curvature, and volume."}
 
 <!-- ![](img/visual-channels.png) -->
 
