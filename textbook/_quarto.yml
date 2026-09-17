@@ -8,10 +8,16 @@ book:
   chapters:
     - index.qmd
     - 0_chapter-key.qmd
-    - 1_intro.qmd
-    - 2_grouping.qmd
-    - 3_visual-channels.qmd
-    - 4_distributions.qmd
+    - 1_why-visualize-data.qmd
+    - 2_grammar-of-graphics.qmd
+    - 3_individual-observations.qmd
+    - 4_magnitude.qmd
+    - 5_groups.qmd
+    - 6_trends.qmd
+    - 7_statistical-summaries.qmd
+    - 8_distributions.qmd
+    - 9_multiple-distributions.qmd
+    - 99_misc.qmd
 
 filters:
   - custom-callouts.lua

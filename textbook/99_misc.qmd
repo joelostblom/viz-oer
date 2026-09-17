@@ -1,0 +1,140 @@
+---
+fig-width: 5
+fig-height: 3.75
+resources:
+  - slides-lec3.pdf
+number-sections: false
+---
+
+# 99 Misc {.unnumbered}
+
+This placeholder chapter collects material awaiting a permanent home.
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Customize** axis labels, scales, titles, legends, and the sizes of plot elements.
+
+2. **Construct** sample distributions and compare their histogram and boxplot representations.
+
+:::
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+```{python}
+#| label: misc-python-setup
+#| include: false
+
+import altair as alt
+import pandas as pd
+
+alt.data_transformers.enable('vegafusion')
+gm = pd.read_csv('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv')
+gm2018 = gm.query('year == 2018')
+```
+
+```{r}
+#| label: misc-r-setup
+#| include: false
+
+library(tidyverse)
+theme_set(theme_gray(base_size = 18))
+gm <- read_csv('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv', show_col_types = FALSE)
+gm2018 <- gm %>% filter(year == 2018)
+```
+
+The plot-configuration examples use the 2018 Gapminder data introduced in [Statistical summaries](7_statistical-summaries.qmd).
+
+## Plot configuration
+
+These two plots are included as a resource
+to show how you can change the appearance of a plot,
+including titles and sizes of plot elements.
+We will later cover what are the best practices in these areas,
+but for now it is enough to know the mechanics of how you can change these.
+Feel free to explore and create visualizations that appeal to you!
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: chart-styling-alt
+alt.Chart(gm2018, title='My plot title').mark_point().encode(         # Change the title of the plot
+    alt.X('child_mortality').title('Child mortality'),                # Change the x-axis title
+    alt.Y('life_expectancy').scale(zero=False),                       # Change the y-axis scale to not include zero
+    alt.Size('population').scale(range=(100, 1000)),                  # Change the range (min, max) of the size scale to enlarge points
+    alt.Tooltip('country')                                            # Add country name on hover
+).configure_axis(
+    labelFontSize=14,                                                 # Change the font size of the axis labels (the numbers)
+    titleFontSize=20                                                  # Change the font size of the axis title
+).configure_legend(
+    titleFontSize=14                                                  # Change the font size of the legend title
+).configure_title(
+    fontSize=30                                                       # Change the font size of the chart title
+)
+```
+
+### ggplot
+
+With ggplot,
+the functions have slightly different names 
+and are all added to the end of the plotting construct
+rather than to the different axes functions directly.
+
+```{r}
+#| label: chart-styling-gg
+#| fig-width: 6
+#| fig-height: 4
+
+ggplot(gm2018, aes(x = child_mortality, y = life_expectancy, size = population)) +
+    geom_point(shape = 1, color = 'steelblue') +      # Change to hollow blue circles
+    scale_size(range = c(2, 12)) +                    # Change the range of the size scale to enlarge points
+    ggtitle('My plot title') +                        # Change the title of the plot
+    labs(x = 'Child mortality') +                     # Change the x-axis scale to log and the title to 'POP'
+    labs(size = 'Population') +                       # Change legend title
+    theme_bw() +                                      # Change the theme to black and white, ther is also theme_classic()
+    theme(text =  element_text(size = 24))            # Change the text size of all labels
+```
+
+:::
+
+## Optional material
+
+This [short article on kernel bandwidth selection in density estimation](https://aakinshin.net/posts/kde-bw/) is insightful and goes beyond the main chapters on distributions.
+
+## Plots from slides
+
+This is how the distribution plots in the [original lecture slides](slides-lec3.pdf) were created.
+
+```{python}
+#| label: slide-distribution-examples
+from scipy.stats import pareto
+
+
+dists = pd.concat([
+    pd.DataFrame(
+        dict(
+            A = pareto.rvs(3, size=100, random_state=100).tolist() + [1.05]*25 + [1.1]*35 + [1.9]*15 + [1.8]*25,
+            B = (pareto.rvs(3, size=160, random_state=100) * -1 + 2.85).tolist() + [1.75]*40,
+            C = pareto.rvs(3, size=200, random_state=100) * -1 + 2.85,
+            D = pareto.rvs(3, size=200, random_state=100),
+            E = pareto.rvs(3, size=160, random_state=100).tolist() + [1.05] * 40,
+        )
+    ),
+]).query(
+    'A < 2 & B > 1 & C > 1 & D < 2 & E < 2'
+).melt(
+    var_name='dist_type'
+)
+
+# Looping due to a bug in concatenation of faceted charts
+# This also gives separate images for saving
+for dist_name, dist_df in dists.groupby('dist_type'):
+    (alt.Chart(dist_df, height=150, title=dist_name).mark_bar().encode(
+        x=alt.X('value', bin=alt.Bin(maxbins=30, extent=(1,1.9)), title='', scale=alt.Scale(domain=(1, 2))),
+        y='count()',
+    ) &  alt.Chart(dist_df, height=40).mark_boxplot(size=30).encode(
+        x=alt.X('value', scale=alt.Scale(zero=False, domain=(1, 1.9)), title=''),
+        y=alt.Y('dist_type', title='', axis=alt.Axis(labels=False)),
+    )).display()
+```

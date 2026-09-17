@@ -1,0 +1,471 @@
+---
+title: "Trends"
+fig-width: 5
+fig-height: 3.75
+---
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Distinguish** when to use an area chart and when to use a line chart to represent a trend.
+
+2. **Aggregate** country-level data to visualize total populations and average values over time.
+
+3. **Use** temporal encodings and **handle** large datasets in Altair with VegaFusion.
+
+:::
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Plotting large datasets in Altair
+
+We have learned how position, size, color, and shape represent observations and groups.
+Now we will use lines and areas to show how values change over time.
+
+### Global Development Data
+
+We will be visualizing global health and population data for a number of countries.
+We will also use this dataset in [Statistical summaries](7_statistical-summaries.qmd).
+This dataset is made available via an URL
+and we can download and read it into pandas
+with `read_csv`.
+
+::: {.panel-tabset group="language"}
+
+#### Altair
+
+```{python}
+#| label: load-gapminder-python
+#| tags: []
+import altair as alt
+import pandas as pd
+
+
+url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv'
+gm = pd.read_csv(url)
+gm
+```
+
+#### ggplot
+
+```{r}
+#| label: load-gapminder-r
+library(tidyverse)
+theme_set(theme_gray(base_size = 18))
+
+url <- 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv'
+gm <- read_csv(url)
+gm
+```
+
+:::
+
+When reading in a new dataset,
+it is always a good idea to have a look at a few rows
+like we did in the previous slide
+to get an idea of how the data looks.
+
+Another helpful practice is to use the `.info()` method
+to get an overview of the column types
+and see if there are any `NaNs` (missing values).
+
+If there are many missing values in a column,
+we would want to look into why that is.
+Later in the course, we will learn about how to visualize
+missing values to understand if there are patterns
+in which values are missing,
+which could affect our data analysis.
+
+::: {.panel-tabset group="language"}
+
+#### Altair
+
+```{python}
+#| label: gapminder-info-python
+gm.info()
+```
+
+#### ggplot
+
+In the tidyverse,
+we can use `glimpse` to view info of our dataframe.
+
+```{r}
+#| label: gapminder-glimpse-r
+glimpse(gm)
+```
+
+:::
+
+Now that we have seen what the data table looks like,
+and which data type the values in each column are,
+let's think about what we would want to visualize and why.
+
+Since the data reaches all the way back to the 1800s,
+it would be really interesting to plot
+how the world population has been growing up until today.
+We can use a line plot to show this change over time.
+
+:::: {.callout-default .ex-prompt}
+
+Draw out a sketch of the visualization on paper yourself
+so that it is clear what you expect the plot
+before continuing.
+
+::: {.callout-default .ex-solution}
+
+If we drew this visualization out on paper,
+we would maybe expect something a like this
+a single line that increases from the 1800s up until today
+as the population increased.
+It's a good idea to include axis labels too! 
+
+![](https://viz-learn.mds.ubc.ca/module2/drawing.png)
+
+:::
+::::
+
+Ok now we are ready to plot our data!
+Or are we?
+
+As you can see from when we glances at the dataframe argument above,
+we have a quite large data set with almost 40k observations 
+for most variables.
+If we try to plot this dataset with Altair,
+it will actually throw an error,
+let's see what this looks like:
+
+```{python}
+#| label: population-row-limit
+#| eval: false
+alt.Chart(gm).mark_line().encode(
+    x='year',
+    y='sum(population)'
+)
+```
+
+By default Altair only allows us to plot datasets with 5,000 rows.
+The reason for this is that Altair does not simply display plots as images,
+but as interactive HTML elements
+that contain the entire dataframe in text format
+as well as a declaration for which variable are plotted in which visual channel.
+This is great from a reproducibility perspective,
+but it means that the charts become very large when there is a lot of data
+and your Jupyter Notebook will quickly become 100s of MB.
+
+We will talk more about the details of how Altair charts are represented later in this course.
+For now it is enough to know which are the necessary steps to plot large datasets,
+even if you don't yet understand exactly what is happening under the hood.
+
+The first line we will run is the following:
+
+```{python}
+#| label: channels-vegafusion-setup
+#| output: false
+alt.data_transformers.enable('vegafusion')
+```
+
+All charts created after activating the VegaFusion data transformer will work with datasets containing up to 100,000 rows.
+VegaFusion’s row limit is applied after all supported data transformations have been applied.
+So you are unlikely to reach it with a chart such as a histogram,
+but you may hit it in the case of a large scatter chart or a chart that uses interactivity.
+If you need to work with even larger datasets,
+you can disable the maximum row limit or switch to using the VegaFusion widget renderer;
+[both are described in the Altair documentation](https://altair-viz.github.io/user_guide/large_datasets.html)).
+
+## Area charts
+
+Now we are ready to create our plot!
+Since we want to see how the **world** population has changed,
+we need to sum up the population of all countries in each year
+using the `sum` aggregation function in Altair.
+Let's start with a line chart:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: population-line-alt
+#| tags: []
+alt.Chart(gm).mark_line().encode(
+    x='year',
+    y='sum(population)'
+)
+```
+
+### ggplot
+
+```{r}
+#| label: population-line-gg
+ggplot(gm, aes(x = year, y = population)) +
+    geom_line(stat = 'summary', fun = sum)
+```
+
+:::
+
+Interestingly,
+it seems like the world population have been growing in two distinct phases:
+slowly before 1950,
+and more rapidly afterwards.
+We will talk more about that later on.
+
+We can see here that Altair automatically changes the axis label for us to reflect the operation
+that we have performed on the data,
+here taking the "sum" of the countries.
+
+However, something seems to be going on with the x-axis
+as the years are showing up in integer format as `1,990, 2,000, etc`.
+While adding the comma as a thousand separator like this generally improves readability,
+it is not what we want for years,
+which we expect to show up as `1990, 2000, etc`.
+We can indicate that we want Altair to use a temporal data type here
+by adding the `:T` suffix to the column name.
+We will learn more about different data types later,
+for now this is all we need.
+
+```{python}
+#| label: population-temporal-axis
+#| tags: []
+alt.Chart(gm).mark_line().encode(
+    x='year:T',
+    y='sum(population)'
+)
+```
+
+We could also have created this same visualization using an area chart:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: population-area-alt
+alt.Chart(gm).mark_area().encode(
+    x='year:T',
+    y='sum(population)'
+)
+```
+
+### ggplot
+
+```{r}
+#| label: population-area-gg
+ggplot(gm, aes(x = year, y = population)) +
+    geom_area(stat = 'summary', fun = sum)
+```
+
+:::
+
+For showing a single trend over time,
+the choice between a line and area chart comes down to aesthetics.
+They are both effective choices for this purpose.
+However,
+when visualizing the trends over time for multiple groups,
+lines and areas have different advantages.
+Let's see how it looks for the area chart first.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: population-stacked-alt
+alt.Chart(gm).mark_area().encode(
+    x='year:T',
+    y='sum(population)',
+    color='region'
+)
+```
+
+### ggplot
+
+I will use the geom approach here.
+If you want to use `stat_summary` instead,
+you need to set `position = 'stack'`:
+
+```r
+stat_summary(fun=sum, geom='area', position='stack')
+```
+
+This is already the default position for `geom_area`,
+so we don't need to set it explicitly.
+
+```{r}
+#| label: population-stacked-gg
+ggplot(gm, aes(x = year, y = population, fill = region)) +
+    geom_area(stat = 'summary', fun = sum)
+```
+
+:::
+
+The y-axis range of this chart
+is the same as the one on the previous plot,
+so it is easy to see how the total world population has changed over time.
+From the stacked colored regions,
+we also get a rough idea of how each region has grown,
+but it is hard to compare exactly,
+especially for regions that are not stacked next to each other.
+For example,
+we can't really tell if Europe or Africa, has the largest population in the most recent year.
+
+Altair stacks by areas by default,
+which is usually what we want when creating an area chart with groups.
+But if someone saw our chart without knowing this,
+they might think that the areas are layered behind each other,
+so that we only see the top of the blue region 
+peak out behind the orange region.
+Using a line chart
+is the preferred choice when we want to view the exact values of each group
+and don't care as much about the total of the groups added together.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: region-lines-alt
+alt.Chart(gm).mark_line().encode(
+    x='year:T',
+    y='sum(population)',
+    color='region'
+)
+```
+
+### ggplot
+
+To change the stacking behavior we can set the position to `dodge`
+and add some transparency with the `alpha` parameter.
+
+```{r}
+#| label: population-dodged-gg
+ggplot(gm, aes(x = year, y = population, fill = region)) +
+    geom_area(stat = 'summary', fun = sum, position = 'dodge', alpha = 0.4)
+```
+
+A line plot would be more effective than the layered/dodged area chart above.
+
+```{r}
+#| label: region-lines-gg
+ggplot(gm, aes(x = year, y = population, color = region)) +
+    geom_line(stat = 'summary', fun = sum)
+```
+
+:::
+
+In the chart above,
+it is immediately clear that Africa has had a bigger population than Europe
+and since shortly after the year 2000.
+The drawback is that
+it's quite cognitively demanding
+to try to reconstruct the total world population
+by adding all the lines up together,
+especially over time!
+
+When the sum of the different groups in the chart is not meaningful,
+a line chart is also the better choice.
+For example,
+let's answer a slightly different question with a visualization:
+"What is the average number of children per woman in a country for each continent?"
+Let's first look at this with an area plot like above:
+
+::: {.column-margin}
+
+**Factual tidbit**
+
+Population experts predict that the world population
+will stop increasing and stabilize around 11 billion people.
+This is mainly due to improved living conditions in low income countries,
+which reduces child mortality
+and allows families to have fewer children.
+You will learn more about this in lab 1.
+
+:::
+
+```{python}
+#| label: fertility-stacked
+alt.Chart(gm).mark_area().encode(
+    x='year:T',
+    y='mean(children_per_woman)',
+    color='region'
+)
+```
+
+Here,
+summing/stacking the average areas does give a meaningful number 
+(there wasn't 30 children per woman in the 1800s...).
+We can try to unstack the areas to remedy this issue,
+and show them behind each other on the same baseline instead of on top of each other.
+
+#### `alt.X` and `alt.Y`
+
+In order to create an area chart
+where the colored regions are layered behind each other 
+rather than stacked on top,
+we need to leverage the helper functions `alt.Y` and `alt.X`.
+These helpers have the role of customizing things like order, groups, and scale for the axis.
+When using just `y='column'`,
+we're still calling `alt.Y()` under the hood,
+we just save ourselves some typing.
+
+Let's first use `alt.Y` on its own
+without any additional argument
+to recreate the same area plot as above
+just to demonstrate how it works.
+
+```{python}
+#| label: fertility-axis-helper
+alt.Chart(gm).mark_area().encode(
+    x='year:T',
+    y=alt.Y('mean(children_per_woman)'),
+    color='region'
+)
+```
+
+Now we can pass options inside `alt.Y`,
+e.g. to turn off stacking
+we can use the `.stack(False)` method of `alt.Y`
+(we also set the opacity of the areas
+to allow us to see area behind each other).
+
+```{python}
+#| label: fertility-overlapping
+alt.Chart(gm).mark_area(opacity=0.4).encode(
+    x='year:T',
+    y=alt.Y('mean(children_per_woman)').stack(False),
+    color='region'
+)
+```
+
+As you can see,
+this is still not a very effective plot
+for our data.
+It is difficult to discern where
+the areas overlap and we mostly see a brown smear
+of them all on top of each other;
+a line chart would not have this issue.
+We will see when layered areas can be effective later in the course,
+but generally it is when there are fewer groups,
+or non-overlapping areas such as density plots.
+
+In the chart above,
+it also looks like the trends over time
+for different continents
+are pretty similar.
+If we create the line chart
+of the same data,
+we can see that Europe follows a much different development
+than to the other regions.
+
+```{python}
+#| label: fertility-lines
+alt.Chart(gm).mark_line().encode(
+    x='year:T',
+    y='mean(children_per_woman)',
+    color='region'
+)
+```
+
+Note that you could use `stack=True` to create a stacked line chart,
+but you should **never** do this
+as it it very confusing and unexpected.
+If you want to stack groups, use an area chart.

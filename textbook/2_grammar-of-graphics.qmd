@@ -1,0 +1,534 @@
+---
+title: "The grammar of graphics"
+fig-width: 4
+fig-height: 4
+include-in-header:
+  - text: |
+      <style>
+        .table.dataframe { width: auto; text-align: right; }
+      </style>
+---
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Understand** that the advantage of using a high level visualization syntax
+   is that it allows us to think in terms of the data,
+   rather than focusing on graphical details.
+
+2. **Understand** that a grammar of graphics defines grammatical rules
+   that can be used to construct entire visualizations from smaller building blocks,
+   such as geometric marks and aesthetic encodings.
+
+3. **Identify** the data-linked canvas, aesthetic encodings, and geometric marks in Altair and ggplot.
+
+:::
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+```{python}
+#| label: grammar-setup
+#| include: false
+
+import altair as alt
+import pandas as pd
+from IPython.display import HTML
+
+pd.set_option('display.max_rows', 6)
+
+def show_df(df):
+    return HTML(df._repr_html_())
+```
+
+## Which visualization library should we pick?
+
+There is a lot we can learn about visualization
+without using coding,
+but to make this learning experience interactive,
+we will learn how to programmatically create charts
+together with learning about new visualization concepts.
+
+We will start by selecting which visualization library to use.
+To make an informed decision,
+it is helpful to understand
+that most visualization libraries can be classified as
+taking either a high level declarative approach
+or a low level imperative approach to creating visualizations.
+
+::::: {.callout-default .ex-prompt}
+
+To understand the difference between these two approaches,
+let's start with an example,
+using the following small toy data set:
+
+
+```{python}
+#| echo: false
+#| label: grammar-example-data
+
+df = pd.DataFrame({
+    'x': [0.2, 0.6, 1.2, 2.4],
+    'y': [0.6, 0.9, 1.8, 2.7],
+    'group': ['a', 'a', 'b', 'b']
+})
+show_df(df)
+```
+
+A helpful way to illustrate the difference
+between the two syntax approaches
+is to imagine that we want to create a chart
+where we color the points according to their group.
+Here is pseudocode^["pseudocode" is an informal way of writing code that is often used to explain a concept to the reader]
+that illustrates this difference:
+
+::: {.panel-tabset group="language"}
+
+### Declarative syntax
+
+```{.python}
+chart(
+    x='x',
+    y='y',
+    color='group'
+)
+```
+
+
+```{python}
+#| echo: false
+#| label: declarative-chart
+
+alt.Chart(df, width=200, height=200).mark_point().encode(
+    x='x',
+    y='y',
+    color='group'
+)
+```
+
+
+### Imperative syntax
+
+```{.python}
+fig = create_figure()
+colors = ['blue', 'yellow']
+for color, group in zip(colors, df['group'].unique()):
+    tmp_df = df[df['group'] == group]
+    fig.add_chart(tmp_df['x'], tmp_df['y'], label=group, color=color)
+```
+
+```{python}
+#| echo: false
+#| label: imperative-chart
+
+alt.Chart(df, width=200, height=200).mark_point().encode(
+    x='x',
+    y='y',
+    color='group'
+)
+```
+
+:::
+
+Although the same chart is created
+from both these pseudocode examples,
+the syntax looks widely different.
+Pause here
+and try to describe the differences
+between the two in your own words
+Then, click on the hint and solution below
+to read our explanation of the two approaches,
+
+*Actively engaging the brain in exercises like this one
+is proven to help remembering and understanding the information.
+The key is the act of trying to come up with the answer yourself
+compared to skipping straight to read the solution.*
+
+:::: {.callout-default .ex-hint}
+
+Does one of the approaches focus more on the data
+and the other more on the plot-specific details?
+
+::: {.callout-default .ex-solution}
+
+Based on the syntax of the exercise above,
+we can say that a declarative approach to visualization
+let's us express ourselves in terms of the data (`color='group'`)
+whereas an imperative approach to visualization focuses more explicitly
+on plot construction details such as defining colors explicitly
+and then assigning them to groups by looping through the data.
+
+:::
+
+::::
+
+:::::
+
+A related way to understand declarative vs imperative approaches
+is to consider the difference between giving an instruction in each:
+
+::: {.panel-tabset group="language"}
+
+### Declarative instruction
+
+**"Color by the column `group` in the dataframe."**
+
+**Focus**: Declaring links between data variables (e.g., `group`)
+and graphical properties (e.g. `color`).
+The rest of the plot details
+(such as which colors to use)
+are handled automatically.
+
+### Imperative instruction
+
+**"Loop over the dataframe
+and plot any observations of group `A` in blue
+and any observations of group `B` in yellow."**
+
+**Focus**: Being explicit with all the details
+for creating the chart via for-loops and low-level drawing commands.
+:::
+
+In this book we will learn about
+declarative visualization tools,
+since these allow us to code a high-level specification
+of *what* we want the visualization to include,
+rather than coding out the details of *how* to implement the visualization.
+Another way to state this would be that high level libraries
+lets our minds focus on **data and relationships**,
+which is the right level of abstraction for a data scientist.
+Low level libraries focus more on **plot construction details**,
+which is often more appropriate
+when making a highly customized visualization,
+data art, or an application with complex plotting logic.
+
+Among declarative visualization libraries,
+there are still a few different subcategories.
+In this book,
+we are going to learn about libraries that implement
+a so called "grammar of graphics",
+since this framework makes visualizations
+easy to both create and to reason about.
+
+## What is a grammar of graphics?
+
+There is a plethora of names
+used to refer to specific types of chart.
+While referring to charts by name
+can be convenient in some context,
+it is often confusing.
+For example,
+a scatterplot, a dotplot, a stripplot, a bubble plot, and a forestplot
+all use points to represent data,
+but what's the difference between them?
+Memorizing exactly which chart corresponds to which name
+is not as important as developing an understanding
+for what the points represent in each type of visualization.
+
+A grammar of graphics let's us focus
+on understanding the common building blocks of all charts
+and how to compose these together
+according to predicable rules
+to create bespoke visualizations.
+It parallels the grammars of natural[^natural-language]
+and programming languages,
+but applies to visual components.
+While we're all familiar with
+how the grammatical rules of natural languages
+describe compose meaningful sentences from words,
+it might not be as clear
+what grammatical structure look like in programming languages,
+so let's see an example in the following exercise:
+
+
+[^natural-language]: A "natural" language is
+    what you typically think of as just "a language":
+    Cantonese, Zulu, Swedish, etc.
+
+::: {.column-margin}
+
+**Grammatical origins**
+
+The idea of a grammar of graphics originates from
+[Leland Wilkinson's 2001 publication "The Grammar of Graphics"](https://en.wikipedia.org/wiki/Wilkinson%27s_Grammar_of_Graphics).
+
+![](https://pictures.abebooks.com/isbn/9780387987743-us.jpg)
+
+:::
+
+::::: {.callout-default .ex-prompt}
+
+What do you think the output would be of the following Python code?
+
+
+```{.python}
+1 + 2
+```
+
+As you might have expected,
+the output is `3`
+because Python uses the conventional rules of mathematics
+to add the two numbers together.
+Almost all programming languages follow this rule.
+But what does the `+`-operator do
+if we are trying to add something other than numbers.
+What do you think the output would be of the following code?
+Do you think it differs between programming languages?
+
+<!-- For some reason, syntax highlighting is messed up if this is a python block -->
+
+```{.js}
+'one' + 'two'
+```
+
+:::: {.callout-default .ex-hint}
+
+Just like that addition of numbers
+contain all counts of the individual numbers,
+maybe the addition of two strings
+would contain all the characters from both the strings?
+
+::: {.callout-default .ex-solution}
+
+The grammar of Python defines that the `+`-operator
+should perform concatenation when strings are added together,
+so the returned result would be `"onetwo"`.
+In contrast,
+the grammar of R says that there is no such thing as addition of strings,
+so it would throw an error complaining that non-numeric arguments
+were passed to the `+`-operator.
+
+:::
+
+::::
+
+:::::
+
+## Learning the grammar of graphics {#sec-learning-to-speak}
+
+So what does the grammar of graphics look like?
+Well, "it depends".
+Just like linguistic grammars vary between languages,
+visualization grammars are implemented differently
+in different pacakges.
+However,
+there are some core steps
+which are present in most
+grammars of graphics:
+
+1. **Create a data-informed canvas**:
+    This step creates a background canvas
+    that other graphical componens are drawn upon
+    and links it to the relevant dataset.
+2. **Encode visual aesthetics**:
+    This step defines how data will be mapped to graphical channels
+    (e.g. the column `'group'`
+    might be mapped to the `color` of each mark).
+3. **Add geometric marks**:
+    This step selects the graphical elements
+    used to represent the data (e.g. points, bars, etc).
+
+As a result of the predictable structure,
+a grammar of graphics allows you to create
+an impressive range of visualizations
+in an intuitive manner
+and aids in reasoning about these visualizations.
+It also makes it notably easier
+to change between different types of plots,
+as the code syntax follows a predictable structure
+and only parts of the grammar changes between charts.
+In fact,
+libraries that implement a grammar of graphics
+often require a fewer changes in the code
+to create different types of visualizations.^[https://arxiv.org/abs/2308.16353]
+
+### Implementations of the grammar of graphics
+
+You can think of the grammar of graphics
+as an underlying theory of how to make visualizations.
+But to actually create a visualization,
+we need to use a package the *implements* this theory in code.
+This book shows several programmatic implementations;
+and lets you choose which package you prefer to learn,
+while also allowing for quick comparisons between libraries.
+Before creating a visualization,
+let's see how the structure of these implementations
+is similar to the general structure
+we described above.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+In the Python package Altair,
+a general representation of the core chart components
+would look like this:
+
+```{.python}
+alt.Chart(data).encode().mark()
+```
+
+1. `alt.Chart(data)` creates the data-linked canvas.
+2. `encode()` encodes the visual aesthetics, such as `x`, `y`, etc.
+3. `mark()` adds geometric marks, such as points, bars, etc.
+
+Note that we wrote the Altair syntax in the same form
+as in our general grammar of graphics example above
+to help you see how it maps onto that structure.
+It is perfectly fine to keep writing this way
+if you prefer it,
+but the canonical way to write Altair chart specifications
+is in the form `alt.Chart(data).mark().encode()`.
+We will follow that order from now on
+since most examples you will see elsewhere
+follow this syntax.
+
+:::: {.column-margin}
+
+<br><br>
+**Stellar naming**
+
+Altair is the name of a star
+in the same constellation as the star Vega,
+which is the name of the Javascript library
+that Altair is built upon.
+
+![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
+
+::::
+
+### ggplot
+
+In the R library ggplot2,
+a general representation of the core chart components
+would look like this:
+
+```{.r}
+ggplot(data) + aes() + geom()
+```
+
+1. `ggplot(data)` creates the data-linked canvas.
+2. `aes()` encodes the visual aesthetics, such as `x`, `y`, etc.
+3. `geom()` adds geometric marks, such as points, bars, etc.
+
+Note that we wrote the ggplot syntax in the same form
+as in our general grammar of graphics example above
+to help you see how it maps onto that structure.
+It is perfectly fine to keep writing this way
+if you prefer it,
+but the canonical way to write R chart specifications
+is in the form `ggplot(data, aes()) + geom()`.
+We will follow that order from now on
+since most examples you will see elsewhere
+follow this syntax.
+
+:::: {.column-margin}
+
+<br><br>
+**A nod in the name**
+
+The "gg" in ggplot is a reference Wilkinson's "The Grammar of Graphics",
+which was the direct inspiration for the creation of the ggplot library.
+
+::::
+
+:::
+
+## Deep dive
+
+::: {.callout-default .optional}
+
+### The R and Python visualization ecosystems
+
+There are a wide variety of high-level and low-level tools
+for visualizing data in R and Python.
+While we have already outline the advantages of the libraries we chose,
+it can be helpful to be aware of which others are available
+since you are likely to encounter some of them in the wild.
+In this diagram
+you can see an overview of how which other libraries exist
+and how they are connected.
+
+```{mermaid}
+%%| label: visualization-ecosystem
+%%| mermaid-format: png
+%%{init: {'flowchart': {'width': 800}}}%%
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+
+    %% R ecosystem
+    base[base]:::lowLevel
+    grid[grid]:::lowLevel
+    lattice[lattice]:::highLevel
+    ggplot[ggplot]:::highLevel
+    ggiraph[ggiraph]:::highLevel
+    ggplotly[ggplotly]:::highLevel
+    plotly_r[plotly]:::lowLevel
+    patchwork[patchwork/cowplot]:::alignmentTool
+    htmlwidgets[htmlwidgets]:::javascript
+
+    %% JavaScript-related
+    js[JavaScript]:::javascript
+    d3[D3]:::javascript
+    vega[Vega]:::javascript
+    vegalite[Vega-Lite]:::javascript
+
+    %% Python ecosystem
+    matplotlib[Matplotlib]:::lowLevel
+    plotnine[Plotnine]:::highLevel
+    pandas[Pandas]:::highLevel
+    seaborn[Seaborn]:::highLevel
+    holoviz[HoloViz]:::highLevel
+    bokeh[Bokeh]:::lowLevel
+    plotly_py[Plotly]:::lowLevel
+    plotly_express[Plotly Express]:::highLevel
+    altair[Altair]:::highLevel
+
+    %% Subgraph for R ecosystem
+    subgraph R_Ecosystem[R Ecosystem]
+        base --> grid
+        grid --> lattice & ggplot
+        lattice & ggplot --> patchwork
+        ggplot -.-> ggiraph & ggplotly
+        ggplotly --> plotly_r
+        htmlwidgets --> ggiraph & plotly_r
+    end
+
+    %% Subgraph for JavaScript ecosystem
+    subgraph JS_Ecosystem[JavaScript Ecosystem]
+        js --> d3
+        d3 --> vega
+        vega --> vegalite
+    end
+
+    %% Subgraph for Python ecosystem
+    subgraph Python_Ecosystem[Python Ecosystem]
+        matplotlib --> plotnine & pandas & seaborn & holoviz
+        holoviz --> bokeh
+        plotly_py --> plotly_express
+        vegalite --> altair
+    end
+
+    %% Connections between ecosystems
+    js --> htmlwidgets & bokeh & plotly_py
+```
+
+```{mermaid}
+%%| label: ecosystem-legend
+%%| mermaid-format: png
+graph TD
+    %% Color definitions
+    classDef alignmentTool fill:#FF69B4,color:#000
+    classDef highLevel fill:#87CEFA,color:#000
+    classDef lowLevel fill:#FFA500,color:#000
+    classDef javascript fill:#FFFFFF,color:#000
+    %% Legend items
+    AT[Alignment Tool]:::alignmentTool
+    HL[High Level]:::highLevel
+    LL[Low Level]:::lowLevel
+    JS[JavaScript]:::javascript
+```
+
+:::

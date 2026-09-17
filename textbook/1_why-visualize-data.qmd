@@ -1,0 +1,230 @@
+---
+title: "Why visualize data?"
+fig-width: 4
+fig-height: 4
+include-in-header:
+  - text: |
+      <style>
+        .table.dataframe { width: auto; text-align: right; }
+      </style>
+---
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Explain** that the main advantage of visualizing data
+   instead of presenting it with numbers
+   is that they are easier to interpret for humans.
+
+2. **Distinguish** between exploring data to discover patterns and communicating findings to others.
+
+3. **Explain** why similar summary statistics can hide very different patterns in the underlying data.
+
+:::
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+```{python}
+#| label: why-visualize-setup
+#| include: false
+
+import pandas as pd
+pd.set_option('display.max_rows', 6)
+```
+
+## What is data visualization?
+
+At its core,
+data visualization is about representing numbers with graphical elements
+such as the position of a point, the length of a bar, or the color of a line.
+
+## What is the purpose of visualizing data?
+
+Broadly speaking,
+we can say that there are two main uses for visualization.
+Either we employ it
+to improve own understanding of a dataset
+or to effectively communicate our data insights to others.
+While we often use visualization
+to answer a specific question about a dataset,
+it can also be more exploratory
+and help us generate new questions.
+
+## Why bother visualizing data instead of showing raw numbers?
+
+To understand why visualizations are so powerful,
+it is helpful to remember that to answer a question,
+we often have to put the data in a format
+that is easy for us humans to interpret.
+Because our number systems have only been around for about 5,000 years,
+we need to assert effort and train ourselves
+to recognize structure in numerical data.
+
+Visual systems,
+on the other hand,
+have undergone refinement during 500,000,000 years of evolution,
+so we can instinctively recognize visual patterns
+and accurately estimate visual properties
+such as colors and distances
+without much conscious cognitive effort.
+
+In practice,
+this means that we can arrive at
+correct conclusions faster
+by studying graphical
+rather than numerical representations
+of the same data.
+For example,
+have a look at the four sets of data
+in the table below.
+Can you describe the datasets
+just from looking at the numbers?
+How are they different from one another?
+
+```{python}
+#| echo: false
+#| label: tbl-anscombe
+#| tbl-cap: "This is a slightly modified version of <a href='https://en.wikipedia.org/wiki/Anscombe%27s_quartet' target='_blank'>Anscombe's quartet</a>, which was put together by statistician Francis Anscombe in the 70s."
+
+import altair as alt
+import pandas as pd
+from altair.datasets import data
+from IPython.display import HTML
+
+anscombe = data.anscombe().rename(columns={'X': 'x', 'Y': 'y'})
+anscombe['Set'] = anscombe['Series'].map({'I': 'A', 'II': 'B', 'III': 'C', 'IV': 'D'})
+anscombe = anscombe.drop(columns='Series')
+# Adjust C to show a diff in the summary statistics
+anscombe.loc[anscombe['y'] == anscombe['y'].max(), 'y'] = 8.5
+
+s = ''
+for set_name, df in anscombe.groupby('Set'):
+    df = df.drop(columns='Set')
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'x'), (set_name, 'y')])
+    s = s + (
+        df
+        .style
+        .format('{:.2f}')
+        .hide(axis='index')
+        ._repr_html_()
+    )
+
+html_content = '<div class="dataframe-grid">' + s + '</div>'
+
+HTML(html_content)
+```
+
+### Summary statistics don't tell the whole story either
+
+You are likely not able to see much difference between the data sets
+in the table above.
+What about if we looked at
+a few commonly used statistical summaries of the data?
+
+```{python}
+#| echo: false
+#| label: anscombe-summary
+
+s = ''
+for set_name, df in anscombe.groupby('Set'):
+    df = df.drop(columns='Set')
+    df.columns = pd.MultiIndex.from_tuples([(set_name, 'x'), (set_name, 'y')])
+    s += (
+        df
+        .agg(['mean', 'std'])
+        .round(2)
+        .style
+        .format('{:.2f}')
+        .hide(axis='index')
+        ._repr_html_()
+        .replace('>7.11',  ' style="background-color:#4853a4; color:#ffffff"> <b>7.11</b>')
+        .replace('>1.15',  ' style="background-color:#4853a4; color:#ffffff"> <b>1.15</b>')
+    )
+
+html_content = '<div class="dataframe-grid">' + s + '</div>'
+
+HTML(html_content)
+```
+
+<br>
+Above,
+the mean and standard deviation indicate that set C
+is slightly different from the other three datasets
+in terms of the centre and spread of the sample distribution,
+while the remaining three sets of data have a similar centre and spread.
+
+Summaries,
+such as the mean and standard deviation,
+are helpful statistical tools
+that are often useful for summarizing
+and detecting the differences between datasets.
+However,
+since they collapse the data into just a few numbers,
+statistical summaries can't tell the whole story about the data
+and there can be important differences between datasets
+that summaries fail to reveal.
+
+### Plotting immediately reveals patterns in the data
+
+So if you can't really see any patterns in the table
+and the statistical summaries are nearly all the same,
+that must mean that the four sets are pretty similar, right?
+Sounds about right
+so let's go ahead
+and plot them to have a quick look...
+
+```{python}
+#| echo: false
+#| label: anscombe-charts
+
+alt.Chart(anscombe).mark_circle(size=80).encode(
+    x='x',
+    y='y'
+).properties(
+  width=200,
+  height=200
+).facet(
+  'Set',
+  columns=2
+).configure_header(
+  title=None
+)
+```
+
+... what... how can they be so different...
+there must be something wrong, right?
+Well what is wrong is that
+humans are not good at detecting patterns in raw numbers,
+and we don't have good intuition about which combination of numbers
+can contribute to the same statistical summaries.
+But remember what we excel at? Detecting visual patterns!
+
+It is immediately clear to us
+how the four datasets differ
+once they are shown as graphical objects
+instead of textual objects.
+Sets A and C are roughly linearly increasing at similar rates,
+whereas set B reaches a plateau and starts to drop,
+and set D has a constant X-value for all numbers except one big outlier.
+We could only detect these patterns
+after visualizing the data.
+Importantly,
+if we only had looked at the raw data or the summary statistics,
+we would have come to the wrong conclusions
+about how the datasets differ,
+and any research or business level decision
+based on solely a numerical analysis
+would have been misinformed.
+
+### A modern take on Anscombe's quartet
+
+For a more recent and dynamic illustration
+of how graphical representations are much easier for us to interpret,
+check out the [Datasaurus Dozen animation](https://www.autodesk.com/research/publications/same-stats-different-graphs) below.
+It displays several different datasets,
+all with nearly the same mean, standard deviation and correlation between X and Y,
+but looking at the data graphically shows us how different these datasets actually are:
+
+![The Datasaurus Dozen: Datasets with near identical summary statistics but widely different distributions.](img/DinoSequentialSmaller.gif){#fig-datasaurus fig-alt="Data Taurus Dozen Animation"}
+
+Now that you have experienced the benefits of visualizing data,
+let's figure out how to create such visualizations!

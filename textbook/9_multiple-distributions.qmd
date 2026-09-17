@@ -1,0 +1,573 @@
+---
+title: "Multiple distributions"
+fig-width: 5
+fig-height: 3.5
+---
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Facet** distribution plots into subplots to compare groups and explore multiple variables simultaneously.
+
+2. **Create** boxplots and violin plots to compare many distributions.
+
+3. **Explain** what boxplots can hide and **combine** distribution summaries with individual observations.
+
+4. **Use** count scaling and correctly positioned summary points to make grouped distributions easier to interpret.
+
+:::
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+::: {.callout-note title="Further reading"}
+
+- [Chapter 9 of Fundamentals of Data Visualization](https://clauswilke.com/dataviz/boxplots-violins.html), on comparing many distributions.
+
+:::
+
+```{python}
+#| label: multiple-gapminder-python-setup
+#| include: false
+
+import altair as alt
+import pandas as pd
+
+alt.data_transformers.enable('vegafusion')
+gm = pd.read_csv('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv')
+gm2018 = gm.query('year == 2018')
+```
+
+```{r}
+#| label: multiple-gapminder-r-setup
+#| include: false
+
+library(tidyverse)
+theme_set(theme_gray(base_size = 18))
+gm <- read_csv('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv', show_col_types = FALSE)
+gm2018 <- gm %>% filter(year == 2018)
+```
+
+## Faceting into subplots
+
+We can use facets, or subplots, to compare different distributions.
+We return to the 2018 Gapminder data from [Statistical summaries](7_statistical-summaries.qmd),
+comparing life expectancy across regions.
+
+We have seen how to use color to divide data into groups.
+using the name of another variable we could use the `color` channel.
+However,
+in the case of hisotgrams this becomes messy
+since it is hard to compare bars that are on different baselines
+and we don't get a good sense of what the distributions 
+of the continents look like here.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: region-histogram-stacked-alt
+alt.Chart(gm2018).mark_bar().encode(
+    x=alt.X('life_expectancy').bin(maxbins=30),
+    y='count()',
+    color='region'
+)
+```
+
+### ggplot
+
+When coloring bars and areas in ggplot,
+we need to use `fill` instead of `color`.
+
+```{r}
+#| label: histogram-color-vs-fill-gg
+ggplot(gm2018, aes(x = life_expectancy, color = region)) +
+    geom_histogram(bins = 20, color = 'white')
+```
+
+```{r}
+#| label: region-histogram-stacked-gg
+ggplot(gm2018, aes(x = life_expectancy, fill = region)) +
+    geom_histogram(bins = 20, color = 'white')
+```
+
+:::
+
+Altair creates a stacked bar chart by default
+when we when encode a dataframe column as the `color` channel.
+Notice we are now using the helper functions we saw before but now with `alt.Color`.
+(This must be spelt without the "U")
+Just like with the stacked area chart,
+this is good when the total height of each bar
+is the most important,
+but it is not ideal when the main focus of our visualization
+is to compare the coloured groups against each other.
+
+The reason it is difficult to compare
+the length of the coloured segments against each other
+(both within a bar and between bars),
+is that they don't share the same baseline
+so we can't just compare the position of the top part of the bars,
+but have to try to estimate their lengths.
+
+For these reasons,
+it is difficult to tell the difference between the regions
+in this plot
+and it is not an effective visualization.
+
+If there are just a few groups (~1-3)
+it can be sufficient to not to stack the bar along the y-axis,
+and instead layer them behind each other with some opacity
+so that we are able to see all groups.
+
+```{python}
+#| label: region-histogram-overlapping
+alt.Chart(gm2018).mark_bar(opacity=0.7).encode(
+    x=alt.X('life_expectancy').bin(maxbins=30),
+    y=alt.Y('count()').stack(False),
+    color='region'
+)
+```
+
+Although the bars share the same baseline here,
+they are still difficult to compare against each other,
+because there is so much overlap with different colours.
+
+Layered histograms and bar charts can be effective
+when there are few groups and clear separation between them,
+but that is not the case here
+and this plot is even harder to interpret than the previous one.
+Instead,
+we can use facetting to compare these groups.
+
+Faceting creates one facet/subplot
+for each group in the specified dataframe column.
+To ensure that the entire grid of facets fit on the slide,
+we're also shrinking the dimensions of each subplot.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: region-histogram-facets-alt
+alt.Chart(gm2018).mark_bar().encode(
+    x=alt.X('life_expectancy').bin(maxbins=30),
+    y='count()',
+    color='region'
+).facet(
+    'region'
+)
+```
+
+### ggplot
+
+Facetting works via `facet_wrap`.
+By default it tries to create an even number of columns and rows,
+rather than putting all plots in one row like Altair.
+
+```{r}
+#| label: region-histogram-facets-gg
+#| fig-width: 7
+ggplot(gm2018, aes(x = life_expectancy, fill = region)) +
+    geom_histogram(bins = 20, color = 'white') +
+    facet_wrap(~region)
+```
+
+:::
+
+From this chart,
+we can more easily compare the regions.
+For example,
+we can see that that most European countries
+have a higher life expectancy
+than most African countries.
+
+However,
+it is a little bit more demanding 
+to see exactly how much of the two distributions are overlapping
+and we would need to look at the number of the axes
+while scanning left and right on the grid.
+
+To make it easier to compare overlap between histograms on the x-axis,
+we can lay out the facets vertically in a single column.
+
+The vertical layout is preferred in this case since
+we are the most interested to compare position on the x-axis between the groups.
+If we instead wanted to compare position on the y-axis,
+a single row would have been better.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: histogram-vertical-facets-alt
+alt.Chart(gm2018).mark_bar().encode(
+    alt.X('life_expectancy').bin(maxbins=30),
+    alt.Y('count()').title(None),
+    alt.Color('region')
+).properties(
+    height=100
+).facet(
+    'region',
+    columns=1
+)
+```
+
+### ggplot
+
+```{r}
+#| label: histogram-vertical-facets-gg
+#| fig-height: 8
+ggplot(gm2018, aes(x = life_expectancy, fill = region)) +
+    geom_histogram(bins = 20, color = 'white') +
+    facet_wrap(~region, ncol = 1)
+```
+
+:::
+
+Here,
+we immediately see that there is a long region of
+overlap between European and African countries,
+but that the bulk of each distribution is separated.
+
+Compare this with the stacked and layered histogram
+we made in the first few slides
+and you will realize just how much easier it is 
+to compare the groups here!
+
+If we are interested in comparing both x and y values between plots,
+or are presenting the visualization in a context
+where we do not have the room
+to create a single column or row for all the plots,
+a good alternative
+is to create an even (or near even) grid of facets,
+as in this slide.
+
+```{python}
+#| label: histogram-grid-facets-alt
+alt.Chart(gm2018).mark_bar().encode(
+    alt.X('life_expectancy').bin(maxbins=30),
+    alt.Y('count()').title(None),
+    alt.Color('region')
+).properties(
+    height=100,
+    width=200
+).facet(
+    'region',
+    columns=2
+)
+```
+
+As you can see,
+the default behaviour for Altair is to leave the last position empty,
+but include the x-axis line
+so that we can use it to read the plot in the top row.
+
+You might also discover that you can specify `facet`, `row`, and `column`
+as encodings instead of via the `.facet` method.
+This is fine for simpler charts but can lead to difficulties 
+with complex compound charts,
+which is why we are not focusing on them here
+([more details in the docs if you are interested](https://altair-viz.github.io/user_guide/compound_charts.html?highlight=facet#faceted-charts)).
+
+We now return to the movie data from [Distributions](8_distributions.qmd)
+to compare runtimes across genres and production countries.
+
+```{python}
+#| label: multiple-movies-python-setup
+#| include: false
+
+movies = pd.read_json('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json')
+boom_countries = movies.explode('countries')
+boom_genres = movies.explode('genres')
+boom_both = boom_countries.explode('genres')
+```
+
+```{r}
+#| label: multiple-movies-r-setup
+#| include: false
+
+movies <- jsonlite::fromJSON('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json') %>%
+    as_tibble() %>%
+    unnest(-c(countries, genres))
+free_genres <- movies %>% unnest(genres)
+free_both <- free_genres %>% unnest(countries)
+```
+
+## Comparing distributions for multiple categorical variables along the y-axis
+
+While it is possible to make [violin plots](https://altair-viz.github.io/gallery/violin_plot.html)
+in Altair,
+these do currently not work with a categorical x/y axies,
+and you need to use faceting instead to display different categories,
+which gives us less flexibility.
+Therefore,
+we will primarily use boxplots when comparing multiple distributions with Altair.
+Another option in altair
+would be to use [stripplots](https://altair-viz.github.io/gallery/strip_plot_jitter.html) (categorical scatter plots),
+via the offset encodings.
+
+Below,
+I am being explicit and keeping the same coloring as above,
+although with boxplots we don't need a separate color
+since the boxes have separate labels on the y-axis.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: genre-boxplots-alt
+alt.Chart(boom_genres).mark_boxplot().encode(
+     x='runtime',
+     y='genres',
+     color='genres'
+)
+```
+
+### ggplot
+
+ggplot has a boxplot geom.
+
+```{r}
+#| label: genre-boxplots-gg
+ggplot(free_genres, aes(x = runtime, y = genres, fill = genres)) +
+    geom_boxplot()
+```
+
+:::
+
+Boxplots work well with faceting.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: country-boxplot-facets-alt
+alt.Chart(boom_both).mark_boxplot().encode(
+     x='runtime',
+     y='genres',
+     color='genres'
+).facet(
+    'countries',
+    columns=1
+)
+```
+
+### ggplot
+
+```{r}
+#| label: country-boxplot-facets-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = genres) +
+    geom_boxplot() +
+    facet_wrap(~countries)
+```
+
+:::
+
+The size of the boxes can be made proportional to the count of observations
+in that group.
+We could also have used barplot for this,
+if we needed a more precise indication of the counts.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: boxplot-count-width-alt
+alt.Chart(boom_both).mark_boxplot().encode(
+     x='runtime',
+     y='genres',
+     color='genres',
+     size='count()'
+).facet(
+    'countries',
+    columns=1
+)
+```
+
+### ggplot
+
+In ggplot, `varwidth = TRUE` scales box widths by the square root of the count.
+
+```{r}
+#| label: boxplot-count-width-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = genres) +
+    geom_boxplot(varwidth = TRUE) +
+    facet_wrap(~countries)
+```
+
+:::
+
+In general boxplots show 5-9 values
+but this has shortcomings
+as they hide important information,
+such as multimodality and the number of observations.
+I have included a couple of examples
+showing how different plot types change
+when the data changes.
+This is from [Autodesk Research](https://www.autodesk.com/research/publications/same-stats-different-graphs)
+who also made the Datasaurus animation in [Why visualize data?](1_why-visualize-data.qmd).
+
+![](img/hist-point-box.gif)
+
+![](img/point-box-violin.gif)
+
+Violinplots are yet not possible in an easy way in Altair,
+but since I personally like seeing distributions,
+I invented these 8-bit looking violins made out of square marks.
+
+```{python}
+#| label: square-violins-alt
+squareolins = alt.Chart(boom_both).mark_square().encode(
+     x='runtime',
+     y='genres',
+     color='genres',
+     size='count()'
+)
+squareolins.facet('countries', columns=1)
+```
+
+We could add a mean dot.
+Below I recreate the chart
+since there is no good way to remove the size and color encodings
+that we had in the chart above
+(and we don't want to color or resize the means).
+I could have done these plots in the opposite order 
+and avoided having to code the entire chart twice,
+just changing the mark and the necessary encoding.
+
+```{python}
+#| label: square-violin-means-alt
+means = alt.Chart(boom_both).mark_circle(color='white').encode(
+        x='mean(runtime)',
+        y='genres'
+)
+(squareolins + means).facet('countries', columns=1)
+```
+
+This is one thing I appreciate with Altair 
+(and graphical grammars in general):
+understanding how to compose plots from individual elements,
+allows you some creativity in what you make
+versus using a pre-made plot via a set name (stripplot, violinplot, etc).
+You should of course be very careful with this 
+because the common plots exist for good reason,
+they are statistically robust in many cases,
+and common enough that they are easier for people to interpret
+than your own creations in many cases.
+
+### Violin plots
+
+There is also a geom for creating violin plots
+which both calculates the density and then plots
+a line and an area.
+
+```{r}
+#| label: violin-facets-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = genres) +
+    geom_violin() +
+    facet_wrap(~countries)
+```
+
+These can also be scaled by size.
+
+```{r}
+#| label: violin-count-scaling-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = genres) +
+    geom_violin(scale = 'count') +
+    facet_wrap(~countries)
+```
+
+We can combine geoms to add e.g. the median to the plot.
+
+```{r}
+#| label: violin-medians-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = genres) +
+    geom_violin() +
+    geom_point(stat = 'summary', fun = median) +
+    facet_wrap(~countries)
+```
+
+As we discussed in [Individual observations](3_individual-observations.qmd),
+it is always a good idea to have a look at 
+where the individual data points are.
+For this we can use a categorical scatter plot
+where the dots are spread/jittered randomly on the non-value axis
+so that they don't all overlap via `geom_jitter`.
+
+```{r}
+#| label: violin-jitter-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        color = genres) +
+    geom_jitter(width = 0, height = 0.2, alpha = 0.3) +
+    geom_violin(fill = NA) +
+    facet_wrap(~countries)
+```
+
+ggplot understand that if you color by a variable,
+it should create separate violins for each group on the same location
+of the categorical axis.
+In Altair,
+this would be a bit more cumbersome since we would need to use different facets.
+
+```{r}
+#| label: violin-country-groups-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = countries) +
+    geom_violin()
+```
+
+When adding median points,
+we will see that they don't line up as expected by default.
+While the violins are "dodging" each other,
+the points are aligned in a row.
+
+```{r}
+#| label: violin-undodged-medians-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = countries) +
+    geom_violin() +
+    geom_point(stat = 'summary', fun = median)
+```
+
+To add point in the right position for the median,
+we need to use `position` parameter
+to add the same dodge offset as for the violins.
+
+```{r}
+#| label: violin-dodged-medians-gg
+ggplot(free_both) +
+    aes(x = runtime,
+        y = genres,
+        fill = countries) +
+    geom_violin() +
+    geom_point(stat = 'summary', fun = median, position = position_dodge(0.9))
+# 0.9 is the default offset for violins
+```
+
+You could also [use density lines in so called ridgeline plots to compare many distributions](https://www.r-graph-gallery.com/294-basic-ridgeline-plot.html).

@@ -1,5 +1,5 @@
 ---
-title: "Grouping"
+title: "Groups"
 include-in-header:
   - text: |
       <style>
@@ -264,7 +264,7 @@ Shape and size can also be used,
 but often either in combination with one of the other two or
 for a specific purpose.
 
-![Classical ordering of static identity channels for grouping; effectiveness depends on the task and design. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0); motion omitted.](img/grouping-channels-direct.svg){#fig-grouping-channels width=451.2 fig-alt="Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles."}
+![Classical ordering of static identity channels for grouping; effectiveness depends on the task and design. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0); motion omitted.](img/grouping-channels.svg){#fig-grouping-channels width=451.2 fig-alt="Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles."}
 
 The grammar of graphics allows
 for these to be conveniently defined via an easily interchangeable syntax:
