@@ -30,3 +30,6 @@ format:
     mainfont: Ubuntu
     number-depth: 2
     tbl-cap-location: bottom
+
+execute:
+  cache: true

@@ -1,0 +1,14 @@
+[project]
+name = "viz-oer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "altair[all] @ git+https://github.com/vega/altair.git@feat/to_html-should-work-as_save_html",
+    "jupyter-cache>=1.0.1",
+    "pandas>=3.0.5",
+    "polars>=1.44.2",
+    "rpy2>=3.6.7",
+    "scipy>=1.18.1",
+]

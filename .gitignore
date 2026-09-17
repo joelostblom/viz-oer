@@ -1,2 +1,12 @@
 /.uvr/library/
 /.uvr/activate*
+/.quarto/
+**/*.quarto_ipynb
+
+# Generated chapter execution caches and figure/support files.
+_book/
+_extensions/
+*_cache/
+*_files/
+/_*.local
+
