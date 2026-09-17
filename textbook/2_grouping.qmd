@@ -43,20 +43,25 @@ def show_df(df):
        e.g. observations in group A tends to have higher values
        than those in group B.
    - Avoid making incorrectly generalized conclusions,
-       e.g. there could be a general positive trend when all data is looked at together,
+       e.g. there could be a general positive trend
+       when all data is looked at together,
        while the data for individual groups displays negative trends
        or no trend at all.
-2. **Evaluate** which grouping strategy is the most suitable in a specific context.
-   - Position, color and shape are the most effective channels to use
-     when comparing exact values between groups
-     since they enable observations to be drawn close to each other in the same chart.
+
+2. **Evaluate** which grouping strategy is the most suitable in a specific
+   context:
+   - Position and color (or color + shape) are the most effective strategies to
+     use when comparing exact values between groups since they enable
+     observations to be drawn close to each other in the same chart.
    - Faceting is the most effective
      when comparing the pattern or trend of a group
      to those of other groups
      since it shows the observations for each group separately.
+
 3. **Apply** grouping strategies using color, size, shape and position
    to visually distinguish between categories,
    e.g. `encode(color='category')` and `aes(color=category)`.
+
 4. **Apply** the faceting grouping strategy via `facet` and `facet_wrap` method
    to split data into separate facets.
 :::
@@ -65,7 +70,15 @@ def show_df(df):
 
 ## Why grouping matters
 
-So far you have created declarative visualizations by representing them as identical point **marks** on a canvas with encoded x- and y-axis positions. This is the foundation for all the visualizations we will make, but it is rarely sufficient on its own to give a complete picture of the data. In particular, messy real-world data might show overall trends in the datasets, that evaporate when explored more closely. The goal of grouping is to distinguish between groups by basing the visual appearance of points in a chart on the value of categorical variable. Let's see this in action in the following exercise.
+So far you have created declarative visualizations by representing them
+as identical point **marks** on a canvas with encoded x- and y-axis positions.
+This is the foundation for all the visualizations we will make,
+but it is rarely sufficient on its own to give a complete picture of the data.
+In particular, messy real-world data might show overall trends in the datasets,
+that evaporate when explored more closely.
+The goal of grouping is to distinguish between groups by basing the visual
+appearance of points in a chart on the value of categorical variable.
+Let's see this in action in the following exercise.
 
 ::::: {.callout-default .ex-prompt}
 
@@ -158,7 +171,7 @@ alt.Chart(income_df).mark_point().encode(
 
 Notice how the data points form clusters by income group. Coloring reveals that both national alcoholism levels and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income countries</span>, where both indicators are lower. 
 
-This could explain the mysterious relationship the historians found between heavy drinkers and life expectancy! It seems like countries that have a higher average income are likely to both have people who drink more and people who live longer. By using color to group the data, we have revealed that income level could be a **confounding variable**: it likely influences both life expectancy and alcohol consumption. If we had data at finer resolution, which contained each individual, we would probably see that they people who drink a lot don't live the longest lives, but we don't have access to that data here.
+This could explain the mysterious relationship the historians found between heavy drinkers and life expectancy! It seems like countries that have a higher average income are likely to both have people who drink more and people who live longer. By using color to group the data, we have revealed that income level could be a [confounding variable](https://en.wikipedia.org/wiki/Confounding): it likely influences both life expectancy and alcohol consumption. If we had data at finer resolution, which contained each individual, we would probably see that they people who drink a lot don't live the longest lives, but we don't have access to that data here.
 
 The insights you have revealed are sobering news for the Viridian historians,
 who are sure to proceed more cautiously in future projects!
@@ -171,14 +184,34 @@ who are sure to proceed more cautiously in future projects!
 
 ## The two main purposes of grouping
 
-As we have seen in the exercises above, grouping can have major benefits. We can divide this benefits into to two main categories which both support us in making more accurate conclusions about our data:
+As we have seen in the exercises above, grouping can have major benefits.
+We can divide these benefits into to two main categories,
+which helps us arrive at more accurate conclusions about our data:
 
-1. **Directly compare** trends and values for distinct groups.
-2. **Reveal patterns** in the data that are obscured when looking at all points together.
+1. **Directly compare** observations between groups.
+2. **Reveal patterns** within individual groups that are obscured
+   when viewing the data from all groups together.
 
-These main benefits are often connected and can be explored simultaneously through a common grouping strategy. The example from the exercises on alcohol consumption and life expectancy fall under the second category: the data seemed to have a certain pattern when we looked at all the points together, but when grouping by another variable in the dataset, we discovered that this overall pattern could be due to confounding from another variable (income group). 
+These benefits are often connected and can be explored simultaneously.
+When the alcohol consumption data was grouped by income level,
+it revealed that the patterns within groups did not correspond to what seemed to
+be the overall trend in the data, and it also made it easier to compare
+observations between groups.
 
-Revealing obscured patterns by grouping data is also referred to as Simpson's Paradox; named not after Homer Simpson et al., but rather its inventor Edward H. Simpson, a British codebreaker.  Simpson reported a curious phenomenon where a trend present in several different groups of data can disappear when they are combined. Below we show a more general and simplified illustration of Simpson's Paradox than the one in our earlier exercise. Notice how the overall dataset does not have a clear direction but when you color by group, both groups exhibit the same negative trend between X and Y.
+Obscured group-level patterns is a phenomena often referred to
+as Simpson's Paradox (named after its inventor rather than the TV series).
+It represents a curious phenomenon
+where a trend present in individual groups of data can disappear
+when they are combined.
+
+Below we show a simplified illustration of Simpson's Paradox.
+Notice how the overall dataset doesn't appear to show any noticeable pattern,
+but when the observations are colored by group,
+you can see that each groups exhibit the same negative trend between X and Y,
+i.e. larger values of X are associated with smaller values of Y and vice versa.
+This is a prime example of the utility of grouping in deepening our
+understanding of a data set; without it we would have drawn different (and
+uninformative) conclusions about this data set.
 
 ::: {.panel-tabset}
 
@@ -207,92 +240,90 @@ alt.Chart(simpsons_df).mark_point().encode(
 
 :::
 
-In this case, grouping makes the insidious Simpson's Paradox visually unmistakable. This is a prime example of the utility of visualization in deepening our understanding of a data set, since without the grouping by color, we would have drawn different (and uninformative) conclusions about this data set. 
+## What type of column can we use for grouping?
 
-An example of the first benefit, directly comparing groups, can be seen in the next chart where grouping by position on the y-axis reveals that life expectancies tend to be higher in countries belonging to the higher income groups. 
-
-```{python}
-#| echo: false
-import altair as alt
-import pandas as pd
-
-
-income_df = pd.read_csv('data/income_lifeexp_alcohol.csv')
-
-alt.Chart(income_df).mark_point().encode(
-    x='life_expectancy_at_65',
-    y='income_group',
-)
-```
-
-While position and color are generally the most effective grouping strategies, it is important to understand the unique strengths and pitfalls of each strategy to chose the one that best supports the comparisons we want to make. This is what we will learn about next.
-
+In general, we are interesting in grouping data by "categorical" columns.
+If the there is a natural order to the categories (e.g. days of the week
+or letter grades), we can be more precise and call the column "ordinal".
+If there is no such order,
+we say that the column is "nominal" (e.g. fruits or colors).
+As a general rule, we will not group data by quantitative columns
+that hold continuous data (e.g. height or age), but there are exceptions;
+we might for example turn a column with ages into categorical intervals
+that we can group by (such as 18-25, 25-35, 35-45).
 
 ## Strategies for grouping
 
-The grammar of graphics gives us a convenient syntax for grouping where we define the visual channel that should represent a categorical variable. Generally speaking, position and color are the two most effective channels to use for grouping. Shape and size are also used, but often either in combination with one of the other two or for a specific purpose. The grammar of graphics allows for these to conveniently interchanged in the syntax:
+Generally speaking, position
+and color are the two most effective visual channels to use for grouping.
+Shape and size can also be used,
+but often either in combination with one of the other two or
+for a specific purpose.
+The grammar of graphics allows
+for these to be conveniently defined via an easily interchangeable syntax:
 
 ::: {.panel-tabset}
 
-# Altair
+## Altair
 ::: {.panel-tabset}
 
-# Color
+### Color
 
-```python
+```{.python}
 encode(color='category_column')
 ```
 
-# Shape
+### Shape
 
-```python
+```{.python}
 encode(shape='category_column')
 ```
 
-# Size
+### Size
 
-```python
+```{.python}
 encode(size='category_column')
 ```
 
-# Position
+### Position
 
-```python
+```{.python}
 encode(x='category_column')
 ```
 
-```python
+```{.python}
 encode(y='category_column')
 ```
 :::
 
-# ggplot
+## ggplot
 ::: {.panel-tabset}
-# Color
 
-```python
+### Color
+
+```{.r}
 aes(color=category_column)
 ```
 
-# Shape
+### Shape
 
-```python
+```{.r}
 aes(shape=category_column)
 ```
 
-# Size
+### Size
 
-```python
+```{.r}
 aes(size=category_column)
 ```
 
-# Position
+### Position
 
-```python
+```{.r}
 aes(x=category_column)
 ```
 
-```python
+```{.r}
 aes(y=category_column)
 ```
 :::
@@ -301,18 +332,31 @@ aes(y=category_column)
 
 ### Color
 
-The human brain can detect color differences with little cognitive effort. Color is a **preattentive feature**^[Wolfe JM, Utochkin IS. What is a preattentive feature? Curr Opin Psychol. 2019 Oct;29:19-26. doi: 10.1016/j.copsyc.2018.11.005. Epub 2018 Nov 13. PMID: 30472539; PMCID: PMC6513732.] which means that the brain can tell apart colors even without conscious attention. This is heightened when there is a high contrast, such as between the complimentary colors blue and orange.
+The human brain can detect color differences with little cognitive effort.
+Color is a **preattentive feature**^[Wolfe JM, Utochkin IS.
+What is a preattentive feature?
+Curr Opin Psychol. 2019 Oct;29:19-26. doi: 10.1016/j.copsyc.2018.11.005.
+Epub 2018 Nov 13.
+PMID: 30472539; PMCID: PMC6513732.] which means
+that the brain can tell apart colors even without conscious attention.
+This is heightened when there is a high contrast,
+such as between the complimentary colors blue and orange.
 
-This is great news for grouping! By encoding our categorical variable as color, we can leverage the brain's ability to infer groups. Conveniently, color doesn't alter the layout or structure of the data visualization, so it's an efficient way to compare the exact values of data points between groups.
+This is great news for grouping!
+By encoding our categorical variable as color,
+we can leverage the brain's ability to infer groups.
+Conveniently, color doesn't alter the layout
+or structure of the data visualization,
+so it's an efficient way to compare the exact values of data points between
+groups.
 
-In the second exercise of this chapter
-we already saw how color could be used to group
-our life expectancy data by income group.
+In the second exercise of this chapter we already saw how color could be used to
+group our life expectancy data by income group.
 Let's now see what the code to create this charts looks like:
 
 ::: {.panel-tabset}
 
-# Altair
+## Altair
 
 Here we use `color='region'`:
 
@@ -330,7 +374,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-# ggplot
+## ggplot
 
 Here we use `color=region`:
 
@@ -348,21 +392,32 @@ library(tidyverse)
 
 income_df <- read_csv('data/income_lifeexp_alcohol.csv')
 
-ggplot(income_df) +
-    aes(
-        x=percentage_heavy_drinkers, 
-        y=life_expectancy_at_65, 
+ggplot(income_df,aes(
+        x=percentage_heavy_drinkers,
+        y=life_expectancy_at_65,
         color=income_group
-    ) +
+    )) +
     geom_point()
 ```
 
 :::
 
-Note that the power of grouping by color fades when used irresponsibly. Using colors that are too similar can blur the difference between groups and the more colors you include, the harder it is to stick to distinct hues. The exact number of colors you can use depends on your data: if there is a lot of overlap, then it is harder to distinguish multiple colors. A helpful guideline is that around five distinct categories/colors you should consider if the visualization is still effective or if you need to break it down into multiple charts instead. Once you reach eight distinct categories/colors, it is most certainly the case that it will be hard to distinguish some groups from each other.
+::: {.callout-caution }
 
-There are several other important aspects of using colors effectively, such as how to ensure accessibility, particularly for people with color vision deficiencies. We will learn more about the these considerations when we go in depth into color theory, including specifics around which colors are safe to use together. In that chapter we will also learn how to represent ordered categories with different color choices than unordered categories, e.g. as with the case of the income groups here.
-<!-- TODO add section ref -->
+## Avoid using color for more than 5-7 groups
+
+Using too many colors or colors
+that are too similar can blur the differences between groups.
+There are also several other important aspects of using colors effectively,
+such as how to ensure accessibility,
+particularly for people with color vision deficiencies.
+We will learn more about these topics in a later chapter,
+but for now it's enough to remember that
+when there are around 5-7 groups in the data,
+it might be better to break it down into separate charts instead of grouping by
+color.
+
+:::
 
 ### Shape
 
@@ -388,7 +443,7 @@ The syntax for encoding a shape aesthetic, is similar to that for color:
 
 ::: {.panel-tabset}
 
-# Altair
+## Altair
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
@@ -411,16 +466,16 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 )
 ```
 
-# ggplot
+## ggplot
 
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df) +
     aes(
-        x=percentage_heavy_drinkers, 
-        y=life_expectancy_at_65, 
+        x=percentage_heavy_drinkers,
+        y=life_expectancy_at_65,
         color=income_group,
         shape=income_group
-    ) + 
+    ) +
     geom_point()
 ```
 
@@ -430,20 +485,23 @@ While this combined approach makes grouping clearer, there are some pitfalls. Fo
 Additionally, smaller shapes are difficult to distinguish, so when plotting a dense scatterplot of small marks, try restricting the number of unique shapes to three or fewer, or consider avoiding using shape altogether.
 <!--TODO number of shapes -->
 
-It is rarely effective to encode a different data variable
-in the `color` and `shape` channels.
-This tends to lead to
-too much visual information 
+::: {.callout-caution }
+
+## Avoid using color and shape for different variables
+
+It is rarely effective to encode a different data variable in the `color`
+and `shape` channels.
+This tends to lead to too much visual information
 and it is difficult to distinguish the many different combinations visually.
 
-The many combinations of income group and region in this chart
-are hard to separate visually,
+The many combinations of income group
+and region in this chart are hard to separate visually,
 which makes this chart ineffective:
 <!--TODO Include some coloring of the background to cleary show bad examples? Too similar to book ufdndation? -->
 
-::: {.panel-tabset}
+:::: {.panel-tabset}
 
-# Altair
+## Altair
 
 ```{python}
 alt.Chart(income_df).mark_point(filled=True).encode(
@@ -454,7 +512,7 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 )
 ```
 
-# ggplot
+## ggplot
 
 The many combinations of income group and region in this chart
 are hard to separate visually,
@@ -471,25 +529,31 @@ ggplot(income_df) +
     geom_point()
 ```
 
-:::
+::::
 
-::: {.callout-caution}
-
-Avoid using color and shape for different variables
-since the combination can be difficult to distinguish
 
 :::
 
 ### Size
 
-Size is often used to represent the magnitude of quantitative data. But it can under limited circumstances be used for grouping. Size has an inherent direction from small to large, so it works better for ordered categorical data. One example is World Bank income level, ranging from low to high. In the next chart
-you can see that it is notably more difficult
-to tell apart the four different sizes,
-than the four different colors in the previous chart.
+Size is often used to represent the magnitude of quantitative data.
+Under limited circumstances,
+it can also be used for grouping data according to a categorical variable,
+but in general this is best avoided.
 
-::: {.panel-tabset}
+::: {.callout-caution}
 
-# Altair
+## Avoid using size to group by a categorical variable
+
+Since size has an inherent direction from small to large,
+it works better for ordinal than nominal categorical data.
+One example is the World Bank income levels, ranging from low to high.
+However, even when used for ordinal data it is often difficult to tell different
+sizes apart as you can see in the chart below.
+
+:::: {.panel-tabset}
+
+## Altair
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
@@ -499,7 +563,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-# ggplot
+## ggplot
 
 `ggplot` even displays a warning to be cautious
 when using size for categorical variable.
@@ -515,21 +579,30 @@ ggplot(income_df) +
     geom_point()
 ```
 
-:::
+::::
 
-::: {.callout-caution}
-In general, size-based groupings can be difficult to distinguish, even when used for ordinal categories as above. Restricting size to four or fewer levels is a good rule of thumb, and for most visualizations grouping by size should be avoided in favor of more effective channels such as position and color.
 :::
 
 ### Position
 
-Grouping by position creates the clearest separation between groups. Most commonly when using positions, the categorical variable is distributed along the x or y axis. This gives each group its own visual lane, making it easier to compare overall distributions across categories.
+#### X & Y
 
-Below, we distribution the groups along the y-axis to compare heavy alcohol consumption across income groups:
+Grouping by position often creates the clearest separation between groups.
+Distributing the groups along the x
+or y axis gives each group its own visual lane,
+avoiding that observations from different groups overlap.
+However, the grouping column now also occupies one positional visual channel
+so there is only one positional channel left
+for encoding the values we want to compare between the groups.
+
+Below, we distribution the income groups along the y-axis.
+This leaves us with a choice whether we want to use the x-axis
+for the `percentage_heavy_drinkers` or the `life_expectancy_at_65`,
+but we can't fit both into the same chart.
 
 ::: {.panel-tabset}
 
-# Altair
+#### Altair
 
 
 ```{python}
@@ -539,224 +612,67 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-# ggplot
+#### ggplot
 
 ```{r fig.width=8, fig.height=6}
-ggplot(income_df) + 
+ggplot(income_df) +
     aes(
-        x=percentage_heavy_drinkers, 
-        y=region, 
+        x=percentage_heavy_drinkers,
+        y=region,
     ) + 
     geom_point()
 ```
 
 :::
 
-Notice how easy it is to compare the distributions between regions? This is because the separation between the groups is much clearer when using distinct positions than when using distinct colors, shapes, or sizes for points with overlapping positions. However, since the the categorical variable now occupies one of the axes, we can not use position-based grouping when we are interesting in visualizaing a pairwise relationships between two continuos variables as we did in the first few exercises.
 
-::: {.callout-note}
-If we are interested in comparing groups for a single continuous variable (such as `percentage_heavy_drinkers` above), position is often the most effective grouping method.
-If we are interested in comparing groups while visualizing a pairwise relationship between two continuous variables
-:::
+#### Faceting
 
-Another caution when using position for grouping, is that plotting data points along a single axis can lead to overlap. That's where **jittering** comes to the rescue. Jittering introduces slight variation, or 'jitter', in the position of data points in each lane, making them easier to see. 
+Faceting takes the concept of grouping to the next level.
+Instead of using different visual channels within a single chart,
+it generates multiple charts (or "facets"),
+each dedicated to a grouped subset of the data.
+Faceting is particularly effective for highlighting distinct trends
+and patterns within each subset,
+as well as identifying extreme values or outliers within groups.
+We could think of faceting as a type of position grouping,
+but its advantage is that it keeps both the x and y axis free
+for other variables.
 
-::: {.column-margin}
-
-**Jitterbug**
-
-Back in the 1930s, the jitterbug was a lively, often wild, dance style that matched the fast-paced, unpredictable energy of swing music. In data visualization, jittering serves a similar purpose: to add a touch of randomness to points in a plot.
-
-![](/img/640px-Jitterbug_Wolcott_FSA.jpg)
-
-:::
-
-Let's examine how jittering works.
-
-::: {.panel-tabset}
-
-# Altair
-
-In Altair, we create a random calculated variable called `jitter` by appending the `.transform_calculate()` method to our chart. We use our newly created `jitter` variable, encoding it as the `yOffset` of each data point using `yOffset='jitter:Q'`. This shifts the `yOffset` of each point by a random value. The `:Q` tells Altair that `jitter` is a continuous quantitative variable, which we need since it is not part of the pandas dataframe, so the data type can't be inferred from the data frame.
-
-```{python}
-alt.Chart(income_df).mark_point().encode(
-    x='percentage_heavy_drinkers',
-    y='region',
-    color='region',
-    yOffset="jitter:Q"
-).transform_calculate(
-    jitter="random()"
-)
-```
-
-# ggplot
-
-In ggplot2, you can jitter points by using the `geom_jitter`, which is a combination of `geom_point` together with a function called `position_jitter`.
-
-```{r fig.width=8, fig.height=4}
-ggplot(income_df) + 
-    aes(
-        x=percentage_heavy_drinkers, 
-        y=region, 
-        color=region
-    ) + 
-    geom_jitter()
-```
-
-```{r fig.width=8, fig.height=4}
-ggplot(income_df) + 
-    aes(
-        x=percentage_heavy_drinkers, 
-        y=region, 
-        color=region
-    ) + 
-    geom_jitter(height=0.2)
-```
-
-:::
-
-::: {.callout-caution}
-Jittering can be confusing! It can easily be mistaken for a scatterplot with true variation in the underlying data.
-:::
-
-By separating the points through jittering, we make it easier to distinguish individual data points. This clarity allows us to add additional grouping, such as color. By coloring our jittered data points as a second categorical variable, we can highlight a secondary grouping. This allows us to better understand complex relationships and interpret multiple levels of comparison in the data.
-
-When grouping by two categorical variables, which should you assign to position and which to color? Position is more visually obvious than color. This means that we assign our primary comparison to position and our secondary comparison to color. 
-
-Let's apply this to a real world example.
-
-::::: {.callout-default .ex-prompt}
-
-The Virdians are trying to understand how life expectancy varies across income groups globally, and the role world region plays in these differences.
-
-Define the primary and secondary comparisons for this research question.
-
-
-:::: {.callout-default .ex-solution}
-
-The primary comparison is comparing life expectancy across income groups. The secondary comparison is between world regions.
-
-::::
-
-Now, using the variables `region`, `income_group` and `life_expectancy_at_65`, create a plot that reflects these priorities, showing all countries grouped using position and color. Make sure to add jittering too!
+Let's create a separate facet for each income group,
+so that the relationship between `percentage_heavy_drinkers`
+and `life_expectancy_at_65` within each group stands out.
+We can lay out the facets differently depending on what we are the most
+interested in comparing.
+If the y-axis is the primary channel
+for comparison we would spread the facets out horizontally in a single row
+If the x-axis is the primary channel
+for comparison we would spread the facets out vertically in a single column.
+Neither of these scenarios apply to use
+since we are interested in comparing the overall pattern within each group of
+the points, so we will instead lay out the facets in an even grid to save space.
 
 ::: {.panel-tabset}
 
-# Altair
+## Altair
 
-```{pyodide}
-#| setup: true
-#| exercise:
-#|   - position_alt
-#|   - facet_alt
-import altair as alt
-import pandas as pd
-from utils import assert_chart_equal
-
-url = 'data/income_lifeexp_alcohol.csv'
-
-```
-
-```{pyodide}
-#| exercise: position_alt
-income_df = pd.read_csv(url)
-
-
-
-
-
-# Write code above to create the chart 
-```
-
-::: {.callout-default .ex-solution}
-
+To facet by income group, we can append `.facet('income_group')` to our chart.
+We create an even 2x2 grid of facets by using the `columns` parameter.
 
 ```{python}
-alt.Chart(income_df).mark_point().encode(
-    x='life_expectancy_at_65',
-    y='income_group',
-    color='region',
-    yOffset='jitter:Q'
-).transform_calculate(
-    jitter='random()'
-)
-```
-
-:::
-
-# ggplot
-
-```{webr fig.width=8, fig.height=6}
-#| setup: true
-#| exercise:
-#|   - position_ggplot
-#|   - facet_ggplot
-library(ggplot2)
-
-url <- 'data/income_lifeexp_alcohol.csv'
-```
-
-```{webr fig.width=8, fig.height=6}
-#| exercise: position_ggplot
-income_df <- readr::read_csv(url, show_col_types=FALSE)
-
-
-
-
-
-# Write code above to create the chart 
-```
-
-::: {.callout-default .ex-solution}
-
-You are primarily comparing the `income_group` variable, so it should be grouped by position on either the `x` or `y` axis. The secondary comparison, `region`, should be encoded as color. 
-```{r fig.width=8, fig.height=6}
-ggplot(income_df) + 
-    aes(
-        x=life_expectancy_at_65,
-        y=income_group,
-        color=region
-    ) +
-    geom_jitter()
-```
-
-:::
-
-:::
-
-:::::
-
-<!--TODO talk about using categorical via offset/dodge + jittering, doesn't work in altair currenlty -->
-<!-- Position also allows us to group by more than one categorical variable -->
-<!-- by using different approaches to nesting the labels on the  -->
-
-
-### Faceting
-
-Faceting takes the concept of grouping to the next level. Instead of using different visual elements within a single chart, it generates multiple small charts, each dedicated to a grouped subset of the data. Faceting is particularly effective for highlighting distinct trends and patterns in each subset, as well as identifying extreme values or outliers within groups. We could think of faceting as a type of position grouping, but its advantage is that it keeps both the x and y axis free for other variables.
-
-Let's check out the syntax:
-
-::: {.panel-tabset}
-
-# Altair
-
-To facet by income group, we can append `.facet('income_group')` to our chart. When we are faceting the xy-axes are the same for all the grouped facets/subcharts. The default layout in Altair is to have single row with all the charts spread out horizontally. This would make it easy to compare the charts' y-axis, since they would all be aligned. If we instead are the most interested in comparing the values on the x-axis, we could spread the charts out vertically in a single column. Here, we don't have an explicit primary comparison, but we show how to change from the default horizontal layout by using the `columns` parameter.
-
-```{python}
-alt.Chart(income_df).mark_point().encode(
+#| label: test
+alt.Chart(income_df, height=250, width=250).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
 ).facet(
     'income_group',
-    columns=1
+    columns=2
 )
 ```
 
 In addition to faceting on a single variable in the data, faceting can also be done over two variables: one spread horizontally and one spread out vertically in the faceted charts. In Altair, we would use the `column` and `row` parameter in order to achieve this. For example, to have facets that are grouped by both income group and region, we could use `facet(column='income_group', row='region')`. This can be effective when we need to group our data further, but it does risk making the chart hard to overview, so it is best used when there are fewer categories in the faceting variables.
 
-# ggplot
+## ggplot
 
 To facet by income group, we can append `.facet_wrap(vars(income_group))` to our chart. The `vars` function is required for `facet_wrap` to understand that we are referring to column names just like `aes` is required when typing out column names for the different visual channels.
 
@@ -766,11 +682,11 @@ When we are faceting the xy-axes are the same for all the grouped facets/subchar
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df) +
     aes(
-        x = percentage_heavy_drinkers, 
+        x = percentage_heavy_drinkers,
         y = life_expectancy_at_65
     ) +
     geom_point() +
-    facet_wrap(vars(income_group), ncol=1)
+    facet_wrap(vars(income_group), ncol=2)
 ```
 
 In addition to faceting on a single variable in the data, faceting can also be done over two variables: one spread horizontally and one spread out vertically in the faceted charts. In ggplot, we would swap out `facet_wrap` to `facet_grid` in order to do this. For example, to have facets that are grouped by both income group and region, we could use `facet_grid(vars(income_group), vars(region))`. This can be effective when we need to group our data further, but it does risk making the chart hard to overview, so it is best used when there are fewer categories in the faceting variables.
@@ -791,8 +707,18 @@ Ensure that only two facets are shown per row.
 
 ::: {.panel-tabset}
 
-# Altair
+## Altair
 
+```{pyodide}
+#| setup: true
+#| exercise:
+#|   - facet_alt
+import altair as alt
+import pandas as pd
+from utils import assert_chart_equal
+
+url = 'data/income_lifeexp_alcohol.csv'
+```
 
 ```{pyodide}
 #| exercise: facet_alt
@@ -802,11 +728,18 @@ alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
 )
-
 ```
 
-# ggplot
+## ggplot
 
+```{webr fig.width=8, fig.height=6}
+#| setup: true
+#| exercise:
+#|   - facet_ggplot
+library(ggplot2)
+
+url <- 'data/income_lifeexp_alcohol.csv'
+```
 
 ```{webr fig.width=8, fig.height=6}
 #| exercise: facet_ggplot
@@ -826,7 +759,7 @@ ggplot(income_df) +
 
 ::: {.panel-tabset}
 
-# Altair
+## Altair
 
 ```{python}
 alt.Chart(income_df).mark_point().encode(
@@ -839,7 +772,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-# ggplot
+## ggplot
 
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df) +
@@ -866,301 +799,301 @@ ggplot(income_df) +
 
 :::
 
-## Mission
+<!-- ## Mission -->
 
-Viridians pride themselves on being part of the #1 Happiest Colony in the Galaxy. They have won medals and trophies for it. But this year is *extremely competitive*. To make sure they come out on top, Viridians are investigating the history of mental wellbeing on Earth.
+<!-- Viridians pride themselves on being part of the #1 Happiest Colony in the Galaxy. They have won medals and trophies for it. But this year is *extremely competitive*. To make sure they come out on top, Viridians are investigating the history of mental wellbeing on Earth. -->
 
-::: {.column-margin}
+<!-- ::: {.column-margin} -->
 
-![](/img/medal.jpg){width=200px height=200px}
+<!-- ![](/img/medal.jpg){width=200px height=200px} -->
 
-:::
+<!-- ::: -->
 
 
 
-You will be working with **Grumble Thorax**, a seasoned Happiness Compliance Officer. 
+<!-- You will be working with **Grumble Thorax**, a seasoned Happiness Compliance Officer. --> 
 
-```{=html}
-<br>
-<div class="ministry-id-card">
-    <div class="accent-line"></div>
-    <div class="left-column">
-        <div class="logo">Ministry of Wellbeing</div>
-        <div class="name">Grumble Thorax</div>
-        <div class="info">
-            <div class="info-item">
-                <span class="label">Position</span>
-                <span class="value">Happiness Compliance Officer</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Department</span>
-                <span class="value">Wellbeing and Flourishing</span>
-            </div>
-            <div class="info-item">
-                <span class="label">ID Number</span>
-                <span class="value">EI-2024-2313</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Clearance</span>
-                <span class="value">Level 3</span>
-            </div>
-        </div>
-        <div class="footer">Protecting Our Future • Est. 2024</div>
-    </div>
-    <div class="right-column">
-        <img src="/img/grumble_thorax.jpg" alt="Avatar" class="avatar">
-    </div>
-</div>
-<br>
-```
+<!-- ```{=html} -->
+<!-- <br> -->
+<!-- <div class="ministry-id-card"> -->
+<!--     <div class="accent-line"></div> -->
+<!--     <div class="left-column"> -->
+<!--         <div class="logo">Ministry of Wellbeing</div> -->
+<!--         <div class="name">Grumble Thorax</div> -->
+<!--         <div class="info"> -->
+<!--             <div class="info-item"> -->
+<!--                 <span class="label">Position</span> -->
+<!--                 <span class="value">Happiness Compliance Officer</span> -->
+<!--             </div> -->
+<!--             <div class="info-item"> -->
+<!--                 <span class="label">Department</span> -->
+<!--                 <span class="value">Wellbeing and Flourishing</span> -->
+<!--             </div> -->
+<!--             <div class="info-item"> -->
+<!--                 <span class="label">ID Number</span> -->
+<!--                 <span class="value">EI-2024-2313</span> -->
+<!--             </div> -->
+<!--             <div class="info-item"> -->
+<!--                 <span class="label">Clearance</span> -->
+<!--                 <span class="value">Level 3</span> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--         <div class="footer">Protecting Our Future • Est. 2024</div> -->
+<!--     </div> -->
+<!--     <div class="right-column"> -->
+<!--         <img src="/img/grumble_thorax.jpg" alt="Avatar" class="avatar"> -->
+<!--     </div> -->
+<!-- </div> -->
+<!-- <br> -->
+<!-- ``` -->
 
-::::: {.callout-default .ex-prompt}
+<!-- ::::: {.callout-default .ex-prompt} -->
 
-Grumble Thorax has discovered an ancient document called 'Mental State of the World Report 2024'.^[Source: Sapien Labs (2024): https://sapienlabs.org/whats_new/sapien-labs-releases-the-4th-annual-mental-state-of-the-world-report/] Its creators asked hundreds of thousands of Earthlings about their mental wellbeing. Each `age_group` within each `country` received an average mental health quotient score (`MHQ_score`) - the higher number, the better wellbeing. 
+<!-- Grumble Thorax has discovered an ancient document called 'Mental State of the World Report 2024'.^[Source: Sapien Labs (2024): https://sapienlabs.org/whats_new/sapien-labs-releases-the-4th-annual-mental-state-of-the-world-report/] Its creators asked hundreds of thousands of Earthlings about their mental wellbeing. Each `age_group` within each `country` received an average mental health quotient score (`MHQ_score`) - the higher number, the better wellbeing. --> 
 
-We also have a categorical variable for the world `region`.
-```{python}
-#| echo: false
-wellbeing_df = pd.read_csv('data/MH_data_processed_3.csv')
+<!-- We also have a categorical variable for the world `region`. -->
+<!-- ```{python} -->
+<!-- #| echo: false -->
+<!-- wellbeing_df = pd.read_csv('data/MH_data_processed_3.csv') -->
 
-show_df(wellbeing_df)
-```
+<!-- show_df(wellbeing_df) -->
+<!-- ``` -->
 
-Before you start your analysis, **Grumble Thorax** has some questions for you.
-```{r fig.width=8, fig.height=6}
-#| echo: false
-api = "{{< env URL >}}"
-ojs_define(apiUrl = api)
-```
+<!-- Before you start your analysis, **Grumble Thorax** has some questions for you. -->
+<!-- ```{r fig.width=8, fig.height=6} -->
+<!-- #| echo: false -->
+<!-- api = "{{< env URL >}}" -->
+<!-- ojs_define(apiUrl = api) -->
+<!-- ``` -->
 
-```{ojs}
-//| echo: false
-import {createChatInterface} from "./chat.js"
+<!-- ```{ojs} -->
+<!-- //| echo: false -->
+<!-- import {createChatInterface} from "./chat.js" -->
 
-{
+<!-- { -->
 
-const instructions = "You are Grumble Thorax, a Happiness Compliance Officer. You are black-humoured, sarcastic. You supervising a new worker to analyze the 'Mental State of the World Report', which has the variables `age_group`, mental health score `MHQ_score` and `region` (these are continents not countries, e.g, Africa). Be supportive and help them to answer your question fully and specifically. If they talk about totally unrelated things like countries shut them down and steer them back. Do not provide answers as this is an open ended question more about testing their reasoning (any hypothesis is fine, support it). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. Ensure that the user's ideas cover both age groups and regions. Be succinct - are in a phone text convo.";
+<!-- const instructions = "You are Grumble Thorax, a Happiness Compliance Officer. You are black-humoured, sarcastic. You supervising a new worker to analyze the 'Mental State of the World Report', which has the variables `age_group`, mental health score `MHQ_score` and `region` (these are continents not countries, e.g, Africa). Be supportive and help them to answer your question fully and specifically. If they talk about totally unrelated things like countries shut them down and steer them back. Do not provide answers as this is an open ended question more about testing their reasoning (any hypothesis is fine, support it). Once you get a satisfactory answer, end the conversation immediately and ask them to proceed to the next task. Ensure that the user's ideas cover both age groups and regions. Be succinct - are in a phone text convo."; -->
 
-const first_message = "A new recruit... I can hardly contain my joy. If you're so clever, what trends do you expect to see in the data?";
+<!-- const first_message = "A new recruit... I can hardly contain my joy. If you're so clever, what trends do you expect to see in the data?"; -->
 
-const chatInterface = createChatInterface({
-  apiUrl,
-  instructions: instructions,
-  firstMessage: first_message,
-  bossImage: 'img/grumble_thorax.jpg',
-  bossName: 'Grumble Thorax',
-});
+<!-- const chatInterface = createChatInterface({ -->
+<!--   apiUrl, -->
+<!--   instructions: instructions, -->
+<!--   firstMessage: first_message, -->
+<!--   bossImage: 'img/grumble_thorax.jpg', -->
+<!--   bossName: 'Grumble Thorax', -->
+<!-- }); -->
 
-return html`${chatInterface}`;
+<!-- return html`${chatInterface}`; -->
 
-}
-```
+<!-- } -->
+<!-- ``` -->
 
 
-It's time to use everything you've learnt in this chapter. 
+<!-- It's time to use everything you've learnt in this chapter. --> 
 
-**Create a visualization comparing how mental wellbeing varies across age groups within each region. You should use a combination of faceting, position and color.**
+<!-- **Create a visualization comparing how mental wellbeing varies across age groups within each region. You should use a combination of faceting, position and color.** -->
 
 
-::: {.panel-tabset}
+<!-- ::: {.panel-tabset} -->
 
-# Altair
+<!-- # Altair -->
 
-```{pyodide}
-#| setup: true
-#| exercise:
-#|   - mission_1_alt
-#|   - mission_2_alt
+<!-- ```{pyodide} -->
+<!-- #| setup: true -->
+<!-- #| exercise: -->
+<!-- #|   - mission_1_alt -->
+<!-- #|   - mission_2_alt -->
 
-import altair as alt
-import pandas as pd
-from utils import assert_chart_equal
+<!-- import altair as alt -->
+<!-- import pandas as pd -->
+<!-- from utils import assert_chart_equal -->
 
-url = 'data/MH_data_processed_3.csv'
+<!-- url = 'data/MH_data_processed_3.csv' -->
 
-```
+<!-- ``` -->
 
-```{pyodide}
-#| exercise: mission_1_alt
-wellbeing_df = pd.read_csv(url)
+<!-- ```{pyodide} -->
+<!-- #| exercise: mission_1_alt -->
+<!-- wellbeing_df = pd.read_csv(url) -->
 
 
 
 
 
-# Write code above to create the chart 
-```
+<!-- # Write code above to create the chart --> 
+<!-- ``` -->
 
-:::: {.callout-default .ex-hint}
-Faceting isolates each group make it easier to compare values within each group. Which categorical variable are you looking within?
+<!-- :::: {.callout-default .ex-hint} -->
+<!-- Faceting isolates each group make it easier to compare values within each group. Which categorical variable are you looking within? -->
 
 
 
-:::: {.callout-default .ex-solution}
+<!-- :::: {.callout-default .ex-solution} -->
 
-```{python}
-alt.Chart(wellbeing_df).mark_point().encode(
-    y='MHQ_score',
-    x='age_group',
-    color="age_group"
-).facet(
-    'region'
-)
-```
+<!-- ```{python} -->
+<!-- alt.Chart(wellbeing_df).mark_point().encode( -->
+<!--     y='MHQ_score', -->
+<!--     x='age_group', -->
+<!--     color="age_group" -->
+<!-- ).facet( -->
+<!--     'region' -->
+<!-- ) -->
+<!-- ``` -->
 
-::::
+<!-- :::: -->
 
-::::
+<!-- :::: -->
 
 
-# ggplot
+<!-- # ggplot -->
 
-```{webr fig.width=8, fig.height=6}
-#| setup: true
-#| exercise:
-#|   - mission_1_ggplot
-#|   - mission_2_ggplot
-library(ggplot2)
+<!-- ```{webr fig.width=8, fig.height=6} -->
+<!-- #| setup: true -->
+<!-- #| exercise: -->
+<!-- #|   - mission_1_ggplot -->
+<!-- #|   - mission_2_ggplot -->
+<!-- library(ggplot2) -->
 
-url <- 'data/MH_data_processed_3.csv'
-```
+<!-- url <- 'data/MH_data_processed_3.csv' -->
+<!-- ``` -->
 
-```{webr fig.width=8, fig.height=6}
-#| exercise: mission_1_ggplot
-wellbeing_df <- readr::read_csv(url, show_col_types=FALSE)
+<!-- ```{webr fig.width=8, fig.height=6} -->
+<!-- #| exercise: mission_1_ggplot -->
+<!-- wellbeing_df <- readr::read_csv(url, show_col_types=FALSE) -->
 
 
 
 
 
-# Write code above to create the chart 
-```
+<!-- # Write code above to create the chart --> 
+<!-- ``` -->
 
 
-:::: {.callout-default .ex-hint}
-Faceting isolates each group make it easier to compare values within each group. Which categorical variable are you looking within?
+<!-- :::: {.callout-default .ex-hint} -->
+<!-- Faceting isolates each group make it easier to compare values within each group. Which categorical variable are you looking within? -->
 
 
-:::: {.callout-default .ex-solution}
+<!-- :::: {.callout-default .ex-solution} -->
 
-```{r fig.width=8, fig.height=6}
-#| echo: false
+<!-- ```{r fig.width=8, fig.height=6} -->
+<!-- #| echo: false -->
 
-wellbeing_df <- readr::read_csv('data/MH_data_processed_3.csv', show_col_types=FALSE)
-```
+<!-- wellbeing_df <- readr::read_csv('data/MH_data_processed_3.csv', show_col_types=FALSE) -->
+<!-- ``` -->
 
-```{r fig.width=8, fig.height=6}
-ggplot(wellbeing_df) +
-    aes(
-        x = region, 
-        y = MHQ_score, 
-        color = region
-    ) +
-    geom_point() +
-    facet_wrap(~ age_group)
-```
+<!-- ```{r fig.width=8, fig.height=6} -->
+<!-- ggplot(wellbeing_df) + -->
+<!--     aes( -->
+<!--         x = region, --> 
+<!--         y = MHQ_score, --> 
+<!--         color = region -->
+<!--     ) + -->
+<!--     geom_point() + -->
+<!--     facet_wrap(~ age_group) -->
+<!-- ``` -->
 
-::::  
+<!-- :::: -->  
 
-::::
+<!-- :::: -->
 
-:::
+<!-- ::: -->
 
 
 
 
 
 
-**Great work! Now create the opposite visualization, comparing how mental wellbeing varies across regions within each age group.**
+<!-- **Great work! Now create the opposite visualization, comparing how mental wellbeing varies across regions within each age group.** -->
 
-::: {.panel-tabset}
+<!-- ::: {.panel-tabset} -->
 
-# Altair
+<!-- # Altair -->
 
-```{pyodide}
-#| exercise: mission_2_alt
-wellbeing_df = pd.read_csv(url)
+<!-- ```{pyodide} -->
+<!-- #| exercise: mission_2_alt -->
+<!-- wellbeing_df = pd.read_csv(url) -->
 
 
 
 
 
-# Write code above to create the chart 
-```
+<!-- # Write code above to create the chart --> 
+<!-- ``` -->
 
 
-:::: {.callout-default .ex-solution}
+<!-- :::: {.callout-default .ex-solution} -->
 
 
-```{python}
-alt.Chart(wellbeing_df).mark_point().encode(
-    y='MHQ_score',
-    x='region',
-    color="region"
-).facet(
-    'age_group'
-)
-```
+<!-- ```{python} -->
+<!-- alt.Chart(wellbeing_df).mark_point().encode( -->
+<!--     y='MHQ_score', -->
+<!--     x='region', -->
+<!--     color="region" -->
+<!-- ).facet( -->
+<!--     'age_group' -->
+<!-- ) -->
+<!-- ``` -->
 
-:::: 
+<!-- :::: --> 
 
-# ggplot
+<!-- # ggplot -->
 
 
 
-```{webr fig.width=8, fig.height=6}
-#| exercise: mission_2_ggplot
-wellbeing_df <- readr::read_csv(url, show_col_types=FALSE)
+<!-- ```{webr fig.width=8, fig.height=6} -->
+<!-- #| exercise: mission_2_ggplot -->
+<!-- wellbeing_df <- readr::read_csv(url, show_col_types=FALSE) -->
 
 
 
 
 
-# Write code above to create the chart 
-```
+<!-- # Write code above to create the chart --> 
+<!-- ``` -->
 
 
-:::: {.callout-default .ex-solution}
+<!-- :::: {.callout-default .ex-solution} -->
 
 
-```{r fig.width=8, fig.height=6}
+<!-- ```{r fig.width=8, fig.height=6} -->
 
-ggplot(wellbeing_df) +
-    aes(
-        x = region, 
-        y = MHQ_score, 
-        color = region
-    ) +
-    geom_point() +
-    facet_wrap(~ age_group)
-```
+<!-- ggplot(wellbeing_df) + -->
+<!--     aes( -->
+<!--         x = region, --> 
+<!--         y = MHQ_score, --> 
+<!--         color = region -->
+<!--     ) + -->
+<!--     geom_point() + -->
+<!--     facet_wrap(~ age_group) -->
+<!-- ``` -->
 
-:::: 
+<!-- :::: --> 
 
-:::
+<!-- ::: -->
 
-**It's time to report your findings back to Grumble Thorax...**
+<!-- **It's time to report your findings back to Grumble Thorax...** -->
 
-```{ojs}
-//| echo: false
+<!-- ```{ojs} -->
+<!-- //| echo: false -->
 
-{
+<!-- { -->
 
-const instructions = "You are Grumble Thorax, a Happiness Compliance Officer. You are black-humoured, sarcastic. You supervising a new worker who has just analyzed the 'Mental State of the World Report'. You are looking for the following answers: generally mental wellbeing increases as people get older (higher age groups). In younger people Africa seems to have the highest MHQ scores, and in older its the Americas. Europe and Oceania consistently have the lowest across all age groups. Asia is medium-high. Be supportive and help them to answer your question fully and specifically. If they talk about totally unrelated things shut them down and steer them back. Do not provide answers as this is an open ended question more about testing their reasoning (any hypothesis is fine, support it). Use probing questions, do not give the answers away unless they are totally stuck after 3 responses. Once you get a satisfactory answer, end the conversation immediately and tell them their mission is complete and that you actually don't hate them. Say goodbye. Ensure that the user's ideas cover both age groups and regions. Be succinct - are in a phone text convo.";
+<!-- const instructions = "You are Grumble Thorax, a Happiness Compliance Officer. You are black-humoured, sarcastic. You supervising a new worker who has just analyzed the 'Mental State of the World Report'. You are looking for the following answers: generally mental wellbeing increases as people get older (higher age groups). In younger people Africa seems to have the highest MHQ scores, and in older its the Americas. Europe and Oceania consistently have the lowest across all age groups. Asia is medium-high. Be supportive and help them to answer your question fully and specifically. If they talk about totally unrelated things shut them down and steer them back. Do not provide answers as this is an open ended question more about testing their reasoning (any hypothesis is fine, support it). Use probing questions, do not give the answers away unless they are totally stuck after 3 responses. Once you get a satisfactory answer, end the conversation immediately and tell them their mission is complete and that you actually don't hate them. Say goodbye. Ensure that the user's ideas cover both age groups and regions. Be succinct - are in a phone text convo."; -->
 
-const first_message = "Oh, look who decided to show up again. Well, spill it—what did you find out?";
+<!-- const first_message = "Oh, look who decided to show up again. Well, spill it—what did you find out?"; -->
 
-const chatInterface = createChatInterface({
-  apiUrl,
-  instructions: instructions,
-  firstMessage: first_message,
-  bossImage: 'img/grumble_thorax.jpg',
-  bossName: 'Grumble Thorax',
-});
+<!-- const chatInterface = createChatInterface({ -->
+<!--   apiUrl, -->
+<!--   instructions: instructions, -->
+<!--   firstMessage: first_message, -->
+<!--   bossImage: 'img/grumble_thorax.jpg', -->
+<!--   bossName: 'Grumble Thorax', -->
+<!-- }); -->
 
-return html`${chatInterface}`;
+<!-- return html`${chatInterface}`; -->
 
-}
-```
+<!-- } -->
+<!-- ``` -->
 
-:::::
+<!-- ::::: -->
