@@ -670,14 +670,30 @@ alt.Chart(income_df, height=250, width=250).mark_point().encode(
 )
 ```
 
-In addition to faceting on a single variable in the data, faceting can also be done over two variables: one spread horizontally and one spread out vertically in the faceted charts. In Altair, we would use the `column` and `row` parameter in order to achieve this. For example, to have facets that are grouped by both income group and region, we could use `facet(column='income_group', row='region')`. This can be effective when we need to group our data further, but it does risk making the chart hard to overview, so it is best used when there are fewer categories in the faceting variables.
+In addition to faceting on a single variable in the data,
+faceting can also be done over two variables:
+one spread horizontally and one spread out vertically in the faceted charts.
+In Altair, we would use the `column`
+and `row` parameter in order to achieve this.
+For example, to have facets that are grouped by both income group and region,
+we could use `facet(column='income_group', row='region')`.
+This can be effective when we need to group our data further,
+but it does risk making the chart hard to overview,
+so it is best used when there are fewer categories in the faceting variables.
 
 ## ggplot
 
-To facet by income group, we can append `.facet_wrap(vars(income_group))` to our chart. The `vars` function is required for `facet_wrap` to understand that we are referring to column names just like `aes` is required when typing out column names for the different visual channels.
+To facet by income group,
+we can append `.facet_wrap(vars(income_group))` to our chart.
+The `vars` function is required for `facet_wrap` to understand
+that we are referring to column names,
+just like `aes` is required when typing out column names
+for the different visual channels.
 
-When we are faceting the xy-axes are the same for all the grouped facets/subcharts. The default layout in ggplot is to achieve and even number of columns and rows. This is good when we are low on space, but otherwise it is preferred to spread the charts out horizontally in a single row if the primary purpose was to compare the charts' y-axis, since they would all be aligned, or vertically in a single column if we are the most interested in comparing the groups in terms of the values on the x-axis. Here, we don't have an explicit primary comparison, but we show how to change from the default horizontal layout by using the `ncol` parameter.
-
+The default layout in ggplot is to achieve and even number of columns and rows,
+which is appropriate for our visualization.
+Yet, we use the `ncol` argument to illustrate how you could manipulate the
+shaper of the facet grid if you desired something else than an even grid.
 
 ```{r fig.width=8, fig.height=6}
 ggplot(income_df) +
@@ -689,7 +705,15 @@ ggplot(income_df) +
     facet_wrap(vars(income_group), ncol=2)
 ```
 
-In addition to faceting on a single variable in the data, faceting can also be done over two variables: one spread horizontally and one spread out vertically in the faceted charts. In ggplot, we would swap out `facet_wrap` to `facet_grid` in order to do this. For example, to have facets that are grouped by both income group and region, we could use `facet_grid(vars(income_group), vars(region))`. This can be effective when we need to group our data further, but it does risk making the chart hard to overview, so it is best used when there are fewer categories in the faceting variables.
+In addition to faceting on a single variable in the data,
+faceting can also be done over two variables:
+one spread horizontally and one spread out vertically in the faceted charts.
+In ggplot, we would swap out `facet_wrap` to `facet_grid` in order to do this.
+For example, to have facets that are grouped by both income group and region,
+we could use `facet_grid(vars(income_group), vars(region))`.
+This can be effective when we need to group our data further,
+but it does risk making the chart hard to overview,
+so it is best used when there are fewer categories in the faceting variables.
 
 :::
 
