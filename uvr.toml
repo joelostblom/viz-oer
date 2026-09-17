@@ -1,0 +1,8 @@
+[project]
+name = "viz-oer"
+
+[dependencies]
+dplyr = "*"
+ggplot2 = "*"
+reticulate = "*"
+tidyverse = "*"
