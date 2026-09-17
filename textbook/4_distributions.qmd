@@ -80,7 +80,7 @@ using the runtime of the movies.
 import altair as alt
 
 # Simplify working with large datasets in Altair
-alt.data_transformers.disable_max_rows()
+alt.data_transformers.enable('vegafusion')
 ```
 
 ```{python}

@@ -7,7 +7,6 @@ dependencies:
     - python=3.12.*
     - pip
     - ipykernel
-    - altair-all
     - vega_datasets
     - scipy
     - matplotlib
@@ -32,3 +31,5 @@ dependencies:
     - r-reticulate
     - r-knitr
     - r-rmarkdown
+    - pip:
+        - "altair[all] @ git+https://github.com/vega/altair.git@feat/to_html-should-work-as_save_html"

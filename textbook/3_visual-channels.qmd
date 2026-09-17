@@ -390,7 +390,8 @@ even if you don't yet understand exactly what is happening under the hood.
 
 The first line we will run is the following:
 
-```python
+```{python}
+#| output: false
 alt.data_transformers.enable('vegafusion')
 ```
 
@@ -401,14 +402,6 @@ but you may hit it in the case of a large scatter chart or a chart that uses int
 If you need to work with even larger datasets,
 you can disable the maximum row limit or switch to using the VegaFusion widget renderer;
 [both are described in the Altair documentation](https://altair-viz.github.io/user_guide/large_datasets.html)).
-
-For the rendered textbook, we disable the row limit instead,
-so these examples also work with Quarto's mixed Python/R rendering engine.
-The VegaFusion option above is useful when running the examples in a notebook.
-
-```{python}
-alt.data_transformers.disable_max_rows()
-```
 
 ## Area charts
 
