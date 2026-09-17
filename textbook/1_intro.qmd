@@ -21,7 +21,7 @@ webr:
 <!-- Temporarily needed for live coding exercises -->
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-```{python setup}
+```{python intro-setup}
 #| echo: false
 #| output: false
 
@@ -150,6 +150,7 @@ a few commonly used statistical summaries of the data?
 
 ```{python}
 #| echo: false
+#| label: anscombe-summary
 
 s = ''
 for set_name, df in anscombe.groupby('Set'):
@@ -201,6 +202,7 @@ and plot them to have a quick look...
 
 ```{python}
 #| echo: false
+#| label: anscombe-charts
 
 alt.Chart(anscombe).mark_circle(size=80).encode(
     x='x',
@@ -281,6 +283,7 @@ using the following small toy data set:
 
 ```{python}
 #| echo: false
+#| label: grammar-example-data
 
 df = pd.DataFrame({
     'x': [0.2, 0.6, 1.2, 2.4],
@@ -312,6 +315,7 @@ chart(
 
 ```{python}
 #| echo: false
+#| label: declarative-chart
 
 alt.Chart(df, width=200, height=200).mark_point().encode(
     x='x',
@@ -333,6 +337,7 @@ for color, group in zip(colors, df['group'].unique()):
 
 ```{python}
 #| echo: false
+#| label: imperative-chart
 
 alt.Chart(df, width=200, height=200).mark_point().encode(
     x='x',
@@ -666,6 +671,7 @@ containing historical trends in automotive design, performance, and efficiency.
 ### Altair
 
 ```{python}
+#| label: load-cars-python
 #| output: false
 import altair as alt
 import pandas as pd
@@ -677,6 +683,7 @@ cars
 ```
 
 ```{python}
+#| label: show-cars-python
 #| echo: false
 show_df(cars)
 ```
@@ -684,6 +691,7 @@ show_df(cars)
 ### ggplot
 
 ```{r}
+#| label: load-cars-r
 #| output: false
 library(tidyverse)
 
@@ -694,6 +702,7 @@ cars
 ```
 
 ```{python}
+#| label: show-cars-r
 #| echo: false
 show_df(ro.r['cars'])
 ```
@@ -725,6 +734,7 @@ we want to use to represent the data.
 Here, it is suitable to show the data as points using `mark_point()`:
 
 ```{python}
+#| label: cars-scatter-alt
 alt.Chart(cars).mark_point().encode(
     x='Miles_per_Gallon',
     y='Horsepower'
@@ -742,6 +752,7 @@ Here, it is suitable to show the data as points using `geom_point()`:
 
 
 ```{r}
+#| label: cars-scatter-gg
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower)) +
     geom_point()
 ```
@@ -824,6 +835,7 @@ But remember that there are other variables in our dataframe,
 let's show it again as a reminder.
 
 ```{python}
+#| label: show-cars-weight
 #| echo: false
 
 show_df(cars)
@@ -856,6 +868,7 @@ is represented with a dark color
 since this has the highest contrast to the light background of the chart.
 
 ```{python}
+#| label: cars-weight-alt
 alt.Chart(cars).mark_point().encode(
     x='Miles_per_Gallon',
     y='Horsepower',
@@ -874,6 +887,7 @@ is represented with a light color
 since this has the highest contrast to the dark background of the chart.
 
 ```{r}
+#| label: cars-weight-gg
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
     geom_point()
 ```
@@ -953,6 +967,7 @@ you can see an overview of how which other libraries exist
 and how they are connected.
 
 ```{mermaid}
+%%| label: visualization-ecosystem
 %%| mermaid-format: png
 %%{init: {'flowchart': {'width': 800}}}%%
 graph TD
@@ -1020,6 +1035,7 @@ graph TD
 ```
 
 ```{mermaid}
+%%| label: ecosystem-legend
 %%| mermaid-format: png
 graph TD
     %% Color definitions
@@ -1168,6 +1184,7 @@ You can use the code cells below to code your answer:
 ### Altair
 
 ```{pyodide}
+#| label: food-exercise-python-setup
 #| setup: true
 #| exercise:
 #|   - initial_chart_alt
@@ -1181,6 +1198,7 @@ food_emission = pd.read_csv(url)
 ```
 
 ```{pyodide}
+#| label: food-scatter-python-exercise
 #| exercise: initial_chart_alt
 alt.Chart(______).mark_point().encode(
     x=______,
@@ -1189,6 +1207,7 @@ alt.Chart(______).mark_point().encode(
 ```
 
 ```{pyodide}
+#| label: food-scatter-python-check
 #| exercise: initial_chart_alt
 #| check: true
 solution = alt.Chart(food_emission).mark_point().encode(
@@ -1201,6 +1220,7 @@ assert_chart_equal(solution, result)
 ### ggplot
 
 ```{webr}
+#| label: food-exercise-r-setup
 #| setup: true
 #| exercise:
 #|   - initial_chart_gg
@@ -1212,6 +1232,7 @@ food_emission <- readr::read_csv(url, show_col_types=FALSE)
 ```
 
 ```{webr}
+#| label: food-scatter-r-exercise
 #| exercise: initial_chart_gg
 # TODO change column names so that backticks are not required
 ggplot(______) +
@@ -1223,6 +1244,7 @@ ggplot(______) +
 ```
 
 ```{webr}
+#| label: food-scatter-r-check
 #| exercise: initial_chart_gg
 #| check: true
 solution <- ggplot(food_emission) +
@@ -1254,6 +1276,7 @@ review section @sec-learning-to-speak.
 ### Altair
 
 ```{python}
+#| label: food-scatter-alt
 alt.Chart(food_emission).mark_point().encode(
     x='Total Food Supply (kg/capita/yr)',
     y='Emissions (Kg CO2 / kg product)',
@@ -1263,12 +1286,14 @@ alt.Chart(food_emission).mark_point().encode(
 ### ggplot
 
 ```{r}
+#| label: load-food-emissions-r
 #| echo: false
 url <- 'data/aggregated__food_data.csv'
 food_emission <- readr::read_csv(url, show_col_types=FALSE)
 ```
 
 ```{r}
+#| label: food-scatter-gg
 ggplot(food_emission) +
     aes(
         x=`Total Food Supply (kg/capita/yr)`,
@@ -1295,6 +1320,7 @@ With altair you can add a `tooltip` to your chart. Tooltips are labels that pop 
 Add a `tooltip` to investigate which foods stand out.
 
 ```{pyodide}
+#| label: food-tooltip-exercise
 #| exercise: tooltip_chart_alt
 alt.Chart(food_emission).______.______(
     ______
@@ -1308,12 +1334,16 @@ Take a closer look at the emissions data table - you'll need the correct column 
 
 ::: {.callout-default .ex-solution}
 ```{python}
+#| label: food-tooltip-solution
 alt.Chart(food_emission).mark_point().encode(
     x='Total Food Supply (kg/capita/yr)',
     y='Emissions (Kg CO2 / kg product)',
     tooltip='Food Item',
 )
+```
+
 ```{pyodide}
+#| label: food-tooltip-check
 #| exercise: tooltip_chart_alt
 #| check: true
 solution = alt.Chart(food_emission).mark_point().encode(

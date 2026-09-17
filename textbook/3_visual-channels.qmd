@@ -10,6 +10,7 @@ resources:
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ```{python}
+#| label: channel-diagram-setup
 #| include: false
 from channel_figures import magnitude_channels
 ```
@@ -270,6 +271,7 @@ with `read_csv`.
 #### Altair
 
 ```{python}
+#| label: load-gapminder-python
 #| tags: []
 import altair as alt
 import pandas as pd
@@ -283,6 +285,7 @@ gm
 #### ggplot
 
 ```{r}
+#| label: load-gapminder-r
 library(tidyverse)
 theme_set(theme_gray(base_size = 18))
 
@@ -314,6 +317,7 @@ which could affect our data analysis.
 #### Altair
 
 ```{python}
+#| label: gapminder-info-python
 gm.info()
 ```
 
@@ -323,6 +327,7 @@ In the tidyverse,
 we can use `glimpse` to view info of our dataframe.
 
 ```{r}
+#| label: gapminder-glimpse-r
 glimpse(gm)
 ```
 
@@ -368,6 +373,7 @@ it will actually throw an error,
 let's see what this looks like:
 
 ```{python}
+#| label: population-row-limit
 #| eval: false
 alt.Chart(gm).mark_line().encode(
     x='year',
@@ -391,6 +397,7 @@ even if you don't yet understand exactly what is happening under the hood.
 The first line we will run is the following:
 
 ```{python}
+#| label: channels-vegafusion-setup
 #| output: false
 alt.data_transformers.enable('vegafusion')
 ```
@@ -416,6 +423,7 @@ Let's do this using the line chart we learned about in last lecture:
 ### Altair
 
 ```{python}
+#| label: population-line-alt
 #| tags: []
 alt.Chart(gm).mark_line().encode(
     x='year',
@@ -426,6 +434,7 @@ alt.Chart(gm).mark_line().encode(
 ### ggplot
 
 ```{r}
+#| label: population-line-gg
 ggplot(gm, aes(x = year, y = population)) +
     geom_line(stat = 'summary', fun = sum)
 ```
@@ -453,6 +462,7 @@ We will learn more about different data types later,
 for now this is all we need.
 
 ```{python}
+#| label: population-temporal-axis
 #| tags: []
 alt.Chart(gm).mark_line().encode(
     x='year:T',
@@ -467,6 +477,7 @@ We could also have created this same visualization using an area chart:
 ### Altair
 
 ```{python}
+#| label: population-area-alt
 alt.Chart(gm).mark_area().encode(
     x='year:T',
     y='sum(population)'
@@ -476,6 +487,7 @@ alt.Chart(gm).mark_area().encode(
 ### ggplot
 
 ```{r}
+#| label: population-area-gg
 ggplot(gm, aes(x = year, y = population)) +
     geom_area(stat = 'summary', fun = sum)
 ```
@@ -495,6 +507,7 @@ Let's see how it looks for the area chart first.
 ### Altair
 
 ```{python}
+#| label: population-stacked-alt
 alt.Chart(gm).mark_area().encode(
     x='year:T',
     y='sum(population)',
@@ -516,6 +529,7 @@ This is already the default position for `geom_area`,
 so we don't need to set it explicitly.
 
 ```{r}
+#| label: population-stacked-gg
 ggplot(gm, aes(x = year, y = population, fill = region)) +
     geom_area(stat = 'summary', fun = sum)
 ```
@@ -547,6 +561,7 @@ and don't care as much about the total of the groups added together.
 ### Altair
 
 ```{python}
+#| label: region-lines-alt
 alt.Chart(gm).mark_line().encode(
     x='year:T',
     y='sum(population)',
@@ -560,6 +575,7 @@ To change the stacking behavior we can set the position to `dodge`
 and add some transparency with the `alpha` parameter.
 
 ```{r}
+#| label: population-dodged-gg
 ggplot(gm, aes(x = year, y = population, fill = region)) +
     geom_area(stat = 'summary', fun = sum, position = 'dodge', alpha = 0.4)
 ```
@@ -567,6 +583,7 @@ ggplot(gm, aes(x = year, y = population, fill = region)) +
 A line plot would be more effective than the layered/dodged area chart above.
 
 ```{r}
+#| label: region-lines-gg
 ggplot(gm, aes(x = year, y = population, color = region)) +
     geom_line(stat = 'summary', fun = sum)
 ```
@@ -603,6 +620,7 @@ You will learn more about this in lab 1.
 :::
 
 ```{python}
+#| label: fertility-stacked
 alt.Chart(gm).mark_area().encode(
     x='year:T',
     y='mean(children_per_woman)',
@@ -633,6 +651,7 @@ to recreate the same area plot as above
 just to demonstrate how it works.
 
 ```{python}
+#| label: fertility-axis-helper
 alt.Chart(gm).mark_area().encode(
     x='year:T',
     y=alt.Y('mean(children_per_woman)'),
@@ -647,6 +666,7 @@ we can use the `.stack(False)` method of `alt.Y`
 to allow us to see area behind each other).
 
 ```{python}
+#| label: fertility-overlapping
 alt.Chart(gm).mark_area(opacity=0.4).encode(
     x='year:T',
     y=alt.Y('mean(children_per_woman)').stack(False),
@@ -675,6 +695,7 @@ we can see that Europe follows a much different development
 than to the other regions.
 
 ```{python}
+#| label: fertility-lines
 alt.Chart(gm).mark_line().encode(
     x='year:T',
     y='mean(children_per_woman)',
@@ -733,6 +754,7 @@ First let's create a bar chart of a single value per country,
 which represents the sum of all the countries' populations.
 
 ```{python}
+#| label: gapminder-filter-2018
 gm2018 = gm.query('year == 2018')
 gm2018
 ```
@@ -768,6 +790,7 @@ Finally let's create our first bar plot:
 ### Altair
 
 ```{python}
+#| label: population-bars-alt
 alt.Chart(gm2018).mark_bar().encode(
     x='region',
     y='sum(population)'
@@ -777,6 +800,7 @@ alt.Chart(gm2018).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| label: population-bars-gg
 gm2018 <- gm %>% filter(year == 2018)
 
 ggplot(gm2018, aes(x = region, y = population)) +
@@ -800,6 +824,7 @@ we will continue to use horizontal bar charts.
 ### Altair
 
 ```{python}
+#| label: population-horizontal-alt
 alt.Chart(gm2018).mark_bar().encode(
     x='sum(population)',
     y='region'
@@ -811,6 +836,7 @@ alt.Chart(gm2018).mark_bar().encode(
 Flip x and y for a horizontal chart.
 
 ```{r}
+#| label: population-horizontal-gg
 ggplot(gm2018, aes(y = region, x = population)) +
     geom_bar(stat = 'summary', fun = sum)
 ```
@@ -827,6 +853,7 @@ We don't need to specify a column name for the y-axis,
 since we are just counting values in each categorical on the x-axis.
 
 ```{python}
+#| label: country-counts-alt
 alt.Chart(gm2018).mark_bar().encode(
     x='count()',
     y='region'
@@ -842,6 +869,7 @@ we don't need to specify a function
 (there are many ways of summarizing: mean, median, sum, sd, etc).
 
 ```{r}
+#| label: country-count-stat-gg
 ggplot(gm2018, aes(y = region)) +
     geom_bar(stat = 'count')
 ```
@@ -851,6 +879,7 @@ so the default `stat` is actually `'count'`,
 which means we can leave it blank.
 
 ```{r}
+#| label: country-counts-gg
 ggplot(gm2018, aes(y = region)) +
     geom_bar()
 ```
@@ -875,6 +904,7 @@ to specify that we want to sort
 according to the values on the y-axis.
 
 ```{python}
+#| label: country-counts-sorted-alt
 alt.Chart(gm2018).mark_bar().encode(
     x='count()',
     y=alt.Y('region').sort('x')
@@ -892,6 +922,7 @@ that we can then pass to the base R `reorder` function
 as the sorting key for our categorical axis column:
 
 ```{r}
+#| label: country-counts-sorted-gg
 gm2018 %>%
     add_count(region) %>%
     ggplot(aes(y = reorder(region, n))) +
@@ -912,6 +943,7 @@ we could use the minus sign before the axis reference.
 ### Altair
 
 ```{python}
+#| label: country-counts-reversed-alt
 alt.Chart(gm2018).mark_bar().encode(
     x='count()',
     y=alt.Y('region').sort('-x')
@@ -923,6 +955,7 @@ alt.Chart(gm2018).mark_bar().encode(
 Reversing a sort is done with the minus sign like in Altair.
 
 ```{r}
+#| label: country-counts-reversed-gg
 gm2018 %>%
     add_count(region) %>%
     ggplot(aes(y = reorder(region, -n))) +
@@ -939,6 +972,7 @@ is the best for this particular data,
 let's demonstrate how we can change it.
 
 ```{python}
+#| label: country-counts-custom-order
 my_order = ['Africa', 'Europe', 'Oceania', 'Asia', 'Americas']
 alt.Chart(gm2018).mark_bar().encode(
     x='count()',
@@ -969,6 +1003,7 @@ does not look that great by default.
 ### Altair
 
 ```{python}
+#| label: life-expectancy-unbinned-alt
 alt.Chart(gm2018).mark_bar().encode(
     x=alt.X('life_expectancy'),
     y='count()'
@@ -978,6 +1013,7 @@ alt.Chart(gm2018).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| label: life-expectancy-unbinned-gg
 ggplot(gm2018, aes(x = life_expectancy)) +
     geom_bar()
 ```
@@ -998,6 +1034,7 @@ encoding in Altair
 while hovering over the bars
 
 ```{python}
+#| label: life-expectancy-tooltip
 alt.Chart(gm2018).mark_bar().encode(
     x=alt.X('life_expectancy'),
     y='count()',
@@ -1026,6 +1063,7 @@ and counts up all the values within each group
 before plotting a bar representing this count.
 
 ```{python}
+#| label: life-expectancy-histogram-alt
 alt.Chart(gm2018).mark_bar().encode(
     x=alt.X('life_expectancy').bin(),
     y='count()'
@@ -1038,6 +1076,7 @@ We can change the `stat` from the default `'count'`
 to `'bin'`.
 
 ```{r}
+#| label: life-expectancy-bin-stat-gg
 ggplot(gm2018, aes(x = life_expectancy)) +
     geom_bar(stat = 'bin')
 ```
@@ -1048,6 +1087,7 @@ This geom calls `geom_bar(stat = 'bin')` by default,
 so the output will be exactly the same.
 
 ```{r}
+#| label: life-expectancy-histogram-gg
 ggplot(gm2018, aes(x = life_expectancy)) +
     geom_histogram()
 ```
@@ -1069,6 +1109,7 @@ so when you learn the building blocks,
 you can use them in many places.
 
 ```{python}
+#| label: histogram-bin-tooltip
 alt.Chart(gm2018).mark_bar().encode(
     x=alt.X('life_expectancy').bin(),
     y='count()',
@@ -1088,6 +1129,7 @@ to the `bin` parameter instead of passing the value `True`.
 ### Altair
 
 ```{python}
+#| label: histogram-maxbins-alt
 alt.Chart(gm2018).mark_bar().encode(
     x=alt.X('life_expectancy').bin(maxbins=30),
     y='count()'
@@ -1101,11 +1143,13 @@ we can use `bins` to set the number of bins,
 which is more similar to `maxbins` in Altair.
 
 ```{r}
+#| label: histogram-bins-gg
 ggplot(gm2018, aes(x = life_expectancy)) +
     geom_histogram(bins = 20)
 ```
 
 ```{r}
+#| label: histogram-borders-gg
 ggplot(gm2018, aes(x = life_expectancy)) +
     geom_histogram(bins = 20, color = 'white')
 ```
@@ -1162,6 +1206,7 @@ of the continents look like here.
 ### Altair
 
 ```{python}
+#| label: region-histogram-stacked-alt
 alt.Chart(gm2018).mark_bar().encode(
     x=alt.X('life_expectancy').bin(maxbins=30),
     y='count()',
@@ -1175,11 +1220,13 @@ When coloring bars and areas in ggplot,
 we need to use `fill` instead of `color`.
 
 ```{r}
+#| label: histogram-color-vs-fill-gg
 ggplot(gm2018, aes(x = life_expectancy, color = region)) +
     geom_histogram(bins = 20, color = 'white')
 ```
 
 ```{r}
+#| label: region-histogram-stacked-gg
 ggplot(gm2018, aes(x = life_expectancy, fill = region)) +
     geom_histogram(bins = 20, color = 'white')
 ```
@@ -1214,6 +1261,7 @@ and instead layer them behind each other with some opacity
 so that we are able to see all groups.
 
 ```{python}
+#| label: region-histogram-overlapping
 alt.Chart(gm2018).mark_bar(opacity=0.7).encode(
     x=alt.X('life_expectancy').bin(maxbins=30),
     y=alt.Y('count()').stack(False),
@@ -1242,6 +1290,7 @@ we're also shrinking the dimensions of each subplot.
 ### Altair
 
 ```{python}
+#| label: region-histogram-facets-alt
 alt.Chart(gm2018).mark_bar().encode(
     x=alt.X('life_expectancy').bin(maxbins=30),
     y='count()',
@@ -1258,6 +1307,7 @@ By default it tries to create an even number of columns and rows,
 rather than putting all plots in one row like Altair.
 
 ```{r}
+#| label: region-histogram-facets-gg
 #| fig-width: 7
 ggplot(gm2018, aes(x = life_expectancy, fill = region)) +
     geom_histogram(bins = 20, color = 'white') +
@@ -1292,6 +1342,7 @@ a single row would have been better.
 ### Altair
 
 ```{python}
+#| label: histogram-vertical-facets-alt
 alt.Chart(gm2018).mark_bar().encode(
     alt.X('life_expectancy').bin(maxbins=30),
     alt.Y('count()').title(None),
@@ -1307,6 +1358,7 @@ alt.Chart(gm2018).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| label: histogram-vertical-facets-gg
 #| fig-height: 8
 ggplot(gm2018, aes(x = life_expectancy, fill = region)) +
     geom_histogram(bins = 20, color = 'white') +
@@ -1334,6 +1386,7 @@ is to create an even (or near even) grid of facets,
 as in this slide.
 
 ```{python}
+#| label: histogram-grid-facets-alt
 alt.Chart(gm2018).mark_bar().encode(
     alt.X('life_expectancy').bin(maxbins=30),
     alt.Y('count()').title(None),
@@ -1373,6 +1426,7 @@ Feel free to explore and create visualizations that appeal to you!
 ### Altair
 
 ```{python}
+#| label: chart-styling-alt
 alt.Chart(gm2018, title='My plot title').mark_point().encode(         # Change the title of the plot
     alt.X('child_mortality').title('Child mortality'),                # Change the x-axis title
     alt.Y('life_expectancy').scale(zero=False),                       # Change the y-axis scale to not include zero
@@ -1396,6 +1450,7 @@ and are all added to the end of the plotting construct
 rather than to the different axes functions directly.
 
 ```{r}
+#| label: chart-styling-gg
 #| fig-width: 6
 #| fig-height: 4
 

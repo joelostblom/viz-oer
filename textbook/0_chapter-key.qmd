@@ -69,6 +69,7 @@ rather than being about data visualization in general.
 ### Package One
 
 ```{python}
+#| label: package-example-python
 # Code for the first package, e.g.:
 range(5)
 
@@ -77,6 +78,7 @@ range(5)
 ### Package Two
 
 ```{r}
+#| label: package-example-r
 # Code for the second package, e.g.:
 seq(5)
 ```

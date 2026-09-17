@@ -19,7 +19,7 @@ resources:
 <!-- Temporarily needed for live coding exercises -->
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-```{python setup}
+```{python grouping-setup}
 #| echo: false
 #| output: false
 
@@ -142,6 +142,7 @@ and inform you that you can hover over the points
 in the chart above to see additional information for each observations.
 
 ```{python}
+#| label: income-data-preview
 #| echo: false
 show_df(income_df[['country', 'region', 'income_group', 'percentage_heavy_drinkers', 'life_expectancy_at_65']])
 ```
@@ -163,6 +164,7 @@ Do you think other variables in the dataset could influence alcohol consumption?
 Both the country's income group and region might have an effect on the alcohol consumption and the lifespan. Here, we will explore this for the income group only, and you are free to explore the region on your own. To effectively add this information to the chart, we could use different colors to visually group the points by the income group variable:
 
 ```{python}
+#| label: income-groups-revealed
 #| echo: false
 alt.Chart(income_df).mark_point().encode(
     color='income_group',
@@ -221,6 +223,7 @@ uninformative) conclusions about this data set.
 
 
 ```{python}
+#| label: simpsons-ungrouped
 #| echo: false
 simpsons_df = pd.read_csv("data/simpsons_paradox_data_l.csv")
 alt.Chart(simpsons_df).mark_point().encode(
@@ -232,6 +235,7 @@ alt.Chart(simpsons_df).mark_point().encode(
 ### By group
 
 ```{python}
+#| label: simpsons-grouped
 #| echo: false
 alt.Chart(simpsons_df).mark_point().encode(
   color='Group',
@@ -372,6 +376,7 @@ Let's now see what the code to create this charts looks like:
 Here we use `color='region'`:
 
 ```{python}
+#| label: income-color-alt
 import altair as alt
 import pandas as pd
 
@@ -390,6 +395,7 @@ alt.Chart(income_df).mark_point().encode(
 Here we use `color=region`:
 
 ```{r}
+#| label: grouping-tidyverse-setup
 #| echo: false
 #| output: false
 # Tidyverse is so noisy when imported the first time, so let's do it here in silence
@@ -398,6 +404,7 @@ options(readr.show_col_types = FALSE)
 ```
 
 ```{r fig.width=8, fig.height=6}
+#| label: income-color-gg
 library(tidyverse)
 
 
@@ -457,6 +464,7 @@ The syntax for encoding a shape aesthetic, is similar to that for color:
 ## Altair
 
 ```{python}
+#| label: income-shape-alt
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -469,6 +477,7 @@ Setting `filled=True` fills all the points with a solid color,
 making the shapes easier to distinguish:
 
 ```{python}
+#| label: income-filled-shape-alt
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -480,6 +489,7 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 ## ggplot
 
 ```{r fig.width=8, fig.height=6}
+#| label: income-shape-gg
 ggplot(income_df) +
     aes(
         x=percentage_heavy_drinkers,
@@ -515,6 +525,7 @@ which makes this chart ineffective:
 ## Altair
 
 ```{python}
+#| label: income-region-alt
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -530,6 +541,7 @@ are hard to separate visually,
 which makes this chart ineffective:
 
 ```{r fig.width=8, fig.height=6}
+#| label: income-region-gg
 ggplot(income_df) +
     aes(
         x=percentage_heavy_drinkers, 
@@ -567,6 +579,7 @@ sizes apart as you can see in the chart below.
 ## Altair
 
 ```{python}
+#| label: income-size-alt
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -580,6 +593,7 @@ alt.Chart(income_df).mark_point().encode(
 when using size for categorical variable.
 
 ```{r fig.width=8, fig.height=6}
+#| label: income-size-gg
 
 ggplot(income_df) +
     aes(
@@ -617,6 +631,7 @@ but we can't fit both into the same chart.
 
 
 ```{python}
+#| label: region-position-alt
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='region',
@@ -626,6 +641,7 @@ alt.Chart(income_df).mark_point().encode(
 #### ggplot
 
 ```{r fig.width=8, fig.height=6}
+#| label: region-position-gg
 ggplot(income_df) +
     aes(
         x=percentage_heavy_drinkers,
@@ -671,7 +687,7 @@ To facet by income group, we can append `.facet('income_group')` to our chart.
 We create an even 2x2 grid of facets by using the `columns` parameter.
 
 ```{python}
-#| label: test
+#| label: income-facets-alt
 alt.Chart(income_df, height=250, width=250).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -707,6 +723,7 @@ Yet, we use the `ncol` argument to illustrate how you could manipulate the
 shaper of the facet grid if you desired something else than an even grid.
 
 ```{r fig.width=8, fig.height=6}
+#| label: income-facets-gg
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
@@ -745,6 +762,7 @@ Ensure that only two facets are shown per row.
 ## Altair
 
 ```{pyodide}
+#| label: facet-exercise-python-setup
 #| setup: true
 #| exercise:
 #|   - facet_alt
@@ -756,6 +774,7 @@ url = 'data/income_lifeexp_alcohol.csv'
 ```
 
 ```{pyodide}
+#| label: facet-python-exercise
 #| exercise: facet_alt
 income_df = pd.read_csv(url)
 
@@ -768,6 +787,7 @@ alt.Chart(income_df).mark_point().encode(
 ## ggplot
 
 ```{webr fig.width=8, fig.height=6}
+#| label: facet-exercise-r-setup
 #| setup: true
 #| exercise:
 #|   - facet_ggplot
@@ -777,6 +797,7 @@ url <- 'data/income_lifeexp_alcohol.csv'
 ```
 
 ```{webr fig.width=8, fig.height=6}
+#| label: facet-r-exercise
 #| exercise: facet_ggplot
 income_df <- readr::read_csv(url, show_col_types=FALSE)
 
@@ -797,6 +818,7 @@ ggplot(income_df) +
 ## Altair
 
 ```{python}
+#| label: region-facets-alt
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -810,6 +832,7 @@ alt.Chart(income_df).mark_point().encode(
 ## ggplot
 
 ```{r fig.width=8, fig.height=6}
+#| label: region-facets-gg
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers, 

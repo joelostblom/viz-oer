@@ -47,6 +47,7 @@ and includes both user ratings as well as movie budgets, runtimes, etc.
 ### Altair
 
 ```{python}
+#| label: load-movies-python
 import pandas as pd
 
 movies = pd.read_json('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json')
@@ -57,6 +58,7 @@ movies
 ### ggplot
 
 ```{r}
+#| label: load-movies-r
 library(tidyverse)
 movies <- jsonlite::fromJSON(
     'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json'
@@ -77,6 +79,7 @@ using the runtime of the movies.
 ### Altair
 
 ```{python}
+#| label: distributions-vegafusion-setup
 import altair as alt
 
 # Simplify working with large datasets in Altair
@@ -84,6 +87,7 @@ alt.data_transformers.enable('vegafusion')
 ```
 
 ```{python}
+#| label: runtime-histogram-alt
 alt.Chart(movies).mark_bar().encode(
     alt.X('runtime').bin(maxbins=30),
     y='count()'
@@ -93,6 +97,7 @@ alt.Chart(movies).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| label: runtime-histogram-gg
 ggplot(movies) +
     aes(x = runtime) +
     geom_histogram(color = 'white')
@@ -119,6 +124,7 @@ if we are not faceting or coloring by that variable).
 Unpacking a list is done via the [`explode` method of pandas dataframes](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.explode.html):
 
 ```{python}
+#| label: explode-countries-python
 boom_countries = movies.explode('countries')
 boom_countries
 ```
@@ -128,6 +134,7 @@ boom_countries
 In dplyr, a list can be unpacked via the `unnest` function.
 
 ```{r}
+#| label: unnest-countries-r
 free_countries <- movies %>% unnest(countries)
 free_countries
 ```
@@ -139,6 +146,7 @@ free_countries
 ### Altair
 
 ```{python}
+#| label: country-histograms-alt
 alt.Chart(boom_countries).mark_bar().encode(
     alt.X('runtime').bin(maxbins=30),
     y='count()'
@@ -150,6 +158,7 @@ alt.Chart(boom_countries).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| label: country-histograms-gg
 ggplot(free_countries, aes(x = runtime)) +
     geom_histogram(color = 'white') +
     facet_wrap(~countries)
@@ -166,6 +175,7 @@ but we could also make it independent for each plot.
 ### Altair
 
 ```{python}
+#| label: histogram-free-scales-alt
 alt.Chart(boom_countries).mark_bar().encode(
     alt.X('runtime').bin(maxbins=30),
     y='count()'
@@ -179,6 +189,7 @@ alt.Chart(boom_countries).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| label: histogram-free-scales-gg
 ggplot(free_countries, aes(x = runtime)) +
     geom_histogram(color = 'white') +
     facet_wrap(~countries, scales = 'free_y')
@@ -194,6 +205,7 @@ we need to explode also the `'genres'` column in the df.
 ### Altair
 
 ```{python}
+#| label: genre-histograms-stacked-alt
 boom_both = boom_countries.explode('genres')
 alt.Chart(boom_both).mark_bar().encode(
     alt.X('runtime').bin(maxbins=30),
@@ -210,6 +222,7 @@ We need to unpack both `genres` and `countries`
 if we want to use aesthetic mappings for both these columns.
 
 ```{r}
+#| label: genre-histograms-stacked-gg
 free_both <- free_countries %>% unnest(genres)
 ggplot(free_both, aes(x = runtime, fill = genres)) +
     geom_histogram() +
@@ -231,6 +244,7 @@ and can make them even harder to read.
 ### Altair
 
 ```{python}
+#| label: genre-histograms-overlaid-alt
 boom_both = boom_countries.explode('genres')
 alt.Chart(boom_both).mark_bar(opacity=0.5).encode(
     alt.X('runtime').bin(maxbins=30),
@@ -244,6 +258,7 @@ alt.Chart(boom_both).mark_bar(opacity=0.5).encode(
 ### ggplot
 
 ```{r}
+#| label: genre-histograms-overlaid-gg
 ggplot(free_both, aes(x = runtime, fill = genres)) +
     geom_histogram(position = 'identity', alpha = 0.5) +
     facet_wrap(~countries)
@@ -297,6 +312,7 @@ Let's see how density plots are created in each library.
 #### Altair
 
 ```{python}
+#| label: runtime-density-alt
 alt.Chart(movies).transform_density(
     'runtime',
     as_=['runtime', 'density']  # Give the name "density" the KDE columns we just created
@@ -320,6 +336,7 @@ there is a specific `geom` for densities
 which does both the KDE calculation and plots a line.
 
 ```{r}
+#| label: runtime-density-line-gg
 ggplot(movies) +
     aes(x = runtime) +
     geom_density()
@@ -328,6 +345,7 @@ ggplot(movies) +
 Filling the density can make it look a bit nicer.
 
 ```{r}
+#| label: runtime-density-area-gg
 ggplot(movies) +
     aes(x = runtime) +
     geom_density(fill = 'grey', alpha = 0.7)
@@ -345,12 +363,14 @@ how wide each kernel is
 #### Altair
 
 ```{python}
+#| label: density-narrow-bandwidth-alt
 alt.Chart(movies).transform_density(
     'runtime', bandwidth=1, as_=['runtime', 'density']
 ).mark_line().encode(x='runtime', y='density:Q')
 ```
 
 ```{python}
+#| label: density-wide-bandwidth-alt
 alt.Chart(movies).transform_density(
     'runtime', bandwidth=100, as_=['runtime', 'density']
 ).mark_line().encode(x='runtime', y='density:Q')
@@ -359,12 +379,14 @@ alt.Chart(movies).transform_density(
 #### ggplot
 
 ```{r}
+#| label: density-narrow-bandwidth-gg
 ggplot(movies) +
     aes(x = runtime) +
     geom_density(bw=1)
 ```
 
 ```{r}
+#| label: density-wide-bandwidth-gg
 ggplot(movies) +
     aes(x = runtime) +
     geom_density(bw=100)
@@ -383,6 +405,7 @@ so that there is one density calculation
 per color variable (`genres` in this case).
 
 ```{python}
+#| label: genre-densities-alt
 boom_genres = movies.explode('genres')
 alt.Chart(boom_genres).transform_density(
      'runtime',
@@ -405,6 +428,7 @@ but can treat `geom_density` like any other geom,
 which is convenient.
 
 ```{r}
+#| label: genre-densities-gg
 free_genres <- movies %>% unnest(genres)
 ggplot(free_genres) +
     aes(x = runtime, fill = genres, color = genres) +
@@ -420,6 +444,7 @@ Lastly, we could make the areas slightly transparent so that it is easier to see
 #### Altair
 
 ```{python}
+#| label: density-transparency-alt
 alt.Chart(boom_genres).transform_density(
      'runtime',
      groupby=['genres'],
@@ -436,6 +461,7 @@ alt.Chart(boom_genres).transform_density(
 #### ggplot
 
 ```{r}
+#| label: density-transparency-gg
 ggplot(free_genres) +
     aes(x = runtime,
         fill = genres,
@@ -456,6 +482,7 @@ but is not really a useful numbers for us to know.
 #### Altair
 
 ```{python}
+#| label: country-density-facets-alt
 alt.Chart(boom_both).transform_density(
      'runtime',
      groupby=['genres', 'countries'],
@@ -472,6 +499,7 @@ alt.Chart(boom_both).transform_density(
 #### ggplot
 
 ```{r}
+#| label: country-density-facets-gg
 free_both <- free_genres %>%
     unnest(countries)
 ggplot(free_both) +
@@ -494,6 +522,7 @@ compared to a histogram with discrete bins and a count in each bin.
 #### Altair
 
 ```{python}
+#| label: density-counts-alt
 alt.Chart(boom_both).transform_density(
      'runtime',
      groupby=['genres', 'countries'],
@@ -511,6 +540,7 @@ alt.Chart(boom_both).transform_density(
 #### ggplot
 
 ```{r}
+#| label: density-counts-gg
 ggplot(free_both, aes(x = runtime, fill = genres, color = genres)) +
     geom_density(aes(y = after_stat(count)), alpha = 0.6) +
     facet_wrap(~countries)
@@ -543,6 +573,7 @@ it does not really matter if we use an area or line.
 #### Altair
 
 ```{python}
+#| label: rating-density-lines-alt
 boom_both['vote_avg_over_4'] = boom_both['vote_average'] > 3
 alt.Chart(boom_both).transform_density(
      'runtime',
@@ -566,6 +597,7 @@ alt.Chart(boom_both).transform_density(
 #### ggplot
 
 ```{r}
+#| label: rating-density-lines-gg
 free_both <- free_both %>% mutate(vote_avg_over_4 = vote_average > 3)
 ggplot(free_both, aes(x = runtime, color = genres)) +
     geom_density(aes(y = after_stat(count))) +
@@ -582,6 +614,7 @@ we can use `facet_grid` instead of `facet_wrap`.
 #### Altair
 
 ```{python}
+#| label: genre-country-density-grid-alt
 alt.Chart(boom_both).transform_density(
     'runtime',
     groupby=['genres', 'countries'],
@@ -596,6 +629,7 @@ alt.Chart(boom_both).transform_density(
 #### ggplot
 
 ```{r}
+#| label: genre-country-density-grid-gg
 ggplot(free_both) +
     aes(x = runtime,
         fill = genres,
@@ -629,6 +663,7 @@ since the boxes have separate labels on the y-axis.
 ### Altair
 
 ```{python}
+#| label: genre-boxplots-alt
 alt.Chart(boom_genres).mark_boxplot().encode(
      x='runtime',
      y='genres',
@@ -641,6 +676,7 @@ alt.Chart(boom_genres).mark_boxplot().encode(
 ggplot has a boxplot geom.
 
 ```{r}
+#| label: genre-boxplots-gg
 ggplot(free_genres, aes(x = runtime, y = genres, fill = genres)) +
     geom_boxplot()
 ```
@@ -654,6 +690,7 @@ Boxplots work well with faceting.
 ### Altair
 
 ```{python}
+#| label: country-boxplot-facets-alt
 alt.Chart(boom_both).mark_boxplot().encode(
      x='runtime',
      y='genres',
@@ -667,6 +704,7 @@ alt.Chart(boom_both).mark_boxplot().encode(
 ### ggplot
 
 ```{r}
+#| label: country-boxplot-facets-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -687,6 +725,7 @@ if we needed a more precise indication of the counts.
 ### Altair
 
 ```{python}
+#| label: boxplot-count-width-alt
 alt.Chart(boom_both).mark_boxplot().encode(
      x='runtime',
      y='genres',
@@ -703,6 +742,7 @@ alt.Chart(boom_both).mark_boxplot().encode(
 In ggplot, `varwidth = TRUE` scales box widths by the square root of the count.
 
 ```{r}
+#| label: boxplot-count-width-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -732,6 +772,7 @@ but since I personally like seeing distributions,
 I invented these 8-bit looking violins made out of square marks.
 
 ```{python}
+#| label: square-violins-alt
 squareolins = alt.Chart(boom_both).mark_square().encode(
      x='runtime',
      y='genres',
@@ -751,6 +792,7 @@ and avoided having to code the entire chart twice,
 just changing the mark and the necessary encoding.
 
 ```{python}
+#| label: square-violin-means-alt
 means = alt.Chart(boom_both).mark_circle(color='white').encode(
         x='mean(runtime)',
         y='genres'
@@ -776,6 +818,7 @@ which both calculates the density and then plots
 a line and an area.
 
 ```{r}
+#| label: violin-facets-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -787,6 +830,7 @@ ggplot(free_both) +
 These can also be scaled by size.
 
 ```{r}
+#| label: violin-count-scaling-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -798,6 +842,7 @@ ggplot(free_both) +
 We can combine geoms to add e.g. the median to the plot.
 
 ```{r}
+#| label: violin-medians-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -815,6 +860,7 @@ where the dots are spread/jittered randomly on the non-value axis
 so that they don't all overlap via `geom_jitter`.
 
 ```{r}
+#| label: violin-jitter-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -831,6 +877,7 @@ In Altair,
 this would be a bit more cumbersome since we would need to use different facets.
 
 ```{r}
+#| label: violin-country-groups-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -844,6 +891,7 @@ While the violins are "dodging" each other,
 the points are aligned in a row.
 
 ```{r}
+#| label: violin-undodged-medians-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -857,6 +905,7 @@ we need to use `position` parameter
 to add the same dodge offset as for the violins.
 
 ```{r}
+#| label: violin-dodged-medians-gg
 ggplot(free_both) +
     aes(x = runtime,
         y = genres,
@@ -884,6 +933,7 @@ since this will not stack on top of each other,
 but start from the same point of the y-axis.
 
 ```{python}
+#| label: histogram-lines-alt
 alt.Chart(boom_both).mark_line().encode(
     alt.X('runtime').bin(maxbins=30),
     y='count()',
@@ -905,6 +955,7 @@ this does not quite behave as a histogram and should not be used as such
 as per [this GitHub comment from the Altair author](https://github.com/altair-viz/altair/issues/1701#issuecomment-534398358) (until this issue is fixed).
 
 ```{python}
+#| label: histogram-step-lines-alt
 alt.Chart(boom_both).mark_line(interpolate='step').encode(
     alt.X('runtime').bin(maxbins=30),
     y='count()',
@@ -921,6 +972,7 @@ while preserving the one-directional (monotone) properties of a linear interpola
 but proceed gradually from one to the next).
 
 ```{python}
+#| label: histogram-monotone-lines-alt
 alt.Chart(boom_both).mark_line(interpolate='monotone').encode(
     alt.X('runtime').bin(maxbins=30),
     y='count()',
@@ -939,6 +991,7 @@ it is not the same thing and should not be used as such
 This is how I created the distribution plots in the slides.
 
 ```{python}
+#| label: slide-distribution-examples
 from scipy.stats import pareto
 
 
