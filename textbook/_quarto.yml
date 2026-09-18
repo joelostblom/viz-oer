@@ -13,10 +13,12 @@ book:
     - 3_individual-observations.qmd
     - 4_magnitude.qmd
     - 5_groups.qmd
-    - 6_trends.qmd
-    - 7_statistical-summaries.qmd
-    - 8_distributions.qmd
-    - 9_multiple-distributions.qmd
+    - 6_order.qmd
+    - 7_summaries.qmd
+    - 8_variability.qmd
+    - 9_distributions.qmd
+    - 10_multiple-distributions.qmd
+    - 11_trends.qmd
     - 99_misc.qmd
 
 filters:

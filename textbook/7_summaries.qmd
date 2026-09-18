@@ -1,5 +1,5 @@
 ---
-title: "Statistical summaries"
+title: "Summaries"
 fig-width: 5
 fig-height: 3.75
 ---
@@ -13,6 +13,17 @@ fig-height: 3.75
 3. **Order** categorical bars and **choose** histogram bins that reveal the shape of a distribution.
 
 :::
+
+In [Order](6_order.qmd), we connected supplied values to make their sequence clear.
+Sometimes, however, our question concerns a collection of observations:
+How many are there? What is their total? What is a typical value?
+A summary helps answer these questions by reducing many values to a few.
+
+That reduction is useful, but it also leaves information out.
+As we work through this chapter, keep asking:
+**What did we lose, and how much of it do we need to put back?**
+This question will lead us to [Variability](8_variability.qmd)
+and [Distributions](9_distributions.qmd).
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -66,7 +77,9 @@ Thus,
 to graphically depict a distribution
 we also need to illustrate the spread of the distribution
 (the range of the values that were observed).
-We will cover how to effectively visualize this later in the course.
+The following chapters on [Variability](8_variability.qmd)
+and [Distributions](9_distributions.qmd) address how to communicate
+information beyond a single summary value.
 
 Below is an example of this from a [scientific article on how to present data accurately](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002128).
 The bars in A show the mean and standard error
@@ -82,7 +95,7 @@ just note how different they are from different distributions).
 ![image.png](img/barplot-hiding-points.png)
 
 To learn how to create bar charts,
-we will continue working with the Gapminder dataset introduced in [Trends](6_trends.qmd),
+we will use the country-level Gapminder data behind the prepared values in [Order](6_order.qmd),
 but look at values from only a single year, 2018.
 First let's create a bar chart of a single value per country,
 which represents the sum of all the countries' populations.

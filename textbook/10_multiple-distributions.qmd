@@ -16,6 +16,16 @@ fig-height: 3.5
 
 :::
 
+In [Distributions](9_distributions.qmd), we looked beyond a single summary
+to see where values are concentrated and how they are spread out.
+Now we bring that perspective back to [Groups](5_groups.qmd):
+**How do the centers, variability, and shapes of distributions differ between groups?**
+
+Comparing distributions also prepares us for [Trends](11_trends.qmd).
+A fitted trend describes how a feature such as the typical response changes
+with another variable; the distributions remind us how much variation
+that fitted line may leave out.
+
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ::: {.callout-note title="Further reading"}
@@ -49,7 +59,7 @@ gm2018 <- gm %>% filter(year == 2018)
 ## Faceting into subplots
 
 We can use facets, or subplots, to compare different distributions.
-We return to the 2018 Gapminder data from [Statistical summaries](7_statistical-summaries.qmd),
+We return to the 2018 Gapminder data from [Summaries](7_summaries.qmd),
 comparing life expectancy across regions.
 
 We have seen how to use color to divide data into groups.
@@ -271,7 +281,7 @@ with complex compound charts,
 which is why we are not focusing on them here
 ([more details in the docs if you are interested](https://altair-viz.github.io/user_guide/compound_charts.html?highlight=facet#faceted-charts)).
 
-We now return to the movie data from [Distributions](8_distributions.qmd)
+We now return to the movie data from [Distributions](9_distributions.qmd)
 to compare runtimes across genres and production countries.
 
 ```{python}

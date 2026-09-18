@@ -1,5 +1,5 @@
 ---
-title: "Trends"
+title: "Order"
 fig-width: 5
 fig-height: 3.75
 resources:
@@ -9,39 +9,58 @@ resources:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Distinguish** when to use an area chart and when to use a line chart to represent a trend.
+1. **Explain** how connecting observations makes their grouping and order easier to see.
 
-2. **Compare** trends for the world and individual regions using prepared population and fertility data.
+2. **Distinguish** which observations belong to the same series from the order in which they should be connected.
 
-3. **Use** temporal encodings and **explain** how stacking changes the interpretation of a chart.
+3. **Use** temporal encodings to arrange observations chronologically, and **compare** line and area charts for ordered data.
+
+4. **Explain** how stacking changes the interpretation of a chart and when a shared baseline is more useful.
 
 :::
 
+In [Groups](5_groups.qmd), we learned how to distinguish groups of observations.
+Now we will look at observations that also have a meaningful order,
+and use connections to make that order visible.
+Grouping tells us which observations belong together;
+ordering tells us which observation comes next within each group.
+
+Connecting observations can help us see a trend,
+but the lines in this chapter simply join the supplied values.
+In [Trends](11_trends.qmd), we will return to the different task
+of estimating a broader pattern with a fitted line or smoother.
+
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Data for trends over time
+## Data with a meaningful order
 
-We have learned how position, size, color, and shape represent observations and groups.
-Now we will use lines and areas to show how values change over time.
+Time provides a natural ordering: each observation has a place in a sequence.
+We will use lines and areas to help readers follow that sequence.
+The same idea applies beyond time, for example to measurements taken
+at increasing doses of a treatment.
 
 ### Global development data
 
-We will visualize population and fertility trends from 1800 to 2018.
+We will visualize population and fertility values for successive years from 1800 to 2018.
 The data comes from the [Gapminder country-level dataset](https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv),
 but the values for this chapter have already been calculated for us:
 
-- [World trends](data/gapminder_world_trends.csv) has one row per year,
+- [World population data](data/gapminder_world_trends.csv) has one row per year,
   with the total population of the countries in the source dataset.
-- [Regional trends](data/gapminder_region_trends.csv) has one row per region and year,
+- [Regional population and fertility data](data/gapminder_region_trends.csv) has one row per region and year,
   with its total population and the average number of children per woman across its countries.
   Each country contributes equally to that average; it is not weighted by population.
+
+These prepared values let us focus on how to connect observations.
+In [Summaries](7_summaries.qmd), we will learn how to calculate values
+such as totals from country-level observations.
 
 ::: {.panel-tabset group="language"}
 
 #### Altair
 
 ```{python}
-#| label: load-trends-python
+#| label: load-order-python
 #| tags: []
 import altair as alt
 import pandas as pd
@@ -58,7 +77,7 @@ as calendar years when we use a temporal encoding below.
 #### ggplot
 
 ```{r}
-#| label: load-trends-r
+#| label: load-order-r
 library(tidyverse)
 theme_set(theme_gray(base_size = 18))
 
@@ -90,7 +109,7 @@ which could affect our data analysis.
 #### Altair
 
 ```{python}
-#| label: trends-info-python
+#| label: order-info-python
 world.info()
 regions.info()
 ```
@@ -101,7 +120,7 @@ In the tidyverse,
 we can use `glimpse` to view info of our dataframe.
 
 ```{r}
-#| label: trends-glimpse-r
+#| label: order-glimpse-r
 glimpse(world)
 glimpse(regions)
 ```
@@ -136,12 +155,38 @@ It's a good idea to include axis labels too!
 :::
 ::::
 
-## Area charts
+## Connecting observations in order
 
 Now we are ready to create our plot!
 Since we want to see how the **world** population has changed,
 we use `world`, which already contains one population value for each year.
-Let's start with a line chart:
+Let's first show each year's value as a point:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: population-points-alt
+alt.Chart(world).mark_point().encode(
+    x='year:Q',
+    y='population'
+)
+```
+
+### ggplot
+
+```{r}
+#| label: population-points-gg
+ggplot(world, aes(x = year, y = population)) +
+    geom_point()
+```
+
+:::
+
+The positions already show how population changes from year to year.
+Connecting consecutive years makes it easier to follow the sequence
+as one continuous series:
 
 ::: {.panel-tabset group="language"}
 
@@ -150,7 +195,7 @@ Let's start with a line chart:
 ```{python}
 #| label: population-line-alt
 #| tags: []
-alt.Chart(world).mark_line().encode(
+alt.Chart(world).mark_line(point=True).encode(
     x='year:Q',
     y='population'
 )
@@ -161,16 +206,29 @@ alt.Chart(world).mark_line().encode(
 ```{r}
 #| label: population-line-gg
 ggplot(world, aes(x = year, y = population)) +
-    geom_line()
+    geom_line() +
+    geom_point()
 ```
 
 :::
+
+The points have not moved and no new population values have been calculated.
+We have added connections between neighboring observations in time.
+The line segments guide the eye; they do not establish what the population
+was at every unobserved moment between those observations.
+
+The order of connection matters.
+Here, Altair's line mark and ggplot's `geom_line()` follow increasing x values
+within each series, rather than an arbitrary ordering of rows in the file.
+We should connect observations only when those connections have a meaningful interpretation.
 
 Interestingly,
 it seems like the world population have been growing in two distinct phases:
 slowly before 1950,
 and more rapidly afterwards.
-We will talk more about that later on.
+This is an example of how making order visible also helps us notice a trend.
+
+### Showing calendar years
 
 In the Altair example, we used `year:Q` to treat the year as a quantitative value.
 However, something seems to be going on with the x-axis
@@ -191,6 +249,11 @@ alt.Chart(world).mark_line().encode(
     y='population'
 )
 ```
+
+When the observations are close together, we can omit the point marks
+and still follow their order through the line, as in the chart above.
+
+## Areas and multiple ordered groups
 
 We could also have created this same visualization using an area chart:
 
@@ -216,16 +279,17 @@ ggplot(world, aes(x = year, y = population)) +
 
 :::
 
-For showing a single trend over time,
-the choice between a line and area chart comes down to aesthetics.
-They are both effective choices for this purpose.
-However,
-when visualizing the trends over time for multiple groups,
+Both lines and areas preserve the sequence of values over time.
+Filling the area down to a zero baseline emphasizes the magnitude of those values,
+while a line emphasizes the path through them.
+When displaying multiple ordered groups,
 lines and areas have different advantages.
 Let's see how it looks for the area chart first.
 
 We now use `regions`, which contains a separate population value
 for each region in each year.
+Region determines which observations belong to the same group,
+and year determines their order within that group.
 
 ::: {.panel-tabset group="language"}
 
@@ -309,6 +373,11 @@ ggplot(regions, aes(x = year, y = population, color = region)) +
 :::
 
 In the chart above,
+connections help us follow each region across years without jumping
+to another region's observations.
+Color identifies the groups, while the connected lines make their sequences visible.
+
+With those separate sequences,
 it is immediately clear that Africa has had a bigger population than Europe
 and since shortly after the year 2000.
 The drawback is that
@@ -405,7 +474,7 @@ but generally it is when there are fewer groups,
 or non-overlapping areas such as density plots.
 
 In the chart above,
-it also looks like the trends over time
+it also looks like the sequences of values over time
 for different continents
 are pretty similar.
 If we create the line chart
@@ -426,3 +495,11 @@ Note that you could use `stack=True` to create a stacked line chart,
 but you should **never** do this
 as it it very confusing and unexpected.
 If you want to stack groups, use an area chart.
+
+## From connections to summaries
+
+So far, we have used position, grouping, and order to make supplied values easier to read.
+But sometimes there are too many observations to show individually,
+or the question calls for a total, count, or typical value.
+In [Summaries](7_summaries.qmd), we will explore how to reduce a collection
+of observations to useful quantities—and ask what information that reduction leaves out.

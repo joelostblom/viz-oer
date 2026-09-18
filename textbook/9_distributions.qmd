@@ -16,6 +16,17 @@ resources:
 
 :::
 
+One summary value can hide important differences between collections of observations.
+An interval adds information about their variability, or about uncertainty in an estimate,
+but its endpoints still do not show where observations or probability are concentrated.
+Two distributions can have similar centers and interval widths yet very different shapes.
+
+Building on [Summaries](7_summaries.qmd) and [Variability](8_variability.qmd),
+we now ask: **How can we see where values are concentrated, where there are gaps,
+and whether there is more than one cluster?**
+We return to histograms, introduced as counts in bins in Summaries,
+and explore what they and density plots reveal about the shape of a distribution.
+
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ::: {.callout-note title="Further reading"}
