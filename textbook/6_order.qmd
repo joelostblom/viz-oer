@@ -19,6 +19,75 @@ resources:
 
 :::
 
+Some data has a natural order to it,
+e.g. temporal variables such as which year or time of the day
+a data point was recorded.
+Let's learn ....
+
+
+::: {.callout-default .ex-prompt}
+
+In the chart below,
+we can see how the CO2 emissions have changed over time
+for the worlds continents.
+As you can see,
+the chart applies the strategies we have learned so far
+and uses color to group observations from different continents.
+But the overlap from the different groups
+make it difficult to follow the development over time
+for any particular continent and the chart is a bit confusing
+even after studying it for a while.
+How do you think you could change this chart
+to make it easier to see how the CO2 emissions for each continent change over time?
+
+```{python setup}
+#| echo: false
+#| output: false
+import altair as alt
+import pandas as pd
+
+alt.data_transformers.enable('vegafusion')
+```
+
+```{python bad-points}
+#| echo: false
+years = range(1900, 2030, 8)
+co2_per_capita = pd.read_csv('data/co-emissions-per-capita.csv').query('Year.isin(@years)')
+points = alt.Chart(co2_per_capita, width=450).mark_point().encode(
+    x='Year:T',
+    y=alt.Y('CO2_emissions_per_capita').title('Tonnes of CO2 per capita'),
+    color=alt.Color('Entity').title(None)
+)
+
+points
+```
+
+:::: {.callout-default .ex-hint}
+
+Do you think connected the points belonging to the same continent
+would make it easier or harder to spot trends?
+
+::::: {.callout-default .ex-solution}
+
+We can use the natural order of the observations
+to connect the points that belongs to the same continent with a line.
+Drawing a line drawn from the earliest to the most recent year
+helps us with two things:
+It makes it easier to see the development over time for any single continent
+and it makes it easier to see which points belong to which continent.
+As such,
+a line is a graphical tool that assist both with ordering and with grouping.
+
+```{python line-overlay}
+points.mark_line() + points.mark_point(filled=True)
+```
+
+:::::
+
+::::
+
+:::
+
 In [Groups](5_groups.qmd), we learned how to distinguish groups of observations.
 Now we will look at observations that also have a meaningful order,
 and use connections to make that order visible.
