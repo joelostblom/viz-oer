@@ -31,12 +31,7 @@ include-in-header:
 
 import altair as alt
 import pandas as pd
-from IPython.display import HTML
-
-pd.set_option('display.max_rows', 6)
-
-def show_df(df):
-    return HTML(df._repr_html_())
+from utils import show_df
 ```
 
 ## Which visualization library should we pick?

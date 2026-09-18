@@ -3,9 +3,12 @@ title: "Order"
 fig-width: 5
 fig-height: 3.75
 resources:
-  - data/gapminder_world_trends.csv
-  - data/gapminder_region_trends.csv
+  - data
+  - utils.py
+  - utils.R
 ---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
