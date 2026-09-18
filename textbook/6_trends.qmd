@@ -2,66 +2,76 @@
 title: "Trends"
 fig-width: 5
 fig-height: 3.75
+resources:
+  - data/gapminder_world_trends.csv
+  - data/gapminder_region_trends.csv
 ---
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
 1. **Distinguish** when to use an area chart and when to use a line chart to represent a trend.
 
-2. **Aggregate** country-level data to visualize total populations and average values over time.
+2. **Compare** trends for the world and individual regions using prepared population and fertility data.
 
-3. **Use** temporal encodings and **handle** large datasets in Altair with VegaFusion.
+3. **Use** temporal encodings and **explain** how stacking changes the interpretation of a chart.
 
 :::
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Plotting large datasets in Altair
+## Data for trends over time
 
 We have learned how position, size, color, and shape represent observations and groups.
 Now we will use lines and areas to show how values change over time.
 
-### Global Development Data
+### Global development data
 
-We will be visualizing global health and population data for a number of countries.
-We will also use this dataset in [Statistical summaries](7_statistical-summaries.qmd).
-This dataset is made available via an URL
-and we can download and read it into pandas
-with `read_csv`.
+We will visualize population and fertility trends from 1800 to 2018.
+The data comes from the [Gapminder country-level dataset](https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv),
+but the values for this chapter have already been calculated for us:
+
+- [World trends](data/gapminder_world_trends.csv) has one row per year,
+  with the total population of the countries in the source dataset.
+- [Regional trends](data/gapminder_region_trends.csv) has one row per region and year,
+  with its total population and the average number of children per woman across its countries.
+  Each country contributes equally to that average; it is not weighted by population.
 
 ::: {.panel-tabset group="language"}
 
 #### Altair
 
 ```{python}
-#| label: load-gapminder-python
+#| label: load-trends-python
 #| tags: []
 import altair as alt
 import pandas as pd
 
 
-url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv'
-gm = pd.read_csv(url)
-gm
+world = pd.read_csv('data/gapminder_world_trends.csv', dtype={'year': str})
+regions = pd.read_csv('data/gapminder_region_trends.csv', dtype={'year': str})
+world
 ```
+
+We read `year` as text so that Altair can interpret values such as `"1800"`
+as calendar years when we use a temporal encoding below.
 
 #### ggplot
 
 ```{r}
-#| label: load-gapminder-r
+#| label: load-trends-r
 library(tidyverse)
 theme_set(theme_gray(base_size = 18))
 
-url <- 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv'
-gm <- read_csv(url)
-gm
+world <- read_csv('data/gapminder_world_trends.csv')
+regions <- read_csv('data/gapminder_region_trends.csv')
+world
 ```
 
 :::
 
 When reading in a new dataset,
 it is always a good idea to have a look at a few rows
-like we did in the previous slide
+like we did above
 to get an idea of how the data looks.
 
 Another helpful practice is to use the `.info()` method
@@ -80,8 +90,9 @@ which could affect our data analysis.
 #### Altair
 
 ```{python}
-#| label: gapminder-info-python
-gm.info()
+#| label: trends-info-python
+world.info()
+regions.info()
 ```
 
 #### ggplot
@@ -90,8 +101,9 @@ In the tidyverse,
 we can use `glimpse` to view info of our dataframe.
 
 ```{r}
-#| label: gapminder-glimpse-r
-glimpse(gm)
+#| label: trends-glimpse-r
+glimpse(world)
+glimpse(regions)
 ```
 
 :::
@@ -124,60 +136,11 @@ It's a good idea to include axis labels too!
 :::
 ::::
 
-Ok now we are ready to plot our data!
-Or are we?
-
-As you can see from when we glances at the dataframe argument above,
-we have a quite large data set with almost 40k observations 
-for most variables.
-If we try to plot this dataset with Altair,
-it will actually throw an error,
-let's see what this looks like:
-
-```{python}
-#| label: population-row-limit
-#| eval: false
-alt.Chart(gm).mark_line().encode(
-    x='year',
-    y='sum(population)'
-)
-```
-
-By default Altair only allows us to plot datasets with 5,000 rows.
-The reason for this is that Altair does not simply display plots as images,
-but as interactive HTML elements
-that contain the entire dataframe in text format
-as well as a declaration for which variable are plotted in which visual channel.
-This is great from a reproducibility perspective,
-but it means that the charts become very large when there is a lot of data
-and your Jupyter Notebook will quickly become 100s of MB.
-
-We will talk more about the details of how Altair charts are represented later in this course.
-For now it is enough to know which are the necessary steps to plot large datasets,
-even if you don't yet understand exactly what is happening under the hood.
-
-The first line we will run is the following:
-
-```{python}
-#| label: channels-vegafusion-setup
-#| output: false
-alt.data_transformers.enable('vegafusion')
-```
-
-All charts created after activating the VegaFusion data transformer will work with datasets containing up to 100,000 rows.
-VegaFusion’s row limit is applied after all supported data transformations have been applied.
-So you are unlikely to reach it with a chart such as a histogram,
-but you may hit it in the case of a large scatter chart or a chart that uses interactivity.
-If you need to work with even larger datasets,
-you can disable the maximum row limit or switch to using the VegaFusion widget renderer;
-[both are described in the Altair documentation](https://altair-viz.github.io/user_guide/large_datasets.html)).
-
 ## Area charts
 
 Now we are ready to create our plot!
 Since we want to see how the **world** population has changed,
-we need to sum up the population of all countries in each year
-using the `sum` aggregation function in Altair.
+we use `world`, which already contains one population value for each year.
 Let's start with a line chart:
 
 ::: {.panel-tabset group="language"}
@@ -187,9 +150,9 @@ Let's start with a line chart:
 ```{python}
 #| label: population-line-alt
 #| tags: []
-alt.Chart(gm).mark_line().encode(
-    x='year',
-    y='sum(population)'
+alt.Chart(world).mark_line().encode(
+    x='year:Q',
+    y='population'
 )
 ```
 
@@ -197,8 +160,8 @@ alt.Chart(gm).mark_line().encode(
 
 ```{r}
 #| label: population-line-gg
-ggplot(gm, aes(x = year, y = population)) +
-    geom_line(stat = 'summary', fun = sum)
+ggplot(world, aes(x = year, y = population)) +
+    geom_line()
 ```
 
 :::
@@ -209,10 +172,7 @@ slowly before 1950,
 and more rapidly afterwards.
 We will talk more about that later on.
 
-We can see here that Altair automatically changes the axis label for us to reflect the operation
-that we have performed on the data,
-here taking the "sum" of the countries.
-
+In the Altair example, we used `year:Q` to treat the year as a quantitative value.
 However, something seems to be going on with the x-axis
 as the years are showing up in integer format as `1,990, 2,000, etc`.
 While adding the comma as a thousand separator like this generally improves readability,
@@ -226,9 +186,9 @@ for now this is all we need.
 ```{python}
 #| label: population-temporal-axis
 #| tags: []
-alt.Chart(gm).mark_line().encode(
+alt.Chart(world).mark_line().encode(
     x='year:T',
-    y='sum(population)'
+    y='population'
 )
 ```
 
@@ -240,9 +200,9 @@ We could also have created this same visualization using an area chart:
 
 ```{python}
 #| label: population-area-alt
-alt.Chart(gm).mark_area().encode(
+alt.Chart(world).mark_area().encode(
     x='year:T',
-    y='sum(population)'
+    y='population'
 )
 ```
 
@@ -250,8 +210,8 @@ alt.Chart(gm).mark_area().encode(
 
 ```{r}
 #| label: population-area-gg
-ggplot(gm, aes(x = year, y = population)) +
-    geom_area(stat = 'summary', fun = sum)
+ggplot(world, aes(x = year, y = population)) +
+    geom_area()
 ```
 
 :::
@@ -264,36 +224,32 @@ when visualizing the trends over time for multiple groups,
 lines and areas have different advantages.
 Let's see how it looks for the area chart first.
 
+We now use `regions`, which contains a separate population value
+for each region in each year.
+
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
 ```{python}
 #| label: population-stacked-alt
-alt.Chart(gm).mark_area().encode(
+alt.Chart(regions).mark_area().encode(
     x='year:T',
-    y='sum(population)',
+    y='population',
     color='region'
 )
 ```
 
 ### ggplot
 
-I will use the geom approach here.
-If you want to use `stat_summary` instead,
-you need to set `position = 'stack'`:
-
-```r
-stat_summary(fun=sum, geom='area', position='stack')
-```
-
-This is already the default position for `geom_area`,
-so we don't need to set it explicitly.
+`geom_area()` stacks the regional areas by default.
+The population values are already in the dataset,
+so we can map them directly to the y-axis.
 
 ```{r}
 #| label: population-stacked-gg
-ggplot(gm, aes(x = year, y = population, fill = region)) +
-    geom_area(stat = 'summary', fun = sum)
+ggplot(regions, aes(x = year, y = population, fill = region)) +
+    geom_area()
 ```
 
 :::
@@ -324,9 +280,9 @@ and don't care as much about the total of the groups added together.
 
 ```{python}
 #| label: region-lines-alt
-alt.Chart(gm).mark_line().encode(
+alt.Chart(regions).mark_line().encode(
     x='year:T',
-    y='sum(population)',
+    y='population',
     color='region'
 )
 ```
@@ -338,16 +294,16 @@ and add some transparency with the `alpha` parameter.
 
 ```{r}
 #| label: population-dodged-gg
-ggplot(gm, aes(x = year, y = population, fill = region)) +
-    geom_area(stat = 'summary', fun = sum, position = 'dodge', alpha = 0.4)
+ggplot(regions, aes(x = year, y = population, fill = region)) +
+    geom_area(position = 'dodge', alpha = 0.4)
 ```
 
 A line plot would be more effective than the layered/dodged area chart above.
 
 ```{r}
 #| label: region-lines-gg
-ggplot(gm, aes(x = year, y = population, color = region)) +
-    geom_line(stat = 'summary', fun = sum)
+ggplot(regions, aes(x = year, y = population, color = region)) +
+    geom_line()
 ```
 
 :::
@@ -366,6 +322,7 @@ a line chart is also the better choice.
 For example,
 let's answer a slightly different question with a visualization:
 "What is the average number of children per woman in a country for each continent?"
+The `children_per_woman` column in `regions` already contains those averages.
 Let's first look at this with an area plot like above:
 
 ::: {.column-margin}
@@ -383,15 +340,15 @@ You will learn more about this in lab 1.
 
 ```{python}
 #| label: fertility-stacked
-alt.Chart(gm).mark_area().encode(
+alt.Chart(regions).mark_area().encode(
     x='year:T',
-    y='mean(children_per_woman)',
+    y='children_per_woman',
     color='region'
 )
 ```
 
 Here,
-summing/stacking the average areas does give a meaningful number 
+summing/stacking the average areas does not give a meaningful number
 (there wasn't 30 children per woman in the 1800s...).
 We can try to unstack the areas to remedy this issue,
 and show them behind each other on the same baseline instead of on top of each other.
@@ -414,9 +371,9 @@ just to demonstrate how it works.
 
 ```{python}
 #| label: fertility-axis-helper
-alt.Chart(gm).mark_area().encode(
+alt.Chart(regions).mark_area().encode(
     x='year:T',
-    y=alt.Y('mean(children_per_woman)'),
+    y=alt.Y('children_per_woman'),
     color='region'
 )
 ```
@@ -429,9 +386,9 @@ to allow us to see area behind each other).
 
 ```{python}
 #| label: fertility-overlapping
-alt.Chart(gm).mark_area(opacity=0.4).encode(
+alt.Chart(regions).mark_area(opacity=0.4).encode(
     x='year:T',
-    y=alt.Y('mean(children_per_woman)').stack(False),
+    y=alt.Y('children_per_woman').stack(False),
     color='region'
 )
 ```
@@ -458,9 +415,9 @@ than to the other regions.
 
 ```{python}
 #| label: fertility-lines
-alt.Chart(gm).mark_line().encode(
+alt.Chart(regions).mark_line().encode(
     x='year:T',
-    y='mean(children_per_woman)',
+    y='children_per_woman',
     color='region'
 )
 ```
