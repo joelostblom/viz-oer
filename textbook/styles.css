@@ -26,6 +26,17 @@
     text-align: center;
 }
 
+/* Shared show_df previews: dtypes sit below their column headings. */
+table.dataframe-preview {
+    width: auto;
+}
+
+table.dataframe-preview thead tr:last-child th {
+    font-weight: normal;
+    font-size: 0.85em;
+    color: var(--bs-secondary-color, #666);
+}
+
 .callout-header {
     margin-bottom: 10px !important;
 }

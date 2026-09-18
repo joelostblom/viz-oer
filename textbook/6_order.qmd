@@ -22,11 +22,15 @@ resources:
 
 :::
 
-Some data has a natural order to it,
-e.g. temporal variables such as which year or time of the day
-a data point was recorded.
-Let's learn ....
+## Why order matters
 
+In [Groups](5_groups.qmd), we learned how to distinguish groups of observations.
+Now we will look at observations that also have a meaningful order,
+e.g. time of the day or an increasing dose of a treatment.
+In the following exercise,
+we will see how the grouping strategies we learned previously
+can be effectively complemented
+when working with ordered data.
 
 ::: {.callout-default .ex-prompt}
 
@@ -43,11 +47,13 @@ even after studying it for a while.
 How do you think you could change this chart
 to make it easier to see how the CO2 emissions for each continent change over time?
 
+
 ```{python setup}
 #| echo: false
 #| output: false
 import altair as alt
 import pandas as pd
+from utils import show_df
 
 alt.data_transformers.enable('vegafusion')
 ```
@@ -82,7 +88,7 @@ As such,
 a line is a graphical tool that assist both with ordering and with grouping.
 
 ```{python line-overlay}
-points.mark_line() + points.mark_point(filled=True)
+points.mark_line() + points.mark_point(filled=True, strokeOpacity=1)
 ```
 
 :::::
@@ -91,141 +97,102 @@ points.mark_line() + points.mark_point(filled=True)
 
 :::
 
-In [Groups](5_groups.qmd), we learned how to distinguish groups of observations.
-Now we will look at observations that also have a meaningful order,
-and use connections to make that order visible.
-Grouping tells us which observations belong together;
-ordering tells us which observation comes next within each group.
 
-Connecting observations can help us see a trend,
-but the lines in this chapter simply join the supplied values.
-In [Trends](11_trends.qmd), we will return to the different task
-of estimating a broader pattern with a fitted line or smoother.
+## Using lines to order and group data
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-
-## Data with a meaningful order
-
-Time provides a natural ordering: each observation has a place in a sequence.
-We will use lines and areas to help readers follow that sequence.
-The same idea applies beyond time, for example to measurements taken
-at increasing doses of a treatment.
-
-### Global development data
-
-We will visualize population and fertility values for successive years from 1800 to 2018.
+To explore how to create line charts,
+we will visualize population and fertility values for successive years from 1800 to 2018.
 The data comes from the [Gapminder country-level dataset](https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv),
-but the values for this chapter have already been calculated for us:
-
-- [World population data](data/gapminder_world_trends.csv) has one row per year,
-  with the total population of the countries in the source dataset.
-- [Regional population and fertility data](data/gapminder_region_trends.csv) has one row per region and year,
-  with its total population and the average number of children per woman across its countries.
-  Each country contributes equally to that average; it is not weighted by population.
-
-These prepared values let us focus on how to connect observations.
-In [Summaries](7_summaries.qmd), we will learn how to calculate values
-such as totals from country-level observations.
+and have been adapted for this textbook.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: load-order-python
-#| tags: []
+#| output: false
 import altair as alt
 import pandas as pd
 
-
-world = pd.read_csv('data/gapminder_world_trends.csv', dtype={'year': str})
-regions = pd.read_csv('data/gapminder_region_trends.csv', dtype={'year': str})
-world
+alt.data_transformers.enable('vegafusion')
 ```
 
-We read `year` as text so that Altair can interpret values such as `"1800"`
-as calendar years when we use a temporal encoding below.
+Vegafusion makes it easier to work with large datasets in Altair,
+and we will use it by default from now on
+(you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
 
-#### ggplot
+```{python}
+#| label: read-data-python
+#| output: false
+world = pd.read_csv('data/gapminder_world_trends.csv')
+regions = pd.read_csv('data/gapminder_region_trends.csv')
+regions
+```
+
+```{python}
+#| label: show-regions-python
+show_df(regions)
+```
+
+### ggplot
 
 ```{r}
-#| label: load-order-r
+#| label: order-table-setup
+#| include: false
+source("utils.R")
+```
+
+```{r}
+#| label: read-data-r
+#| output: false
 library(tidyverse)
 theme_set(theme_gray(base_size = 18))
 
 world <- read_csv('data/gapminder_world_trends.csv')
 regions <- read_csv('data/gapminder_region_trends.csv')
-world
+regions
+```
+
+```{r}
+#| label: show-regions-r
+show_df(regions)
 ```
 
 :::
-
 When reading in a new dataset,
 it is always a good idea to have a look at a few rows
 like we did above
 to get an idea of how the data looks.
 
-Another helpful practice is to use the `.info()` method
-to get an overview of the column types
-and see if there are any `NaNs` (missing values).
-
-If there are many missing values in a column,
-we would want to look into why that is.
-Later in the course, we will learn about how to visualize
-missing values to understand if there are patterns
-in which values are missing,
-which could affect our data analysis.
-
-::: {.panel-tabset group="language"}
-
-#### Altair
-
-```{python}
-#| label: order-info-python
-world.info()
-regions.info()
-```
-
-#### ggplot
-
-In the tidyverse,
-we can use `glimpse` to view info of our dataframe.
-
-```{r}
-#| label: order-glimpse-r
-glimpse(world)
-glimpse(regions)
-```
-
-:::
-
-Now that we have seen what the data table looks like,
-and which data type the values in each column are,
-let's think about what we would want to visualize and why.
+We can see that the world population data has one row per year,
+with the total population of the countries in the source dataset.
+The regional population and fertility data has one row per region and year,
+with its total population and the average number of children per woman across its countries.
+Each country contributes equally to that average; it is not weighted by population.
 
 Since the data reaches all the way back to the 1800s,
 it would be really interesting to plot
 how the world population has been growing up until today.
 We can use a line plot to show this change over time.
 
-:::: {.callout-default .ex-prompt}
+::: {.callout-default .ex-prompt}
 
 Draw out a sketch of the visualization on paper yourself
 so that it is clear what you expect the plot
 before continuing.
 
-::: {.callout-default .ex-solution}
+:::: {.callout-default .ex-solution}
 
 If we drew this visualization out on paper,
 we would maybe expect something a like this
 a single line that increases from the 1800s up until today
 as the population increased.
-It's a good idea to include axis labels too! 
 
-![](https://viz-learn.mds.ubc.ca/module2/drawing.png)
+![Drawing of estimated world population growth](https://viz-learn.mds.ubc.ca/module2/drawing.png){#drawing}
 
-:::
 ::::
+:::
 
 ## Connecting observations in order
 
@@ -233,28 +200,6 @@ Now we are ready to create our plot!
 Since we want to see how the **world** population has changed,
 we use `world`, which already contains one population value for each year.
 Let's first show each year's value as a point:
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: population-points-alt
-alt.Chart(world).mark_point().encode(
-    x='year:Q',
-    y='population'
-)
-```
-
-### ggplot
-
-```{r}
-#| label: population-points-gg
-ggplot(world, aes(x = year, y = population)) +
-    geom_point()
-```
-
-:::
 
 The positions already show how population changes from year to year.
 Connecting consecutive years makes it easier to follow the sequence
@@ -268,7 +213,7 @@ as one continuous series:
 #| label: population-line-alt
 #| tags: []
 alt.Chart(world).mark_line(point=True).encode(
-    x='year:Q',
+    x='year:T',
     y='population'
 )
 ```
@@ -299,31 +244,6 @@ it seems like the world population have been growing in two distinct phases:
 slowly before 1950,
 and more rapidly afterwards.
 This is an example of how making order visible also helps us notice a trend.
-
-### Showing calendar years
-
-In the Altair example, we used `year:Q` to treat the year as a quantitative value.
-However, something seems to be going on with the x-axis
-as the years are showing up in integer format as `1,990, 2,000, etc`.
-While adding the comma as a thousand separator like this generally improves readability,
-it is not what we want for years,
-which we expect to show up as `1990, 2000, etc`.
-We can indicate that we want Altair to use a temporal data type here
-by adding the `:T` suffix to the column name.
-We will learn more about different data types later,
-for now this is all we need.
-
-```{python}
-#| label: population-temporal-axis
-#| tags: []
-alt.Chart(world).mark_line().encode(
-    x='year:T',
-    y='population'
-)
-```
-
-When the observations are close together, we can omit the point marks
-and still follow their order through the line, as in the chart above.
 
 ## Areas and multiple ordered groups
 

@@ -24,6 +24,11 @@ book:
 filters:
   - custom-callouts.lua
 
+# Shared table helpers; utils.py is also used by browser Python exercises.
+resources:
+  - utils.py
+  - utils.R
+
 format:
   live-html:
     theme: cosmo
@@ -34,4 +39,6 @@ format:
     tbl-cap-location: bottom
 
 execute:
-  cache: true
+  # knitr's chunk cache does not restore reticulate's Python session state.
+  # Re-run imports and dependent chunks together to avoid intermittent NameErrors.
+  cache: false
