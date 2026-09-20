@@ -60,7 +60,7 @@ alt.data_transformers.enable('vegafusion')
 
 ```{python bad-points}
 #| echo: false
-years = range(1900, 2030, 8)
+years = range(1850, 2030, 8)
 co2_per_capita = pd.read_csv('data/co-emissions-per-capita.csv').query('Year.isin(@years)')
 points = alt.Chart(co2_per_capita, width=450).mark_point().encode(
     x='Year:T',
@@ -101,7 +101,7 @@ points.mark_line() + points.mark_point(filled=True, strokeOpacity=1)
 ## Using lines to order and group data
 
 To explore how to create line charts,
-we will visualize population and fertility values for successive years from 1800 to 2018.
+we will visualize population and fertility values for successive years from 1850 to 2018.
 The data comes from the [Gapminder country-level dataset](https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv),
 and have been adapted for this textbook.
 
@@ -125,8 +125,11 @@ and we will use it by default from now on
 ```{python}
 #| label: read-data-python
 #| output: false
-world = pd.read_csv('data/gapminder_world_trends.csv')
-regions = pd.read_csv('data/gapminder_region_trends.csv')
+
+# TODO change original data file instead
+years = range(1850, 2030, 8)
+world = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)')
+regions = pd.read_csv('data/gapminder_region_trends.csv').query('year.isin(@years)')
 regions
 ```
 
@@ -147,10 +150,13 @@ source("utils.R")
 #| label: read-data-r
 #| output: false
 library(tidyverse)
-theme_set(theme_gray(base_size = 18))
 
-world <- read_csv('data/gapminder_world_trends.csv')
-regions <- read_csv('data/gapminder_region_trends.csv')
+
+years <- seq(1850, 2029, by = 8)
+world <- read_csv('data/gapminder_world_trends.csv') |>
+    dplyr::filter(year %in% years)
+regions <- read_csv('data/gapminder_region_trends.csv') |>
+    dplyr::filter(year %in% years)
 regions
 ```
 
@@ -171,15 +177,16 @@ The regional population and fertility data has one row per region and year,
 with its total population and the average number of children per woman across its countries.
 Each country contributes equally to that average; it is not weighted by population.
 
-Since the data reaches all the way back to the 1800s,
+Since the data reaches all the way back to the 1850s,
 it would be really interesting to plot
 how the world population has been growing up until today.
 We can use a line plot to show this change over time.
 
 ::: {.callout-default .ex-prompt}
 
-Draw out a sketch of the visualization on paper yourself
-so that it is clear what you expect the plot
+Draw out a sketch of the visualization
+(by hand is better than in your mind, which is better than nothing...)
+so that it is clear what you expect the plot to look like
 before continuing.
 
 :::: {.callout-default .ex-solution}
@@ -194,25 +201,24 @@ as the population increased.
 ::::
 :::
 
-## Connecting observations in order
-
 Now we are ready to create our plot!
-Since we want to see how the **world** population has changed,
-we use `world`, which already contains one population value for each year.
-Let's first show each year's value as a point:
-
-The positions already show how population changes from year to year.
-Connecting consecutive years makes it easier to follow the sequence
-as one continuous series:
+By convention,
+temporal variables such as `year`
+tends to be laid out along the x-axis,
+and the quantitative measure such as `population`,
+tends to occupy the y-channel of the visualization.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
+In Altair,
+we use `mark_line()`
+to connect observations with a line.
+
 ```{python}
 #| label: population-line-alt
-#| tags: []
-alt.Chart(world).mark_line(point=True).encode(
+alt.Chart(world).mark_line().encode(
     x='year:T',
     y='population'
 )
@@ -220,30 +226,372 @@ alt.Chart(world).mark_line(point=True).encode(
 
 ### ggplot
 
+In ggplot,
+we use `geom_line()`
+to connect observations with a line.
+
 ```{r}
 #| label: population-line-gg
 ggplot(world, aes(x = year, y = population)) +
+    geom_line()
+```
+
+:::
+
+Interestingly,
+the line in this example helps visible also helps us notice a trend in the data.
+It seems like the world population has been growing in two distinct phases:
+at a slower pace before ~1950,
+and more rapidly afterwards.
+
+After making any chart,
+it's beneficial to ask yourself:
+"Is this what I expected to see from the data?"
+and "Does what I'm seeing make sense with what I know about this topic?".
+If we think about what happened in the world
+around the time of the change in the population growth dynamics,
+a major event that stands out was the end of World War II in 1945.
+It seems reasonable that transitioning from a war
+involving many countries around the world
+to a time of peace and increased safety
+could lead to an increase in the number of babies born.
+Let's see if that was the case by
+visualization the number of children born per woman over time.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: children_per_woman-line-alt
+alt.Chart(world).mark_line().encode(
+    x='year:T',
+    y='children_per_woman'
+)
+```
+
+### ggplot
+
+```{r}
+#| label: children_per_woman-line-gg
+ggplot(world, aes(x = year, y = children_per_woman)) +
+    geom_line()
+```
+
+:::
+
+Indeed,
+we can see that around the same time as the increase in population grown,
+there was also an explosion in the number of babies born,
+which is commonly referred to as the "baby boom"
+(those are the "boomers" your TikTok feed keeps referencing).
+
+::: {.callout-default .deep-dive}
+
+One more important piece of the puzzle here
+would be to look at life expectancy data
+to see if people were also living longer lives
+during this period,
+which would also contribute
+There is not that reliable data on life expectancy during this period,
+but you can [explore what there is over at Our World in Data
+](https://ourworldindata.org/grapher/life-expectancy?time=1900..latest&country=OWID_WRL~Americas~OWID_EUR~OWID_AFR~OWID_ASI)
+
+:::
+
+::: {.callout-caution}
+
+### Avoid claiming causation from visualizations alone
+
+You might have heard that "correlation is not causation"
+and that applies here too.
+Although the ending of World War II
+seems like a plausible cause for the trends we have explored,
+it is important to understand
+that just because something seems plausible
+we cannot claim that this actually is the underlying cause
+for the observed phenomena.
+Usually there are many interacting contributing factors
+that interact to form a more complex background story.
+[This article about the population grown around the 1950s
+](https://ourworldindata.org/baby-boom-seven-charts)you can
+elaborates on what we explored here.
+Among other things,
+it notes that many countries
+started seeing increases in child birth
+already before World War II.
+
+:::
+
+## Showing points and lines
+
+Generally,
+it is helpful
+to add points on top of a line
+to indicate exactly where each observation from the data lies.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+In Altair,
+we combine lines and points
+through a concept called layering
+where charts are superimposed on each other.
+The `+` operator means to "layer"
+a chart on top of another chart
+<!-- TODO (it's also possible to use `alt.layer(...)` -->
+<!-- with a list of charts). -->
+
+```{python}
+#| label: population-line-points-alt
+line = alt.Chart(world).mark_line().encode(
+    x='year:T',
+    y='children_per_woman'
+)
+line + line.mark_point(filled=True)
+```
+
+Each unlayered Altair chart can only have one mark,
+so `line.mark_point()` *replaces* the line mark with a point mark
+in the chart that we are layering on top of our original.
+<!-- TODO consider base.line + base.point? -->
+
+### ggplot
+
+In ggplot,
+we combine lines and points
+through a concept called layering
+where charts are superimposed on each other.
+The `+` operator means to "layer"
+a geom on top of another geom.
+
+```{r}
+#| label: population-line-points-gg
+ggplot(world, aes(x = year, y = children_per_woman)) +
     geom_line() +
     geom_point()
 ```
 
 :::
 
-The points have not moved and no new population values have been calculated.
-We have added connections between neighboring observations in time.
-The line segments guide the eye; they do not establish what the population
-was at every unobserved moment between those observations.
+This highlights something important:
+what does the line between the data points mean?
+Let's find out in the next exercise.
 
-The order of connection matters.
-Here, Altair's line mark and ggplot's `geom_line()` follow increasing x values
-within each series, rather than an arbitrary ordering of rows in the file.
-We should connect observations only when those connections have a meaningful interpretation.
 
-Interestingly,
-it seems like the world population have been growing in two distinct phases:
-slowly before 1950,
-and more rapidly afterwards.
-This is an example of how making order visible also helps us notice a trend.
+::: {.callout-default .ex-prompt}
+
+In our data,
+there are only observations from every 8th year,
+but the line we have drawn is continuous
+and has a defined value for `children_per_woman`
+even between the points in the chart.
+For example,
+in this zoomed-in view
+we can see that the line at the year 1950
+seems to indicate that there are ~5.4 children being born per woman at this time.
+But as we can see from the points in the chart,
+our data does not contain any observation from exactly the year 1950.
+What conclusions can we draw
+about the number of children per woman in this year?
+
+```{python}
+#| label: population-line-points-zoom
+#| echo: false
+line = alt.Chart(world.query('year > 1920')).mark_line().encode(
+    x='year:T',
+    y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
+)
+line + line.mark_point(filled=True)
+```
+
+:::: {.callout-default .ex-hint}
+
+Think about the purpose of the line,
+is it just a visual aid
+or does it represent any feature of the underlying data?
+
+::::: {.callout-default .ex-solution}
+
+The line segments between two observations are there to guide the eye;
+they do not establish what the values are
+at every unobserved moment between two points.
+Although the line is a simple linear interpolation between observations,
+which might seem harmless,
+it is important to consider whether the distance between two points
+represent a meaningfully large period
+where the trend might not be linear.
+To understand this more deeply,
+we can look at what would happen if the observations were closer
+or further apart in time
+as in the chart below.
+
+```{python}
+#| label: population-line-points-zoom2
+#| echo: false
+years = range(1926, 2010, 2)
+world2 = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)')
+title = 'Every 2nd year'
+line = alt.Chart(world2, title=title, height=250, width=250).mark_line().encode(
+    x='year:T',
+    y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
+)
+every_2nd_year = line + line.mark_point(filled=True)
+
+years = range(1928, 2030, 20)
+title = 'Every 20th year'
+line = alt.Chart(world2.query('year.isin(@years)'), title=title, height=250, width=250).mark_line().encode(
+    x='year:T',
+    y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
+)
+every_20th_year = line + line.mark_point(filled=True)
+alt.concat(every_2nd_year, every_20th_year)
+```
+
+As you can see,
+drawing a line between observations 20 years apart,
+would completely miss that the average number of children per woman
+was decreasing until ~1940,
+then started to increase until ~1960,
+after which it started to decrease again.
+
+What distance between observation is close enough
+to trust the linear trend of the connecting line
+depends on which question we are asking.
+For example,
+if we are interesting in exploring seasonal variation during each year
+then even a chart with one observation every year
+would be insufficient and we would need
+use data reported at a monthly frequency instead.
+
+:::::
+::::
+:::
+
+::: {.callout-caution}
+
+### Avoid connecting categorical values with a line
+
+As we just saw,
+we need to be careful when interpreting the meaning of a line between two observation
+along a quantiative axis.
+For the same reason,
+we should generally avoid using a line
+to connect observations along a categorical axis.
+Here are two representations 
+
+```{python}
+#| label: population-line-categorical
+#| echo: false
+points = alt.Chart(
+    regions.query('year==2018 & region.isin(["Africa", "Americas", "Europe"])'),
+    height=250,
+    width=alt.Step(60)
+).mark_point(size=60, filled=True).encode(
+    x=alt.X('region').title(None).sort(['Africa', 'Europe', 'Americas']),
+    y=alt.Y('sum(population)')
+        .scale(domain=(00_000_000, 1_350_000_000))
+        .axis(labelExpr="format(datum.value / 1e6, ',.0f')")
+        .title('Population in 2018 (millions)')
+)
+points | points.mark_line() + points
+```
+
+The chart to the left is easy to interpret;
+it shows how many people live on each continent
+with a point for each continent's values.
+But what about the line chart to the right?
+What does it mean that the line is at 1,000 million as it goes from Africa to Europe?
+That a 1,000 million people live somewhere between Europe and Africa?
+No,
+in contrast to how a line connecting two quantitative values
+can hint at what the value between them *might* have been,
+the space between two categorical values is non-existent
+and therefore lines should generally not be used
+to connect observations across categorical values.
+
+:::
+
+::: {.callout-default .deep-dive}
+
+Sometimes we want to show how the relationship between two quantitative 
+variables has changed over e.g. time.
+We can do this by plotting the two variables of interested on the x and y axis,
+and then connect the points by the temporal variable.
+
+:::: {.panel-tabset group="language"}
+
+### Altair
+
+The `order` encoding controls
+the order in which observations will be connected by a line.
+Since there is no visible axis for the year
+it would be difficult to know in which direction to read the chart;
+i.e. is the most recent year represented by the point in the top left or bottom right corner?
+To avoid this confusion, we add a tooltip
+so that you can see which year each point corresponds to
+when hovering it with the mouse pointer.
+
+```{python}
+#| label: line-order-2d-alt
+line = alt.Chart(world).mark_line().encode(
+    x='children_per_woman',
+    y='population',
+    order='year:T',
+    # Format the tooltip to only include the year rather than "Jan 01, 2008" etc
+    tooltip=alt.Tooltip('year:T', format='%Y')
+)
+line + line.mark_point(filled=True)
+```
+
+### ggplot
+
+`geom_line` always connects points
+in the order of the variable on the x-axis.
+To connect points in another order,
+we would need to use `geom_path` instead.
+This geom connects observations in the order of the dataframe
+so we need to make sure our data is sorted by the variable
+we want the connection order to represent.
+
+Since there is no visible axis for the year
+it would be difficult to know in which direction to read the chart;
+i.e. is the most recent year represented by the point in the top left or bottom right corner?
+To avoid this confusion, we add a text label
+so that you can see which point corresponds to the oldest
+and the most recent observations.
+
+```{r}
+#| label: line-order-2d-gg
+endpoints <- world |>
+  filter(year %in% range(year, na.rm = TRUE))
+ggplot(world |> arrange(year), aes(x = children_per_woman, y = population, label = year)) +
+    geom_path() +
+    geom_point() +
+    geom_text(
+        data = endpoints,
+        vjust = -0.5  # Adjust the labels to not overlap with the points
+  )
+```
+
+::::
+
+So how do we read this chart?
+We start by finding the year corresponding to the earliest observation;
+in this case it is at the bottom right of the chart.
+Then we can follow the progression of the relationship between
+the world's population and the average number of children per woman
+over time (i.e. towards the top left corner).
+The horizontal space between two points
+corresponds to the change in the average number of children per woman
+whereas the vertical space corresponds to the change in the world population
+between those two years.
+If the points are close together,
+there was a small change between those two observations,
+and vice versa if the points are far apart.
+
+:::
 
 ## Areas and multiple ordered groups
 
