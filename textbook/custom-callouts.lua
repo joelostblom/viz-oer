@@ -1,4 +1,4 @@
-local exercise_counter = 0  -- Global counter for exercises
+local exercise_counter = 0 -- Global counter for exercises
 
 function Div(div)
   if div.classes:includes("ex-prompt") then
@@ -35,10 +35,10 @@ function Div(div)
     })
   end
 
-  if div.classes:includes("optional") then
+  if div.classes:includes("deep-dive") then
     return quarto.Callout({
-      type = "optional",
-      title = "Click to expand this optional content or proceed to the next section",
+      type = "deep-dive",
+      title = "Deep dive",
       collapse = true,
       icon = false,
       content = { div },

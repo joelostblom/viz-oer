@@ -427,9 +427,9 @@ which was the direct inspiration for the creation of the ggplot library.
 
 :::
 
-## Deep dive
+::: {.callout-default .deep-dive}
 
-::: {.callout-default .optional}
+## Deep dive
 
 ### The R and Python visualization ecosystems
 
