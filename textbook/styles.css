@@ -62,6 +62,29 @@ h4 {
 
 /* Callout styling */
 
+/* Collapse buttons otherwise make custom headers taller than static cautions/warnings.
+   A shared minimum keeps short titles aligned while allowing long titles to wrap. */
+.callout.callout-style-default:is(
+  .callout-ex-prompt,
+  .callout-ex-hint,
+  .callout-ex-solution,
+  .callout-deep-dive,
+  .callout-caution,
+  .callout-warning
+) > .callout-header {
+  min-height: 2.25rem;
+  align-items: center;
+  padding-top: 0;
+}
+
+.callout.callout-style-default:is(.callout-caution, .callout-warning) > .callout-header > .callout-icon-container {
+  padding-top: 0;
+}
+
+.callout.callout-style-default:is(.callout-caution, .callout-warning) > .callout-header > .callout-title-container {
+  margin-top: 0;
+}
+
 .callout-ex-prompt {
   border-left-color: #2780e3 !important;
 }
