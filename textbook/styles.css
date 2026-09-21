@@ -93,17 +93,23 @@ h4 {
   --callout-outline: #efdbbd;
 }
 
-.callout.callout-warning,
 .callout.callout-ex-solution {
   --callout-body-bg: #fffbee;
   --callout-header-bg: #fff3cd;
   --callout-outline: #ecdfb3;
 }
 
-.callout.callout-important {
+.callout.callout-important,
+.callout.callout-warning {
   --callout-body-bg: #fff3f5;
   --callout-header-bg: #ffe4e9;
   --callout-outline: #f2cbd4;
+}
+
+/* Active tab labels blend into the nearest callout instead of the white page. */
+.callout .panel-tabset > .nav-tabs {
+  --bs-nav-tabs-link-active-bg: var(--callout-body-bg);
+  --bs-nav-tabs-link-active-border-color: var(--bs-nav-tabs-border-color) var(--bs-nav-tabs-border-color) var(--callout-body-bg);
 }
 
 /* Match Quarto's border selector specificity without replacing accent borders. */

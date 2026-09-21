@@ -31,7 +31,9 @@ resources:
 
 format:
   live-html:
-    theme: cosmo
+    theme:
+      - cosmo
+      - callouts.scss
     css: styles.css
     monofont: "Ubuntu Mono"
     mainfont: Ubuntu
