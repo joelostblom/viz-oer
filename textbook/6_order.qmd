@@ -294,12 +294,36 @@ to see if people were also living longer lives
 during this period,
 which would also contribute
 There is not that reliable data on life expectancy during this period,
-but you can [explore what there is over at Our World in Data
-](https://ourworldindata.org/grapher/life-expectancy?time=1900..latest&country=OWID_WRL~Americas~OWID_EUR~OWID_AFR~OWID_ASI)
+but you can [explore some of it over at Our World in Data
+](https://ourworldindata.org/grapher/life-expectancy?time=1900..latest&country=OWID_WRL~Americas~OWID_EUR~OWID_AFR~OWID_ASI).
 
 :::
 
 ::: {.callout-caution}
+
+### Avoid claiming causation from visualizations alone
+
+You might have heard that "correlation is not causation"
+and that applies here too.
+Although the ending of World War II
+seems like a plausible cause for the trends we have explored,
+it is important to understand
+that just because something seems plausible
+we cannot claim that this actually is the underlying cause
+for the observed phenomena.
+Usually there are many interacting contributing factors
+that interact to form a more complex background story.
+[This article about the population grown around the 1950s
+](https://ourworldindata.org/baby-boom-seven-charts)you can
+elaborates on what we explored here.
+Among other things,
+it notes that many countries
+started seeing increases in child birth
+already before World War II.
+
+:::
+
+::: {.callout-warning}
 
 ### Avoid claiming causation from visualizations alone
 
@@ -595,7 +619,9 @@ and vice versa if the points are far apart.
 
 ## Areas and multiple ordered groups
 
-We could also have created this same visualization using an area chart:
+Another way of representing order,
+is to connect points with an area
+instead of a line.
 
 ::: {.panel-tabset group="language"}
 
@@ -623,10 +649,14 @@ Both lines and areas preserve the sequence of values over time.
 Filling the area down to a zero baseline emphasizes the magnitude of those values,
 while a line emphasizes the path through them.
 When displaying multiple ordered groups,
-lines and areas have different advantages.
-Let's see how it looks for the area chart first.
+lines and areas have different advantages,
+which we will learn about in this exercise.
 
-We now use `regions`, which contains a separate population value
+
+::: {.callout-default .ex-prompt}
+
+We now use the `regions` dataframe,
+which contains a separate population value
 for each region in each year.
 Region determines which observations belong to the same group,
 and year determines their order within that group.
@@ -635,13 +665,23 @@ and year determines their order within that group.
 
 ### Altair
 
+Setting `color` applies to both areas and lines;
+if we wanted to control them individually,
+we could instead use `stroke` (for lines)
+and `fill` (for areas).
+Here we also use the `|` layout operator
+to position the plots next to each other horizontally
+(`&` lays them out vertically instead;
+we will learn more about layouts in a later chapter).
+
 ```{python}
 #| label: population-stacked-alt
-alt.Chart(regions).mark_area().encode(
+base = alt.Chart(regions, width=150, height=150).encode(
     x='year:T',
     y='population',
     color='region'
 )
+base.mark_area() | base.mark_line()
 ```
 
 ### ggplot
@@ -649,140 +689,110 @@ alt.Chart(regions).mark_area().encode(
 `geom_area()` stacks the regional areas by default.
 The population values are already in the dataset,
 so we can map them directly to the y-axis.
+To set the color of the area we need to use the `fill` aesthetic
+whereas the line color is controlled by `region`.
+<!-- TODO Should we set these in the geoms? That's a lot of new things here then... but avoids creating an outlien for each areas.... -->
+Here we also use the `|` layout operator from the `pathwork` library
+to position the plots next to each other horizontally
+(`/` lays them out vertically instead;
+we will learn more about layouts in a later chapter).
 
 ```{r}
 #| label: population-stacked-gg
-ggplot(regions, aes(x = year, y = population, fill = region)) +
-    geom_area()
+#| fig-width: 8
+library(patchwork)
+
+base <- ggplot(regions, aes(x = year, y = population, fill = region, color = region))
+base + geom_area(show.legend = FALSE) | base + geom_line()
 ```
 
 :::
 
-The y-axis range of this chart
-is the same as the one on the previous plot,
-so it is easy to see how the total world population has changed over time.
-From the stacked colored regions,
-we also get a rough idea of how each region has grown,
-but it is hard to compare exactly,
-especially for regions that are not stacked next to each other.
+For each of these three questions,
+which chart is the most appropriate to answer the question?
+
+1. How many people live in the world?
+2. How many people live in the Americas?
+3. Which region has the second highest population in 2015?
+
+:::: {.callout-default .ex-hint}
+
+Note how the areas are stacked on top of each other
+whereas the lines are not.
+What becomes 
+
+::::: {.callout-default .ex-solution}
+
+1. The area chart makes it the easiest
+   to see how the total world population has changed over time;
+   as we can read this value directly off the y-axis
+   since the areas are stacked on top of each other.
+2. Using a line chart is the preferred choice
+   when we want to view the exact values of a single group (like the Americas region)
+   rather than the total of the groups added together.
+   From the stacked colored regions,
+   we also get a rough idea of how each region has grown,
+   but it is hard to compare exactly,
+   especially for regions that are not stacked next to each other.
+   The drawback of a line chart is that
+   it's quite cognitively demanding
+   to try to reconstruct the total world population
+   by adding all the lines up together,
+   especially over time!
+3. For the same reasons as in (2),
+   a line chart makes it easier to tell that Africa has had a bigger population than Europe
+   since shortly after year 2000.
+
+:::::
+
+::::
+
+:::
+
+::: {.callout-warning}
+
+### Avoid layering areas and stacking lines
+
+While it might initially seem like layering instead of stacking areas,
+could remedy some of the issues mentioned above
+this is generally not recommended since such charts become quite hard to read
+(there are a few exceptions such as density plots
+which we will see in a later chapter)
+
+Similarly,
+creating a stacked line chart,
+is never a good idea
+since it it very confusing and unexpected.
+If the sum is meaningful,
+use an area chart instead.
+
+:::
+
+::: {.callout-warning}
+
+### Avoid stacking areas when summing groups is nonsensical
+
+Avoid area charts when
+the sum of the different groups in the chart is not meaningful
+since stacking effectively sums the area heights together.
 For example,
-we can't really tell if Europe or Africa, has the largest population in the most recent year.
+if we wanted to know the average number of children per woman around the world,
+stacking areas does not make sense
+since this is like summing averages together.
+Reading the y-axis of the stacked areas thus becomes
+misleading and confusing;
+the world average wasn't 30 children per woman in the 1800s...
 
-Altair stacks by areas by default,
-which is usually what we want when creating an area chart with groups.
-But if someone saw our chart without knowing this,
-they might think that the areas are layered behind each other,
-so that we only see the top of the blue region 
-peak out behind the orange region.
-Using a line chart
-is the preferred choice when we want to view the exact values of each group
-and don't care as much about the total of the groups added together.
-
-::: {.panel-tabset group="language"}
+:::: {.panel-tabset group="language"}
 
 ### Altair
 
 ```{python}
-#| label: region-lines-alt
-alt.Chart(regions).mark_line().encode(
-    x='year:T',
-    y='population',
-    color='region'
-)
-```
-
-### ggplot
-
-To change the stacking behavior we can set the position to `dodge`
-and add some transparency with the `alpha` parameter.
-
-```{r}
-#| label: population-dodged-gg
-ggplot(regions, aes(x = year, y = population, fill = region)) +
-    geom_area(position = 'dodge', alpha = 0.4)
-```
-
-A line plot would be more effective than the layered/dodged area chart above.
-
-```{r}
-#| label: region-lines-gg
-ggplot(regions, aes(x = year, y = population, color = region)) +
-    geom_line()
-```
-
-:::
-
-In the chart above,
-connections help us follow each region across years without jumping
-to another region's observations.
-Color identifies the groups, while the connected lines make their sequences visible.
-
-With those separate sequences,
-it is immediately clear that Africa has had a bigger population than Europe
-and since shortly after the year 2000.
-The drawback is that
-it's quite cognitively demanding
-to try to reconstruct the total world population
-by adding all the lines up together,
-especially over time!
-
-When the sum of the different groups in the chart is not meaningful,
-a line chart is also the better choice.
-For example,
-let's answer a slightly different question with a visualization:
-"What is the average number of children per woman in a country for each continent?"
-The `children_per_woman` column in `regions` already contains those averages.
-Let's first look at this with an area plot like above:
-
-::: {.column-margin}
-
-**Factual tidbit**
-
-Population experts predict that the world population
-will stop increasing and stabilize around 11 billion people.
-This is mainly due to improved living conditions in low income countries,
-which reduces child mortality
-and allows families to have fewer children.
-You will learn more about this in lab 1.
-
-:::
-
-```{python}
+#| echo: false
 #| label: fertility-stacked
 alt.Chart(regions).mark_area().encode(
     x='year:T',
     y='children_per_woman',
-    color='region'
-)
-```
-
-Here,
-summing/stacking the average areas does not give a meaningful number
-(there wasn't 30 children per woman in the 1800s...).
-We can try to unstack the areas to remedy this issue,
-and show them behind each other on the same baseline instead of on top of each other.
-
-#### `alt.X` and `alt.Y`
-
-In order to create an area chart
-where the colored regions are layered behind each other 
-rather than stacked on top,
-we need to leverage the helper functions `alt.Y` and `alt.X`.
-These helpers have the role of customizing things like order, groups, and scale for the axis.
-When using just `y='column'`,
-we're still calling `alt.Y()` under the hood,
-we just save ourselves some typing.
-
-Let's first use `alt.Y` on its own
-without any additional argument
-to recreate the same area plot as above
-just to demonstrate how it works.
-
-```{python}
-#| label: fertility-axis-helper
-alt.Chart(regions).mark_area().encode(
-    x='year:T',
-    y=alt.Y('children_per_woman'),
     color='region'
 )
 ```
@@ -822,24 +832,40 @@ of the same data,
 we can see that Europe follows a much different development
 than to the other regions.
 
-```{python}
-#| label: fertility-lines
-alt.Chart(regions).mark_line().encode(
-    x='year:T',
-    y='children_per_woman',
-    color='region'
-)
+### ggplot
+
+```{r}
+#| label: region-lines-alt-gg
+ggplot(regions, aes(x = year, y = children_per_woman, fill = region)) +
+    geom_area()
 ```
 
-Note that you could use `stack=True` to create a stacked line chart,
-but you should **never** do this
-as it it very confusing and unexpected.
-If you want to stack groups, use an area chart.
+::::
 
-## From connections to summaries
+:::
 
-So far, we have used position, grouping, and order to make supplied values easier to read.
-But sometimes there are too many observations to show individually,
-or the question calls for a total, count, or typical value.
-In [Summaries](7_summaries.qmd), we will explore how to reduce a collection
-of observations to useful quantities—and ask what information that reduction leaves out.
+::: {.panel-tabset group="language"}
+
+### Altair
+
+In order to create an area chart
+where the colored regions are layered behind each other 
+rather than stacked on top,
+we need to leverage the helper functions `alt.Y` and `alt.X`.
+These helpers have the role of customizing things like order, groups, and scale for the axis.
+When using just `y='column'`,
+we're still calling `alt.Y()` under the hood,
+we just save ourselves some typing.
+
+### ggplot
+
+To change the stacking behavior we can set the position to `dodge`
+and add some transparency with the `alpha` parameter.
+
+```{r}
+#| label: population-dodged-gg
+ggplot(regions, aes(x = year, y = population, fill = region)) +
+    geom_area(position = 'dodge', alpha = 0.4)
+```
+
+:::

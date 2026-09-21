@@ -14,6 +14,12 @@ fig-height: 3.75
 
 :::
 
+So far, we have used position, grouping, and order to make supplied values easier to read.
+But sometimes there are too many observations to show individually,
+or the question calls for a total, count, or typical value.
+In [Summaries](7_summaries.qmd), we will explore how to reduce a collection
+of observations to useful quantities—and ask what information that reduction leaves out.
+
 In [Order](6_order.qmd), we connected supplied values to make their sequence clear.
 Sometimes, however, our question concerns a collection of observations:
 How many are there? What is their total? What is a typical value?
