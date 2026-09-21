@@ -299,30 +299,6 @@ but you can [explore some of it over at Our World in Data
 
 :::
 
-::: {.callout-caution}
-
-### Avoid claiming causation from visualizations alone
-
-You might have heard that "correlation is not causation"
-and that applies here too.
-Although the ending of World War II
-seems like a plausible cause for the trends we have explored,
-it is important to understand
-that just because something seems plausible
-we cannot claim that this actually is the underlying cause
-for the observed phenomena.
-Usually there are many interacting contributing factors
-that interact to form a more complex background story.
-[This article about the population grown around the 1950s
-](https://ourworldindata.org/baby-boom-seven-charts)you can
-elaborates on what we explored here.
-Among other things,
-it notes that many countries
-started seeing increases in child birth
-already before World War II.
-
-:::
-
 ::: {.callout-warning}
 
 ### Avoid claiming causation from visualizations alone
@@ -337,7 +313,7 @@ we cannot claim that this actually is the underlying cause
 for the observed phenomena.
 Usually there are many interacting contributing factors
 that interact to form a more complex background story.
-[This article about the population grown around the 1950s
+[This article about the population growth around the 1950s
 ](https://ourworldindata.org/baby-boom-seven-charts)you can
 elaborates on what we explored here.
 Among other things,
@@ -493,7 +469,7 @@ use data reported at a monthly frequency instead.
 ::::
 :::
 
-::: {.callout-caution}
+::: {.callout-warning}
 
 ### Avoid connecting categorical values with a line
 

@@ -402,7 +402,7 @@ ggplot(income_df,aes(
 
 :::
 
-::: {.callout-caution }
+::: {.callout-warning }
 
 ## Avoid using color for more than 5-7 groups
 
@@ -488,7 +488,7 @@ While this combined approach makes grouping clearer, there are some pitfalls. Fo
 Additionally, smaller shapes are difficult to distinguish, so when plotting a dense scatterplot of small marks, try restricting the number of unique shapes to three or fewer, or consider avoiding using shape altogether.
 <!--TODO number of shapes -->
 
-::: {.callout-caution }
+::: {.callout-warning }
 
 ## Avoid using color and shape for different variables
 
@@ -546,7 +546,7 @@ Under limited circumstances,
 it can also be used for grouping data according to a categorical variable,
 but in general this is best avoided.
 
-::: {.callout-caution}
+::: {.callout-warning}
 
 ## Avoid using size to group by a categorical variable
 
