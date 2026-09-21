@@ -37,10 +37,6 @@ table.dataframe-preview thead tr:last-child th {
     color: var(--bs-secondary-color, #666);
 }
 
-.callout-header {
-    margin-bottom: 10px !important;
-}
-
 #mermaid-1 .cluster rect {
     fill: #f9f9f9 !important;
     stroke: #ddd;
@@ -62,19 +58,83 @@ h4 {
 
 /* Callout styling */
 
+/* Treat each callout as a tinted block, including nested and collapsed ones.
+   Reset the palette on every callout so unknown nested types don't inherit it. */
+.callout {
+  --callout-body-bg: #f4f5f7;
+  --callout-header-bg: #e8ebef;
+  --callout-outline: #d9dee5;
+  background-color: var(--callout-body-bg);
+  border-top-color: var(--callout-outline);
+  border-right-color: var(--callout-outline);
+  border-bottom-color: var(--callout-outline);
+  border-radius: 0.4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.callout.callout-note,
+.callout.callout-ex-prompt {
+  --callout-body-bg: #f3f7fc;
+  --callout-header-bg: #e4effb;
+  --callout-outline: #ccdef2;
+}
+
+.callout.callout-tip {
+  --callout-body-bg: #f2f9ef;
+  --callout-header-bg: #e3f2dc;
+  --callout-outline: #cfe4c5;
+}
+
+.callout.callout-caution,
+.callout.callout-ex-hint {
+  --callout-body-bg: #fff8ee;
+  --callout-header-bg: #fcebd2;
+  --callout-outline: #efdbbd;
+}
+
+.callout.callout-warning,
+.callout.callout-ex-solution {
+  --callout-body-bg: #fffbee;
+  --callout-header-bg: #fff3cd;
+  --callout-outline: #ecdfb3;
+}
+
+.callout.callout-important {
+  --callout-body-bg: #fff3f5;
+  --callout-header-bg: #ffe4e9;
+  --callout-outline: #f2cbd4;
+}
+
+/* Match Quarto's border selector specificity without replacing accent borders. */
+.callout.callout-style-default,
+.callout.callout-style-simple {
+  border-top-color: var(--callout-outline);
+  border-right-color: var(--callout-outline);
+  border-bottom-color: var(--callout-outline);
+}
+
 /* Collapse buttons otherwise make custom headers taller than static cautions/warnings.
    A shared minimum keeps short titles aligned while allowing long titles to wrap. */
-.callout.callout-style-default:is(
-  .callout-ex-prompt,
-  .callout-ex-hint,
-  .callout-ex-solution,
-  .callout-deep-dive,
-  .callout-caution,
-  .callout-warning
-) > .callout-header {
+div.callout.callout-style-default > .callout-header {
+  background-color: var(--callout-header-bg);
   min-height: 2.25rem;
   align-items: center;
   padding-top: 0;
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+  margin-bottom: 0;
+  border-top-right-radius: calc(0.4rem - 1px);
+}
+
+.callout.callout-style-default .callout-body {
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+}
+
+.callout.callout-style-simple {
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
 }
 
 .callout.callout-style-default:is(.callout-caution, .callout-warning) > .callout-header > .callout-icon-container {
@@ -88,9 +148,6 @@ h4 {
 .callout-ex-prompt {
   border-left-color: #2780e3 !important;
 }
-.callout-ex-prompt > .callout-header {
-  background-color: #ecf4fc !important;
-}
 .callout-ex-prompt > .callout-header::before {
   font-family: "Font Awesome 5 Free";
   content: "\f303";
@@ -100,9 +157,6 @@ h4 {
 
 .callout-ex-hint {
   border-left-color: #f0ad4e !important;
-}
-.callout-ex-hint > .callout-header {
-  background-color: #fef8ef !important;
 }
 .callout-ex-hint > .callout-header::before {
   font-family: "Font Awesome 5 Free";
@@ -114,9 +168,6 @@ h4 {
 .callout-ex-solution {
   border-left-color: #ffe79a !important;
 }
-.callout-ex-solution > .callout-header {
-  background-color: #fff9e7 !important;
-}
 .callout-ex-solution > .callout-header::before {
   font-family: "Font Awesome 5 Free";
   content: "\f058";
@@ -126,9 +177,6 @@ h4 {
 
 .callout-deep-dive {
   border-left-color: #52575C !important;
-}
-.callout-deep-dive > .callout-header {
-  background-color: #F1F3F5 !important;
 }
 .callout-deep-dive > .callout-header::before {
   font-family: "Font Awesome 5 Free";
