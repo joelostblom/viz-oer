@@ -4,5 +4,6 @@ name = "viz-oer"
 [dependencies]
 dplyr = "*"
 ggplot2 = "*"
+patchwork = "*"
 reticulate = "*"
 tidyverse = "*"
