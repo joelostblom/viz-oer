@@ -118,8 +118,8 @@ import pandas as pd
 alt.data_transformers.enable('vegafusion')
 ```
 
-Vegafusion makes it easier to work with large datasets in Altair,
-and we will use it by default from now on
+Vegafusion makes it easier to work with large datasets and temporal variables in Altair,
+we will use it by default from now on
 (you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
 
 ```{python}
@@ -135,6 +135,7 @@ regions
 
 ```{python}
 #| label: show-regions-python
+#| echo: false
 show_df(regions)
 ```
 
@@ -162,6 +163,7 @@ regions
 
 ```{r}
 #| label: show-regions-r
+#| echo: false
 show_df(regions)
 ```
 
@@ -235,6 +237,19 @@ to connect observations with a line.
 ggplot(world, aes(x = year, y = population)) +
     geom_line()
 ```
+
+:::
+
+::: {.column-margin}
+
+<br><br>
+**Population plateau**
+
+Although it might looks like the population
+might keep growing rapidly for the foreseeable future,
+[population experts predict that the world population will
+stabilize](https://ourworldindata.org/world-population-growth-past-future)
+just above ten billion people before the end of the century.
 
 :::
 
@@ -323,7 +338,7 @@ already before World War II.
 
 :::
 
-## Showing points and lines
+## Combining lines and points
 
 Generally,
 it is helpful
@@ -433,7 +448,7 @@ as in the chart below.
 years = range(1926, 2010, 2)
 world2 = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)')
 title = 'Every 2nd year'
-line = alt.Chart(world2, title=title, height=250, width=250).mark_line().encode(
+line = alt.Chart(world2, title=title, height=220, width=220).mark_line().encode(
     x='year:T',
     y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
 )
@@ -441,7 +456,7 @@ every_2nd_year = line + line.mark_point(filled=True)
 
 years = range(1928, 2030, 20)
 title = 'Every 20th year'
-line = alt.Chart(world2.query('year.isin(@years)'), title=title, height=250, width=250).mark_line().encode(
+line = alt.Chart(world2.query('year.isin(@years)'), title=title, height=220, width=220).mark_line().encode(
     x='year:T',
     y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
 )
@@ -469,7 +484,7 @@ use data reported at a monthly frequency instead.
 ::::
 :::
 
-::: {.callout-warning}
+::: {.callout-caution}
 
 ### Avoid connecting categorical values with a line
 
@@ -704,11 +719,12 @@ What becomes
    as we can read this value directly off the y-axis
    since the areas are stacked on top of each other.
 2. Using a line chart is the preferred choice
-   when we want to view the exact values of a single group (like the Americas region)
+   when we want to focus on comparing groups,
+   either exact individual observations or the progression over time,
    rather than the total of the groups added together.
    From the stacked colored regions,
    we also get a rough idea of how each region has grown,
-   but it is hard to compare exactly,
+   but it is hard to make exact comparisons,
    especially for regions that are not stacked next to each other.
    The drawback of a line chart is that
    it's quite cognitively demanding
@@ -732,11 +748,22 @@ What becomes
 While it might initially seem like layering instead of stacking areas,
 could remedy some of the issues mentioned above
 this is generally not recommended since such charts become quite hard to read
+as you can see below
 (there are a few exceptions such as density plots
-which we will see in a later chapter)
+which we will see in a later chapter).
+
+```{python}
+#| label: fertility-overlapping
+#| echo: False
+alt.Chart(regions).mark_area(opacity=0.4).encode(
+    x='year:T',
+    y=alt.Y('children_per_woman').stack(False),
+    color='region'
+)
+```
 
 Similarly,
-creating a stacked line chart,
+creating a stacked line chart
 is never a good idea
 since it it very confusing and unexpected.
 If the sum is meaningful,
@@ -759,10 +786,6 @@ Reading the y-axis of the stacked areas thus becomes
 misleading and confusing;
 the world average wasn't 30 children per woman in the 1800s...
 
-:::: {.panel-tabset group="language"}
-
-### Altair
-
 ```{python}
 #| echo: false
 #| label: fertility-stacked
@@ -771,77 +794,6 @@ alt.Chart(regions).mark_area().encode(
     y='children_per_woman',
     color='region'
 )
-```
-
-Now we can pass options inside `alt.Y`,
-e.g. to turn off stacking
-we can use the `.stack(False)` method of `alt.Y`
-(we also set the opacity of the areas
-to allow us to see area behind each other).
-
-```{python}
-#| label: fertility-overlapping
-alt.Chart(regions).mark_area(opacity=0.4).encode(
-    x='year:T',
-    y=alt.Y('children_per_woman').stack(False),
-    color='region'
-)
-```
-
-As you can see,
-this is still not a very effective plot
-for our data.
-It is difficult to discern where
-the areas overlap and we mostly see a brown smear
-of them all on top of each other;
-a line chart would not have this issue.
-We will see when layered areas can be effective later in the course,
-but generally it is when there are fewer groups,
-or non-overlapping areas such as density plots.
-
-In the chart above,
-it also looks like the sequences of values over time
-for different continents
-are pretty similar.
-If we create the line chart
-of the same data,
-we can see that Europe follows a much different development
-than to the other regions.
-
-### ggplot
-
-```{r}
-#| label: region-lines-alt-gg
-ggplot(regions, aes(x = year, y = children_per_woman, fill = region)) +
-    geom_area()
-```
-
-::::
-
-:::
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-In order to create an area chart
-where the colored regions are layered behind each other 
-rather than stacked on top,
-we need to leverage the helper functions `alt.Y` and `alt.X`.
-These helpers have the role of customizing things like order, groups, and scale for the axis.
-When using just `y='column'`,
-we're still calling `alt.Y()` under the hood,
-we just save ourselves some typing.
-
-### ggplot
-
-To change the stacking behavior we can set the position to `dodge`
-and add some transparency with the `alpha` parameter.
-
-```{r}
-#| label: population-dodged-gg
-ggplot(regions, aes(x = year, y = population, fill = region)) +
-    geom_area(position = 'dodge', alpha = 0.4)
 ```
 
 :::
