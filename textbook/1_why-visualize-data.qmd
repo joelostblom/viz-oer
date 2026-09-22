@@ -122,7 +122,8 @@ a few commonly used statistical summaries of the data?
 
 ```{python}
 #| echo: false
-#| label: anscombe-summary
+#| label: tbl-anscombe-summary
+#| tbl-cap: "Summary statistics of the modified Anscombe datasets."
 
 s = ''
 for set_name, df in anscombe.groupby('Set'):
@@ -174,7 +175,8 @@ and plot them to have a quick look...
 
 ```{python}
 #| echo: false
-#| label: anscombe-charts
+#| label: fig-anscombe-charts
+#| fig-cap: "Visualization of the modified Anscombe datasets revealing the pattern in the underlying observations."
 
 alt.Chart(anscombe).mark_circle(size=80).encode(
     x='x',

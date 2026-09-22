@@ -4,6 +4,8 @@ fig-width: 5
 fig-height: 3.75
 ---
 
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
 1. **Visualize** frequencies and totals with bar charts, and numerical distributions with histograms.

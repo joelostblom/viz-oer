@@ -75,7 +75,7 @@ where we color the points according to their group.
 Here is pseudocode^["pseudocode" is an informal way of writing code that is often used to explain a concept to the reader]
 that illustrates this difference:
 
-::: {.panel-tabset group="language"}
+::: {.panel-tabset}
 
 ### Declarative syntax
 
