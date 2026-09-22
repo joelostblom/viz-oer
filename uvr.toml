@@ -2,6 +2,7 @@
 name = "viz-oer"
 
 [dependencies]
+Hmisc = "*"
 dplyr = "*"
 ggplot2 = "*"
 patchwork = "*"

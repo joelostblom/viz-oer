@@ -14,28 +14,311 @@ fig-height: 3.75
 
 :::
 
-So far, we have used position, grouping, and order to make supplied values easier to read.
-But sometimes there are too many observations to show individually,
-or the question calls for a total, count, or typical value.
-In [Summaries](7_summaries.qmd), we will explore how to reduce a collection
-of observations to useful quantities—and ask what information that reduction leaves out.
+## Why do we care?
 
 In [Order](6_order.qmd), we connected supplied values to make their sequence clear.
 Sometimes, however, our question concerns a collection of observations:
 How many are there? What is their total? What is a typical value?
 A summary helps answer these questions by reducing many values to a few.
+In this chapter, we will explore how to reduce a collection
+of observations to useful quantities—and ask what information that reduction leaves out.
 
 That reduction is useful, but it also leaves information out.
 As we work through this chapter, keep asking:
 **What did we lose, and how much of it do we need to put back?**
-This question will lead us to [Variability](8_variability.qmd)
-and [Distributions](9_distributions.qmd).
+We will explore those questions in the following chapters.
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-::: {.callout-note title="Further reading"}
+::: {.callout-default .ex-prompt}
 
-- [Chapter 6 of Fundamentals of Data Visualization](https://clauswilke.com/dataviz/visualizing-amounts.html), on visualizing amounts.
+Long term meditation has document effects
+in terms of .... ref.
+But what about if you have never meditaated before 
+and just want to feel a bit less stressed about your next exam?
+There was a paper that explored exactly that and here are the results
+using the best practices we learned about grouping with position
+and position on the same scale to compare values:
+
+:::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+import pandas as pd
+import altair as alt
+
+meditation = pd.read_csv('data/meditation-stress.csv')
+alt.Chart(meditation).mark_point().encode(
+    y='condition',
+    x='stress'
+)
+```
+
+### ggplot
+
+```{r}
+#| message: false
+library(readr)
+library(ggplot2)
+
+meditation = read_csv('data/meditation-stress.csv')
+ggplot(meditation, aes(y = condition, x = stress)) +
+    geom_point()
+```
+
+::::
+
+What conclusions can you draw?
+
+:::: {.callout-default .ex-hint}
+
+Can you say anything at all
+
+
+::::: {.callout-default .ex-solution}
+
+Although we followed the best practices of what we learned so far,
+we can't really draw any meaningful conclusions from this chart
+since there are too many overlapping points.
+Read on to find out what we could do to improve on this situation.
+
+:::::
+
+::::
+
+:::
+
+## Visualizing statistical summaries
+
+Similar to what we learned in [Why visualize data?](1_why-visualize-data.qmd)
+where we saw that collapsing data into a statistical summary
+could make it easier to understand than a raw table of numbers.
+We could employ a similar strategy here and 
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+In Altair,
+we can write any aggregation function directly as a string
+wrapping the column name,
+e.g. `'mean(stress)'`:
+
+
+```{python}
+alt.Chart(meditation).mark_point().encode(
+    y='condition',
+    x='mean(stress)'
+)
+```
+
+### ggplot
+
+In ggplot,
+we can tell each geom to use a summary statistics
+instead of the raw observation values.
+We then also need to specify which kind of summary,
+which in this case is the `mean` function
+(when we don't specify any explicit value to `stat`,
+the default is `'identity'`, i.e. the raw values):
+
+```{r}
+ggplot(meditation, aes(y = condition, x = stress)) +
+    geom_point(stat = 'summary', fun = mean)
+```
+
+Instead of calling the `geom_point` function and define the `stat` parameter,
+we could call the `stat_summary` function and define the `geom` parameter:
+
+```{r}
+ggplot(meditation, aes(y = condition, x = stress)) +
+    stat_summary(geom = "point", fun = mean)
+```
+
+These two approaches are **identical** in terms of functionality
+and both are commonly used.
+Sticking with the `geom_` approach makes the code syntax more consistent,
+regardless of whether we are plotting the raw identity value, or summaries.
+[This is a nice SO answer if you want to know
+more](https://stackoverflow.com/questions/38775661/what-is-the-difference-between-geoms-and-stats-in-ggplot2/44226841#44226841).
+
+::::
+
+::: {.column-margin}
+
+As you can see,
+different packages make different decision about whether to include the 0 by default.
+Whether you should include it depends on whether
+you want to emphasize the differences between groups or not,
+which we will discuss more later.
+
+:::
+
+Now we can clearly see
+that **on average** there are some differences between the groups.
+
+## Visualizing spread
+
+But including the mean value completely remove all the variability.
+This is not a good idea
+because how the individual data points are distributed
+also impacts which conclusions we can draw from the data.
+
+So,
+whenever we show a measure of central tendency such as the mean or median,
+it is could to couple it with an indication of the underlying variability.
+
+Variability comes in two flavors,
+we can either talk about the spread of the underlying data (descriptive statistics)
+or the uncertainty in the estimate of central tendency (inferential statistics).
+These two types of variability answers two different question,
+but graphically they are often depicted similarly.
+In this chapter,
+we will focus on the spread in the underlying data,
+and come back to confidence intervals in a future chapter.
+<!-- TODO which chapter for ci, link to it and include more discussion around bootstrap there? and also talk about how more points changes the interval to become smaller -->
+<!-- TODO mention error bar -->
+
+Let's see how we can include the standard deviation
+together with the mean:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+The `errorbar` mark allows us to plot different common
+measures of variability,
+including the standard deviation.
+We're changing the color of the point marks to match the error bar.
+We are using `mark_circle`
+as a shortcut for `mark_point(filled=True)`.
+
+```{python}
+points = alt.Chart(meditation).mark_circle(color='black').encode(
+    y='condition',
+    x='mean(stress)'
+)
+
+points + points.mark_errorbar(extent='stdev')
+```
+
+### ggplot
+
+Like the name implies,
+the `pointrange` geom creates both a point and a range.
+Previously we have passed specific statistic summary functions to the `fun` parameter,
+but here we will use `fun.data` because we need both the lower and upper bond
+of where to plot the line for the standard deviation range.
+Whereas `fun` only allows functions that return a single value
+which decides where to draw the point on the y-axis
+(such as `'mean'`),
+`fun.data` allows functions to return three values (the min, middle, and max y-value).
+
+The `fun.args` parameter looks a bit cryptic.
+What it does is to pass `mult = 1` (multiplier) to the `mean_sdl` function,
+which otherwise multiplies the standard deviation by 2 by default.
+
+```{r}
+ggplot(meditation, aes(y = condition, x = stress)) +
+    geom_pointrange(stat = 'summary', fun.data = 'mean_sdl', fun.args = list(mult = 1))
+```
+
+
+Note that you need the `Hmisc` package installed in order to use `mean_sdl`;
+if you don't nothing will show up but you wont get an error,
+so it can be tricky to realize what is wrong.
+
+:::
+
+This give us some additional information:
+we can see that all the conditions
+had a similar spread in the underlying data.
+While pairing a mean with an indication of its standard deviation
+is better than just showing a mean alone,
+it is not a satisfactory visualization in most cases.
+Just as we learned about statistical summaries of raw numbers in the first chapter
+graphical statistical summaries don't tell the whole story.
+Let's explore that more in this exercise.
+
+::: {.callout-default .ex-prompt}
+
+To the left,
+we can see the mean + standard deviation
+of a set observations.
+To the right,
+there are four different suggestions
+for what these underlying observations might look like.
+By studying this chart,
+which of the sets of possible underlying observation
+do you think was used to create the summary chart to the left?
+
+```{python}
+#| echo: false
+SCENARIOS = ['Symmetric', 'Outlier', 'Bimodal', 'Unequal n']
+
+data = pd.read_csv('data/same_mean_sd.csv').query('dataset.isin(@SCENARIOS)')
+y = alt.Y('value:Q').title('Value').scale(domain=[0, 40]).title(None)
+base = alt.Chart(data, height=200, width=alt.Step(44)).encode(
+    alt.X('group').title(None).axis(labelAngle=0),
+    alt.Color('group:N').legend(None)
+)
+
+intervals = base.mark_errorbar(extent='stdev', thickness=2).encode(y=y)
+means = base.mark_point(filled=True, size=60).encode(y=y.aggregate('mean')).properties(
+    title=alt.Title('Mean + SD', fontSize=12)
+)
+summaries = (
+    (intervals + means).transform_filter(alt.datum['dataset'] == 'Symmetric')
+)
+
+observations = (
+    base
+    .transform_calculate(jitter=alt.expr.random())
+    .mark_circle(size=30)
+    .encode(y=y, xOffset=alt.XOffset('jitter:Q').scale(domain=(0, 1.5)))
+    .facet(column=alt.Column('dataset:N').sort(SCENARIOS).title('Possible underlying observations'))
+)
+alt.hconcat(summaries, observations, spacing=30)
+```
+
+:::: {.callout-default .ex-hint}
+
+It's more than just one of them...
+
+::::: {.callout-default .ex-solution}
+
+In this case,
+**all** of the four distributions above
+gave rise to the same summary chart!
+That means if that you only look at the summary chart with the mean + SD,
+you don't really have any idea what your data looks like.
+This matters because depending on what your observations look like,
+you will come to different conclusions.
+For example,
+in the case of the outlier,
+maybe that's a technical error
+and the average between the two groups
+would be the same without that one point?
+Or what if group A follows a symmetric distribution
+whereas group B shows a bimodal spread?
+
+:::::
+
+::::
+
+:::
+
+::: {.callout-warning }
+
+## Avoid drawing conclusions from looking at summary charts alone
+
+Summary charts can be useful
+since aggregation reduces the complexity of the chart.
+But even if you are interested
+in comparing group summaries such as means or medians,
+you should always also inspect the underlying observations
+to understand how they are distributed and if there are any outliers in the data,
+since this will impact which conclusions you can derive from the chart.
 
 :::
 

@@ -16,6 +16,8 @@ resources:
 
 :::
 
+**The motivation for this chapter should be what to do when there are too many points to show all observations**
+
 One summary value can hide important differences between collections of observations.
 An interval adds information about their variability, or about uncertainty in an estimate,
 but its endpoints still do not show where observations or probability are concentrated.
