@@ -1,0 +1,501 @@
+,Unnamed: 0,duration_in_seconds,site,age,gender,country_birth,job,condition,stress
+103,246,1282,gold,20,2.0,England,,Loving kindness,1.3
+2081,6210,1289,seeb,23,2.0,Germany,,Control (book chapter),1.9
+451,1113,1695,wurz,18,2.0,Germany,,Mindful walking,2.95
+1056,2856,1409,jose,18,2.0,United States of America,,Control (book chapter),2.75
+283,667,13363,loyo,20 years old,2.0,United States,A student,Mindful walking,1.5
+980,2628,1535,macq,18,2.0,China,,Control (book chapter),2.0
+1353,3732,1331,spri,19,2.0,United States,,Control (book chapter),1.45
+334,792,1193,lime,18,2.0,ireland,,Loving kindness,1.85
+453,1130,1759,cali,21,2.0,United States,,Loving kindness,1.25
+811,2156,1706,idah,18,2.0,United States,,Control (book chapter),2.65
+1716,4861,1081,hous,20,2.0,United States,,Body scan,1.5
+1864,5312,188423,aust,18,2.0,Australia,,Mindful walking,1.45
+1259,3445,2125,seeb,20,2.0,Austria,,Control (book chapter),1.95
+1959,5711,2452,fras,18,2.0,canada,,Body scan,1.2
+1475,4098,1153,olaf,20,2.0,United States,,Mindful walking,1.5
+575,1465,1582,hous,21,2.0,USA,,Mindful breathing,1.75
+1246,3407,1660,iowa,18,1.0,United States,,Control (book chapter),2.4
+952,2548,1146,ryer,18,1.0,Canada,,Body scan,2.0
+383,906,1351,canb,19,2.0,Australia,,Loving kindness,1.15
+164,403,2015,idah,19,1.0,United States,,Loving kindness,1.4
+1394,3877,1413,illi,21,1.0,United States,,Mindful breathing,1.85
+1319,3629,4239,iowa,19,2.0,United States,,Loving kindness,2.35
+15,42,1125,spri,19,2.0,United States,,Mindful breathing,1.55
+837,2227,1190,utah,19,2.0,United States,,Mindful breathing,1.1
+1600,4532,1043,hous,19,2.0,USA,,Mindful breathing,1.65
+396,933,22467,lime,19,6.0,Ireland,,Control (book chapter),1.95
+1356,3746,134438,hous,27,1.0,Jamaica,,Loving kindness,1.0
+1317,3627,1188,illi,19,2.0,United States,,Control (book chapter),1.75
+313,740,1220,radb,18,2.0,Netherlands,,Loving kindness,1.55
+486,1222,1292,fras,22,2.0,Canada,,Mindful breathing,1.85
+923,2473,1623,radb,19,1.0,Germany,,Control (book chapter),1.0
+264,632,363681,spri,20,1.0,United States,,Loving kindness,1.65
+888,2346,1245,macq,18,2.0,Australia,,Body scan,1.85
+2219,6640,2358,fras,20,1.0,Canada,,Loving kindness,1.3
+1383,3842,1312,loyo,18,1.0,US,,Mindful breathing,1.8
+54,149,1569,witt,19,1.0,United States,,Mindful breathing,1.6
+1225,3355,29236,jose,18,2.0,USA,,Loving kindness,2.95
+1006,2728,1237,utah,18,5.0,United States,,Loving kindness,1.35
+957,2562,1278,radb,19,2.0,Germany,,Control (book chapter),2.9
+775,2038,1252,suny,25,1.0,United States,,Control (book chapter),1.15
+2061,6128,1262,seeb,25,2.0,Austria,Saleswomen,Control (book chapter),2.05
+311,736,1478,illi,19,1.0,America,,Mindful breathing,2.15
+173,417,1342,quee,20,2.0,Zimbabwe,,Mindful breathing,1.2
+917,2454,1445,nort1,38,1.0,Australia,Teacher,Body scan,1.6
+538,1372,1223,quee,18,2.0,Australia,,Loving kindness,1.6
+167,408,1706,quee,21,2.0,Singapore,,Control (book chapter),1.65
+1583,4471,1453,flor,19,2.0,United States,,Mindful walking,1.4
+263,629,2655,spri,22,2.0,United States,,Mindful breathing,1.8
+1289,3557,1191,merc,22,2.0,USA,,Control (book chapter),1.65
+215,512,1374,loyo,18,1.0,United States,,Mindful breathing,1.15
+855,2272,1531,macq,40,2.0,Australia,,Body scan,2.25
+387,920,1198,macq,18,2.0,Australia,,Mindful walking,1.05
+1607,4546,1127,jose,20,1.0,United States,,Mindful breathing,1.3
+1768,5027,1348,glen,30,2.0,Canada,,Body scan,1.5
+50,136,6611,spri,18,1.0,japan,,Loving kindness,1.35
+722,1870,1216,utah,19,2.0,United States,,Control (book chapter),2.15
+1722,4878,1358,hous,24,2.0,United States,,Control (book chapter),2.0
+1485,4130,1297,hous,50,2.0,United States,,Loving kindness,1.5
+36,95,1374,radb,22,2.0,Poland,,Body scan,2.15
+948,2544,1344,utah,19,2.0,usa,,Loving kindness,2.4
+1402,3901,1362,flor,19,2.0,United States,,Control (book chapter),3.75
+1311,3609,1190,suny,18,2.0,United States,,Mindful breathing,1.35
+1449,4025,17366,flor,20,2.0,U.S,,Loving kindness,1.5
+521,1329,1367,idah,19,2.0,United States of America,,Loving kindness,1.7
+997,2705,81496,seeb,22,2.0,Austria,,Mindful walking,1.55
+1341,3691,1039,illi,21,1.0,United States,,Loving kindness,2.1
+1889,5435,1211,fras,18,2.0,Canada,,Control (book chapter),2.15
+806,2137,1626,nort2,68,2.0,England,Senior biomedical scientist-retired,Loving kindness,1.15
+1757,4990,1297,lime,33,1.0,sweden,lecturer,Control (book chapter),1.3
+743,1917,1180,illi,21,2.0,United States,,Control (book chapter),1.75
+1281,3535,3407,glen,20,2.0,United States,,Mindful walking,1.8
+1071,2893,2157,canb,18,2.0,India,,Mindful walking,2.2
+832,2208,1132,nort1,26,2.0,England,,Loving kindness,2.15
+83,215,1440,suny,19,2.0,United States,,Mindful walking,2.1
+1195,3293,1345,glen,25,1.0,USA,,Control (book chapter),1.6
+1826,5170,1247,aust,18,2.0,South Africa,,Body scan,2.35
+1310,3608,1320,illi,19,1.0,United States,,Control (book chapter),2.45
+1724,4889,1106,hous,20,2.0,USA,,Loving kindness,1.45
+1392,3875,1422,hous,21,2.0,United States,,Control (book chapter),2.55
+1573,4433,1359,jose,19,2.0,United States,,Control (book chapter),2.0
+1611,4553,2298,illi,19,1.0,United States,,Control (book chapter),3.1
+1842,5207,1756,wurz,20,2.0,Germany,,Mindful breathing,1.4
+1436,3996,1402,illi,19,2.0,US,,Control (book chapter),1.85
+1403,3902,1071,hous,20,1.0,england,,Control (book chapter),2.0
+1338,3683,3288,illi,19,2.0,United States,,Loving kindness,1.25
+573,1456,1717,macq,40,1.0,australia,,Mindful walking,1.65
+222,527,2354,macq,19,2.0,Vietnam,,Mindful walking,1.8
+399,940,1426,gold,19,2.0,Romania,,Control (book chapter),1.2
+1615,4564,1472,hous,19,2.0,United States,,Mindful walking,2.05
+360,853,1284,radb,19,2.0,Bulgaria,,Body scan,2.1
+97,235,1888,quee,19,2.0,Hong Kong SAR,,Mindful breathing,1.2
+156,390,1409,idah,19,2.0,United States,,Mindful walking,1.25
+1554,4382,1145,utah,20,2.0,united states,,Control (book chapter),1.7
+229,536,1258,idah,44,2.0,United States,,Mindful breathing,1.0
+1510,4217,1637,aust,33,2.0,Australia,,Loving kindness,1.65
+1818,5145,1501,hous,21,2.0,India,,Control (book chapter),2.0
+2077,6198,1889,seeb,25,2.0,Vienna,Mother,Loving kindness,2.05
+1704,4810,1600,kons,20,2.0,Germany,,Control (book chapter),1.75
+1623,4581,1484,aust,19,2.0,Australia,,Loving kindness,1.65
+1998,5902,1371,ryer,43,2.0,Canada,,Mindful walking,1.3
+692,1773,1218,macq,19,2.0,Australia,,Mindful breathing,1.8
+1010,2745,1174,radb,19,2.0,Netherlands,,Loving kindness,1.9
+939,2514,1199,lime,21,1.0,Ireland,,Loving kindness,2.8
+598,1520,1375,wurz,20,2.0,Germany,,Body scan,1.7
+577,1468,1453,macq,33,1.0,Australia,,Loving kindness,2.45
+2174,6483,1645,aust,19,1.0,China,,Loving kindness,1.85
+954,2554,1568,utah,19,2.0,America,,Mindful breathing,2.55
+1453,4040,1180,illi,18,1.0,United States,,Mindful breathing,1.55
+655,1665,1188,quee,18,2.0,South Africa,,Mindful breathing,1.55
+866,2299,1206,macq,18,2.0,Australia,,Loving kindness,2.0
+1750,4975,1183,utah,20,2.0,United States,,Mindful breathing,1.45
+1990,5850,1291,olaf,19,1.0,The US,,Body scan,2.6
+1166,3214,2196,merc,21,1.0,United States,,Mindful walking,1.65
+584,1490,1638,macq,59,2.0,Australia,,Mindful walking,1.0
+1303,3589,1379,glen,37,2.0,United States,,Control (book chapter),1.2
+2194,6549,1396,ryer,21,2.0,U.A.E,,Mindful walking,1.45
+1335,3674,1357,hous,18,2.0,usa,,Control (book chapter),2.25
+963,2574,1210,seeb,22,2.0,Austria,,Body scan,1.4
+969,2583,21606,radb,21,2.0,germany,,Mindful walking,1.6
+1140,3094,1269,utah,48,1.0,United States,,Mindful breathing,1.25
+241,564,1246,macq,17,1.0,Australia,,Control (book chapter),1.45
+2123,6325,2817,seeb,49,2.0,Austria,teacher for physically and mentally handicapped,Mindful breathing,1.25
+2214,6622,1561,canb,28,2.0,Australia,,Body scan,1.45
+1381,3840,1211,illi,19,2.0,United States,,Mindful walking,2.5
+1778,5059,1447,glen,40,1.0,usa,government,Body scan,1.35
+1488,4136,499800,glen,29,2.0,United States,,Loving kindness,1.8
+975,2605,1160,ryer,20,2.0,canada,,Control (book chapter),2.1
+1503,4191,1285,hous,23,1.0,United States of America,,Mindful walking,2.6
+1687,4766,1092,suny,19,2.0,USA,,Mindful walking,2.45
+1540,4310,1121,hous,20,2.0,U.S,,Mindful breathing,2.1
+913,2444,1393,radb,21,2.0,Germany,,Control (book chapter),1.8
+1807,5120,1181,olaf,19,1.0,United States,,Mindful walking,1.95
+1709,4829,54384,flor,19,1.0,USA,,Control (book chapter),1.2
+455,1135,1273,cali,19 years old,2.0,US,,Mindful breathing,1.05
+2089,6231,1144,seeb,20,2.0,Austria,,Body scan,1.4
+2229,6668,1373,kons,21,2.0,Germany,,Control (book chapter),1.95
+675,1719,1170,quee,19,2.0,South Korea,,Control (book chapter),2.0
+1556,4385,1790,seeb,22,2.0,Austria,,Mindful breathing,1.5
+2038,6023,2261,seeb,52,2.0,Austria,Teacher,Mindful breathing,1.1
+1005,2726,81837,utah,18,2.0,United States,,Control (book chapter),3.25
+1972,5799,2362,aust,18,2.0,Australia,,Control (book chapter),2.85
+1598,4529,1330,glen,40,2.0,United States,,Body scan,1.85
+425,1020,1205,idah,18,2.0,United States,,Control (book chapter),1.7
+644,1638,2271,macq,18,2.0,Australia,,Body scan,1.3
+1157,3164,1198,ryer,19,2.0,USA,,Control (book chapter),2.4
+1313,3617,1140,utah,21,1.0,United States,,Body scan,1.0
+1544,4327,4465,utah,21 years,2.0,mexico,,Loving kindness,1.6
+1409,3910,1153,utah,23,2.0,United States,,Mindful breathing,1.85
+2048,6055,1522,kons,23,2.0,Germany,,Mindful walking,1.2
+417,979,9785,gold,18,2.0,England,,Mindful walking,2.2
+460,1159,1078,iowa,20,1.0,USA,,Control (book chapter),1.9
+1606,4543,1303,jose,20,1.0,United States,,Mindful walking,1.7
+208,497,1222,macq,18,2.0,Australia,,Body scan,1.55
+549,1396,6114,quee,18,2.0,Australia,,Body scan,1.7
+697,1788,1594,macq,18,2.0,Australia,,Mindful breathing,1.35
+1169,3221,1097,merc,21,1.0,Mexico,,Mindful walking,2.2
+1858,5278,1280,hous,34,2.0,Pakistan,,Mindful breathing,2.05
+1845,5214,1114,hous,28,1.0,united states,,Body scan,1.4
+1036,2807,1246,utah,48,1.0,United States,,Control (book chapter),1.8
+1382,3841,1282,loyo,19,2.0,Belgium,,Body scan,1.45
+626,1598,1228,quee,18,2.0,Romania,,Control (book chapter),1.8
+342,805,1319,loyo,19,2.0,United States,,Loving kindness,2.3
+2175,6484,1219,fras,20,2.0,Canada,,Control (book chapter),1.45
+1065,2877,1359,radb,18,2.0,The Netherlands,,Mindful breathing,2.4
+1922,5573,1227,aust,18,1.0,Australia,,Body scan,1.8
+2102,6250,73011,seeb,35,2.0,Albania,,Loving kindness,1.0
+1229,3362,1317,iowa,19,1.0,USA,,Mindful breathing,1.5
+985,2645,1231,hous,27,2.0,USA,,Control (book chapter),1.55
+554,1414,1458,quee,18,2.0,Australia,,Control (book chapter),1.55
+745,1922,1052,jose,20,1.0,United States of America,,Control (book chapter),1.7
+112,275,69314,spri,18,2.0,united states,,Body scan,1.6
+1770,5031,1644,glen,43,2.0,USA,,Mindful breathing,1.3
+80,210,1756,cali,23,2.0,United States,,Control (book chapter),1.55
+1420,3953,1233,loyo,22,1.0,United States of America,,Control (book chapter),1.5
+1350,3727,1949,witt,20,1.0,United states,,Mindful walking,1.25
+1588,4493,1794,flor,20,2.0,Afghanistan,,Mindful walking,1.95
+1975,5803,1840,fras,18,3.0,Canada,,Loving kindness,2.2
+1784,5067,1299,glen,40,1.0,US,Doctor,Loving kindness,1.6
+861,2293,2669,macq,18,2.0,Pakistan,,Loving kindness,2.05
+795,2102,1787,newf,20,1.0,Canada,,Mindful breathing,2.4
+1811,5131,1300,hous,20,1.0,Philippines,,Body scan,2.0
+472,1190,1908,quee,19,2.0,Myanmar,,Control (book chapter),2.0
+338,799,1345,iowa,19,2.0,USA,,Mindful breathing,2.2
+1799,5097,1152,hous,21,1.0,United States,,Mindful walking,2.35
+299,716,1213,radb,18,2.0,Netherlands,,Mindful breathing,1.25
+1958,5710,1152,newf,18,2.0,Canada,,Mindful breathing,2.05
+496,1250,1584,quee,28,2.0,Taiwan,,Body scan,1.1
+1699,4799,1147,witt,19,6.0,United States,,Control (book chapter),2.15
+1644,4639,1397,olaf,19,2.0,United States,,Loving kindness,1.7
+1374,3805,1594,illi,20,2.0,USA,,Body scan,1.55
+1161,3180,1105,suny,19,5.0,America,,Loving kindness,1.2
+66,172,1140,suny,19,1.0,United States of America,,Body scan,1.5
+23,68,1129,macq,18,2.0,Australia,,Control (book chapter),1.4
+141,352,1156,radb,19,2.0,Germany,,Loving kindness,1.75
+22,65,1273,macq,43,1.0,Australia,,Body scan,1.6
+341,804,1300,idah,20,2.0,United States of America,,Mindful walking,1.5
+1266,3485,1204,utah,21,2.0,USA,,Mindful breathing,1.6
+1174,3236,1279,illi,20,2.0,Illinois,,Body scan,1.55
+1798,5094,1160,hous,22,2.0,United States,,Body scan,1.4
+56,153,1332,digi,23,1.0,United States,,Control (book chapter),1.45
+182,441,1300,suny,20,1.0,US,,Loving kindness,1.2
+204,486,1371,macq,18,2.0,Australia,,Loving kindness,2.0
+457,1143,1231,iowa,19,2.0,United States,,Mindful walking,1.25
+636,1626,1509,macq,32,1.0,Australia,,Body scan,1.5
+781,2055,1553,loyo,18,2.0,America,,Body scan,1.35
+1819,5151,1233,jose,19,1.0,United States,,Loving kindness,1.85
+585,1491,254814,wurz,24,2.0,Germany,,Mindful breathing,1.4
+788,2078,1104,loyo,19,1.0,Hong Kong,,Loving kindness,1.65
+2069,6153,1472,seeb,19,2.0,Austria,,Mindful walking,2.0
+142,358,1200,gold,19,2.0,Afghanistan,,Mindful walking,1.65
+1445,4013,9546,jose,18,2.0,usa,,Mindful walking,2.5
+465,1172,1367,macq,18,2.0,Australia,,Body scan,2.05
+154,388,1207,idah,18,2.0,United States,,Loving kindness,1.75
+2185,6516,1261,ryer,20,2.0,Nepal,,Mindful walking,1.7
+375,887,1722,idah,19,2.0,United states,,Loving kindness,2.05
+359,851,1341,illi,19,1.0,United states,,Mindful walking,2.2
+1963,5742,1540,olaf,19,1.0,United States of America,,Mindful breathing,1.75
+1825,5168,1244,jose,19,2.0,Germany,,Mindful breathing,1.6
+2055,6094,3984,seeb,21,2.0,austria,,Body scan,1.55
+504,1275,1335,wurz,32,1.0,Germany,,Control (book chapter),2.15
+520,1323,1113,ryer,19,2.0,canada,,Mindful walking,2.55
+599,1523,347739,lime,18,2.0,Ireland,,Control (book chapter),2.2
+1560,4403,1071,illi,19,2.0,uniates states,,Control (book chapter),1.9
+810,2154,1392,idah,20,2.0,United States,,Mindful walking,1.45
+1957,5705,1302,wurz,20,2.0,Germany,,Mindful walking,1.4
+690,1769,1280,macq,22,5.0,Australia,,Mindful breathing,1.1
+441,1080,1209,loyo,19,2.0,usa,,Mindful walking,1.4
+1455,4042,1222,hous,22,2.0,USA,,Mindful walking,1.75
+1739,4936,1578,utah,19,1.0,USA,,Loving kindness,1.55
+622,1586,1870,idah,33,2.0,United States,,Loving kindness,1.7
+1652,4666,2438,hous,20,2.0,houston,,Mindful walking,1.15
+268,639,1224,radb,18,2.0,The Netherlands,,Loving kindness,2.0
+1967,5770,1187,ryer,24,2.0,Philippines,,Body scan,2.6
+547,1389,1334,macq,23,2.0,Australia,,Body scan,2.15
+1730,4907,1665,indi,19,1.0,United States,,Body scan,1.8
+1873,5353,1380,jose,18,1.0,United States,,Mindful walking,1.85
+1563,4406,2294,illi,19,2.0,united states,,Mindful walking,1.7
+883,2333,1293,cali,20,2.0,United States,,Loving kindness,1.45
+367,869,1340,radb,19,2.0,Germany,,Control (book chapter),1.6
+645,1642,2337,quee,20,2.0,Australia,,Control (book chapter),2.0
+1996,5896,1135,seeb,21,2.0,england,,Loving kindness,1.8
+249,584,4087,wurz,19,2.0,Germany,,Mindful breathing,1.2
+1073,2896,1227,illi,19,1.0,United States,,Loving kindness,1.4
+983,2637,1182,iowa,20,1.0,USA,,Mindful walking,1.35
+1867,5326,1463,suny,20,1.0,USA,,Loving kindness,2.55
+1346,3715,1638,kons,31,2.0,Romania,,Mindful walking,1.25
+408,957,1336,radb,18,2.0,Netherlands,,Body scan,1.85
+2225,6656,1231,fras,24,2.0,Canada,,Mindful breathing,1.75
+1595,4520,1129,jose,20,2.0,United States,,Loving kindness,1.4
+255,605,1610,suny,19,1.0,United States,,Mindful walking,1.2
+1536,4296,1108,illi,18,1.0,U.S.,,Mindful walking,1.35
+2187,6519,2115,fras,47,2.0,Canada,,Body scan,1.55
+1775,5046,1221,canb,19 years old,1.0,Korea,,Control (book chapter),1.4
+332,786,1324,witt,20,2.0,America,,Control (book chapter),2.5
+1994,5878,1628,canb,30,2.0,Australia,,Body scan,1.0
+1706,4815,1583,nort2,59,2.0,United Kingdom,Self employed facilitator and coach,Loving kindness,1.15
+320,758,1136,radb,22,2.0,germany,,Loving kindness,1.75
+2020,5964,1486,seeb,19,2.0,Vienna,I don‘t work at the moment,Body scan,1.55
+2126,6338,1149,wurz,20,2.0,Germany,,Body scan,1.75
+1202,3304,1060,glen,30,2.0,USA,,Control (book chapter),1.4
+1375,3806,1532,illi,19,2.0,United States,,Control (book chapter),2.2
+2164,6449,1462,kons,25,2.0,Deutschland,,Control (book chapter),1.75
+1639,4626,1445,hous,19,2.0,U.S.,,Mindful breathing,1.8
+1635,4617,1061,hous,24,2.0,United States,,Mindful breathing,1.5
+2058,6117,3643,wurz,18,2.0,Germany,,Mindful breathing,2.35
+682,1750,1161,utah,19,1.0,usa,,Control (book chapter),3.25
+55,151,1186,cali,18,2.0,United States,,Mindful walking,1.6
+475,1196,1283,radb,19,2.0,Germany,,Mindful walking,1.7
+1971,5797,1567,aust,18,2.0,Australia,,Body scan,1.85
+981,2633,1238,macq,37,2.0,Australia,,Loving kindness,1.4
+1964,5755,1455,seeb,52,1.0,Austria,Entrepreneur,Control (book chapter),2.1
+2087,6225,2392,seeb,20,2.0,Netherlands,,Mindful breathing,1.7
+851,2256,2666,utah,19,2.0,USA,,Mindful walking,1.8
+2119,6316,1572,oreg,23,2.0,United States,,Control (book chapter),2.1
+1267,3487,1987,lime,22,1.0,Ireland,,Control (book chapter),1.65
+853,2260,1273,macq,19,2.0,Australia,,Control (book chapter),1.55
+1937,5637,1137,wurz,22,2.0,Germany,,Body scan,1.6
+285,680,1289,idah,18,2.0,United States,,Mindful breathing,1.35
+2109,6272,1182,aust,19,2.0,Australia,,Control (book chapter),2.0
+2035,6017,2067,seeb,21,2.0,Austria,,Mindful walking,1.3
+1156,3163,1723,aust,18,2.0,Malaysia,,Loving kindness,2.15
+639,1631,983,macq,18,2.0,australia,hairdresser,Body scan,2.0
+60,160,1095,suny,22,1.0,United States,,Body scan,1.55
+559,1432,1128,quee,18,2.0,Australia,,Control (book chapter),1.6
+1593,4517,1142,hous,21,2.0,USA,,Mindful walking,1.65
+1477,4104,1505,utah,20,2.0,United States,,Mindful breathing,1.55
+1905,5503,1425,jose,18,2.0,america,,Body scan,2.5
+1058,2859,1256,radb,18,2.0,The Netherlands,,Body scan,1.45
+57,156,1135,suny,22,1.0,USA,,Body scan,1.55
+1291,3562,1042,loyo,19,2.0,United States,,Mindful breathing,1.7
+398,936,1592,quee,18,2.0,New Zealand,,Loving kindness,2.55
+327,773,1268,olaf,20,2.0,United States of America,,Loving kindness,1.6
+1991,5856,1098,ryer,19,2.0,Canada,,Loving kindness,2.65
+506,1280,1209,radb,20,2.0,Latvia,,Loving kindness,2.3
+1388,3859,1529,suny,18,2.0,United Stated,,Body scan,1.9
+1179,3253,1313,seeb,24,1.0,Austria,,Loving kindness,1.45
+1286,3547,1263,glen,36,2.0,USA,,Mindful walking,2.1
+2125,6337,1035,seeb,19,1.0,Austria,Soldat,Loving kindness,2.6
+1609,4549,1172,illi,18,1.0,United States,,Loving kindness,1.3
+2110,6281,1383,seeb,25,2.0,USA,IT professional,Body scan,1.6
+2176,6485,585356,fras,22,5.0,Canada,,Mindful walking,1.2
+1745,4959,1130,hous,21,1.0,United States,,Body scan,2.8
+679,1740,1140,jose,19,2.0,United States,,Control (book chapter),1.7
+1233,3368,1580,witt,19,2.0,United States,,Mindful breathing,1.05
+889,2348,1038,spri,18,2.0,South Korea,,Mindful walking,1.7
+428,1030,1414,gold,28,1.0,UK,,Mindful walking,2.65
+2070,6161,1314,oreg,21,2.0,United States,,Control (book chapter),1.75
+2159,6431,1894,digi,21,2.0,Singapore,,Mindful breathing,1.8
+736,1905,1700,cali,23,2.0,USA,,Mindful breathing,1.95
+362,855,1480,indi,19,1.0,United States,,Control (book chapter),2.1
+189,455,1323,newf,21,2.0,Canada,,Loving kindness,1.0
+147,368,52572,digi,21,1.0,United States,,Body scan,1.95
+2114,6288,1189,aust,18,1.0,Australia,,Loving kindness,1.7
+1220,3340,2401,macq,21,2.0,Australia,,Control (book chapter),1.35
+1441,4008,1438,flor,25,2.0,united states,,Loving kindness,1.75
+1512,4222,1471,seeb,22,2.0,Austria,,Mindful breathing,1.65
+1126,3049,1034,utah,21,2.0,United States,,Loving kindness,1.75
+1151,3134,1691,seeb,20,2.0,Österreich,Kfz-techniker,Loving kindness,1.4
+1700,4801,2849,spri,20,6.0,America,"Project Management, Real Estate, Investment Banking",Body scan,2.4
+801,2125,1252,ryer,22,2.0,china,,Loving kindness,1.6
+1642,4633,1697,suny,19,2.0,United States,,Body scan,2.35
+1589,4500,1277,glen,43,2.0,United States,Office Manager,Mindful breathing,1.15
+892,2361,1165,cali,21,2.0,USA,,Mindful breathing,1.75
+1098,2967,1213,cali,21,2.0,United States,,Control (book chapter),1.35
+924,2474,1055,macq,28,2.0,australia,,Loving kindness,2.25
+1641,4628,2091,jose,20,1.0,United States,,Mindful walking,1.5
+2152,6395,1415,ryer,43,2.0,Mauritius,,Control (book chapter),1.25
+1696,4795,1665,flor,20,1.0,USA,,Mindful walking,1.85
+1664,4697,1210,olaf,19,1.0,United states,,Mindful walking,1.6
+339,800,1377,idah,20,1.0,United States,,Control (book chapter),2.1
+1685,4764,1301,oreg,19,2.0,United States,,Mindful breathing,1.35
+1136,3087,7687,radb,20,2.0,Germany,,Loving kindness,2.0
+246,579,1114,newf,19,2.0,Canada,,Loving kindness,1.1
+323,767,1489,jose,19,1.0,USA,,Mindful walking,1.85
+816,2171,1341,utah,20,2.0,United States,,Mindful breathing,1.0
+128,324,1230,iowa,18,2.0,United States,,Mindful breathing,1.75
+1360,3760,1271,loyo,19,2.0,United States,,Body scan,1.55
+1744,4957,1486,spri,19,2.0,USA,,Control (book chapter),1.95
+629,1603,1187,quee,19,1.0,Australia,,Control (book chapter),2.0
+65,171,2467,digi,18,5.0,United States,,Loving kindness,2.55
+1251,3420,1553,indi,18,1.0,United States,,Loving kindness,1.3
+301,719,53395,spri,21,2.0,United States,,Control (book chapter),1.8
+1095,2953,1101,indi,19,1.0,United States,,Mindful breathing,2.5
+324,769,1347,iowa,19,5.0,America,,Body scan,1.9
+438,1074,1521,newf,21,2.0,Canada,,Control (book chapter),2.25
+605,1538,1141,spri,19,1.0,United States,,Body scan,1.75
+1102,2977,1188,utah,19,2.0,USA,,Loving kindness,1.65
+171,413,1157,quee,2,6.0,England,,Mindful breathing,3.85
+1701,4807,1338,witt,21,1.0,USA,,Mindful breathing,2.0
+1813,5136,1070,hous,20,2.0,united states,,Loving kindness,1.0
+2129,6349,1257,oreg,21,2.0,USA,,Body scan,1.35
+1953,5697,2337,witt,20,2.0,US,,Control (book chapter),1.85
+938,2506,1554,macq,18,1.0,Australia,,Control (book chapter),2.15
+1666,4701,1140,utah,20,2.0,United States of America,,Loving kindness,1.35
+265,634,1505,spri,20,1.0,USA,,Body scan,1.65
+844,2242,1190,iowa,21,1.0,United States,,Mindful breathing,1.35
+630,1605,2306,macq,19,1.0,Australia,,Loving kindness,1.05
+758,1958,1320,aust,18,2.0,Singapore,,Control (book chapter),2.3
+1492,4144,1262,hous,19,2.0,United States,,Body scan,1.6
+1326,3649,1375,suny,20,1.0,United States,,Mindful walking,1.3
+401,944,1302,fras,19,1.0,Belgium,,Control (book chapter),2.05
+1596,4523,2757,flor,19,2.0,America,,Mindful breathing,1.85
+1294,3571,9334,jose,18,2.0,United States,,Control (book chapter),2.4
+474,1195,1133,radb,21,2.0,Netherlands,,Control (book chapter),1.95
+378,894,1070,gold,21,1.0,England,,Loving kindness,1.35
+944,2536,20510,kons,21,5.0,germany,,Mindful walking,1.1
+1118,3020,1663,wurz,18,5.0,Germany,,Mindful walking,1.9
+214,507,1188,macq,19,2.0,Australia,,Mindful walking,1.55
+1896,5465,1202,suny,18,2.0,united states,,Body scan,1.95
+1648,4657,1074,hous,20,2.0,USA,,Mindful walking,1.35
+266,635,1540,illi,18,1.0,USA,,Mindful walking,1.45
+551,1401,1137,macq,20,2.0,Australia,,Loving kindness,1.7
+1213,3322,1598,glen,26,2.0,United States,,Control (book chapter),2.0
+979,2624,1344,glen,20,2.0,USA,,Body scan,1.45
+1022,2771,1307,indi,19,2.0,United States,,Mindful walking,1.65
+1153,3150,1372,wurz,19,2.0,Armenia,,Control (book chapter),2.2
+670,1704,1625,quee,18,2.0,Taiwan,,Control (book chapter),1.35
+193,465,1233,witt,19,2.0,United States,,Loving kindness,1.8
+125,313,1341,suny,18,2.0,United States,,Mindful walking,1.3
+815,2168,1906,newf,21,1.0,Canada,,Loving kindness,1.95
+1715,4860,1219,utah,20,2.0,United States,,Mindful walking,1.75
+319,755,1282,iowa,21,1.0,United States,,Body scan,1.2
+2001,5915,1231,fras,41,2.0,Canada,,Mindful walking,1.15
+1293,3570,1285,merc,20,2.0,USA,,Body scan,2.2
+1421,3960,1309,hous,22,2.0,United States,,Mindful walking,1.75
+2065,6141,1460,oreg,18,2.0,United States,,Loving kindness,1.35
+1841,5206,1260,hous,20,2.0,United States,,Body scan,1.45
+637,1629,1204,macq,19,2.0,South Africa,,Control (book chapter),1.65
+1626,4598,1545,flor,21,2.0,United States of America,,Mindful breathing,2.9
+635,1625,1173,macq,18,2.0,Australia,,Loving kindness,1.7
+267,637,1308,lime,47,1.0,Ireland,,Mindful breathing,1.8
+1728,4903,1229,kons,20,2.0,Germany,,Control (book chapter),1.9
+1429,3977,1389,hous,26,2.0,US,,Control (book chapter),1.6
+404,949,1174,gold,20,2.0,UK,,Mindful breathing,1.85
+2009,5935,1446,seeb,24,6.0,,,Loving kindness,1.8
+601,1531,1371,quee,18,2.0,Viet Nam,,Body scan,1.35
+481,1206,1736,idah,25,2.0,United States,,Loving kindness,2.65
+1986,5837,1198,wurz,22,2.0,Germany,,Mindful walking,1.25
+779,2051,2697,macq,19,2.0,Australia,,Mindful breathing,2.3
+667,1699,1128,quee,18,2.0,Hong Kong,,Mindful breathing,2.05
+614,1565,1578,cali,22,5.0,USA,,Body scan,1.95
+116,295,1080,radb,18,1.0,Germany,,Loving kindness,1.2
+1697,4796,1202,flor,19,2.0,United States of America,,Loving kindness,1.3
+1871,5345,1284,wurz,19,2.0,Germany,,Mindful breathing,1.6
+79,209,2396,cali,21,2.0,United States,,Body scan,1.7
+2083,6213,2149,seeb,26,2.0,Germany,,Mindful breathing,1.75
+426,1026,1236,iowa,19,2.0,United States,,Loving kindness,1.45
+1509,4216,1698,hous,19,2.0,United States,,Loving kindness,1.7
+2005,5928,2492,seeb,29,1.0,Austria,,Body scan,1.75
+2232,6673,2183,wurz,20,2.0,Germany,,Mindful breathing,1.7
+1371,3800,1150,hous,19,2.0,US,,Mindful breathing,2.15
+1511,4221,1736,nort2,64,2.0,England,Higher Level Teaching Assistant,Mindful walking,1.55
+1968,5774,1673,fras,28,2.0,Philippines,,Mindful breathing,1.6
+150,373,1571,illi,19,2.0,United States,,Loving kindness,2.5
+2007,5933,1934,seeb,22,6.0,Philippines,,Mindful walking,1.35
+412,965,1396,gold,19,2.0,England,,Mindful walking,1.35
+624,1593,1095,macq,18,1.0,Australia,,Body scan,1.85
+1438,4000,1212,hous,22,2.0,United States,,Body scan,1.6
+2099,6247,1645,seeb,20,2.0,Austria,,Loving kindness,1.4
+852,2258,2180,idah,31,2.0,USA,,Loving kindness,2.25
+2144,6374,1486,kons,19,1.0,Germany,,Mindful breathing,1.65
+1675,4730,1196,utah,19,1.0,United States of America,,Mindful breathing,1.75
+2092,6234,2049,seeb,27,1.0,austria,,Body scan,1.2
+1659,4680,1179,flor,2003,2.0,Puerto Rico,,Mindful breathing,1.65
+160,399,199716,loyo,19,1.0,U.S.,,Control (book chapter),2.2
+686,1759,1111,quee,18,1.0,Hong Kong,,Control (book chapter),1.75
+516,1302,2094,newf,20,2.0,Netherlands,,Body scan,1.15
+294,704,1557,idah,20,2.0,United States,,Control (book chapter),2.9
+588,1496,1424,wurz,23,2.0,Germany,,Body scan,1.0
+609,1548,1502,macq,45,2.0,Australia,,Body scan,1.1
+662,1682,1628,wurz,23,1.0,Germany,,Body scan,1.4
+366,863,1184,hous,20,2.0,USA,,Body scan,1.55
+212,504,1350,macq,18,2.0,Australia,,Control (book chapter),2.45
+1781,5064,3946,canb,20,1.0,Australia,,Mindful breathing,1.45
+335,794,1930,idah,19,2.0,United States,,Mindful breathing,1.2
+859,2289,1348,macq,28,1.0,australia,,Loving kindness,1.1
+134,336,2306,quee,19,2.0,Hong Kong,,Loving kindness,1.95
+1682,4750,1181,flor,19,2.0,United States,,Mindful breathing,1.45
+927,2477,1574,nort2,67,2.0,South Africa,Retired,Loving kindness,1.75
+814,2165,1551,utah,19,2.0,United States,,Body scan,1.1
+64,170,1331,jose,19,2.0,China,,Mindful walking,1.65
+850,2255,1214,macq,21,1.0,England,,Loving kindness,1.45
+530,1351,1426,quee,18,2.0,Australia,,Control (book chapter),1.55
+589,1498,1257,quee,18,2.0,Australia,,Loving kindness,1.3
+1710,4834,1271,indi,19,2.0,america,,Loving kindness,1.65
+92,230,1243,quee,20,2.0,Malaysia,,Loving kindness,1.4
+1182,3258,1383,macq,22,1.0,Australia,,Loving kindness,1.65
+2167,6466,1215,ryer,18,2.0,Portugal,,Mindful breathing,2.35
+2191,6531,1329,fras,21,1.0,India,,Mindful breathing,1.05
+543,1382,2725,macq,41,1.0,Nepal,,Loving kindness,1.45
+1663,4693,1041,witt,20,5.0,United States,,Body scan,1.85
+1214,3323,1164,spri,19 y are,2.0,Colombia,,Loving kindness,1.85
+2147,6387,1657,flor,23,2.0,USA,,Mindful walking,2.5
+529,1350,1178,macq,25,1.0,Australia,,Body scan,1.3
+652,1661,1362,kons,18,2.0,Germany,,Loving kindness,1.35
+1486,4131,1137,illi,18,2.0,United States,,Control (book chapter),1.7
+1386,3853,1240,seeb,22,1.0,Austria,,Loving kindness,1.65
+794,2099,1357,cali,53,2.0,United States,Athletic administration,Loving kindness,1.0
+1749,4973,1530,utah,27,1.0,USA,,Loving kindness,1.05
+869,2303,1334,macq,18,2.0,Australia,,Loving kindness,1.2
+1516,4235,1077,utah,22,1.0,United States,,Mindful walking,1.5
+2236,6685,1152,wurz,20,2.0,Germany,,Mindful walking,2.15
+942,2532,1205,olaf,19,2.0,United States of America,,Control (book chapter),2.3
+685,1758,1275,quee,26,2.0,Hong Kong,,Mindful breathing,2.25
+96,234,1603,suny,21,1.0,United States of America,,Loving kindness,1.15
+1810,5126,1121,hous,26,1.0,usa,,Loving kindness,1.0
+155,389,1536,idah,36,2.0,US,,Body scan,1.5
+877,2316,205336,illi,19,2.0,America,,Mindful breathing,1.2
+2062,6133,1304,flor,19,2.0,United States,,Loving kindness,1.85
+698,1796,3483,macq,19,2.0,Singapore,,Control (book chapter),3.05
+1322,3637,1204,spri,18,1.0,United States of America,,Loving kindness,1.75
+1840,5205,1070,hous,20,2.0,united states,,Loving kindness,1.0
+1979,5811,1791,aust,18,1.0,Pakistan,,Control (book chapter),1.35
+352,836,1457,radb,21,1.0,denmark,,Mindful breathing,2.15
+117,296,1414,wurz,19,2.0,Germany,,Body scan,1.55
+274,653,1667,idah,19,2.0,United States of America,,Control (book chapter),1.85
+368,870,1270,idah,19,2.0,United States of America,,Mindful breathing,1.1
+677,1727,1358,ryer,20,2.0,usa,,Mindful breathing,2.05
+919,2459,1719,nort2,76,2.0,England,Retired,Mindful walking,1.1
+737,1906,1606,suny,18,2.0,United States,,Control (book chapter),2.25
+1345,3706,1855,spri,19,2.0,U.S,,Mindful breathing,2.85
+2165,6459,1726,fras,20,2.0,"Punjab, India",,Mindful breathing,1.25
+846,2245,1054,utah,18,2.0,unites states,,Mindful breathing,1.25
+1618,4567,1383,illi,19,2.0,United states,,Body scan,1.7
+1923,5577,1858,aust,18,2.0,Australia,,Mindful walking,1.55
+188,453,1259,spri,18,2.0,United States,,Body scan,1.1
+2086,6220,1217,seeb,20,2.0,Austria,,Mindful walking,1.5
+2042,6038,1276,seeb,28,1.0,Austria,Mechanical Engineer,Control (book chapter),2.55
+1237,3376,1288,wayn,45,1.0,United States of America,Professor,Body scan,1.4
+449,1111,1229,glen,20,2.0,United States,,Loving kindness,3.15
+2212,6605,1408,fras,20,1.0,India,,Mindful walking,1.4
+84,216,1480,cali,18 years,1.0,United States of America,,Loving kindness,1.65
+1113,3003,1222,utah,21,1.0,United States,,Mindful breathing,1.7
+485,1221,1201,iowa,19,2.0,United States,,Body scan,1.45
+1872,5350,1124,suny,19,1.0,United States of America,,Control (book chapter),1.7
+326,772,2304,indi,18,2.0,America,,Mindful walking,1.75
+1493,4145,1522,glen,50,1.0,USA,,Mindful breathing,1.55
+1365,3774,1408,loyo,20,1.0,Usa,,Mindful breathing,1.2
+1965,5762,1433,olaf,21 years,2.0,United States of America,,Loving kindness,2.5
+664,1691,1392,radb,19,2.0,Netherlands,,Body scan,1.95

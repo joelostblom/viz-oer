@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="480" viewBox="0 0 1100 480" role="img" aria-labelledby="title description" font-family="Ubuntu, Arial, sans-serif">
+  <title id="title">Elements of a horizontal boxplot</title>
+  <desc id="description">A horizontal boxplot with labels for the first quartile, median, third quartile, interquartile range, whisker endpoints, and an observation above the upper fence. The box spans the middle 50% of the data. The upper fence, which is not normally drawn, is shown as a dashed reference at the third quartile plus one and a half times the interquartile range. Values increase from left to right.</desc>
+  <metadata>
+    A newly drawn horizontal adaptation of the boxplot-elements illustration at
+    https://www.isixsigma.com/wp-content/uploads/2018/11/elements_box_plot-1024x696.png
+    All shapes and labels are editable vectors and text.
+  </metadata>
+
+  <defs>
+    <marker id="annotation-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#777"/>
+    </marker>
+  </defs>
+
+  <rect id="background" width="1100" height="480" fill="#fff"/>
+
+  <!-- Q1 = 310, Q3 = 510, IQR = 200; upper fence = 510 + 1.5 × 200 = 810. -->
+  <g id="boxplot" stroke="#222" stroke-width="2.5" fill="none">
+    <g id="whiskers">
+      <path id="lower-whisker" d="M 150 270 H 310"/>
+      <path id="upper-whisker" d="M 510 270 H 730"/>
+      <path id="lower-cap" d="M 150 244 V 296"/>
+      <path id="upper-cap" d="M 730 244 V 296"/>
+    </g>
+    <rect id="quartile-box" x="310" y="230" width="200" height="80" fill="#e7e7e7"/>
+    <path id="median" d="M 390 230 V 310" stroke="#111" stroke-width="4"/>
+    <circle id="upper-outlier" cx="940" cy="270" r="6.5" fill="#222" stroke="none"/>
+  </g>
+
+  <!-- This dashed threshold is an explanatory annotation, not part of a standard boxplot. -->
+  <g id="upper-fence-reference">
+    <rect x="800" y="225" width="20" height="90" fill="#f1f1f1"/>
+    <path d="M 810 225 V 315" fill="none" stroke="#777" stroke-width="2" stroke-dasharray="6 5"/>
+  </g>
+
+  <g id="annotation-leaders" fill="none" stroke="#777" stroke-width="1.5" marker-end="url(#annotation-arrow)">
+    <path id="q1-leader" d="M 270 175 L 310 222"/>
+    <path id="median-leader" d="M 390 113 V 222"/>
+    <path id="q3-leader" d="M 560 175 L 510 222"/>
+    <path id="fence-leader" d="M 810 168 V 217"/>
+    <path id="outlier-leader" d="M 960 210 L 942 257"/>
+    <path id="lower-endpoint-leader" d="M 150 377 V 304"/>
+    <path id="upper-endpoint-leader" d="M 730 377 V 304"/>
+  </g>
+
+  <g id="quartile-labels" fill="#222" font-size="20" text-anchor="middle">
+    <text id="q1-label" x="270" y="134">
+      <tspan x="270" font-weight="600">1st quartile (Q1)</tspan>
+      <tspan x="270" dy="25" font-size="18" fill="#555">25th percentile</tspan>
+    </text>
+    <text id="median-label" x="390" y="97" font-weight="600">Median</text>
+    <text id="q3-label" x="560" y="134">
+      <tspan x="560" font-weight="600">3rd quartile (Q3)</tspan>
+      <tspan x="560" dy="25" font-size="18" fill="#555">75th percentile</tspan>
+    </text>
+  </g>
+
+  <g id="fence-label" fill="#222" text-anchor="middle">
+    <text x="810" y="92" font-size="20" font-weight="600">Upper fence</text>
+    <text x="810" y="118" font-size="17" fill="#555">(not normally drawn)</text>
+    <text x="810" y="146" font-size="19">Q3 + 1.5 × IQR</text>
+  </g>
+
+  <text id="outlier-label" x="960" y="166" text-anchor="middle" font-size="18" fill="#222">
+    <tspan x="960">Observation above</tspan>
+    <tspan x="960" dy="24">the upper fence</tspan>
+  </text>
+
+  <g id="iqr-annotation" fill="none" stroke="#555" stroke-width="1.8">
+    <path id="iqr-bracket" d="M 310 334 V 346 H 510 V 334"/>
+  </g>
+  <text id="iqr-label" x="410" y="379" text-anchor="middle" font-size="20" fill="#222">
+    Interquartile range (IQR)
+  </text>
+  <text id="iqr-note" x="410" y="405" text-anchor="middle" font-size="17" fill="#555">
+    Middle 50% of the data
+  </text>
+
+  <g id="whisker-labels" fill="#222" font-size="18" text-anchor="middle">
+    <text id="lower-endpoint-label" x="150" y="405">
+      <tspan x="150">Smallest observation</tspan>
+      <tspan x="150" dy="24" fill="#555">at or above the lower fence</tspan>
+    </text>
+    <text id="upper-endpoint-label" x="730" y="405">
+      <tspan x="730">Largest observation</tspan>
+      <tspan x="730" dy="24" fill="#555">at or below the upper fence</tspan>
+    </text>
+  </g>
+</svg>
