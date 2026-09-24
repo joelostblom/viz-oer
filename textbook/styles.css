@@ -3,6 +3,56 @@
 /*-- Importing Ubuntu fonts --*/
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
+/* A quiet graph-paper surround frames the white reading column on desktop.
+   Use Quarto's grid lines: main spans the screen to accommodate margin content. */
+@media screen and (min-width: 992px) {
+  body.nav-sidebar.quarto-light {
+    --book-surround: #efede8;
+    --book-page-edge: #d9d5cd;
+    background-color: var(--book-surround);
+    background-image: radial-gradient(circle, rgba(104, 98, 86, 0.32) 1px, transparent 1.25px);
+    background-size: 24px 24px;
+  }
+
+  body.nav-sidebar.quarto-light #quarto-content {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+  }
+
+  body.nav-sidebar.quarto-light #quarto-content::before {
+    content: "";
+    grid-column: body-start / body-end;
+    grid-row: content-top / page-bottom;
+    background: #fff;
+    border-left: 1px solid var(--book-page-edge);
+    border-right: 1px solid var(--book-page-edge);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  body.nav-sidebar.quarto-light #quarto-sidebar,
+  body.nav-sidebar.quarto-light #quarto-margin-sidebar > nav,
+  body.nav-sidebar.quarto-light .column-margin,
+  body.nav-sidebar.quarto-light .column-margin.column-container > div,
+  body.nav-sidebar.quarto-light .margin-aside,
+  body.nav-sidebar.quarto-light .margin-caption {
+    background-color: var(--book-surround);
+  }
+
+  body.nav-sidebar.quarto-light #quarto-margin-sidebar > nav,
+  body.nav-sidebar.quarto-light .column-margin.column-container > div {
+    padding: 0.5rem 0.75rem 0.75rem;
+    border-radius: 0.35rem;
+  }
+
+  body.nav-sidebar.quarto-light .column-margin,
+  body.nav-sidebar.quarto-light .margin-aside,
+  body.nav-sidebar.quarto-light .margin-caption {
+    color: #526171;
+  }
+}
+
 /* Code in quarto live blocks */
 .cm-content {
     font-size: 16px;
