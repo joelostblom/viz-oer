@@ -27,6 +27,13 @@ uv run quarto preview textbook
 
 Press Ctrl+C to stop the preview.
 
+### Synchronized language tabs
+
+Tabsets sharing `group="language"` still switch languages together.
+`textbook/tabset-scroll.js` keeps the clicked tab bar at its current screen
+position when panels above it change height, including delayed chart/image
+resizing. It releases that position when the reader scrolls or interacts again.
+
 ### Dataframe previews
 
 The shared `textbook/utils.py` module provides `show_df()` for HTML previews

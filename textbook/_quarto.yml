@@ -24,10 +24,11 @@ book:
 filters:
   - custom-callouts.lua
 
-# Shared table helpers; utils.py is also used by browser Python exercises.
+# Shared table helpers and browser behavior; utils.py also supports Python exercises.
 resources:
   - utils.py
   - utils.R
+  - tabset-scroll.js
 
 format:
   live-html:
@@ -35,6 +36,9 @@ format:
       - cosmo
       - callouts.scss
     css: styles.css
+    include-after-body:
+      - text: |
+          <script src="tabset-scroll.js"></script>
     monofont: "Ubuntu Mono"
     mainfont: Ubuntu
     number-depth: 2

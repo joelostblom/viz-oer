@@ -7,8 +7,8 @@
    Use Quarto's grid lines: main spans the screen to accommodate margin content. */
 @media screen and (min-width: 992px) {
   body.nav-sidebar.quarto-light {
-    --book-surround: #efede8;
-    --book-page-edge: #d9d5cd;
+    --book-surround: #f3f1ed;
+    --book-page-edge: #e2ded7;
     background-color: var(--book-surround);
     background-image: radial-gradient(circle, rgba(104, 98, 86, 0.32) 1px, transparent 1.25px);
     background-size: 24px 24px;
@@ -51,6 +51,13 @@
   body.nav-sidebar.quarto-light .margin-caption {
     color: #526171;
   }
+}
+
+/* Let tabset-scroll.js handle anchoring during a synchronized language change. */
+html.tabset-scroll-stabilizing,
+html.tabset-scroll-stabilizing body {
+    overflow-anchor: none;
+    scroll-behavior: auto !important;
 }
 
 /* Code in quarto live blocks */
