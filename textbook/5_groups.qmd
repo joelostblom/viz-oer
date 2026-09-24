@@ -634,6 +634,28 @@ ggplot(income_df) +
 
 :::
 
+::: {.callout-warning}
+
+#### Avoid rotated categorical names along the x-axis
+
+We could have swapped the x and y variables above,
+but then the text of the regions become hard to read
+since we have to read it sideways.
+For short labels that we can fit horizontally 
+if we rotate them,
+it can be fine to have a categorical value on the x-axis,
+but in general it is best avoided.
+
+```{python}
+#| label: region-position-alt-xy-swap
+#| echo: false
+alt.Chart(income_df).mark_point().encode(
+    x='region',
+    y='percentage_heavy_drinkers',
+)
+```
+
+:::
 
 #### Faceting
 
@@ -817,7 +839,7 @@ alt.Chart(income_df).mark_point().encode(
 #| label: region-facets-gg
 ggplot(income_df) +
     aes(
-        x = percentage_heavy_drinkers, 
+        x = percentage_heavy_drinkers,
         y = life_expectancy_at_65,
         color=income_group
     ) +

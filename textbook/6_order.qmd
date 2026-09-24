@@ -22,6 +22,10 @@ resources:
 
 :::
 
+<!-- TODO somewhere talk about missing values and interuptions in lines? Or is that a technical detail better left for the docs? -->
+<!-- https://stackoverflow.com/questions/66348548/altair-missing-value-in-graph -->
+<!-- https://ggplot2.tidyverse.org/reference/geom_path.html -->
+
 ## Why order matters
 
 In [Groups](5_groups.qmd), we learned how to distinguish groups of observations.

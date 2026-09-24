@@ -59,7 +59,7 @@ gm2018 <- gm %>% filter(year == 2018)
 ## Faceting into subplots
 
 We can use facets, or subplots, to compare different distributions.
-We return to the 2018 Gapminder data from [Summaries](7_summaries.qmd),
+We return to the 2018 Gapminder data from [Counts](8_counts.qmd),
 comparing life expectancy across regions.
 
 We have seen how to use color to divide data into groups.
