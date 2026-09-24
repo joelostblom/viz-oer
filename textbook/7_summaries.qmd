@@ -8,11 +8,11 @@ fig-height: 3.75
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Visualize** frequencies and totals with bar charts, and numerical distributions with histograms.
+1. **Visualize** measures of central tendency, such as means and medians, using statistical summaries.
 
-2. **Explain** why bars showing only a mean or median can conceal important distributional information.
+2. **Show** variability with standard deviations, percentile intervals, and boxplots.
 
-3. **Order** categorical bars and **choose** histogram bins that reveal the shape of a distribution.
+3. **Explain** what summaries can hide and **combine** them with the underlying observations using jittered points.
 
 :::
 
@@ -388,9 +388,12 @@ points + base.mark_errorbar(extent='stdev', thickness=1.5) + base.mark_circle(si
 
 ```{r}
 ggplot(meditation, aes(y = condition, x = stress)) +
-    geom_jitter(color = 'grey') +
+    geom_point(position = 'jitter', color = 'grey') +
     geom_pointrange(stat = 'summary', fun.data = mean_sdl, fun.args = list(mult = 1))
 ```
+
+As a shortcut for jittered points
+you could also use the specialized geom `geom_jitter()`.
 
 :::
 
@@ -496,4 +499,334 @@ Is that a lot or a little?
 One way to see it is that it is a difference of 
 To comment on that we would need to know more about the domain
 that the results from 
+<!-- TODO include conclusions from paper and more reasonong -->
+
+## Counts
+
+Another useful statistics we can compute
+is the counts of observations in each group.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+alt.Chart(meditation).mark_point().encode(
+    y='condition',
+    x='count()'
+)
+```
+
+### ggplot
+
+```{r}
+ggplot(meditation, aes(y = condition)) +
+    geom_point(stat = 'count')
+```
+
+:::
+
+When we are showing an accumulated value like a count or sum,
+it can be beneficial to replace our point mark
+with a bar
+to be able to more clearly compare groups.
+The bar is drawn from zero 
+and thus makes the accumulated amount explicit through its length
+(you can think of the bar as stacking all the observation on top of each other).
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+alt.Chart(meditation).mark_bar().encode(
+    y='condition',
+    x='count()'
+)
+```
+
+### ggplot
+
+```{r}
+ggplot(meditation, aes(y = condition)) +
+    geom_bar(stat = 'count')
+```
+
+Since there is only one way of counting
+we don't need to specify a function
+(there are many ways of summarizing: mean, median, sum, etc).
+ggplot discourages people from using bars for summaries,
+so the default for `geom_bar` is actually `stat = 'count'`,
+which means we could have written just `geom_bar()` above
+to get the same result.
+
+:::
+
+::: {.callout-warning}
+
+### Avoid bar charts for mean and median
+
+Remember that the length of the bar suggests
+that we started at zero and added something up,
+e.g. the count or sum of observations.
+Using bars for means have also been observed to
+bias people to thinking that the 
+distribution of points are more likely to lie 
+withing the graphical region of the bar[^https://link.springer.com/article/10.3758/s13423-012-0247-5]
+:::
+
+### Sorting groups
+
+In our chart above,
+the groups on the y-axis are sorted in alphabetical order.
+To make it easier to see which group has the most observation
+and compare groups with similar amounts of observations
+and highlight those that have the most and least observations,
+we can instead sort by the count.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+The `sort()` method takes the name of another
+visual channel to sort by,
+such as `'x'`, `'color'`, etc.
+
+```{python}
+alt.Chart(meditation).mark_bar().encode(
+    y=alt.Y('condition').sort('x'),
+    x='count()'
+)
+```
+
+Generally,
+it tends to be a bit more visually appealing
+to have the largest bar the closest to the value axis as above.
+This is not a hard rule however,
+and we can reverse the order by passing `'-x'` instead of `'x'`.
+
+### ggplot
+
+The base R function `reorder`
+can be used to sort a column
+based on another existing column,
+e.g. `reorder(column_to_sort, column_to_use_as_sorting_order)`.
+It requires an extra step to do it based on a non-existing column,
+such as the count.
+Here,
+we use `add_count` to first create a column (automatically named `n`),
+as the sorting key for our x-axis column:
+
+```{r}
+meditation |>
+    dplyr::add_count(condition) |>
+    ggplot(aes(y = reorder(condition, n))) +
+        geom_bar()
+```
+
+Generally,
+it tends to be a bit more visually appealing
+to have the largest bar the closest to the value axis,
+which we can achieve with `reorder(condition, -n)`.
+This is not a hard rule however.
+
+:::
+
+This advice generally applies too all types of charts,
+such as when showing points for means etc.
+One exception is 
+Unless there is a natural order to the data 
+
+### Stacked bars
+
+Similar to area charts
+bar charts can also show multiple groups
+as segments stacked on top of each other.
+Let's learn how  that more in this exercise:
+
+::: {.callout-default .ex-prompt}
+
+
+For example,
+we might be interested in how the participants of the survey
+self-reported their gender.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+alt.Chart(meditation).mark_bar().encode(
+    y='condition',
+    x='count()',
+    color='gender'
+)
+```
+
+### ggplot
+
+```{r}
+ggplot(meditation, aes(y = condition, fill = gender)) +
+    geom_bar()
+```
+
+:::
+
+In this chart,
+it is easy to see that
+all conditions have more female than male respondents.
+But if we are trying to figure out which 
+Is it also easy to see which had the most male and female respondents?
+Why and what could we do to make this difficult comparison easier?
+
+:::: {.callout-default .ex-hint}
+
+The reason that the counts of males are hard to compare between conditions
+is the same as for stacked areas.
+But the solution is slightly different
+since we have more options than just layering the bars on top of each other.
+
+::::: {.callout-default .ex-solution}
+
+It is difficult to compare the counts of male respondents
+because the corresponding bar segments do not share a common baseline.
+This means that we are left trying to mentally align the bars
+to compare their lengths in our mind.
+This is much harder than
+simply reading a value of the x-axis for the 
+
+We could switch to a point mark,
+just as we switched from areas to lines to solve a similar problem,
+but there is one more solution available to use for bars
+that were not there for areas,
+we can put the bars next to each other:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+The `yOffset`/`xOffset` encodings
+that we used for jittering
+can also take a categorical variable
+to offset groups next to each other.
+
+```{python}
+alt.Chart(meditation).mark_bar().encode(
+    y='condition',
+    x='count()',
+    color='gender',
+    yOffset='gender'
+)
+```
+
+### ggplot
+
+The `position` parameter
+that we used for jittering
+can also take the `'dodge'` value,
+which means that the geoms should "dodge"
+stacking on top of each other
+and be place next to one another instead.
+
+```{r}
+ggplot(meditation, aes(y = condition, fill = gender)) +
+    geom_bar(position = 'dodge')
+```
+
+Now it is easy to see which condition had the most male participants too!
+
+:::
+
+:::::
+
+::::
+
+:::
+
+::: {.callout-warning}
+
+### Avoid stacked bar charts when exact group comparisons matter
+
+Just like for stacked areas,
+it is difficult to compare the bar segments
+that do not share a baseline,
+since we have to rely on their length
+rather than the position of the top of the bars on the same axis.
+We should therefore only use stacked bars
+if the total (e.g. the total count per condition)
+is of primary importance
+and the comparisons between the groups
+is of secondary importance.
+
+:::
+
+## Proportions
+
+Proportions (and percentages) can be shown in similar ways as counts
+but normalized to a whole.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+alt.Chart(meditation).mark_bar().encode(
+    y='condition',
+    x=alt.X('count()').stack('normalize'),
+    color='gender'
+)
+```
+
+We could change the displayed axis values
+from percentages to proportions
+by formatting the labels of the axis as 1 decimal floats (`.1f`):
+
+```{python}
+alt.Chart(meditation).mark_bar().encode(
+    y='condition',
+    x=alt.X('count()')
+    .stack('normalize')
+    .axis(labelExpr=alt.expr.format(alt.datum.value, '.1f')),
+    color='gender'
+)
+```
+
+<!-- TODO change to    .axis(format='.1f'), -->
+
+### ggplot
+
+```{r}
+ggplot(meditation, aes(y = condition, fill = gender)) +
+    geom_bar(position = 'fill')
+```
+
+We could change the displayed axis values
+from proportions to percentages
+by specifying that the scale labels are percentages:
+
+```{r}
+ggplot(meditation, aes(y = condition, fill = gender)) +
+    geom_bar(position = 'fill') +
+    scale_x_continuous(labels = scales::label_percent())
+```
+
+:::
+
+
+When we show proportions in a stacked bar chart
+with only two groups,
+both groups are easy to compare since the second group
+(i.e. the male group above)
+also share a common baseline at the top of the scale
+(i.e. where the proportion is 1 to the right).
+A third group would however be difficult to compare 
+since it would be a floating segment in the middle
+of the bars without a common baseline.
+
+Proportional bars can also be put next to each other
+
+For proportions,
+it is also 
+
+Based on these results we can see there were mostly females
 

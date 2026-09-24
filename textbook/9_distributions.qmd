@@ -8,7 +8,7 @@ resources:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Visualize** distributions with histograms and density plots and **explain** how each is constructed.
+1. **Visualize** distributions with density plots and **explain** how they are constructed and how they differ from histograms.
 
 2. **Select** an appropriate distribution plot based on its strengths and limitations.
 
@@ -23,11 +23,12 @@ An interval adds information about their variability, or about uncertainty in an
 but its endpoints still do not show where observations or probability are concentrated.
 Two distributions can have similar centers and interval widths yet very different shapes.
 
-Building on [Summaries](7_summaries.qmd) and [Variability](8_variability.qmd),
+Building on the discussion of variability in [Summaries](7_summaries.qmd)
+and the histograms in [Counts](8_counts.qmd),
 we now ask: **How can we see where values are concentrated, where there are gaps,
 and whether there is more than one cluster?**
-We return to histograms, introduced as counts in bins in Summaries,
-and explore what they and density plots reveal about the shape of a distribution.
+We now explore how density plots reveal the shape of a distribution
+and compare their strengths and limitations with histograms.
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
