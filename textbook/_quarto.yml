@@ -15,7 +15,7 @@ book:
     - 5_groups.qmd
     - 6_order.qmd
     - 7_summaries.qmd
-    - 8_variability.qmd
+    - 8_counts.qmd
     - 9_distributions.qmd
     - 10_multiple-distributions.qmd
     - 11_trends.qmd

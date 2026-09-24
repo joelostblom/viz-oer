@@ -39,237 +39,33 @@ and compare their strengths and limitations with histograms.
 
 :::
 
-## Visualizing distributions
-
-We will use a movie dataset to explore distributions.
-It is collected from IMDB,
-and includes both user ratings as well as movie budgets, runtimes, etc.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
 ```{python}
-#| label: load-movies-python
+#| label: density-movies-python-setup
+#| include: false
+import altair as alt
 import pandas as pd
 
+alt.data_transformers.enable('vegafusion')
 movies = pd.read_json('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json')
-
-movies
+boom_both = movies.explode('countries').explode('genres')
 ```
 
-### ggplot
-
 ```{r}
-#| label: load-movies-r
+#| label: density-movies-r-setup
+#| include: false
 library(tidyverse)
 movies <- jsonlite::fromJSON(
     'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json'
 ) %>%
     as_tibble() %>%
     unnest(-c(countries, genres))
-
-head(movies)
 ```
 
-:::
+## Density plots
 
-Let's recall how to make a histogram,
-using the runtime of the movies.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: distributions-vegafusion-setup
-import altair as alt
-
-# Simplify working with large datasets in Altair
-alt.data_transformers.enable('vegafusion')
-```
-
-```{python}
-#| label: runtime-histogram-alt
-alt.Chart(movies).mark_bar().encode(
-    alt.X('runtime').bin(maxbins=30),
-    y='count()'
-)
-```
-
-### ggplot
-
-```{r}
-#| label: runtime-histogram-gg
-ggplot(movies) +
-    aes(x = runtime) +
-    geom_histogram(color = 'white')
-```
-
-:::
-
-What if we want to facet the histogram by country?
-Since the `'countries'` column consists of lists with one or more labels,
-we need to unpack these list so that we have one country in each row.
-This means that movies that have multiple production countries, 
-will be duplicated in the dataframe and counted once per country.
-In this case,
-this is the most sensible thing to do,
-but in general it is good to be careful when doing an operation like this
-since it could lead to unwanted replicates
-(and we would not want to have duplicated rows 
-if we are not faceting or coloring by that variable).
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-Unpacking a list is done via the [`explode` method of pandas dataframes](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.explode.html):
-
-```{python}
-#| label: explode-countries-python
-boom_countries = movies.explode('countries')
-boom_countries
-```
-
-### ggplot
-
-In dplyr, a list can be unpacked via the `unnest` function.
-
-```{r}
-#| label: unnest-countries-r
-free_countries <- movies %>% unnest(countries)
-free_countries
-```
-
-:::
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: country-histograms-alt
-alt.Chart(boom_countries).mark_bar().encode(
-    alt.X('runtime').bin(maxbins=30),
-    y='count()'
-).facet(
-    'countries'
-)
-```
-
-### ggplot
-
-```{r}
-#| label: country-histograms-gg
-ggplot(free_countries, aes(x = runtime)) +
-    geom_histogram(color = 'white') +
-    facet_wrap(~countries)
-```
-
-:::
-
-By default when faceting,
-the y-axis is the same for all plots so that they are easy to compare,
-but we could also make it independent for each plot.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: histogram-free-scales-alt
-alt.Chart(boom_countries).mark_bar().encode(
-    alt.X('runtime').bin(maxbins=30),
-    y='count()'
-).facet(
-    'countries'
-).resolve_scale(
-    y='independent'
-)
-```
-
-### ggplot
-
-```{r}
-#| label: histogram-free-scales-gg
-ggplot(free_countries, aes(x = runtime)) +
-    geom_histogram(color = 'white') +
-    facet_wrap(~countries, scales = 'free_y')
-```
-
-:::
-
-If we want to color our faceted plots by the movie genre,
-we need to explode also the `'genres'` column in the df.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: genre-histograms-stacked-alt
-boom_both = boom_countries.explode('genres')
-alt.Chart(boom_both).mark_bar().encode(
-    alt.X('runtime').bin(maxbins=30),
-    y='count()',
-    color='genres'
-).facet(
-    'countries'
-)
-```
-
-### ggplot
-
-We need to unpack both `genres` and `countries`
-if we want to use aesthetic mappings for both these columns.
-
-```{r}
-#| label: genre-histograms-stacked-gg
-free_both <- free_countries %>% unnest(genres)
-ggplot(free_both, aes(x = runtime, fill = genres)) +
-    geom_histogram() +
-    facet_wrap(~countries)
-```
-
-:::
-
-We can get a rough indication of the genre differences from this plot,
-but as we have mention previously,
-it is not ideal to be looking at bars with different baselines.
-If we want the bars on the same baseline,
-we could set `stack=False` on the y-axis
-but it often does not look that great for histograms,
-and can make them even harder to read.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: genre-histograms-overlaid-alt
-boom_both = boom_countries.explode('genres')
-alt.Chart(boom_both).mark_bar(opacity=0.5).encode(
-    alt.X('runtime').bin(maxbins=30),
-    alt.Y('count()').stack(False),
-    color='genres'
-).facet(
-    'countries'
-)
-```
-
-### ggplot
-
-```{r}
-#| label: genre-histograms-overlaid-gg
-ggplot(free_both, aes(x = runtime, fill = genres)) +
-    geom_histogram(position = 'identity', alpha = 0.5) +
-    facet_wrap(~countries)
-```
-
-:::
-
-### Density plots
+We continue with the movie data introduced in [Counts](8_counts.qmd).
+That chapter contains the histogram examples and explains how to unpack the
+country and genre lists when comparing groups.
 
 Another issue with histograms,
 is that where the bin borders are drawn 
@@ -312,7 +108,7 @@ Let's see how density plots are created in each library.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: runtime-density-alt
@@ -332,7 +128,7 @@ so Altair cannot use the pandas data types to figure out that it is numeric.
 You can control the width of the kernels via the `bandwidth` parameter,
 but the default is a suitable choice in most cases.
 
-#### ggplot
+### ggplot
 
 In ggplot,
 there is a specific `geom` for densities
@@ -363,7 +159,7 @@ how wide each kernel is
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: density-narrow-bandwidth-alt
@@ -379,7 +175,7 @@ alt.Chart(movies).transform_density(
 ).mark_line().encode(x='runtime', y='density:Q')
 ```
 
-#### ggplot
+### ggplot
 
 ```{r}
 #| label: density-narrow-bandwidth-gg
@@ -399,7 +195,7 @@ ggplot(movies) +
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 If we want to color by a categorical variable,
 we need to add an explicit `groupby` 
@@ -423,7 +219,7 @@ alt.Chart(boom_genres).transform_density(
 
 Note that we have to specify `stack(False)` to make sure that the densities start at the same baseline.
 
-#### ggplot
+### ggplot
 
 To color/fill by a variable,
 we don't need a separate groupby,
@@ -444,7 +240,7 @@ Lastly, we could make the areas slightly transparent so that it is easier to see
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: density-transparency-alt
@@ -461,7 +257,7 @@ alt.Chart(boom_genres).transform_density(
 )
 ```
 
-#### ggplot
+### ggplot
 
 ```{r}
 #| label: density-transparency-gg
@@ -482,7 +278,7 @@ but is not really a useful numbers for us to know.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: country-density-facets-alt
@@ -499,7 +295,7 @@ alt.Chart(boom_both).transform_density(
 )
 ```
 
-#### ggplot
+### ggplot
 
 ```{r}
 #| label: country-density-facets-gg
@@ -522,7 +318,7 @@ compared to a histogram with discrete bins and a count in each bin.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: density-counts-alt
@@ -540,7 +336,7 @@ alt.Chart(boom_both).transform_density(
 )
 ```
 
-#### ggplot
+### ggplot
 
 ```{r}
 #| label: density-counts-gg
@@ -557,7 +353,7 @@ and possibly the size if you scale them,
 but just as a relative indicator versus other densities
 rather than relying too much on the exact values on the y-axis.
 
-### Using lines instead of areas for densities
+## Using lines instead of areas for densities
 
 Here,
 we could also use `row` and `columns` parameters to faceting
@@ -573,7 +369,7 @@ it does not really matter if we use an area or line.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: rating-density-lines-alt
@@ -597,7 +393,7 @@ alt.Chart(boom_both).transform_density(
 )
 ```
 
-#### ggplot
+### ggplot
 
 ```{r}
 #| label: rating-density-lines-gg
@@ -614,7 +410,7 @@ we can use `facet_grid` instead of `facet_wrap`.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+### Altair
 
 ```{python}
 #| label: genre-country-density-grid-alt
@@ -629,7 +425,7 @@ alt.Chart(boom_both).transform_density(
 ).facet(row='genres', column='countries')
 ```
 
-#### ggplot
+### ggplot
 
 ```{r}
 #| label: genre-country-density-grid-gg
