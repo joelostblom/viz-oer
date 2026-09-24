@@ -570,9 +570,11 @@ Remember that the length of the bar suggests
 that we started at zero and added something up,
 e.g. the count or sum of observations.
 Using bars for means have also been observed to
-bias people to thinking that the 
-distribution of points are more likely to lie 
-withing the graphical region of the bar[^https://link.springer.com/article/10.3758/s13423-012-0247-5]
+bias people to thinking that the
+distribution of points are more likely to lie
+within the graphical region
+of the bar^[[Bar graphs depicting averages are perceptually misinterpreted:
+The within-the-bar bias](https://link.springer.com/article/10.3758/s13423-012-0247-5)]
 :::
 
 ### Sorting groups
@@ -830,3 +832,9 @@ it is also
 
 Based on these results we can see there were mostly females
 
+Pie charts ok
+
+
+
+Another way of thinking of these count charts is that we are viewing distributions of categorical values.
+This concept can also be applied to quantitative values as we will see in the next chapter.
