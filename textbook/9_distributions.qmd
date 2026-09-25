@@ -18,7 +18,7 @@ resources:
 
 :::
 
-## Why do we care?
+## Why bother?
 
 In [Summaries](7_summaries.qmd),
 we learned that it is important to inspect the underlying observations

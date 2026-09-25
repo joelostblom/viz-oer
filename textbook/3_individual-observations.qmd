@@ -38,6 +38,19 @@ import pandas as pd
 from utils import show_df
 ```
 
+## Why bother?
+
+Learning how to visualize each individual observation separately
+can be thought of as the most fundamental or naive way to visualize data.
+We're not summarizing the data in any way
+and we are not adding any additional decorative or guiding graphical elements.
+All we're doing is
+putting one graphical point in our chart
+for every record in our table.
+Like we saw in the introductory chapter,
+even this simple form of visualization
+can lead to insights that numbers alone could never bring.
+
 ## Creating our first chart
 
 It's time to start coding!

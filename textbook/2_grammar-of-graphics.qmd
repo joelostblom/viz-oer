@@ -34,13 +34,20 @@ import pandas as pd
 from utils import show_df
 ```
 
-## Which visualization library should we pick?
+## Why bother?
 
-There is a lot we can learn about visualization
-without using coding,
-but to make this learning experience interactive,
-we will learn how to programmatically create charts
-together with learning about new visualization concepts.
+Why do we need to know anything about visualization libraries
+and their underlying theory like the grammar of graphics?
+While there is a lot we can learn about visualization
+without coding,
+the act of implementing visualizations in code
+can help understand their underlying principles
+which makes the learning experience more interactive and memorable.
+The grammar of graphics
+also gives us a powerful theoretical framework
+to understand and reason about data visualizations.
+
+## Which visualization library should we pick?
 
 We will start by selecting which visualization library to use.
 To make an informed decision,
@@ -203,7 +210,7 @@ a so called "grammar of graphics",
 since this framework makes visualizations
 easy to both create and to reason about.
 
-## What is a grammar of graphics?
+## What is the grammar of graphics?
 
 There is a plethora of names
 used to refer to specific types of chart.
@@ -216,12 +223,17 @@ all use points to represent data,
 but what's the difference between them?
 Memorizing exactly which chart corresponds to which name
 is not as important as developing an understanding
-for what the points represent in each type of visualization.
+for the principles that form the foundations
+for building visualizations.
+Such an understanding can move us away from
+just creating charts from known templates
+to reflecting over what it is we're trying to communicate
+and which graphical elements are the most suitable for this task.
 
 A grammar of graphics let's us focus
 on understanding the common building blocks of all charts
 and how to compose these together
-according to predicable rules
+according to predictable rules
 to create bespoke visualizations.
 It parallels the grammars of natural[^natural-language]
 and programming languages,

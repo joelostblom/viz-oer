@@ -458,7 +458,7 @@ after having inspected the underlying observations ourselves.
 
 ::: {#fig-boxplot-drawbacks}
 
-![](img/hist-point-box.gif){#fig-boxplot-multimodal}
+![](img/hist-point-box.gif)
 
 This illustration from [Autodesk
 Research](https://www.autodesk.com/research/publications/same-stats-different-graphs)
@@ -468,7 +468,7 @@ show how boxplots look the same even when the distribution of the underlying obs
 
 ::: {.callout-warning }
 
-## Avoid drawing conclusions from looking at summary charts alone
+## Avoid drawing conclusions from summary charts alone
 
 Summary charts like mean + SD are boxplots are useful
 since aggregation reduces the complexity of the chart.

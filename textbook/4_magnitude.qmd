@@ -6,6 +6,8 @@ resources:
   - slides-lec2.pdf
 ---
 
+<!-- TODO talk about different data types here? Also consider chapter naming; is magnitute jsut "quantitative"/"continous" and "groups" are just "nominal"/"ordinal"? Is it confusing to have a chapter called "order" when we also have "ordinal" variables since order is more about connecting continuos variables like time. -->
+
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
 1. **Choose** effective visual channels for comparing quantitative magnitudes.
@@ -18,17 +20,13 @@ resources:
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-::: {.callout-note title="Further reading"}
-
-- [Sections 1.4–1.8 of Data Visualization: A Practical Introduction](https://socviz.co/lookatdata.html#visual-tasks-and-decoding-graphs), by Kieran Healy.
-
-:::
-
-## Comparing sizes is easier for some geometrical objects than for others
+## Why bother?
 
 So far we have used points to represent individual observations.
-Before introducing more types of chart, let's discuss how different visual channels,
-such as position, area, etc, can impact how easy it is for us
+Before introducing more types of charts and marks,
+let's discuss how different visual channels
+(such as position, area, etc)
+can impact how easy it is for us
 to accurately interpret the plotted data.
 
 As in many cases,
@@ -36,59 +34,89 @@ an efficient way to learn this topic is through personal experience,
 rather than just being told the answer.
 So lets experience which visual encodings are the most effective
 by following along in a short exercise.
-Note that it has been shown that we learn better
-when actively trying to think of the answer to questions like these
-instead of viewing the solution right away.
 
-:::: {.callout-default .ex-prompt}
+::: {.callout-default .ex-prompt}
 
-How many times bigger is the big object is compared to the small one in these images?
+How many times larger is the big object is compared to the small one in these images?
 
 ![](img/circle-comparison.png)
 
 ![](img/bar-comparison.png)
 
-::: {.callout-default .ex-solution}
+*Remember that it has been shown that we learn better
+when actively trying to think of the answer to questions like these
+instead of viewing the solution right away.*
 
-In both cases, the bigger shape is seven times bigger.
+:::: {.callout-default .ex-hint}
 
-![](https://viz-learn.mds.ubc.ca/module2/7x.png)
+What do you think is meant with "bigger"
+when it comes to the circles?
+Are you supposed to compare the areas or the diameters?
 
-:::
-::::
+::::: {.callout-default .ex-solution}
 
-Even if you estimated both of these correctly,
-most people find it is much easier to compare the length or position of the bars
-rather than the area of the circles.
-For the circles,
-you might even have hesitated at exactly what to compare
-when we said "how many time *larger*",
-were you supposed to compare the area or the diameter?
-This aspect is less ambiguous for bars as long as their widths are kept the same.
-This is important to keep in mind,
-especially when communicating to others via visualization,
-but also when creating plots for yourself!
+In both cases, the bigger shape is seven times bigger.[^jeffrey-heer]
 
-These two examples are originally from [Jeffrey Heer's PyData talk](https://www.youtube.com/watch?v=hsfWtPH2kDg),
+[^jeffrey-heer]: These two examples are originally from [Jeffrey Heer's PyData talk](https://www.youtube.com/watch?v=hsfWtPH2kDg),
 who is a visualization researcher at the University of Washington
 and whose research group created the D3 and VegaLite packages
 which Altair is based on.
 
-## Visual channel efficiency
+![](https://viz-learn.mds.ubc.ca/module2/7x.png)
 
-Even if you got both these correct yourself,
-the fact that many people prefer one over the other
+Most people find that it is much easier
+to compare the length and position of the bars
+aligned to the same baseline
+rather than estimating the areas of the circles.
+For bars
+it is also immediately clear what to compare
+as long as their widths are kept the same,
+whereas for the circles we might hesitate between area and diameter.
+This is important to keep in mind,
+especially when communicating to others via visualization,
+but also when creating plots for yourself.
+
+Even if you aced both comparison yourself,
+the fact that many people tend to get one of them wrong more often
 means that in order for you to create effective visualizations
 you need to know which visual channels are the easiest for humans to decode.
 
-Luckily,
-there has been plenty of research in this area,
-which is summarized in the schematic below,
+:::::
+::::
+:::
+
+## Visual channel efficiency
+
+There has been plenty of research
+trying to determine which visual channels
+are the most effective
+when communicating different aspects
+of a dataset.
+One reservation should be made that this research
+has mostly been made in the context of college students
+in North America and Europe,
+and some aspects which was is visually salient
+might vary across cultures, geographies and age groups;
+it has also been shown that the chart's purpose
+and the combination of visual channel
+matters^[[Revisiting Channel Effectiveness: A Multi-Dimensional Evaluation with Primitive Visual Stimuli](https://arxiv.org/html/2608.04435v1)].
+Nevertheless,
+the findings from these studies provide us
+with a useful guiding foundation
+that we should only stray from with good reason.
+The main findings
+are summarized in the schematic below,
 from the most to least effective visual channel.
 
-![Classical visual-channel ranking for quantitative magnitude judgments, not a universal ordering of chart effectiveness. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0).](img/magnitude-channels.svg){#fig-magnitude-channels width=633.6 fig-alt="Ten channels in classical magnitude order: common-scale position, unaligned-scale position, length, tilt or angle, area, depth, luminance, saturation, curvature, and volume."}
+::: {#fig-mag width=633.6 fig-alt="Ten channels in classical magnitude order: common-scale position, unaligned-scale position, length, tilt or angle, area, depth, luminance, saturation, curvature, and volume."}
 
-<!-- ![](img/visual-channels.png) -->
+![](img/magnitude-channels.svg)
+
+Classical visual-channel ranking for quantitative magnitude judgments.
+Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html),
+Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0).
+
+:::
 
 Position has been shown to cleary be the most effective visual channel
 and therefore we should represent our most important comparison as different positions.
@@ -225,3 +253,9 @@ and we will dive deeper into some of them later in the course.
 ## Original lecture slides
 
 <iframe src="slides-lec2.pdf#zoom=80&navpanes=0&statusbar=0&messages=0&pagemode=none" title="Original lecture slides on visual channels" width="100%" height="475px"></iframe>
+
+::: {.callout-note title="Further reading"}
+
+- [Data Visualization: A Practical Introduction](https://socviz.co/01-look-at-data.html#visual-tasks-and-decoding-graphs) by Kieran Healy; from "Visual tasks and decoding graphs" until the end of the chapter.
+
+:::
