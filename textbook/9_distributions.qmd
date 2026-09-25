@@ -68,15 +68,14 @@ to help us here?
 
 Instead of showing each individual observation,
 we could visualize the counts of observations
-along different intervals of the x-axis.
+along intervals (or "bins") of the quantitative variable on the x-axis.
 Conceptually, we could think of this
 as first creating bins along the x-axis
 (e.g. one bin could be Running Time 80-100 min)
-and then counting all the observations that fall within that bin
-and drawing a bar width heigh corresponding to the count of observations,
-like in this animation:
-
-![Schematic animation of creating a histogram](img/histogram-buildup.gif){#fig-hist-buildup}
+then counting all the observations that fall within that bin
+and finally drawing a bar
+with a height corresponding to the count of observations.
+This type of chart is called a histogram.
 
 :::::
 
@@ -86,22 +85,24 @@ like in this animation:
 
 <!-- TODO consider setting ta global theme with lower height for all figures i this chapter -->
 
-## Histograms
+## How to create histograms
 
-To create a histogram,
-we bin one axis into categorical intervals
-and then count the observations withing each interval.
-The reason we create intervals
+The histogram creation process we described above
+can be viewed in this animated schematic:
+
+![Animated schematic of creating a histogram](img/histogram-buildup.gif){#fig-hist-buildup}
+
+The reason we create the bins along the x-axis
 is that for a quantitative variable,
 there are very few observations
-with **exactly** the same value,
-so if we were to create
+with **exactly** the same value.
+So if we were to create
 a count chart without binning,
 the histogram would look spiky and sparse:
 
 We could create the intervals manually in the dataframe
 and plot a categorical count chart
-as in the previous chapter
+as in the previous chapter,
 but there is a special type of chart to help us
 create the bins and counts for a quantitative variable:
 the histogram.
@@ -113,10 +114,10 @@ before breaking it down into the different movie genres.
 
 ### Altair
 
-We can use the `bin()` method
-on the `alt.X/alt.Y` helper classes
-to automatically bin the axis
-of the quantitative variable.
+Vegafusion makes it easier to work with large datasets in Altair.
+We must use it whenever we have a dataset with more than 5,000 rows,
+and can use it as a default even for smaller datasets
+(you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
 
 ```{python}
 #| label: runtime-histogram-alt
@@ -126,14 +127,17 @@ import pandas as pd
 alt.data_transformers.enable('vegafusion')
 ```
 
-Vegafusion makes it easier to work with large datasets in Altair,
-we must use it whenever we have a dataset with more than 5,000 rows,
-and can use it as a default even for smaller datasets as well
-(you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
+We can use the `bin()` method
+on the `alt.X/alt.Y` helper classes
+to automatically bin the axis
+of the quantitative variable.
+Histograms tend to look more visually appealing
+when the height is less than the width of the bar,
+so we reduce the height here.
 
 ```{python}
 movies = pd.read_csv('data/movies.csv')
-alt.Chart(movies).mark_bar().encode(
+alt.Chart(movies, height=200).mark_bar().encode(
     x=alt.X('Running Time min').bin(),
     y='count()',
 )
@@ -144,12 +148,14 @@ alt.Chart(movies).mark_bar().encode(
 We can use `stat = 'bin'`
 to automatically bin the axis
 of the quantitative variable.
-
-<!-- TODO dropna in data? -->
+Histograms tend to look more visually appealing
+when the height is less than the width of the bar,
+so we reduce the height of the chart here.
 
 ```{r}
 #| label: runtime-histogram-gg
 #| message: false
+#| fig-height: 3
 library(ggplot2)
 
 movies <- readr::read_csv('data/movies.csv')
@@ -166,6 +172,8 @@ they are optional
 but tend to make the histogram more visually pleasing.
 
 :::
+
+## Bin properties
 
 Different visualization libraries use rules of varying appropriateness
 to determine the number of bins.
@@ -189,7 +197,7 @@ they form easy to read intervals
 
 ```{python}
 #| label: runtime-histogram-bins-alt
-alt.Chart(movies).mark_bar().encode(
+alt.Chart(movies, height=200).mark_bar().encode(
     x=alt.X('Running Time min').bin(maxbins=30),
     y='count()',
 )
@@ -206,6 +214,7 @@ of the quantitative variable.
 ```{r}
 #| label: runtime-histogram-bins-gg
 #| message: false
+#| fig-height: 3
 ggplot(movies, aes(x= `Running Time min`)) +
     geom_histogram(bins = 10, color = 'white')
 ```
@@ -337,6 +346,8 @@ hist | hist.encode(
 )
 ```
 
+## Adding back individual observations
+
 Because of the shortcomings of histograms
 it can be helpful to pair them with a chart of the individual observation.
 This can be a chart with jittered points as we saw in the start of the chapter
@@ -389,6 +400,7 @@ directly in the margin of the canvas.
 
 ```{r}
 #| label: runtime-histogram-rug-gg
+#| fig-height: 3
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_histogram(color = 'white') +
     geom_rug()
@@ -396,18 +408,37 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 :::
 
+## Multiple distributions
+
 With all that we have learned about histogram in mind,
 let's finally create a version of the plot we started this chapter with,
 using histograms rather than jittered points.
+
+::: {.callout-warning}
+
+### Avoid too many histograms in the same chart
+
 You might be tempted to simply group the histograms using color
-in the same chart.
+in the same chart,
+but it easily becomes difficult
+to separate the histograms visually
+so it is not an effective way to visualize
+distributions,
+as you can see in this chart.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
+Since bars stack on top of each other by default,
+we need to set `stack(False)` on the y-axis,
+so that they all share a common baseline.
+To be able to see the bars
+behind each other,
+we also add some opacity to them.
+
 ```{python}
-alt.Chart(movies).mark_bar(opacity = 0.5).encode(
+alt.Chart(movies, height=200).mark_bar(opacity=0.5).encode(
     x=alt.X('Running Time min').bin(maxbins=30),
     y=alt.Y('count()').stack(False),
     color='Major Genre',
@@ -416,17 +447,28 @@ alt.Chart(movies).mark_bar(opacity = 0.5).encode(
 
 ### ggplot
 
+Since bars stack on top of each other by default,
+we need to set `position = 'identity'`,
+so that they all share a common baseline.
+To be able to see the bars
+behind each other,
+we also add some opacity to them
+with the `alpha` parameter.
+
+
 ```{r}
-options(repr.plot.width = 2, repr.plot.height = 3)
+#| fig-height: 3
 ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
    geom_histogram(color = 'white', position = 'identity', alpha = 0.5)
 ```
 
 :::
 
-::: {.callout-warning}
-
-### Avoid too many histograms in the same chart
+One exception to this rule is
+if the distributions are well-separated along the axis,
+or there are only two (or maybe three)
+distributions in the chart;
+then a colored histogram chart can be effective.
 
 
 ```{python}
@@ -450,10 +492,10 @@ ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
 
 :::
 
-Since a histogram requires a y-axis for the counts,
-we are spreading out individual film genres
-as separate facets
-rather than positions along the y-axis.
+A more effective way
+to visualize multiple distributions as histograms
+is to spread out the individual film genres
+in separate facets.
 Since we are interested in comparing
 the distributions between the genres
 we create all facets in a single column,
