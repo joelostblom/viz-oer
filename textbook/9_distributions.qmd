@@ -43,7 +43,7 @@ to more clearly see how they are distributed?
 import altair as alt
 import pandas as pd
 
-# alt.datasets.data.movies().query("`Major Genre`.isin(['Thriller/Suspense', 'Comedy', 'Horror', 'Adventure', 'Drama'])").dropna(subset=['Running Time min']).to_csv('data/movies.csv')
+# alt.datasets.data.movies().query("`Major Genre`.isin(['Comedy', 'Horror', 'Adventure', 'Drama'])").dropna(subset=['Running Time min']).to_csv('data/movies.csv')
 movies = pd.read_csv('data/movies.csv')
 alt.Chart(movies).mark_circle().encode(
     x='Running Time min',
