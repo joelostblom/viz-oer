@@ -6,6 +6,8 @@ resources:
   - slides-lec3.pdf
 ---
 
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
 1. **Visualize** distributions with density plots and **explain** how they are constructed and how they differ from histograms.
@@ -16,429 +18,177 @@ resources:
 
 :::
 
-**The motivation for this chapter should be what to do when there are too many points to show all observations**
+## Why do we care?
 
-One summary value can hide important differences between collections of observations.
-An interval adds information about their variability, or about uncertainty in an estimate,
-but its endpoints still do not show where observations or probability are concentrated.
-Two distributions can have similar centers and interval widths yet very different shapes.
+In [Summaries](7_summaries.qmd),
+we learned that it is important to inspect the underlying observations
+to see how they are distributed,
+which would be hidden if we just looked at a summary like the mean or median.
+But what happens when we have too many data points
+to visualize all of them individually?
 
-Building on the discussion of variability in [Summaries](7_summaries.qmd)
-and the histograms in [Counts](8_counts.qmd),
-we now ask: **How can we see where values are concentrated, where there are gaps,
-and whether there is more than one cluster?**
-We now explore how density plots reveal the shape of a distribution
-and compare their strengths and limitations with histograms.
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+::: {.callout-default .ex-prompt}
 
-::: {.callout-note title="Further reading"}
-
-- [Video on how distribution plots are created](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EXwcQii5i9lOgtST81EdRuoBF_Oq3j7zRxCgEybba5BENQ?e=e2fZNu) (30 minutes; CWL login required; the first minute is intentionally blank).
-- [Chapter 7 of Fundamentals of Data Visualization](https://clauswilke.com/dataviz/histograms-density-plots.html), on histograms and density plots.
-
-:::
+In this chart,
+there are so many observation
+that the plot is saturated
+and it is impossible to tell
+how the data points are distributed.
+How do you think we could plot the observations
+to more clearly see how they are distributed?
 
 ```{python}
-#| label: density-movies-python-setup
-#| include: false
+#| echo: false
 import altair as alt
 import pandas as pd
 
-alt.data_transformers.enable('vegafusion')
-movies = pd.read_json('https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json')
-boom_both = movies.explode('countries').explode('genres')
-```
-
-```{r}
-#| label: density-movies-r-setup
-#| include: false
-library(tidyverse)
-movies <- jsonlite::fromJSON(
-    'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/movies.json'
-) %>%
-    as_tibble() %>%
-    unnest(-c(countries, genres))
-```
-
-## Density plots
-
-We continue with the movie data introduced in [Counts](8_counts.qmd).
-That chapter contains the histogram examples and explains how to unpack the
-country and genre lists when comparing groups.
-
-Another issue with histograms,
-is that where the bin borders are drawn 
-can impact how the distribution look
-and the conclusions we draw from the plot.
-This image depicts histograms of the same data
-from popular plotting package.
-As you can see,
-the distribution looks quite different
-depending on the number of bins and their placement.
-
-![](img/histogram-binning-comparison.png)
-
-Another way to visualize a distribution is via a density plot,
-which has the advantage of not being dependent on dividing the data into bins.
-Instead of bins,
-a shape/curve is drawn on top of each observation
-and then added together.
-
-The pre-activity video goes more in depth on how a density plot is created,
-but this animation is a nice summary on how a it is constructed
-from first adding individual kernels (curves) centered on each data point and then summing them together
-(created from [this YouTube video](https://youtu.be/DCgPRaIDYXAvideo)):
-
-![](img/kde-buildup.gif)
-
-[Scikit learn's documenation on density plots is great](https://scikit-learn.org/stable/modules/density.html#density-estimation) and includes images comparing with histograms and also visualizing the different kernels that could be used.
-
-To visualize a density plot,
-we need to do two things:
-
-1. Calculate the kernel density estimate (the "KDE")
-   by adding the individual Gaussian kernels and summing them together.
-2. Plot a line or area mark for the newly calculated KDE values.
-
-In Altair,
-these operations are done in two explicit steps,
-whereas ggplot has a `geom_` that does both in the same step.
-Let's see how density plots are created in each library.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: runtime-density-alt
-alt.Chart(movies).transform_density(
-    'runtime',
-    as_=['runtime', 'density']  # Give the name "density" the KDE columns we just created
-).mark_area().encode(
-    x='runtime',
-    y='density:Q'
+movies = pd.read_csv('data/movies.csv')
+alt.Chart(movies).mark_circle().encode(
+    x='Running Time min',
+    y='Major Genre',
+    yOffset='jitter:Q',
+).transform_calculate(
+    jitter=alt.expr.random()
 )
 ```
 
-In the above,
-we need to use `':Q'` to indicate that the density is numeric 
-since it is not part of the dataframe,
-so Altair cannot use the pandas data types to figure out that it is numeric.
-You can control the width of the kernels via the `bandwidth` parameter,
-but the default is a suitable choice in most cases.
+:::: {.callout-default .ex-hint}
 
-### ggplot
+We could of course increase the size of the chart
+to jitter the points more,
+but it would still be difficult
+to get an overall idea of how the observation are distributed.
+What if we could use what we learned
+in the previous chapter about counting
+to help us here?
 
-In ggplot,
-there is a specific `geom` for densities
-which does both the KDE calculation and plots a line.
+::::: {.callout-default .ex-solution}
 
-```{r}
-#| label: runtime-density-line-gg
-ggplot(movies) +
-    aes(x = runtime) +
-    geom_density()
-```
+Instead of showing each individual observation,
+we could visualize the counts of observations
+along different intervals of the x-axis.
+Conceptually, we could think of this
+as first creating bins along the x-axis
+(e.g. one bin could be Running Time 80-100 min)
+and then counting all the observations that fall within that bin
+and drawing a bar width heigh corresponding to the count of observations,
+like in this animation:
 
-Filling the density can make it look a bit nicer.
+![Schematic animation of creating a histogram](img/histogram-buildup.gif){#fig-hist-buildup}
 
-```{r}
-#| label: runtime-density-area-gg
-ggplot(movies) +
-    aes(x = runtime) +
-    geom_density(fill = 'grey', alpha = 0.7)
-```
+:::::
+
+::::
 
 :::
 
-We can control the parameters of the KDE calculation,
-for example the bandwidth,
-how wide each kernel is
-(similar to histogram bin width).
+<!-- TODO consider setting ta global theme with lower height for all figures i this chapter -->
+
+## Histograms
+
+To create a histogram,
+we bin one axis into categorical intervals
+and then count the observations withing each interval.
+We could do this manually
+and plot a categorical count chart
+as in the previous chapter
+but there is a special type of chart to help us
+create the bins and counts for a quantitative variable:
+the histogram.
+
+Let's create a histogram for the entire data set first,
+before breaking it down into the different movie genres.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
-```{python}
-#| label: density-narrow-bandwidth-alt
-alt.Chart(movies).transform_density(
-    'runtime', bandwidth=1, as_=['runtime', 'density']
-).mark_line().encode(x='runtime', y='density:Q')
-```
+We can use the `bin()` method
+on the `alt.X/alt.Y` helper classes
+to automatically bin the axis
+of the quantitative variable.
 
 ```{python}
-#| label: density-wide-bandwidth-alt
-alt.Chart(movies).transform_density(
-    'runtime', bandwidth=100, as_=['runtime', 'density']
-).mark_line().encode(x='runtime', y='density:Q')
-```
+import altair as alt
+import pandas as pd
 
-### ggplot
+# Simplify working with large datasets in Altair
+alt.data_transformers.enable('vegafusion');
 
-```{r}
-#| label: density-narrow-bandwidth-gg
-ggplot(movies) +
-    aes(x = runtime) +
-    geom_density(bw=1)
-```
-
-```{r}
-#| label: density-wide-bandwidth-gg
-ggplot(movies) +
-    aes(x = runtime) +
-    geom_density(bw=100)
-```
-
-:::
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-If we want to color by a categorical variable,
-we need to add an explicit `groupby` 
-when calculating the density also,
-so that there is one density calculation
-per color variable (`genres` in this case).
-
-```{python}
-#| label: genre-densities-alt
-boom_genres = movies.explode('genres')
-alt.Chart(boom_genres).transform_density(
-     'runtime',
-     groupby=['genres'],
-     as_=['runtime', 'density']
-).mark_area().encode(
-     x='runtime',
-     y=alt.Y('density:Q').stack(False),
-     color='genres'
-)
-```
-
-Note that we have to specify `stack(False)` to make sure that the densities start at the same baseline.
-
-### ggplot
-
-To color/fill by a variable,
-we don't need a separate groupby,
-but can treat `geom_density` like any other geom,
-which is convenient.
-
-```{r}
-#| label: genre-densities-gg
-free_genres <- movies %>% unnest(genres)
-ggplot(free_genres) +
-    aes(x = runtime, fill = genres, color = genres) +
-    geom_density()
-```
-
-:::
-
-Lastly, we could make the areas slightly transparent so that it is easier to see the overlap.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: density-transparency-alt
-alt.Chart(boom_genres).transform_density(
-     'runtime',
-     groupby=['genres'],
-     as_=['runtime', 'density'],
-).mark_area(
-     opacity=0.6
- ).encode(
-     x='runtime',
-     y=alt.Y('density:Q').stack(False),
-     color='genres'
+movies = pd.read_csv('data/movies.csv')
+alt.Chart(movies).mark_bar().encode(
+    x=alt.X('Running Time min').bin(),
+    y='count()',
 )
 ```
 
 ### ggplot
 
+We can use `stat = 'bin'`
+to automatically bin the axis
+of the quantitative variable.
+
+<!-- TODO dropna in data? -->
+
 ```{r}
-#| label: density-transparency-gg
-ggplot(free_genres) +
-    aes(x = runtime,
-        fill = genres,
-        color = genres) +
-    geom_density(alpha = 0.6)
+#| label: runtime-histogram-gg1
+#| message: false
+library(ggplot2)
+
+movies <- readr::read_csv('data/movies.csv')
+ggplot(movies, aes(x= `Running Time min`)) +
+    geom_bar(stat = "bin", color = 'white')
 ```
+
+As a shortcut for `geom_bar(stat = "bin")`,
+we could use `geom_histogram()`,
+which we will do from now on.
+The `color = 'white'` part
+creates the vertical white lines between bars;
+they are optional
+but tend to make the histogram more visually pleasing.
 
 :::
 
-If we facet these,
-you will notice that they look quite different from the faceted histograms.
-This is because the density rather than the count is shown by default on the y-axis.
-Showing the density means that we can see how the area adds up to one,
-but is not really a useful numbers for us to know.
+Different visualization libraries use rules of varying appropriateness
+to determine the number of bins.
+It is a good idea to try a few different values manually
+different properties of the histogram can stand out
+at different bin widths.
+
+### Avoid looking at just a single histogram
+
+Create a few with different bin widths / number of bins.
+
+![](img/histogram-binning-comparison.png{#fig-histogram-bins}
+
+:::
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
 ```{python}
-#| label: country-density-facets-alt
-alt.Chart(boom_both).transform_density(
-     'runtime',
-     groupby=['genres', 'countries'],
-     as_=['runtime', 'density']
-).mark_area(opacity=0.6).encode(
-     x='runtime',
-     y=alt.Y('density:Q').stack(False),
-     color='genres'
+alt.Chart(movies, height=80).mark_bar().encode(
+    x=alt.X('Running Time min').bin(maxbins=30),
+    y='count()',
 ).facet(
-    'countries'
+    'Major Genre',
+    columns=1
 )
 ```
 
 ### ggplot
 
 ```{r}
-#| label: country-density-facets-gg
-free_both <- free_genres %>%
-    unnest(countries)
-ggplot(free_both) +
-    aes(x = runtime,
-        fill = genres,
-        color = genres) +
-    geom_density(alpha = 0.6) +
-    facet_wrap(~countries)
+#| fig-height: 6
+ggplot(movies, aes(x= `Running Time min`)) +
+   geom_histogram(color = 'white') +
+   facet_wrap(vars(`Major Genre`), ncol=1)
 ```
 
 :::
 
-We could instead scale it by the count,
-but again this is not that useful,
-as it is not as clear how to interpret this,
-compared to a histogram with discrete bins and a count in each bin.
+::: {.callout-warning}
 
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: density-counts-alt
-alt.Chart(boom_both).transform_density(
-     'runtime',
-     groupby=['genres', 'countries'],
-     as_=['runtime', 'density'],
-     counts=True,
-).mark_area(opacity=0.6).encode(
-     x='runtime',
-     y=alt.Y('density:Q').stack(False),
-     color='genres'
-).facet(
-    'countries'
-)
-```
-
-### ggplot
-
-```{r}
-#| label: density-counts-gg
-ggplot(free_both, aes(x = runtime, fill = genres, color = genres)) +
-    geom_density(aes(y = after_stat(count)), alpha = 0.6) +
-    facet_wrap(~countries)
-```
-
-:::
-
-So in summary for densities,
-the important is the shape to see how the values are distributed,
-and possibly the size if you scale them,
-but just as a relative indicator versus other densities
-rather than relying too much on the exact values on the y-axis.
-
-## Using lines instead of areas for densities
-
-Here,
-we could also use `row` and `columns` parameters to faceting
-in order to separate the categorical variables further.
-This is especially useful if we would have had a third categorical column,
-so I made a true/false column for whether the movie had a high rating or not.
-
-If you have many overlapping denties,
-the areas can be hard to distinguish
-and it is preferred to use a line mark instead.
-With only three areas as here,
-it does not really matter if we use an area or line.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: rating-density-lines-alt
-boom_both['vote_avg_over_4'] = boom_both['vote_average'] > 3
-alt.Chart(boom_both).transform_density(
-     'runtime',
-     groupby=['genres', 'countries', 'vote_avg_over_4'],
-     as_=['runtime', 'density'],
-     counts=True
-).mark_line().encode(
-     x='runtime',
-     y='density:Q',
-     color='genres'
-).properties(
-    height=100
-).facet(
-    column='countries',
-    row='vote_avg_over_4'
-).resolve_scale(
-    y='independent'
-)
-```
-
-### ggplot
-
-```{r}
-#| label: rating-density-lines-gg
-free_both <- free_both %>% mutate(vote_avg_over_4 = vote_average > 3)
-ggplot(free_both, aes(x = runtime, color = genres)) +
-    geom_density(aes(y = after_stat(count))) +
-    facet_grid(vote_avg_over_4 ~ countries, scales = 'free_y')
-```
-
-:::
-
-To map the rows and columns of the plot grid to variables in the data set,
-we can use `facet_grid` instead of `facet_wrap`.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: genre-country-density-grid-alt
-alt.Chart(boom_both).transform_density(
-    'runtime',
-    groupby=['genres', 'countries'],
-    as_=['runtime', 'density']
-).mark_area(opacity=0.6).encode(
-    x='runtime',
-    y='density:Q',
-    color='genres'
-).facet(row='genres', column='countries')
-```
-
-### ggplot
-
-```{r}
-#| label: genre-country-density-grid-gg
-ggplot(free_both) +
-    aes(x = runtime,
-        fill = genres,
-        color = genres) +
-    geom_density(alpha = 0.6) +
-    facet_grid(genres ~ countries)
-```
-
-:::
-
-## Original lecture slides
-
-<iframe src="slides-lec3.pdf#zoom=80&navpanes=0&statusbar=0&messages=0&pagemode=none" title="Original lecture slides on distributions" width="100%" height="475px"></iframe>
