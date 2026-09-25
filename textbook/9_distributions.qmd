@@ -43,6 +43,7 @@ to more clearly see how they are distributed?
 import altair as alt
 import pandas as pd
 
+# alt.datasets.data.movies().query("`Major Genre`.isin(['Thriller/Suspense', 'Comedy', 'Horror', 'Adventure', 'Drama'])").dropna(subset=['Running Time min']).to_csv('data/movies.csv')
 movies = pd.read_csv('data/movies.csv')
 alt.Chart(movies).mark_circle().encode(
     x='Running Time min',
@@ -90,7 +91,15 @@ like in this animation:
 To create a histogram,
 we bin one axis into categorical intervals
 and then count the observations withing each interval.
-We could do this manually
+The reason we create intervals
+is that for a quantitative variable,
+there are very few observations
+with **exactly** the same value,
+so if we were to create
+a count chart without binning,
+the histogram would look spiky and sparse:
+
+We could create the intervals manually in the dataframe
 and plot a categorical count chart
 as in the previous chapter
 but there is a special type of chart to help us
@@ -110,6 +119,7 @@ to automatically bin the axis
 of the quantitative variable.
 
 ```{python}
+#| label: runtime-histogram-alt
 import altair as alt
 import pandas as pd
 
@@ -132,7 +142,7 @@ of the quantitative variable.
 <!-- TODO dropna in data? -->
 
 ```{r}
-#| label: runtime-histogram-gg1
+#| label: runtime-histogram-gg
 #| message: false
 library(ggplot2)
 
@@ -153,17 +163,176 @@ but tend to make the histogram more visually pleasing.
 
 Different visualization libraries use rules of varying appropriateness
 to determine the number of bins.
-It is a good idea to try a few different values manually
+Some prioritize adhering the bins
+Regardless of which library you use,
+it is a good idea to try a few different values manually
 different properties of the histogram can stand out
-at different bin widths.
+at different bin widths,
+so let's learn how to do that.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+We can pass `maxbins=` to the `bin()` method
+to control the number of bins.
+Note `maxbins` is an upper limit on the number of bins.
+Altair will create bins so that
+they form easy to read intervals
+(e.g. 5-10 instead of 6.3-9.4).
+
+```{python}
+#| label: runtime-histogram-bins-alt
+alt.Chart(movies).mark_bar().encode(
+    x=alt.X('Running Time min').bin(maxbins=30),
+    y='count()',
+)
+```
+
+### ggplot
+
+We can use `stat = 'bin'`
+to automatically bin the axis
+of the quantitative variable.
+
+<!-- TODO dropna in data? -->
+
+```{r}
+#| label: runtime-histogram-bins-gg
+#| message: false
+ggplot(movies, aes(x= `Running Time min`)) +
+    geom_histogram(bins = 10, color = 'white')
+```
+
+:::
+
+::: {.callout-default .ex-prompt}
+
+Here we have created a few histograms for a dataset
+containing finish times from the 2023 London marathon
+(for male runners aged 18-39).
+Explore different bin numbers for histograms
+using the dropdown widget below.
+Which do you think is the "right" number of bins?
+And how would you explain the peaks in the distribution
+that occur at higher bin numbers?
+
+```{python}
+#| echo: false
+mara = pd.read_csv('/home/joel/Downloads/Respository London Marathon 18-23.csv').query('gender == 1 and agecat == "18-39"')
+mara['Time (minutes)'] = pd.to_timedelta(mara['fulltime'].str.split(' ').str[0]).dt.total_seconds() / 60
+
+min_bins = 10
+max_bins = 50
+bin_step = 1
+bins = [20, 40, 80, 220]
+bins_param = alt.param(
+    name="bins_param",
+    value=20,
+    bind=alt.binding_select(options=bins, name='Bins: ')
+)
+
+layers = [
+    alt.Chart(mara, height=200, width=500)
+    .transform_filter(f"bins_param === {n}")
+    .mark_bar()
+    .encode(
+        x=alt.X(
+            "Time (minutes)",
+            bin=alt.Bin(maxbins=n),
+            title="Finish time (minutes)"
+        ),
+        y=alt.Y("count()", title="Count"),
+        tooltip=alt.Tooltip('Time (minutes)').bin(maxbins=n),
+
+    )
+    for n in bins# range(min_bins, max_bins+1, bin_step)
+]
+
+alt.layer(*layers).add_params(bins_param)
+```
+
+To switch more quickly between the option,
+you can use the arrow keys
+after clicking the dropdown once.
+You can also hover a bin with the pointer
+to see the exact values for that interval.
+
+:::: {.callout-default .ex-hint}
+
+It seems like the peaks are
+just before the round numbers 180, 210, and 240 min.
+How many hours do these minute values correspond to?
+
+::::: {.callout-default .ex-solution}
+
+In this case,
+the peaks are not a binning artefact or technical noise;
+they reflect a real phenomena in the underlying data.
+Many people that run races such as marathons,
+set a time that they will finish faster than;
+among the more popular times are even numbers
+such as in this case 3, 3 h 30 min, and
+4h.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://pubsonline.informs.org/doi/abs/10.1287/mnsc.2015.2417?journalCode=mnsc)]
+
+
+:::::
+
+::::
+
+:::
+
+::: {.callout-warning}
 
 ### Avoid looking at just a single histogram
 
-Create a few with different bin widths / number of bins.
-
-![](img/histogram-binning-comparison.png{#fig-histogram-bins}
+Various attributes of the distribution
+can stand out at different bin widths.
+It's therefore paramount
+to look at a few different histogram bin numbers
+and reflect on which features of the underlying data
+they might highlight.
 
 :::
+
+In addition to the number of bins
+impacting the shape of the histogram,
+even histograms with the same number of bins
+can look quite different depending on
+the exact location of the bins along the x-axis.
+In @fig-hist-bin-shift,
+we can see that the left histogram
+seem to show a long tailed distribution,
+but when the bins are shifted over in the rightmost histogram,
+it now looks like a potentially bimodal distribution
+with two peaks.
+
+```{python}
+#| echo: false
+#| label: fig-hist-bin-shift
+#| fig-cap: The two histograms have the same number of bins; in other words each bin has the same width, but the start and end points of the bins are shifted slightly between the two charts.
+from random import choice
+
+cars = alt.datasets.data.cars()
+bin_min = 235
+bin_max = 285
+
+mask_to_replace = cars['Displacement'].between(bin_min, bin_max)
+new_values = [choice(range(bin_max, 300)) for _ in range(mask_to_replace.sum())]
+cars.loc[mask_to_replace, 'Displacement'] = new_values
+
+hist = alt.Chart(cars, height=120, width=200).mark_bar().encode(
+    alt.X('Displacement').bin(),
+    alt.Y('count()').title(None)
+)
+
+hist | hist.encode(
+    alt.X('Displacement').bin(nice=False, extent=[35, 490]),
+)
+```
+
+Because of the shortcomings of histograms 
+
 
 ::: {.panel-tabset group="language"}
 
@@ -189,6 +358,3 @@ ggplot(movies, aes(x= `Running Time min`)) +
 ```
 
 :::
-
-::: {.callout-warning}
-
