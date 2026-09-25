@@ -123,9 +123,15 @@ of the quantitative variable.
 import altair as alt
 import pandas as pd
 
-# Simplify working with large datasets in Altair
-alt.data_transformers.enable('vegafusion');
+alt.data_transformers.enable('vegafusion')
+```
 
+Vegafusion makes it easier to work with large datasets in Altair,
+we must use it whenever we have a dataset with more than 5,000 rows,
+and can use it as a default even for smaller datasets as well
+(you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
+
+```{python}
 movies = pd.read_csv('data/movies.csv')
 alt.Chart(movies).mark_bar().encode(
     x=alt.X('Running Time min').bin(),
