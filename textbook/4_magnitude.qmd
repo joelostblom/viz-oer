@@ -118,7 +118,7 @@ Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0).
 
 :::
 
-Position has been shown to cleary be the most effective visual channel
+Position has been shown to clearly be the most effective visual channel
 and therefore we should represent our most important comparison as different positions.
 Using position often means that we can't use other things such as length
 or angle (like the angle in a pie chart),

@@ -49,7 +49,8 @@ make it difficult to follow the development over time
 for any particular continent and the chart is a bit confusing
 even after studying it for a while.
 How do you think you could change this chart
-to make it easier to see how the CO2 emissions for each continent change over time?
+to make it easier to see how the CO2 emissions
+for each continent has changed over time?
 
 
 ```{python setup}
@@ -58,16 +59,14 @@ to make it easier to see how the CO2 emissions for each continent change over ti
 import altair as alt
 import pandas as pd
 from utils import show_df
-
-alt.data_transformers.enable('vegafusion')
 ```
 
 ```{python bad-points}
 #| echo: false
 years = range(1850, 2030, 8)
 co2_per_capita = pd.read_csv('data/co-emissions-per-capita.csv').query('Year.isin(@years)')
-points = alt.Chart(co2_per_capita, width=450).mark_point().encode(
-    x='Year:T',
+points = alt.Chart(co2_per_capita, width=400).mark_point().encode(
+    x=alt.X('Year').axis(format='d').scale(zero=False),
     y=alt.Y('CO2_emissions_per_capita').title('Tonnes of CO2 per capita'),
     color=alt.Color('Entity').title(None)
 )
@@ -118,13 +117,7 @@ and have been adapted for this textbook.
 #| output: false
 import altair as alt
 import pandas as pd
-
-alt.data_transformers.enable('vegafusion')
 ```
-
-Vegafusion makes it easier to work with large datasets and temporal variables in Altair,
-we will use it by default from now on
-(you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
 
 ```{python}
 #| label: read-data-python
@@ -225,10 +218,41 @@ to connect observations with a line.
 ```{python}
 #| label: population-line-alt
 alt.Chart(world).mark_line().encode(
-    x='year:T',
+    x='year',
     y='population'
 )
 ```
+
+You can see that the formatting on the x-axis
+includes a comma as thousands separator.
+While this is desirable for regular quantitative variables,
+it is not how we are used to seeing years displayed.
+To deal with this,
+we can either change the underlying data type
+or the number formatting of the axis.
+
+In order to change the axis formatting
+we need to leverage the helper class `alt.X`
+(a similar helper exist for all other channels
+`alt.Y`, `alt.Color`, etc).
+These class help with customizing many aspects of our charts.
+When using just `x='year'`,
+we're still calling `alt.X('year')` under the hood,
+we just save ourselves some typing.
+
+Here we are going to set `alt.X('year').axis(format='d')`,
+where the `d` is short for "decimal integer"
+(i.e. a base 10 integer).
+
+```{python}
+#| label: population-line-alt-format
+alt.Chart(world).mark_line().encode(
+    x=alt.X('year').axis(format='d'),
+    y='population'
+)
+```
+
+Now the year are formatted like we are used to!
 
 ### ggplot
 
@@ -284,7 +308,7 @@ visualization the number of children born per woman over time.
 ```{python}
 #| label: children_per_woman-line-alt
 alt.Chart(world).mark_line().encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y='children_per_woman'
 )
 ```
@@ -365,7 +389,7 @@ a chart on top of another chart
 ```{python}
 #| label: population-line-points-alt
 line = alt.Chart(world).mark_line().encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y='children_per_woman'
 )
 line + line.mark_point(filled=True)
@@ -419,7 +443,7 @@ about the number of children per woman in this year?
 #| label: population-line-points-zoom
 #| echo: false
 line = alt.Chart(world.query('year > 1920')).mark_line().encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
 )
 line + line.mark_point(filled=True)
@@ -453,7 +477,7 @@ years = range(1926, 2010, 2)
 world2 = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)')
 title = 'Every 2nd year'
 line = alt.Chart(world2, title=title, height=220, width=220).mark_line().encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
 )
 every_2nd_year = line + line.mark_point(filled=True)
@@ -461,7 +485,7 @@ every_2nd_year = line + line.mark_point(filled=True)
 years = range(1928, 2030, 20)
 title = 'Every 20th year'
 line = alt.Chart(world2.query('year.isin(@years)'), title=title, height=220, width=220).mark_line().encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
 )
 every_20th_year = line + line.mark_point(filled=True)
@@ -557,9 +581,9 @@ when hovering it with the mouse pointer.
 line = alt.Chart(world).mark_line().encode(
     x='children_per_woman',
     y='population',
-    order='year:T',
+    order='year',
     # Format the tooltip to only include the year rather than "Jan 01, 2008" etc
-    tooltip=alt.Tooltip('year:T', format='%Y')
+    tooltip=alt.Tooltip('year', format='d')
 )
 line + line.mark_point(filled=True)
 ```
@@ -625,7 +649,7 @@ instead of a line.
 ```{python}
 #| label: population-area-alt
 alt.Chart(world).mark_area().encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y='population'
 )
 ```
@@ -672,7 +696,7 @@ we will learn more about layouts in a later chapter).
 ```{python}
 #| label: population-stacked-alt
 base = alt.Chart(regions, width=150, height=150).encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y='population',
     color='region'
 )
@@ -760,7 +784,7 @@ which we will see in a later chapter).
 #| label: fertility-overlapping
 #| echo: False
 alt.Chart(regions).mark_area(opacity=0.4).encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y=alt.Y('children_per_woman').stack(False),
     color='region'
 )
@@ -794,7 +818,7 @@ the world average wasn't 30 children per woman in the 1800s...
 #| echo: false
 #| label: fertility-stacked
 alt.Chart(regions).mark_area().encode(
-    x='year:T',
+    x=alt.X('year').axis(format='d'),
     y='children_per_woman',
     color='region'
 )
