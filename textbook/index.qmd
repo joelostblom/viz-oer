@@ -32,6 +32,22 @@ there progression herein is not a reflection of the history of data visualizatio
 although this author think it could have been.
 
 
+This books also hopes to introduce students to some interesting data sets along the way,
+although this will likely be a work in progress over a longer time as I come across more suitable ones.
+
+This books take an exercise first approach and interleaves exercises throughout the chapters.
+These are largely focused on principles rather than coding,
+since memorization of library APIs seems to be an increasingly replaceable skill
+(it is still important to understand the principles of the grammar of graphics,
+but the exact code for each existing implementation is less interesting although still useful).
+I believe learning and exercises are tighyl coupled so therefore exercises 
+are spread throughout the chapters rather than all coming at the end;
+this doesn't mean there is not value in doing the exercises after reading as repetition.
+experiential learning is best, in exercises student can experience the problem,not just "read about it"
+
+This book
+
+
 ## acknolwedgmenets
 
 every who helped review and develop: roy, sandra, mona, ben
