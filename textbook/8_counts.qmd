@@ -1,5 +1,5 @@
 ---
-title: "Counts"
+title: "Counts & Proportions"
 fig-width: 5
 fig-height: 3.75
 ---
@@ -33,8 +33,6 @@ import altair as alt
 meditation = pd.read_csv('data/meditation-stress-sample.csv')
 ```
 
-### ggplot
-
 ```{r}
 #| echo: false
 #| output: false
@@ -44,13 +42,15 @@ library(ggplot2)
 meditation = read_csv('data/meditation-stress-sample.csv')
 ```
 
-
 Another useful statistics we can compute
 is the counts of observations in each group.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
+
+We can use the `'count()'` aggregation
+to count observations.
 
 ```{python}
 alt.Chart(meditation).mark_point().encode(
@@ -60,6 +60,13 @@ alt.Chart(meditation).mark_point().encode(
 ```
 
 ### ggplot
+
+We can use `stat = 'count'`
+to count observations.
+Since there is only one way of counting
+we don't need to specify a function
+(in contrast, there are many ways of summarizing:
+mean, median, sum, etc).
 
 ```{r}
 ggplot(meditation, aes(y = condition)) +
@@ -72,9 +79,12 @@ When we are showing an accumulated value like a count or sum,
 it can be beneficial to replace our point mark
 with a bar
 to be able to more clearly compare groups.
-The bar is drawn from zero 
-and thus makes the accumulated amount explicit through its length
-(you can think of the bar as stacking all the observation on top of each other).
+Bar charts visualize magnitudes as position and length.
+Since the bar is drawn from zero 
+it makes the accumulated amount explicit through its length
+(you can think of the bar
+as representing all the individual observation
+stacked on top of each other).
 
 ::: {.panel-tabset group="language"}
 
@@ -89,18 +99,52 @@ alt.Chart(meditation).mark_bar().encode(
 
 ### ggplot
 
-```{r}
-ggplot(meditation, aes(y = condition)) +
-    geom_bar(stat = 'count')
-```
-
-Since there is only one way of counting
-we don't need to specify a function
-(there are many ways of summarizing: mean, median, sum, etc).
 ggplot discourages people from using bars for summaries,
 so the default for `geom_bar` is actually `stat = 'count'`,
-which means we could have written just `geom_bar()` above
-to get the same result.
+which means we can write just `geom_bar()`.
+
+```{r}
+#| fig-height: 2
+ggplot(meditation, aes(y = condition)) +
+    geom_bar()
+```
+
+Note that we have reduced the figure height 
+so that the bars have a reasonable width.
+In this book,
+ggplot size adjustments are done
+separate from the R code
+(i.e. via Quarto chunk options).
+There are [various ways
+to adjust the figure sizes
+in different
+environment](https://stackoverflow.com/questions/29587881/increase-plot-size-width-in-ggplot2).
+
+:::
+
+::: {.callout-warning}
+
+### Avoid giant bars
+
+Some libraries have a fixed chart size
+and expands any categories
+to fill the entire chart
+instead of allocating a fixed space per category.
+This can lead to giant bars
+(and other marks),
+particularly when there are fewer categories
+as in the figure below.
+These are generally difficult to grasp
+so the overall figure size should be
+adjusted to make the bars more narrow.
+
+```{r}
+#| echo: false
+meditation |>
+    dplyr::filter(condition %in% c('Mindful walking', 'Body scan')) |>
+ggplot(aes(y = condition)) +
+    geom_bar()
+```
 
 :::
 
@@ -162,6 +206,7 @@ we use `add_count` to first create a column (automatically named `n`),
 as the sorting key for our x-axis column:
 
 ```{r}
+#| fig-height: 2
 meditation |>
     dplyr::add_count(condition) |>
     ggplot(aes(y = reorder(condition, n))) +
@@ -210,6 +255,7 @@ alt.Chart(meditation).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar()
 ```
@@ -273,6 +319,7 @@ stacking on top of each other
 and be place next to one another instead.
 
 ```{r}
+#| fig-height: 3
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'dodge')
 ```
@@ -310,7 +357,8 @@ is of secondary importance.
 
 Proportions (and percentages) are counts that have been normalized
 to a total number of observations for a wider group.
-They can be effectively visualized in similar ways as counts.
+They can be effectively visualized with bars
+that indicate how big part they are of the whole.
 
 ::: {.panel-tabset group="language"}
 
@@ -343,6 +391,7 @@ alt.Chart(meditation).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'fill')
 ```
@@ -352,6 +401,7 @@ from proportions to percentages
 by specifying that the scale labels are percentages:
 
 ```{r}
+#| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'fill') +
     scale_x_continuous(labels = scales::label_percent())
@@ -377,9 +427,10 @@ it is also
 
 Based on these results we can see there were mostly females
 
-### Proportions as pie charts
+### Pie charts
 
-Pie charts should generally be avoided
+Pie charts use angles and areas to indicate magnitude.
+They should generally be avoided
 as stacked and offset bar charts
 tend to communicate the same insights more effectively.
 A minor point in favor of pie charts
@@ -419,7 +470,6 @@ ggplot(meditation, aes(x = factor(1), fill = gender)) +
 ```
 
 :::
-
 
 ::: {.callout-warning}
 
