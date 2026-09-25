@@ -337,8 +337,129 @@ hist | hist.encode(
 )
 ```
 
-Because of the shortcomings of histograms 
+Because of the shortcomings of histograms
+it can be helpful to pair them with a chart of the individual observation.
+This can be a chart with jittered points as we saw in the start of the chapter
+or we can use a small tick to mark each observation
+in what is often called a "rug" plot.
+We have already covered the shortcomings
+of visualizing all individual observations,
+such as that the chart can easily become saturated,
+but they are often a good complement to a histogram
+(at least until you get up around a few thousands of observations).
 
+::: {.panel-tabset group="language"}
+
+### Altair
+
+We create the tick mark as a separate chart
+that we then concatenate vertically with the histogram
+using the operator `&`.
+We also indicate that the scale of the x-axes
+should be shared between the two charts
+so that the ticks line up
+and it is easy to say which observations 
+belong to which bin.
+
+```{python}
+#| label: runtime-histogram-rug-alt
+
+hist = alt.Chart(movies, height=200).mark_bar().encode(
+    x=alt.X('Running Time min').bin(maxbins=20),
+    y='count()',
+)
+
+rug = alt.Chart(movies).mark_tick().encode(
+    x=alt.X('Running Time min'),
+)
+
+(hist & rug).resolve_scale(x='shared')
+```
+
+### ggplot
+
+We could have created a separate chart
+with the individual observation
+that we concatenated vertically
+with the histogram.
+But there is also `geom_rug`
+which makes this a bit more convenient
+by plotting the individual observations
+directly in the margin of the canvas.
+
+```{r}
+#| label: runtime-histogram-rug-gg
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_histogram(color = 'white') +
+    geom_rug()
+```
+
+:::
+
+With all that we have learned about histogram in mind,
+let's finally create a version of the plot we started this chapter with,
+using histograms rather than jittered points.
+You might be tempted to simply group the histograms using color
+in the same chart.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+alt.Chart(movies).mark_bar(opacity = 0.5).encode(
+    x=alt.X('Running Time min').bin(maxbins=30),
+    y=alt.Y('count()').stack(False),
+    color='Major Genre',
+)
+```
+
+### ggplot
+
+```{r}
+options(repr.plot.width = 2, repr.plot.height = 3)
+ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
+   geom_histogram(color = 'white', position = 'identity', alpha = 0.5)
+```
+
+:::
+
+::: {.callout-warning}
+
+### Avoid too many histograms in the same chart
+
+
+```{python}
+#| echo: false
+(
+    alt.Chart(
+        movies
+        .query('`Major Genre`.isin(["Comedy", "Drama"])')
+        .sort_values("Major Genre"),
+        height=200
+    )
+    .mark_bar(opacity = 0.5)
+    .encode(
+        x=alt.X('Running Time min').bin(maxbins=30),
+        y=alt.Y('count()').stack(False),
+        color='Major Genre',
+    )
+)
+```
+
+
+:::
+
+Since a histogram requires a y-axis for the counts,
+we are spreading out individual film genres
+as separate facets
+rather than positions along the y-axis.
+Since we are interested in comparing
+the distributions between the genres
+we create all facets in a single column,
+which aligns their x-axes
+and facilitates seeing shifts in the distributions
+between conditions.
 
 ::: {.panel-tabset group="language"}
 
@@ -358,9 +479,16 @@ alt.Chart(movies, height=80).mark_bar().encode(
 
 ```{r}
 #| fig-height: 6
-ggplot(movies, aes(x= `Running Time min`)) +
+ggplot(movies, aes(x = `Running Time min`)) +
    geom_histogram(color = 'white') +
    facet_wrap(vars(`Major Genre`), ncol=1)
 ```
 
 :::
+
+Now we can detect differences
+that we couldn't see in the original jittered point plot.
+E.g. the adventure genre has a quite flat distribution
+spread out over a vast range of runtimes,
+whereas comedy films
+tend to be of a more standardized runtime length.
