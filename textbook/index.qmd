@@ -2,3 +2,40 @@
 
 This landing page will contain an image
 and a short text about the reasoning behind the book and what it is trying to achieve.
+
+
+This books takes an developmental approach to visualization
+motivating the introduction of each new principle or chart element
+with the shortcoming of the previous.
+This is because I have noticed that students of dat avisualization don't neceessarily 
+**understand** when to use one type of chart instead of another.
+Now they might still **remember** it becauase they have memorized some rule like
+"never use bar chart for a mean" and then happily use a single point for the mean
+that commit similar fouls without inspecting the underlying distribution of data.
+**Understanding** instead of **remembering** is a way to empower students
+to become their own agents and make predictions 
+about what is good and what is bad outside the content of this book.
+I hope to instill them with a critical thinking about any chart they might see
+and not just remember that a certain chart time is good and another one is bad.
+In my experience,that also makes things more fun.
+
+To make the learning interactive, i also include code in many different libraries.
+This focuses on grammars of graphics
+because I think they do empower student in a similar way as descrbed above;
+ie the predicatable grammar encourages students to understand 
+what **could** work based on understasnding the structure and rules of the grammar
+rather than being focused on what **does** work from remembering a full api catalogue 
+of chart templtaes and names.
+
+Just like development does not recapitulate the stags of evolution,
+there progression herein is not a reflection of the history of data visualization
+although this author think it could have been.
+
+
+## acknolwedgmenets
+
+every who helped review and develop: roy, sandra, mona, ben
+UBC OER grant
+MDS
+Altair/Vega-Lite and all other visualization communieis
+Other simlar books / what to read instead
