@@ -113,27 +113,26 @@ and have been adapted for this textbook.
 ### Altair
 
 ```{python}
-#| label: load-order-python
-#| output: false
-import altair as alt
-import pandas as pd
+#| echo: false
+# years = range(1850, 2030, 8)
+# world = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)').to_csv('data/gapminder_world_from_1850.csv', index=False)
+# regions = pd.read_csv('data/gapminder_region_trends.csv').query('year.isin(@years)').to_csv('data/gapminder_regions_from_1850.csv', index=False)
 ```
 
 ```{python}
 #| label: read-data-python
 #| output: false
+import altair as alt
+import pandas as pd
 
-# TODO change original data file instead
-years = range(1850, 2030, 8)
-world = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)')
-regions = pd.read_csv('data/gapminder_region_trends.csv').query('year.isin(@years)')
-regions
+world = pd.read_csv('data/gapminder_world_from_1850.csv')
+world
 ```
 
 ```{python}
 #| label: show-regions-python
 #| echo: false
-show_df(regions)
+show_df(world)
 ```
 
 ### ggplot
@@ -149,19 +148,14 @@ source("utils.R")
 #| output: false
 library(tidyverse)
 
-
-years <- seq(1850, 2029, by = 8)
-world <- read_csv('data/gapminder_world_trends.csv') |>
-    dplyr::filter(year %in% years)
-regions <- read_csv('data/gapminder_region_trends.csv') |>
-    dplyr::filter(year %in% years)
-regions
+world <- read_csv('data/gapminder_world_from_1850.csv')
+world
 ```
 
 ```{r}
 #| label: show-regions-r
 #| echo: false
-show_df(regions)
+show_df(world)
 ```
 
 :::
@@ -527,6 +521,8 @@ Here are two representations
 ```{python}
 #| label: population-line-categorical
 #| echo: false
+regions = pd.read_csv('data/gapminder_regions_from_1850.csv')
+
 points = alt.Chart(
     regions.query('year==2018 & region.isin(["Africa", "Americas", "Europe"])'),
     height=250,
@@ -695,6 +691,8 @@ we will learn more about layouts in a later chapter).
 
 ```{python}
 #| label: population-stacked-alt
+regions = pd.read_csv('data/gapminder_regions_from_1850.csv')
+
 base = alt.Chart(regions, width=150, height=150).encode(
     x=alt.X('year').axis(format='d'),
     y='population',
@@ -719,7 +717,10 @@ we will learn more about layouts in a later chapter).
 ```{r}
 #| label: population-stacked-gg
 #| fig-width: 8
+#| message: false
 library(patchwork)
+
+regions <- read_csv('data/gapminder_region_trends.csv')
 
 base <- ggplot(regions, aes(x = year, y = population, fill = region, color = region))
 base + geom_area(show.legend = FALSE) | base + geom_line()
