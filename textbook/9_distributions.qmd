@@ -1,7 +1,7 @@
 ---
 title: "Distributions"
-fig-width: 5
-fig-height: 3.5
+fig-height: 2.5
+fig-width: 4
 resources:
   - slides-lec3.pdf
 ---
@@ -137,7 +137,7 @@ so we reduce the height here.
 
 ```{python}
 movies = pd.read_csv('data/movies.csv')
-alt.Chart(movies, height=200).mark_bar().encode(
+alt.Chart(movies, height=150).mark_bar().encode(
     x=alt.X('Running Time min').bin(),
     y='count()',
 )
@@ -155,7 +155,6 @@ so we reduce the height of the chart here.
 ```{r}
 #| label: runtime-histogram-gg
 #| message: false
-#| fig-height: 3
 library(ggplot2)
 
 movies <- readr::read_csv('data/movies.csv')
@@ -197,7 +196,7 @@ they form easy to read intervals
 
 ```{python}
 #| label: runtime-histogram-bins-alt
-alt.Chart(movies, height=200).mark_bar().encode(
+alt.Chart(movies, height=150).mark_bar().encode(
     x=alt.X('Running Time min').bin(maxbins=30),
     y='count()',
 )
@@ -214,7 +213,6 @@ of the quantitative variable.
 ```{r}
 #| label: runtime-histogram-bins-gg
 #| message: false
-#| fig-height: 3
 ggplot(movies, aes(x= `Running Time min`)) +
     geom_histogram(bins = 10, color = 'white')
 ```
@@ -248,7 +246,7 @@ bins_param = alt.param(
 )
 
 layers = [
-    alt.Chart(mara, height=200, width=500)
+    alt.Chart(mara, height=150)
     .transform_filter(f"bins_param === {n}")
     .mark_bar()
     .encode(
@@ -375,7 +373,7 @@ belong to which bin.
 ```{python}
 #| label: runtime-histogram-rug-alt
 
-hist = alt.Chart(movies, height=200).mark_bar().encode(
+hist = alt.Chart(movies, height=150).mark_bar().encode(
     x=alt.X('Running Time min').bin(maxbins=20),
     y='count()',
 )
@@ -400,7 +398,6 @@ directly in the margin of the canvas.
 
 ```{r}
 #| label: runtime-histogram-rug-gg
-#| fig-height: 3
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_histogram(color = 'white') +
     geom_rug()
@@ -438,7 +435,7 @@ behind each other,
 we also add some opacity to them.
 
 ```{python}
-alt.Chart(movies, height=200).mark_bar(opacity=0.5).encode(
+alt.Chart(movies, height=150).mark_bar(opacity=0.5).encode(
     x=alt.X('Running Time min').bin(maxbins=30),
     y=alt.Y('count()').stack(False),
     color='Major Genre',
@@ -457,7 +454,6 @@ with the `alpha` parameter.
 
 
 ```{r}
-#| fig-height: 3
 ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
    geom_histogram(color = 'white', position = 'identity', alpha = 0.5)
 ```
@@ -478,7 +474,7 @@ then a colored histogram chart can be effective.
         movies
         .query('`Major Genre`.isin(["Comedy", "Drama"])')
         .sort_values("Major Genre"),
-        height=200
+        height=150
     )
     .mark_bar(opacity = 0.5)
     .encode(
