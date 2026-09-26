@@ -1,5 +1,706 @@
 ---
 title: "Multiple distributions"
+fig-width: 5
 fig-height: 3
+resources:
+  - data/movies.csv
+  - data/london_marathon_finish_times.csv
 ---
 
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Explain** how a density plot represents the concentration of observations without dividing them into bins.
+
+2. **Adjust** the bandwidth and **evaluate** which features of a distribution remain visible at different amounts of smoothing.
+
+3. **Compare** multiple distributions using overlapping density curves and facets with common scales.
+
+4. **Combine** density plots with individual observations and medians, and **interpret** violin plots as mirrored densities.
+
+:::
+
+```{python}
+#| label: multiple-density-python-setup
+#| include: false
+import altair as alt
+import pandas as pd
+
+alt.data_transformers.enable('vegafusion')
+movies = pd.read_csv('data/movies.csv')
+```
+
+## Why bother?
+
+In [Distributions](9_distributions.qmd),
+we used histograms to see patterns that were hidden by overlapping observations.
+But the appearance of a histogram depends on the width and placement of its bins.
+And when we want to compare several groups in one chart,
+overlapping bars can make their shapes difficult to follow.
+
+We will return to the same movie runtimes and genres:
+Adventure, Comedy, Drama, and Horror.
+Our question is still how the distributions of runtimes differ between genres.
+
+::: {.callout-default .ex-prompt}
+
+Here are the overlapping histograms from the previous chapter.
+Can you follow the shape of each genre's distribution?
+How could we show where the observations are concentrated
+without drawing so many overlapping rectangles?
+
+```{python}
+#| label: density-motivation-histograms
+#| echo: false
+alt.Chart(movies, height=200, width=500).mark_bar(opacity=0.5).encode(
+    x=alt.X('Running Time min').bin(maxbins=30),
+    y=alt.Y('count()').stack(False),
+    color='Major Genre',
+)
+```
+
+:::: {.callout-default .ex-hint}
+
+We are interested in the overall shape of each distribution,
+rather than the exact count within each individual bin.
+Could a smooth curve help us follow that shape?
+
+::::: {.callout-default .ex-solution}
+
+We can draw a **density curve** to estimate where observations are concentrated.
+Instead of grouping observations into bins,
+we let each observation contribute a small, smooth bump around its value.
+Combining those bumps produces a curve that rises where observations are concentrated
+and falls where there are fewer of them.
+
+Curves are often easier to compare than overlapping bars,
+although we may still need separate facets when the curves overlap too much.
+
+:::::
+
+::::
+
+:::
+
+## How to create density plots
+
+Imagine placing a small bell-shaped bump at every observed runtime.
+Each bump has the same width and area.
+Add them together, then normalize the result so that the total area under the curve is one.
+The resulting curve is called a **kernel density estimate**, or KDE.
+
+![Animated schematic of building a density estimate from individual observations.](img/kde-buildup.gif){#fig-density-buildup}
+
+For our purposes,
+the important choice is how wide those bumps are.
+That width is controlled by the **bandwidth**,
+which we will explore shortly.
+First, let's create a density plot for the entire movie dataset,
+before breaking it down into genres.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+In Altair, we first calculate the density with `transform_density`,
+then draw the resulting curve with a line or area mark.
+The `as_` argument names the two output columns:
+`runtime` contains positions along the x-axis,
+and `density` contains the estimated density at each position.
+
+```{python}
+#| label: runtime-kde-alt
+import altair as alt
+import pandas as pd
+
+alt.data_transformers.enable('vegafusion')
+movies = pd.read_csv('data/movies.csv')
+
+alt.Chart(movies, height=200).transform_density(
+    'Running Time min',
+    as_=['runtime', 'density'],
+).mark_area().encode(
+    x=alt.X('runtime:Q').title('Running time (min)').scale(zero=False),
+    y=alt.Y('density:Q').title('Density'),
+)
+```
+
+We specify `:Q` for the new columns because they are calculated by the transform,
+rather than being columns whose types Altair can read from the original dataframe.
+
+### ggplot
+
+In ggplot, `geom_density()` both estimates the density and draws its outline.
+We can also fill the area under the curve with `fill`.
+
+```{r}
+#| label: runtime-kde-gg
+#| message: false
+library(ggplot2)
+
+movies <- readr::read_csv('data/movies.csv', show_col_types = FALSE)
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_density(fill = 'grey80') +
+    labs(x = 'Running time (min)', y = 'Density')
+```
+
+:::
+
+The y-axis is **density**, not the number of movies.
+A higher curve indicates a greater concentration of observations around that runtime.
+It is the **area over an interval**, rather than the height at a single value,
+that represents an estimated proportion of observations.
+For example, the area between 90 and 120 minutes represents
+the estimated proportion of movies whose runtimes fall in that interval.
+
+## Bandwidth
+
+Density plots avoid the need to choose bin boundaries,
+but they still require us to decide how much detail to show.
+The bandwidth controls the width of the bump contributed by each observation:
+
+- A **small bandwidth** produces a more detailed, wiggly curve.
+- A **large bandwidth** produces a smoother curve that can hide narrow peaks or separate clusters.
+
+Both libraries choose a bandwidth automatically when we do not specify one.
+Their default rules can differ,
+so their curves need not look identical even for the same data.
+As with histogram bins,
+it is useful to try several bandwidths rather than treating the default as the only answer.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+Set `bandwidth` in `transform_density`.
+It is measured in the units of the variable being plotted,
+so a bandwidth of 5 here means five minutes.
+
+```{python}
+#| label: runtime-kde-bandwidth-alt
+alt.Chart(movies, height=200).transform_density(
+    'Running Time min',
+    as_=['runtime', 'density'],
+    bandwidth=5,
+).mark_area().encode(
+    x=alt.X('runtime:Q').title('Running time (min)').scale(zero=False),
+    y=alt.Y('density:Q').title('Density'),
+)
+```
+
+### ggplot
+
+Set `bw` in `geom_density`.
+It is also measured in the units of the variable,
+so `bw = 5` uses a bandwidth of five minutes.
+
+```{r}
+#| label: runtime-kde-bandwidth-gg
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_density(bw = 5, fill = 'grey80') +
+    labs(x = 'Running time (min)', y = 'Density')
+```
+
+:::
+
+::: {.callout-default .ex-prompt}
+
+Let's return to the London Marathon finish times from the previous chapter,
+using the same sample of male runners aged 18–39
+([download the finish times](data/london_marathon_finish_times.csv)).
+Use the dropdown to explore different bandwidths.
+Which features remain visible across several choices?
+Which disappear when the bandwidth becomes large?
+Is the smoothest curve necessarily the most informative?
+
+```{python}
+#| label: fig-marathon-density-bandwidth
+#| echo: false
+#| fig-cap: >
+#|   The same London Marathon finish times shown with different bandwidths.
+#|   The observations and axis limits stay fixed; only the amount of smoothing changes.
+import numpy as np
+from scipy.stats import gaussian_kde
+
+mara = pd.read_csv('data/london_marathon_finish_times.csv')
+finish_times = mara['Time (minutes)'].to_numpy()
+bandwidths = [0.5, 2, 5, 15]
+grid = np.linspace(120, 540, 1681)
+
+# Precompute this widget's curves so switching does not send all runners to the browser
+# or repeat the density calculation there. gaussian_kde's factor is relative to the SD.
+marathon_densities = pd.concat([
+    pd.DataFrame({
+        'time': grid,
+        'density': gaussian_kde(
+            finish_times, bw_method=bandwidth / finish_times.std(ddof=1)
+        )(grid),
+        'bandwidth': bandwidth,
+    })
+    for bandwidth in bandwidths
+], ignore_index=True)
+
+bandwidth_param = alt.param(
+    name='marathon_bandwidth',
+    value=2,
+    bind=alt.binding_select(options=bandwidths, name='Bandwidth (minutes): '),
+)
+
+alt.Chart(marathon_densities, height=200, width=500).transform_filter(
+    alt.datum.bandwidth == bandwidth_param
+).mark_area(opacity=0.6).encode(
+    x=alt.X('time:Q').title('Finish time (minutes)').scale(domain=[120, 540]),
+    y=alt.Y('density:Q').title('Density').scale(
+        domain=[0, float(marathon_densities['density'].max()) * 1.05]
+    ),
+    tooltip=[
+        alt.Tooltip('time:Q').title('Finish time (min)').format('.1f'),
+        alt.Tooltip('density:Q').title('Density').format('.4f'),
+    ],
+).add_params(bandwidth_param)
+```
+
+To switch more quickly between the options,
+you can use the arrow keys after clicking the dropdown once.
+Hover over the curve to inspect its values.
+
+:::: {.callout-default .ex-hint}
+
+Look near 180, 210, and 240 minutes.
+These correspond to finish times of 3 hours, 3 hours 30 minutes, and 4 hours.
+What happens to the concentrations just before those times as the bandwidth increases?
+
+::::: {.callout-default .ex-solution}
+
+A narrow bandwidth helps reveal concentrations just before popular target finish times.
+With more smoothing, those local peaks merge into the broader distribution.
+This is the same phenomenon we investigated with histograms:
+runners may aim to finish just below a target time.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://doi.org/10.1287/mnsc.2015.2417)]
+
+There is no single bandwidth that answers every question best.
+A wider bandwidth can help us describe the overall spread of finish times,
+while a smaller one is useful for investigating concentrations near particular targets.
+However, not every small wiggle deserves an explanation:
+we should also inspect the observations and see whether a feature persists
+across a reasonable range of bandwidths.
+
+:::::
+
+::::
+
+:::
+
+::: {.callout-warning}
+
+### Avoid trusting a density curve just because it looks smooth
+
+A smooth curve is still an estimate based on a particular bandwidth.
+Too little smoothing can emphasize incidental details,
+while too much can hide distinct clusters or narrow peaks.
+Compare several bandwidths and ask which features matter for your question.
+
+:::
+
+We can see this again with the illustrative car-displacement example
+from the previous chapter.
+Changing the bandwidth changes which details are visible,
+even though the observations are the same in every panel of @fig-car-density-bandwidth.
+Unlike shifting histogram bins, there is no bin origin to move here;
+the choice concerns how strongly neighboring observations are smoothed together.
+
+```{python}
+#| label: fig-car-density-bandwidth
+#| echo: false
+#| fig-cap: >
+#|   The same illustrative car-displacement data with bandwidths of 8, 25, and 60 cubic inches.
+#|   As in the previous chapter's illustration, displacements between 235 and 285 are
+#|   moved into the 285–299 range. A fixed seed keeps this version reproducible.
+from random import Random
+
+cars = alt.datasets.data.cars().dropna(subset=['Displacement']).copy()
+rng = Random(42)
+mask = cars['Displacement'].between(235, 285)
+cars.loc[mask, 'Displacement'] = [rng.choice(range(285, 300)) for _ in range(mask.sum())]
+
+density_panels = [
+    alt.Chart(cars, height=140, width=160).transform_density(
+        'Displacement',
+        as_=['displacement', 'density'],
+        bandwidth=bandwidth,
+        extent=[0, 520],
+        steps=512,
+    ).mark_area(opacity=0.6).encode(
+        x=alt.X('displacement:Q').title('Displacement (in³)'),
+        y=alt.Y('density:Q').title('Density'),
+    ).properties(title=f'Bandwidth: {bandwidth} in³')
+    for bandwidth in [8, 25, 60]
+]
+
+alt.hconcat(*density_panels).resolve_scale(x='shared', y='shared')
+```
+
+## Adding back individual observations
+
+Just as with histograms,
+a density curve can be easier to interpret when we can also see the observations.
+A rug plot marks the position of each observation with a small tick.
+It can help us see whether a bump in the density corresponds to a concentration
+of observations, and where a smooth curve extends beyond the observed values.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+We create the density and rug separately, then concatenate them vertically with `&`.
+Sharing the x-scale keeps the ticks aligned with their positions on the curve.
+
+```{python}
+#| label: runtime-kde-rug-alt
+density = alt.Chart(movies, height=200).transform_density(
+    'Running Time min',
+    as_=['runtime', 'density'],
+    bandwidth=5,
+    extent=[40, 260],
+).mark_area().encode(
+    x=alt.X('runtime:Q').title('Running time (min)'),
+    y=alt.Y('density:Q').title('Density'),
+)
+
+rug = alt.Chart(movies, height=25).mark_tick(opacity=0.25).encode(
+    x=alt.X('Running Time min:Q').title('Running time (min)'),
+)
+
+(density & rug).resolve_scale(x='shared')
+```
+
+### ggplot
+
+We add `geom_rug()` to place the individual observations in the margin of the plot.
+Transparency helps reveal where many ticks overlap.
+
+```{r}
+#| label: runtime-kde-rug-gg
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_density(bw = 5, fill = 'grey80') +
+    geom_rug(alpha = 0.25) +
+    scale_x_continuous(limits = c(40, 260)) +
+    labs(x = 'Running time (min)', y = 'Density')
+```
+
+:::
+
+## Multiple distributions
+
+Let's return to comparing the movie genres.
+We need a separate density estimate for each genre,
+rather than a single estimate for all movies combined.
+Using the same bandwidth makes the amount of smoothing comparable between groups.
+
+::: {.callout-warning}
+
+### Avoid hiding distributions behind overlapping areas
+
+Filling under the curves can make their shapes easy to see,
+but with several overlapping distributions the filled regions can obscure one another.
+Transparency helps, but it does not completely solve the problem.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+Use `groupby` when calculating the densities so that the transform
+produces a separate curve for each genre and retains the genre column.
+Then map that column to color.
+Set `stack(False)` so the areas share a baseline rather than stacking up.
+
+```{python}
+#| label: genre-kde-areas-alt
+alt.Chart(movies, height=200).transform_density(
+    'Running Time min',
+    groupby=['Major Genre'],
+    as_=['runtime', 'density'],
+    bandwidth=5,
+    extent=[40, 260],
+).mark_area(opacity=0.5).encode(
+    x=alt.X('runtime:Q').title('Running time (min)'),
+    y=alt.Y('density:Q').title('Density').stack(False),
+    color='Major Genre:N',
+)
+```
+
+### ggplot
+
+Mapping the genre to `fill` also tells ggplot to calculate a density for each group.
+Unlike `geom_histogram()`, `geom_density()` does not stack the groups by default.
+We add transparency with `alpha`.
+
+```{r}
+#| label: genre-kde-areas-gg
+ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
+    geom_density(bw = 5, alpha = 0.5) +
+    scale_x_continuous(limits = c(40, 260)) +
+    labs(x = 'Running time (min)', y = 'Density')
+```
+
+:::
+
+Filled areas can work well when there are only a few distributions
+or when they are well separated along the x-axis.
+For example, comparing just Comedy and Drama makes the overlap easier to follow:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: two-genre-kde-alt
+alt.Chart(
+    movies.query('`Major Genre`.isin(["Comedy", "Drama"])'), height=200
+).transform_density(
+    'Running Time min',
+    groupby=['Major Genre'],
+    as_=['runtime', 'density'],
+    bandwidth=5,
+    extent=[40, 260],
+).mark_area(opacity=0.5).encode(
+    x=alt.X('runtime:Q').title('Running time (min)'),
+    y=alt.Y('density:Q').title('Density').stack(False),
+    color='Major Genre:N',
+)
+```
+
+### ggplot
+
+```{r}
+#| label: two-genre-kde-gg
+ggplot(
+    dplyr::filter(movies, `Major Genre` %in% c('Comedy', 'Drama')),
+    aes(x = `Running Time min`, fill = `Major Genre`)
+) +
+    geom_density(bw = 5, alpha = 0.5) +
+    scale_x_continuous(limits = c(40, 260)) +
+    labs(x = 'Running time (min)', y = 'Density')
+```
+
+:::
+
+:::
+
+### Using lines instead of areas
+
+With several distributions in the same chart,
+lines can make it easier to follow each curve without hiding the others.
+The density calculation stays the same; only the mark changes.
+
+::: {.panel-tabset group="language"}
+
+#### Altair
+
+```{python}
+#| label: genre-kde-lines-alt
+alt.Chart(movies, height=200).transform_density(
+    'Running Time min',
+    groupby=['Major Genre'],
+    as_=['runtime', 'density'],
+    bandwidth=5,
+    extent=[40, 260],
+).mark_line().encode(
+    x=alt.X('runtime:Q').title('Running time (min)'),
+    y=alt.Y('density:Q').title('Density'),
+    color='Major Genre:N',
+)
+```
+
+#### ggplot
+
+```{r}
+#| label: genre-kde-lines-gg
+ggplot(movies, aes(x = `Running Time min`, color = `Major Genre`)) +
+    geom_density(bw = 5) +
+    scale_x_continuous(limits = c(40, 260)) +
+    labs(x = 'Running time (min)', y = 'Density')
+```
+
+:::
+
+Each group's full density curve has area one,
+regardless of how many movies are in that group.
+This lets us compare **shapes** without a larger group automatically having a taller curve.
+But it also means that a taller peak does not necessarily mean more movies:
+it indicates greater concentration relative to the other runtimes within that group.
+If the number of observations is central to the question,
+show group sizes as well or return to a count-based display.
+
+### Faceting into subplots
+
+Even line plots can become difficult to read when the curves cross repeatedly.
+We can separate the genres into facets,
+just as we did for histograms.
+Putting the facets in a single column aligns their runtime axes,
+making differences in location and spread easier to compare.
+
+::: {.panel-tabset group="language"}
+
+#### Altair
+
+```{python}
+#| label: genre-kde-facets-alt
+alt.Chart(movies, height=80).transform_density(
+    'Running Time min',
+    groupby=['Major Genre'],
+    as_=['runtime', 'density'],
+    bandwidth=5,
+    extent=[40, 260],
+).mark_area().encode(
+    x=alt.X('runtime:Q').title('Running time (min)'),
+    y=alt.Y('density:Q').title('Density'),
+).facet(
+    'Major Genre:N',
+    columns=1,
+)
+```
+
+#### ggplot
+
+```{r}
+#| label: genre-kde-facets-gg
+#| fig-height: 6
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_density(bw = 5, fill = 'grey80') +
+    facet_wrap(vars(`Major Genre`), ncol = 1) +
+    scale_x_continuous(limits = c(40, 260)) +
+    labs(x = 'Running time (min)', y = 'Density')
+```
+
+:::
+
+Now we can compare the broad spread of Adventure runtimes
+with the more concentrated Comedy runtimes.
+We use common scales so that differences in the curves reflect differences in the data,
+rather than a different axis range in each panel.
+
+## Comparing groups with violin plots
+
+A violin plot takes a density curve and mirrors it around a group's position
+on a categorical axis.
+Its width at a particular runtime shows how concentrated the observations are there.
+This gives us a compact way to compare several distributions.
+
+We will use ggplot's violin geom for this representation.
+In Altair, we will keep using a column of faceted densities:
+these show the same kind of distributional information without mirroring the curves.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+We can make the facets shorter and omit the density-axis labels
+to emphasize comparison along the common runtime axis.
+The density scale is still shared between panels.
+
+```{python}
+#| label: compact-genre-densities-alt
+alt.Chart(movies, height=60).transform_density(
+    'Running Time min',
+    groupby=['Major Genre'],
+    as_=['runtime', 'density'],
+    bandwidth=5,
+    extent=[40, 260],
+).mark_area().encode(
+    x=alt.X('runtime:Q').title('Running time (min)'),
+    y=alt.Y('density:Q').title(None).axis(labels=False, ticks=False),
+).facet(
+    'Major Genre:N',
+    columns=1,
+)
+```
+
+### ggplot
+
+`geom_violin()` calculates the density and draws the mirrored shape.
+Because runtime is on the x-axis, these violins lie horizontally.
+The `bw` parameter controls smoothing in the same way as for `geom_density()`.
+
+```{r}
+#| label: runtime-violins-gg
+#| fig-height: 4
+ggplot(movies, aes(x = `Running Time min`, y = `Major Genre`)) +
+    geom_violin(bw = 5, fill = 'grey80') +
+    labs(x = 'Running time (min)', y = NULL)
+```
+
+By default, violin width does not encode group size.
+Setting `scale = 'count'` would make their areas proportional to the number of observations
+before trimming, but it changes what their relative sizes mean.
+
+:::
+
+### Adding observations and medians
+
+As with histograms and boxplots,
+we can combine the distribution display with the observations it summarizes.
+A median provides an additional reference point for comparing the groups.
+
+::: {.panel-tabset group="language"}
+
+#### Altair
+
+We layer a rug and a dashed median line onto each density,
+then facet the combined chart by genre.
+The rug makes the observed runtimes visible without giving them a density value.
+
+```{python}
+#| label: genre-density-rug-median-alt
+density = alt.Chart(movies).transform_density(
+    'Running Time min',
+    groupby=['Major Genre'],
+    as_=['runtime', 'density'],
+    bandwidth=5,
+    extent=[40, 260],
+).mark_area(opacity=0.5).encode(
+    x=alt.X('runtime:Q').title('Running time (min)'),
+    y=alt.Y('density:Q').title(None),
+)
+
+rug = alt.Chart(movies).mark_tick(opacity=0.25, size=8).encode(
+    x=alt.X('Running Time min:Q').title('Running time (min)'),
+    y=alt.value(70),
+)
+
+median = alt.Chart(movies).mark_rule(color='black', strokeDash=[4, 3]).encode(
+    x=alt.X('median(Running Time min):Q').title('Running time (min)'),
+)
+
+(density + rug + median).properties(height=70).facet(
+    'Major Genre:N',
+    columns=1,
+)
+```
+
+#### ggplot
+
+We add jittered observations and a white point marking the median.
+Setting `width = 0` keeps the measured runtimes unchanged;
+only positions along the categorical axis are jittered.
+
+```{r}
+#| label: runtime-violins-jitter-median-gg
+#| fig-height: 4
+#| fig-cap: >
+#|   Movie runtimes by genre. Violins show estimated density, small points show
+#|   individual movies, and white points mark the median of each genre.
+set.seed(42)
+ggplot(movies, aes(x = `Running Time min`, y = `Major Genre`)) +
+    geom_violin(bw = 5, fill = 'grey90') +
+    geom_jitter(width = 0, height = 0.1, alpha = 0.3, size = 1) +
+    geom_point(stat = 'summary', fun = median, shape = 21, fill = 'white', size = 2.5) +
+    labs(x = 'Running time (min)', y = NULL)
+```
+
+:::
+
+The density and violin displays make the overall shapes easier to compare,
+while the observations remind us where the data actually are.
+Neither a smooth outline nor a median replaces that information:
+they are complementary views of the same distributions.
