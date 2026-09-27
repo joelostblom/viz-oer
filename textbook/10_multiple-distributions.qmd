@@ -342,6 +342,119 @@ alt.hconcat(*density_panels).resolve_scale(x='shared', y='shared')
 
 ## Adding back individual observations
 
+::: {.callout-default .ex-prompt}
+
+The curve below was calculated from a set of movie runtimes.
+Before opening the solution, sketch what you think the individual observations
+might look like along the x-axis:
+use a small tick for each movie to create a **rug plot**.
+Roughly how many ticks would you draw, and where would you place them?
+Could a very different number of observations produce a similar curve?
+
+```{python}
+#| label: sparse-runtime-density-question
+#| echo: false
+runtime_values = movies['Running Time min'].dropna().sort_values().to_numpy()
+# Deliberately choose five observations spread across the empirical distribution.
+# These are the observations nearest the midpoints of five equal-sized groups.
+sparse_indices = ((np.arange(5) + 0.5) * len(runtime_values) / 5).astype(int)
+sparse_runtimes = runtime_values[sparse_indices]
+sparse_grid = np.linspace(40, 260, 441)
+sparse_bandwidth = 18
+
+runtime_comparison = pd.concat([
+    pd.DataFrame({
+        'runtime': sparse_grid,
+        'density': gaussian_kde(
+            values, bw_method=sparse_bandwidth / values.std(ddof=1)
+        )(sparse_grid),
+        'sample': label,
+    })
+    for label, values in [('Five movies', sparse_runtimes), ('All movies', runtime_values)]
+], ignore_index=True)
+runtime_density_limit = float(runtime_comparison['density'].max()) * 1.05
+
+def runtime_comparison_curve(label, width=420, height=160):
+    return alt.Chart(
+        runtime_comparison[runtime_comparison['sample'] == label],
+        width=width, height=height,
+    ).mark_area(opacity=0.6).encode(
+        x=alt.X('runtime:Q').title('Running time (min)').scale(domain=[40, 260]),
+        y=alt.Y('density:Q').title('Density').scale(domain=[0, runtime_density_limit]),
+    )
+
+runtime_comparison_curve('Five movies')
+```
+
+:::: {.callout-default .ex-hint}
+
+The area under the curve is normalized to one regardless of the number of movies.
+Does a smooth outline tell us how many observations contributed to it?
+
+::::: {.callout-default .ex-solution}
+
+There are only **five movies** behind this curve!
+Their runtimes are 87, 95, 104, 117, and 137 minutes.
+Compare their density and rug with those for all **797 movies**:
+
+```{python}
+#| label: sparse-runtime-density-reveal
+#| echo: false
+runtime_reveal_panels = []
+for label, values in [('Five movies', sparse_runtimes), ('All movies', runtime_values)]:
+    curve = runtime_comparison_curve(label, width=230, height=140)
+    ticks = alt.Chart(pd.DataFrame({'runtime': values}), height=25, width=230).mark_tick(
+        opacity=0.4,
+    ).encode(
+        x=alt.X('runtime:Q').title('Running time (min)').scale(domain=[40, 260]),
+    )
+    runtime_reveal_panels.append(
+        (curve & ticks).resolve_scale(x='shared').properties(title=f'{label} (n = {len(values)})')
+    )
+
+alt.hconcat(*runtime_reveal_panels)
+```
+
+The curves look nearly identical, but the rugs reveal very different amounts of data.
+We deliberately selected five movies spread across the full dataset's distribution
+to illustrate this possibility; this is not a random sample or a claim that any five movies
+would reproduce the full dataset's shape.
+Both curves use the same bandwidth of 18 minutes and the same axis limits.
+
+There is no unique correct rug that you could have reconstructed from the curve alone.
+Its smoothness comes from the estimation procedure,
+not from having many observations to support a smooth distribution.
+The five-movie curve gives a much weaker basis for claims about the population's shape,
+even though it looks just as convincing.
+
+:::::
+
+::::
+
+:::
+
+::: {.callout-warning}
+
+### Avoid density charts for just a few observations
+
+A density estimate can draw a smooth, polished curve through the contributions
+of just a handful of observations.
+With only three to ten values, that smoothness can suggest more evidence
+about the distribution's shape than we actually have.
+Prefer showing the individual observations directly, for example with a strip or dot plot.
+If you include a density curve, show the observations alongside it and report the sample size.
+
+Unlike a **count histogram**, a standard density plot does not tell us
+how many observations fall within an interval:
+its total area is normalized to one, whether it represents five movies or hundreds.
+Histograms normalized to density or proportion also hide the total sample size.
+Rugs are therefore especially useful companions to density curves,
+although overlapping ticks can still hide repeated values;
+an explicit sample-size label removes that ambiguity.
+**A smooth curve is not evidence of a well-supported distribution.**
+
+:::
+
 Just as with histograms,
 a density curve can be easier to interpret when we can also see the observations.
 A rug plot marks the position of each observation with a small tick.
