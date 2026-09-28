@@ -143,7 +143,7 @@ adjusted to make the bars more narrow.
 meditation |>
     dplyr::filter(condition %in% c('Mindful walking', 'Body scan')) |>
 ggplot(aes(y = condition)) +
-    geom_bar()
+    geom_bar(fill = '#FF0039')
 ```
 
 :::

@@ -328,7 +328,7 @@ density = alt.Chart(movies, height=120, width=220).transform_density(
     'Running Time min',
     as_=['Running Time min', 'Density'],
     counts=True
-).mark_area().encode(
+).mark_area(color="#FF0039").encode(
     x=alt.X('Running Time min:Q'),
     y=alt.Y('Density:Q').title('Estimated counts'),
 )
@@ -337,7 +337,7 @@ density | alt.Chart(movies.assign(runtime_10 = lambda df: df['Running Time min']
     'runtime_10',
     as_=['2x Running Time min', 'Density'],
     counts=True
-).mark_area().encode(
+).mark_area(color="#FF0039").encode(
     x=alt.X('2x Running Time min:Q'),
     y=alt.Y('Density:Q').title('Estimated counts'),
 )
@@ -504,43 +504,88 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 :::
 
-We can see this again with the illustrative car-displacement example
-from the previous chapter.
-Changing the bandwidth changes which details are visible,
-even though the observations are the same in every panel of @fig-car-density-bandwidth.
-Unlike shifting histogram bins, there is no bin origin to move here;
-the choice concerns how strongly neighboring observations are smoothed together.
+<!-- TODO deep dive into optimization of kernel bandwith -->
+
+::: {.callout-warning}
+
+### Avoid extending density curves beyond the data range
+
+Since each observation contributes to the overall density
+with a kernel centered on the observation,
+this could lead to the density curve
+extending into ranges that does not make
+sense for the measured variable.
+Take the (fictional) data set below
+about how much time students spend on their phone during lecture.
+The KDE in the chart to the right,
+makes it seem like some students
+spend a negative amount of time on their phones,
+although there are naturally no observations beyond 0 min.
 
 ```{python}
-#| label: fig-car-density-bandwidth
 #| echo: false
-#| fig-cap: >
-#|   The same illustrative car-displacement data with bandwidths of 8, 25, and 60 cubic inches.
-#|   As in the previous chapter's illustration, displacements between 235 and 285 are
-#|   moved into the 285–299 range. A fixed seed keeps this version reproducible.
-from random import Random
+#| label: fig-kde-beyond-range
+#| fig-cap: A KDE can either stop at the data range (left) or go past it (right).
+# Synthetic observations: 40 students in a 60-minute lecture.
+df = pd.DataFrame({"minutes": [
+    0.4, 0.5, 0.6, 0.7,
+    1.9, 2, 2.2, 2.5, 2.8, 3.2, 3.8, 4.5, 5.5, 6.5,
+    8, 10, 12, 15, 18, 22, 27, 33, 40, 
+]})
 
-cars = alt.datasets.data.cars().dropna(subset=['Displacement']).copy()
-rng = Random(42)
-mask = cars['Displacement'].between(235, 285)
-cars.loc[mask, 'Displacement'] = [rng.choice(range(285, 300)) for _ in range(mask.sum())]
+bin_width = 3
+bandwidth = 2.5
+x_domain = [-10, 50]
+observed_range = [float(df.minutes.min()), float(df.minutes.max())]
 
-density_panels = [
-    alt.Chart(cars, height=140, width=160).transform_density(
-        'Displacement',
-        as_=['displacement', 'density'],
-        bandwidth=bandwidth,
-        extent=[0, 520],
-        steps=512,
-    ).mark_area(opacity=0.6).encode(
-        x=alt.X('displacement:Q').title('Displacement (in³)'),
-        y=alt.Y('density:Q').title('Density'),
-    ).properties(title=f'Bandwidth: {bandwidth} in³')
-    for bandwidth in [8, 25, 60]
-]
+histogram = alt.Chart(df).mark_bar(
+    color="#b8c0c8", opacity=0.65, binSpacing=0
+).encode(
+    x=alt.X("minutes:Q",
+            bin=alt.Bin(step=bin_width, extent=[0, 50]),
+            scale=alt.Scale(domain=x_domain, nice=False),
+            axis=alt.Axis(values=list(range(-10, 51, 10))),
+            title="Minutes of phone use during lecture"),
+    y=alt.Y("count():Q", title="Students (per 3-minute bin)"),
+)
 
-alt.hconcat(*density_panels).resolve_scale(x='shared', y='shared')
+
+def panel(extent):
+    kde = (
+        alt.Chart(df)
+        .transform_density(
+            "minutes", bandwidth=bandwidth, counts=True,
+            extent=extent, steps=601, as_=["minutes", "density"]
+        )
+        # counts=True gives n * density; multiply by bin width
+        # to put the KDE on the histogram's count scale.
+        .transform_calculate(smoothed_count=f"datum.density * {bin_width}")
+        .mark_area(color="#FF0039", opacity=0.2,
+                   line={"color": "#FF0039", "strokeWidth": 2})
+        .encode(
+            x=alt.X("minutes:Q",
+                    scale=alt.Scale(domain=x_domain, nice=False),
+                    axis=alt.Axis(values=list(range(-10, 51, 10))),
+                    title="Minutes of phone use during lecture"),
+            y=alt.Y("smoothed_count:Q", title="Students (per 3-minute bin)"),
+        )
+    )
+    return (histogram + kde).properties(
+        width=260, height=160
+    )
+
+chart = (
+    alt.hconcat(
+        panel(observed_range),
+        panel(x_domain),
+    )
+    .resolve_scale(x="shared", y="shared")
+)
+
+chart
 ```
+
+:::
 
 ## Adding back individual observations
 

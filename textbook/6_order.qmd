@@ -506,7 +506,7 @@ use data reported at a monthly frequency instead.
 ::::
 :::
 
-::: {.callout-caution}
+::: {.callout-warning}
 
 ### Avoid connecting categorical values with a line
 
@@ -527,14 +527,14 @@ points = alt.Chart(
     regions.query('year==2018 & region.isin(["Africa", "Americas", "Europe"])'),
     height=250,
     width=alt.Step(60)
-).mark_point(size=60, filled=True).encode(
+).mark_point(size=60, filled=True, color='#FF0039').encode(
     x=alt.X('region').title(None).sort(['Africa', 'Europe', 'Americas']),
     y=alt.Y('sum(population)')
         .scale(domain=(00_000_000, 1_350_000_000))
         .axis(labelExpr="format(datum.value / 1e6, ',.0f')")
         .title('Population in 2018 (millions)')
 )
-points | points.mark_line() + points
+points | points.mark_line(color='#FF0039') + points
 ```
 
 The chart to the left is easy to interpret;
