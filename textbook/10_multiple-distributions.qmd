@@ -21,16 +21,6 @@ resources:
 
 :::
 
-```{python}
-#| label: multiple-density-python-setup
-#| include: false
-import altair as alt
-import pandas as pd
-
-alt.data_transformers.enable('vegafusion')
-movies = pd.read_csv('data/movies.csv')
-```
-
 ## Why bother?
 
 In [Distributions](9_distributions.qmd),
@@ -45,37 +35,132 @@ Our question is still how the distributions of runtimes differ between genres.
 
 ::: {.callout-default .ex-prompt}
 
-Here are the overlapping histograms from the previous chapter.
-Can you follow the shape of each genre's distribution?
-How could we show where the observations are concentrated
-without drawing so many overlapping rectangles?
+In the previous chapter,
+we learned that
+since histograms start with binning the axis
+and then count the observation within each bin equally
+no matter how close to the edge of the bin they are.
+This gave rise to one of the shortcomings of histograms:
+that the exact position of the bins along the axis
+could drastically impact the appearance of the histogram
+and lead to varying perceptions of the underlying distribution
+as we saw in @fig-hist-bin-shift.
 
-```{python}
-#| label: density-motivation-histograms
-#| echo: false
-alt.Chart(movies, height=200, width=500).mark_bar(opacity=0.5).encode(
-    x=alt.X('Running Time min').bin(maxbins=30),
-    y=alt.Y('count()').stack(False),
-    color='Major Genre',
-)
-```
+Can you try to think of how we could change
+the histogram creation process
+to remedy this shortcoming?
+Study the animation schematic in @fig-hist-buildup again
+to help you brainstorm possible improvements.
 
 :::: {.callout-default .ex-hint}
 
-We are interested in the overall shape of each distribution,
-rather than the exact count within each individual bin.
-Could a smooth curve help us follow that shape?
+Maybe we could take a more **observation-centric** approach
+for the bin placement?
 
 ::::: {.callout-default .ex-solution}
 
-We can draw a **density curve** to estimate where observations are concentrated.
-Instead of grouping observations into bins,
-we let each observation contribute a small, smooth bump around its value.
-Combining those bumps produces a curve that rises where observations are concentrated
-and falls where there are fewer of them.
+Instead of first binning the axis,
+we could center each bin on its observation.
+Where nearby bins overlap,
+their heights (i.e. the counts) will be added together,
+but only for the overlapping part,
+as can be seen in this animation:
 
-Curves are often easier to compare than overlapping bars,
-although we may still need separate facets when the curves overlap too much.
+![Animated schematic of centering each bin on the observation](img/kde-rectangle-kernel-buildup.gif){#fig-kde-rect-buildup}
+
+This modification removes the need to select
+fixed intervals for the bins along the axis,
+and thus makes the appearance of the distribution
+only depend on the width of each bin
+(i.e. one parameter less than the histogram.
+
+If we applied this technique to the data used in @fig-hist-bin-shift,
+we would always end up with the following chart
+since the position of the bins is centered on each observation.
+
+```{python}
+#| echo: false
+#| label: fig-hist-bin-shift-ch10
+#| fig-cap: Centering the bins on each observation creates histogram-like chart chart that does not depend on bin placement.
+from random import choice
+import altair as alt
+
+cars = alt.datasets.data.cars()
+bin_min = 235
+bin_max = 285
+
+mask_to_replace = cars['Displacement'].between(bin_min, bin_max)
+new_values = [choice(range(bin_max, 300)) for _ in range(mask_to_replace.sum())]
+cars.loc[mask_to_replace, 'Displacement'] = new_values
+
+# hist = alt.Chart(cars, height=120, width=200).mark_bar().encode(
+#     alt.X('Displacement').bin().title(None).scale(domain=(20, 500)),
+#     alt.Y('count()').title(None)
+# )
+# tick_values = values=list(range(0, 500, 50))
+# hist | hist.encode(
+#     alt.X('Displacement')
+#     .bin(nice=False, extent=[35, 490])
+#     .title(None)
+#     .scale(domain=(20, 500))
+#     .axis(
+#         labelExpr=(
+#             f"indexof({tick_values}, datum.value - 35) % 2 === 0"
+#             " ? datum.label : ''"
+#         ),
+#     ),
+# )
+
+
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KernelDensity
+
+values = cars["Displacement"].dropna().to_numpy()
+
+# Half-width of each rectangular kernel, in your variable's units
+bandwidth = 50
+
+kde = KernelDensity(
+    kernel="tophat",
+    bandwidth=bandwidth,
+).fit(values.reshape(-1, 1))
+
+# Evaluate the estimated density on a fine grid
+x = np.linspace(
+    values.min(), #- 2 * bandwidth,
+    values.max(), #+ 2 * bandwidth,
+    25,
+)
+
+density = pd.DataFrame({
+    "value": x,
+    "density": np.exp(kde.score_samples(x.reshape(-1, 1))),
+})
+
+n = len(values)  # Observations used to fit the KDE
+bin_width = 50    # Match your histogram's bin width
+density["Count"] = density["density"] * n * bin_width
+
+bars = density.sort_values("value").copy()
+bars["value_end"] = bars["value"].shift(-1)
+bars = bars.dropna(subset=["value_end"])
+
+alt.Chart(bars, height=120, width=200).mark_bar(
+    binSpacing=0,
+).encode(
+    x=alt.X(
+        "value:Q",
+        bin="binned",
+        title="Value",
+        # scale=alt.Scale(domain=(20, 500)),
+        # axis=alt.Axis(values=list(range(0, 500, 100)))
+    ),
+    x2="value_end:Q",
+    y=alt.Y("Count"),
+)
+
+```
 
 :::::
 
@@ -83,143 +168,203 @@ although we may still need separate facets when the curves overlap too much.
 
 :::
 
-## How to create density plots
+<!-- TODO deep dive: Another advantage of densities is that it is easier to create an optimizer for the bandwidth rather than for the binwidth. -->
+<!-- https://www.mvstat.net/tduong/research/seminars/seminar-2001-05/ -->
+<!-- https://astroviking.github.io/ba-thesis/introduction.html#purpose-of-this-thesis -->
+<!-- https://mglerner.com/blog/posts/histograms-and-kernel-density-estimation-kde-2/ -->
+<!-- https://zfit-tutorials.readthedocs.io/en/latest/tutorials/components/13%20-%20Kernel%20Density%20Estimation.html#improved-sheather-jones-algorithm -->
 
-Imagine placing a small bell-shaped bump at every observed runtime.
-Each bump has the same width and area.
-Add them together, then normalize the result so that the total area under the curve is one.
-The resulting curve is called a **kernel density estimate**, or KDE.
+SJ https://aakinshin.net/posts/kde-bw/
 
-![Animated schematic of building a density estimate from individual observations.](img/kde-buildup.gif){#fig-density-buildup}
+<!-- TODO histogram advantage = easy to understand -->
 
-For our purposes,
-the important choice is how wide those bumps are.
-That width is controlled by the **bandwidth**,
-which we will explore shortly.
-First, let's create a density plot for the entire movie dataset,
+## Visualizing distributions with density plots
+
+In the exercise,
+we saw how centering the bin
+on the observation
+can lead to a more robust distribution plot.
+Since we are no longer binning the axis
+at fixed intervals,
+this chart is technically no longer a histogram.
+Rather,
+it's called a density chart
+since it is depicting
+how the density of observations varies throughout the distribution.
+The method we use to create a density chart
+in the animation above
+is called a "Kernel Density Estimation",
+or "KDE" for short.
+As the name implies,
+this method is estimating
+the unknown probability density function
+(i.e. the density of the underlying *population*),
+using kernels.
+
+The "kernel" can be taught of as a bin
+that is centered on the data point.
+In the exercise above,
+we used a rectangular kernel
+to make the connection to histograms clearer.
+An issue with this shape is that it contributes
+a fully to the entire area within the kernel width
+and then drastically falls off to zero outside.
+Using a smoother kernel shape
+has the advantage
+of gradually reducing contribution from an observation
+avoiding the sudden cutoff of a rectangular kernel.
+The most commonly used shape is the Gaussian bell-shaped kernel,
+and summing such smooth individual kernels together
+would also produce a smooth density estimate for the entire distribution,
+as we can see in @fig-density-buildup.
+
+![Animated schematic of building a density estimate from individual observations using the typical bell-shaped kernels.](img/kde-buildup.gif){#fig-density-buildup}
+
+<!-- TODO ref origin of gif -->
+
+Let's create a density plot for the entire movie dataset,
 before breaking it down into genres.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
-In Altair, we first calculate the density with `transform_density`,
+In Altair,
+we first calculate the density with `transform_density`,
 then draw the resulting curve with a line or area mark.
 The `as_` argument names the two output columns:
-`runtime` contains positions along the x-axis,
-and `density` contains the estimated density at each position.
+`Running Time min` contains positions along the x-axis,
+and `Density` contains the estimated density at each position.
+We also specify `:Q` for the new `Density` column
+because it is calculated by the transform,
+rather than being a column
+whose type Altair can read from the original dataframe.
 
 ```{python}
 #| label: runtime-kde-alt
 import altair as alt
 import pandas as pd
 
-alt.data_transformers.enable('vegafusion')
+alt.data_transformers.enable('vegafusion');
 movies = pd.read_csv('data/movies.csv')
 
 alt.Chart(movies, height=200).transform_density(
     'Running Time min',
-    as_=['runtime', 'density'],
+    as_=['Running Time min', 'Density'],
 ).mark_area().encode(
-    x=alt.X('runtime:Q').title('Running time (min)').scale(zero=False),
-    y=alt.Y('density:Q').title('Density'),
+    x=alt.X('Running Time min'),
+    y=alt.Y('Density:Q'),
 )
 ```
 
-We specify `:Q` for the new columns because they are calculated by the transform,
-rather than being columns whose types Altair can read from the original dataframe.
-
 ### ggplot
 
-In ggplot, `geom_density()` both estimates the density and draws its outline.
-We can also fill the area under the curve with `fill`.
+In ggplot, `geom_density()` both estimates the density
+and draws its outline as a line.
+We can fill the area under the curve by specifying `fill = 'grey'`
+directly in the `geom`.
 
 ```{r}
 #| label: runtime-kde-gg
 #| message: false
 library(ggplot2)
 
-movies <- readr::read_csv('data/movies.csv', show_col_types = FALSE)
+movies <- readr::read_csv('data/movies.csv')
 ggplot(movies, aes(x = `Running Time min`)) +
-    geom_density(fill = 'grey80') +
-    labs(x = 'Running time (min)', y = 'Density')
+    geom_density(fill = 'grey')
 ```
 
 :::
 
-The y-axis is **density**, not the number of movies.
-A higher curve indicates a greater concentration of observations around that runtime.
-It is the **area over an interval**, rather than the height at a single value,
-that represents an estimated proportion of observations.
-For example, the area between 90 and 120 minutes represents
-the estimated proportion of movies whose runtimes fall in that interval.
+As you can see,
+the y-axis is not showing the count of movies,
+but rather the probability density,
+i.e. the proportion of movies along various running times.
+A higher curve indicates a greater concentration of observations
+around that runtime.
+Importantly,
+it is the area over an interval,
+that represents an estimated proportion of observations
+and the area of the entire density is normalized to sum to one
+(i.e. 100% of the sample).
+This also means that the values on the y-axis
+depends on the range of the values on the x-axis,
+which can make the y-axis confusing to interpret
+(as you can see in the example with counts below).
+For these reasons,
+use densities primarily to understand the shape of the distribution,
+rather than trying to read specific probabilities of the y-axis.
 
-## Bandwidth
+::: {.callout-warning}
 
-Density plots avoid the need to choose bin boundaries,
-but they still require us to decide how much detail to show.
-The bandwidth controls the width of the bump contributed by each observation:
+### Avoid using densities with counts
 
-- A **small bandwidth** produces a more detailed, wiggly curve.
-- A **large bandwidth** produces a smoother curve that can hide narrow peaks or separate clusters.
-
-Both libraries choose a bandwidth automatically when we do not specify one.
-Their default rules can differ,
-so their curves need not look identical even for the same data.
-As with histogram bins,
-it is useful to try several bandwidths rather than treating the default as the only answer.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-Set `bandwidth` in `transform_density`.
-It is measured in the units of the variable being plotted,
-so a bandwidth of 5 here means five minutes.
+We can convert the density proportion to a count
+by multiplying the probability values
+with the total number of observations.
+While this can be useful
+to indicate how many observations there are,
+it is not as straightforward to interpret
+as the counts in a histogram.
+Since the overall density *area*
+would sum to the total number of observations in the sample,
+a larger range on the x-axis
+leads to lower counts on the y-axis as we can see in @fig-runtime-kde-count-alt.
+Since the estimated density is continuous
+rather than the step-shaped histogram outline,
+what we see on the y-axis is really partial estimated counts.
+While these peculiarities might make sense
+when you understand how a density chart works
+they are not intuitive and can lead to misinterpretations.
 
 ```{python}
-#| label: runtime-kde-bandwidth-alt
-alt.Chart(movies, height=200).transform_density(
+#| echo: false
+#| label: fig-runtime-kde-count-alt
+#| fig-cap: Twice the range on the x-axis leads to half the counts on the y-axis while the shape of the distribution stays the same. This is because we are effectively having twice as many 1-unit intervals along the x-axis in the rightmost chart, so the count for each of those intervals must be half that of the original wider intervals in the leftmost chart.
+density = alt.Chart(movies, height=120, width=220).transform_density(
     'Running Time min',
-    as_=['runtime', 'density'],
-    bandwidth=5,
+    as_=['Running Time min', 'Density'],
+    counts=True
 ).mark_area().encode(
-    x=alt.X('runtime:Q').title('Running time (min)').scale(zero=False),
-    y=alt.Y('density:Q').title('Density'),
+    x=alt.X('Running Time min:Q'),
+    y=alt.Y('Density:Q').title('Estimated counts'),
+)
+
+density | alt.Chart(movies.assign(runtime_10 = lambda df: df['Running Time min'] * 2), height=120, width=220).transform_density(
+    'runtime_10',
+    as_=['2x Running Time min', 'Density'],
+    counts=True
+).mark_area().encode(
+    x=alt.X('2x Running Time min:Q'),
+    y=alt.Y('Density:Q').title('Estimated counts'),
 )
 ```
 
-### ggplot
-
-Set `bw` in `geom_density`.
-It is also measured in the units of the variable,
-so `bw = 5` uses a bandwidth of five minutes.
-
-```{r}
-#| label: runtime-kde-bandwidth-gg
-ggplot(movies, aes(x = `Running Time min`)) +
-    geom_density(bw = 5, fill = 'grey80') +
-    labs(x = 'Running time (min)', y = 'Density')
-```
-
 :::
+
+## Bandwidth
 
 ::: {.callout-default .ex-prompt}
 
-Let's return to the London Marathon finish times from the previous chapter,
-using the same sample of male runners aged 18–39
-([download the finish times](data/london_marathon_finish_times.csv)).
-Use the dropdown to explore different bandwidths.
-Which features remain visible across several choices?
-Which disappear when the bandwidth becomes large?
-Is the smoothest curve necessarily the most informative?
+Analogous to how we can set the width of each bin in a histogram,
+we can also control how wide each kernel should be
+via its bandwidth.
+For the bell-shaped kernel,
+the bandwidth equals its standard deviation.
+What do you think happens to the shape of the curve
+when we make the bandwidth larger?
+
+:::: {.callout-default .ex-hint}
+
+You can try a few different bandwidths 
+on the marathon example from the previous chapter.
+Can you see the same features as with the histograms?
 
 ```{python}
 #| label: fig-marathon-density-bandwidth
 #| echo: false
 #| fig-cap: >
 #|   The same London Marathon finish times shown with different bandwidths.
-#|   The observations and axis limits stay fixed; only the amount of smoothing changes.
 import numpy as np
 from scipy.stats import gaussian_kde
 
@@ -261,33 +406,72 @@ alt.Chart(marathon_densities, height=200, width=500).transform_filter(
 ).add_params(bandwidth_param)
 ```
 
-To switch more quickly between the options,
-you can use the arrow keys after clicking the dropdown once.
-Hover over the curve to inspect its values.
-
-:::: {.callout-default .ex-hint}
-
-Look near 180, 210, and 240 minutes.
-These correspond to finish times of 3 hours, 3 hours 30 minutes, and 4 hours.
-What happens to the concentrations just before those times as the bandwidth increases?
-
 ::::: {.callout-default .ex-solution}
 
-A narrow bandwidth helps reveal concentrations just before popular target finish times.
-With more smoothing, those local peaks merge into the broader distribution.
-This is the same phenomenon we investigated with histograms:
-runners may aim to finish just below a target time.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://doi.org/10.1287/mnsc.2015.2417)]
-
-There is no single bandwidth that answers every question best.
-A wider bandwidth can help us describe the overall spread of finish times,
-while a smaller one is useful for investigating concentrations near particular targets.
-However, not every small wiggle deserves an explanation:
-we should also inspect the observations and see whether a feature persists
-across a reasonable range of bandwidths.
+A small bandwidth produces a more detailed, wiggly curve
+whereas a large bandwidth produces a smoother curve.
 
 :::::
-
 ::::
+:::
+
+One of the advantages of a density over a histogram
+is that the estimation of the underlying PDF
+is less influenced by the kernel bandwidth
+than histograms are by bin width.
+It is also notably easier
+to approximate an optimal kernel bandwidth
+compared to an optimal bin width,
+so the default rules for density bandwidth estimation
+can be quite effective.
+However,
+as we just saw in the exercise
+there is no single bandwidth that answers every question best.
+A wider bandwidth
+can help us describe the overall spread of a distribution,
+but it can also hide details and multimodality.
+A more narrow bandwidth while a smaller one is useful
+for investigating concentrations near particular targets,
+but can introduce a spiky appearance
+that makes it harder to
+see the overall shape of the distribution.
+
+With all that in mind,
+let's see how we can change the bandwidth
+for our density charts.
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+Set `bandwidth` in `transform_density`.
+It is measured in the units of the variable being plotted,
+so a bandwidth of 2 here means two minutes.
+
+```{python}
+#| label: runtime-kde-bandwidth-alt
+alt.Chart(movies, height=200).transform_density(
+    'Running Time min',
+    as_=['runtime', 'density'],
+    bandwidth=2,
+).mark_area().encode(
+    x=alt.X('runtime:Q').title('Running time (min)').scale(zero=False),
+    y=alt.Y('density:Q').title('Density'),
+)
+```
+
+### ggplot
+
+Set `bw` in `geom_density`.
+It is measured in the units of the variable,
+so `bw = 2` uses a bandwidth of two minutes.
+
+```{r}
+#| label: runtime-kde-bandwidth-gg
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_density(bw = 2, fill = 'grey80') +
+    labs(x = 'Running time (min)', y = 'Density')
+```
 
 :::
 

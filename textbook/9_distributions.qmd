@@ -18,6 +18,10 @@ resources:
 
 :::
 
+<!-- TODO a histogram deep dive could be explaning how the bin width auto selection rules work -->
+
+<!-- TODO change from maxbins and bins to steps and binwidth to encaourage thinking in units of the data and aboid altair issues with not exact bin numbe being set from maxbins -->
+
 ## Why bother?
 
 In [Summaries](7_summaries.qmd),
@@ -120,7 +124,7 @@ and can use it as a default even for smaller datasets
 (you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
 
 ```{python}
-#| label: runtime-histogram-alt
+#| label: runtime-histogram-alt-setup
 import altair as alt
 import pandas as pd
 
@@ -133,15 +137,34 @@ to automatically bin the axis
 of the quantitative variable.
 Histograms tend to look more visually appealing
 when the height is less than the width of the bar,
-so we reduce the height here.
+so we reduce the height of the chart here.
 
 ```{python}
+#| label: runtime-histogram-alt
 movies = pd.read_csv('data/movies.csv')
 alt.Chart(movies, height=150).mark_bar().encode(
     x=alt.X('Running Time min').bin(),
     y='count()',
 )
 ```
+
+The small space between the bins,
+makes it easier to see the individual
+and is also generally more visually appealing.
+If we wanted to,
+we could show the histogram
+as one connected graphical unit,
+which can sometimes make it less messy
+to compare multiple histograms in the same chart.
+
+```{python}
+#| label: runtime-histogram-color-alt
+alt.Chart(movies, height=150).mark_bar(binSpacing=0).encode(
+    x=alt.X('Running Time min').bin(),
+    y='count()',
+)
+```
+
 
 ### ggplot
 
@@ -159,18 +182,38 @@ library(ggplot2)
 
 movies <- readr::read_csv('data/movies.csv')
 ggplot(movies, aes(x= `Running Time min`)) +
-    geom_bar(stat = "bin", color = 'white')
+    geom_bar(stat = "bin")
 ```
 
 As a shortcut for `geom_bar(stat = "bin")`,
 we could use `geom_histogram()`,
 which we will do from now on.
-The `color = 'white'` part
-creates the vertical white lines between bars;
-they are optional
-but tend to make the histogram more visually pleasing.
+
+While showing the histogram
+as one connected graphical unit as above,
+can sometimes make it less messy
+to compare multiple histograms in the same chart,
+adding a small space between the bins,
+makes it easier to see the individual bin intervals
+and is also generally more visually appealing.
+Here,
+we add `color = 'white'`
+creates vertical white lines between bars
+(i.e. the appearance of spacing between them).
+
+
+```{r}
+#| label: runtime-histogram-color-gg
+#| message: false
+library(ggplot2)
+
+ggplot(movies, aes(x= `Running Time min`)) +
+    geom_histogram(color = 'white')
+```
 
 :::
+
+Although there are As we continue to highlight some  big advantage of histograms is that they are easy to 
 
 ## Bin properties
 
@@ -323,7 +366,7 @@ with two peaks.
 ```{python}
 #| echo: false
 #| label: fig-hist-bin-shift
-#| fig-cap: The two histograms have the same number of bins; in other words each bin has the same width, but the start and end points of the bins are shifted slightly between the two charts.
+#| fig-cap: The two histograms have the same number of bins; in other words each bin has the same width, but the start and end points of the bins are shifted slightly between the two charts. This is just for illustrative purposes so the units in the underlying data doesn't matter.
 from random import choice
 
 cars = alt.datasets.data.cars()
@@ -335,12 +378,21 @@ new_values = [choice(range(bin_max, 300)) for _ in range(mask_to_replace.sum())]
 cars.loc[mask_to_replace, 'Displacement'] = new_values
 
 hist = alt.Chart(cars, height=120, width=200).mark_bar().encode(
-    alt.X('Displacement').bin(),
+    alt.X('Displacement').bin().title(None).scale(domain=(20, 500)),
     alt.Y('count()').title(None)
 )
-
+tick_values = values=list(range(0, 500, 50))
 hist | hist.encode(
-    alt.X('Displacement').bin(nice=False, extent=[35, 490]),
+    alt.X('Displacement')
+    .bin(nice=False, extent=[35, 490])
+    .title(None)
+    .scale(domain=(20, 500))
+    .axis(
+        labelExpr=(
+            f"indexof({tick_values}, datum.value - 35) % 2 === 0"
+            " ? datum.label : ''"
+        ),
+    ),
 )
 ```
 
@@ -422,6 +474,8 @@ to separate the histograms visually
 so it is not an effective way to visualize
 distributions,
 as you can see in this chart.
+
+<!-- TODO deep dive into frequency polygons -->
 
 ::: {.panel-tabset group="language"}
 
