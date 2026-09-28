@@ -29,10 +29,6 @@ But the appearance of a histogram depends on the width and placement of its bins
 And when we want to compare several groups in one chart,
 overlapping bars can make their shapes difficult to follow.
 
-We will return to the same movie runtimes and genres:
-Adventure, Comedy, Drama, and Horror.
-Our question is still how the distributions of runtimes differ between genres.
-
 ::: {.callout-default .ex-prompt}
 
 In the previous chapter,
@@ -276,31 +272,38 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 :::
 
-As you can see,
+As you can see above,
 the y-axis is not showing the count of movies,
-but rather the probability density,
-i.e. the proportion of movies along various running times.
+but rather their probability *density*,
+which means the probability per unit of the x-axis.
 A higher curve indicates a greater concentration of observations
 around that runtime.
+
 Importantly,
-it is the area over an interval,
+it is the area over an interval
+(rather than the height at a specific point),
 that represents an estimated proportion of observations
 and the area of the entire density is normalized to sum to one
 (i.e. 100% of the sample).
-This also means that the values on the y-axis
+This means that the values on the y-axis
 depends on the range of the values on the x-axis,
 which can make the y-axis confusing to interpret
-(as you can see in the example with counts below).
+(as you will experience in the example with counts below).
+
 For these reasons,
-use densities primarily to understand the shape of the distribution,
+use densities primarily to understand the shape of a distribution,
 rather than trying to read specific probabilities of the y-axis.
+And although densities are generally well-perceived
+also by non-technical audiences,
+an advantage of histograms
+is that they are simpler to interpret and explain.
 
 ::: {.callout-warning}
 
 ### Avoid using densities with counts
 
-We can convert the density proportion to a count
-by multiplying the probability values
+We can convert the density to a count
+by multiplying the density values
 with the total number of observations.
 While this can be useful
 to indicate how many observations there are,
@@ -351,7 +354,7 @@ we can also control how wide each kernel should be
 via its bandwidth.
 For the bell-shaped kernel,
 the bandwidth equals its standard deviation.
-What do you think happens to the shape of the curve
+What do you think happens to the shape of the density curve
 when we make the bandwidth larger?
 
 :::: {.callout-default .ex-hint}
@@ -424,6 +427,7 @@ to approximate an optimal kernel bandwidth
 compared to an optimal bin width,
 so the default rules for density bandwidth estimation
 can be quite effective.
+
 However,
 as we just saw in the exercise
 there is no single bandwidth that answers every question best.
@@ -460,6 +464,11 @@ alt.Chart(movies, height=200).transform_density(
 )
 ```
 
+If left unset,
+the default bandwidth estimation
+is not very sophisticated,
+so it is particularly important to try different bandwidths.
+
 ### ggplot
 
 Set `bw` in `geom_density`.
@@ -473,16 +482,25 @@ ggplot(movies, aes(x = `Running Time min`)) +
     labs(x = 'Running time (min)', y = 'Density')
 ```
 
-:::
+If left unset,
+the default bandwidth estimation
+is not very sophisticated,
+but it is possible to switch to the Sheather-Jones estimation rule
+which is among the best in finding a suitable bandwidth
+that describes the distribution well on average.
+The Sheather-Jones rule is [one of the recommended
+defaults](https://rdrr.io/r/stats/density.html)
+although the differences are more noticeable for multimodal distributions.
+Remember that testing different bandwidths
+can still reveal different features of the chart.
 
-::: {.callout-warning}
+```{r}
+#| label: runtime-kde-bandwidth-isj-gg
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_density(bw = 'SJ', fill = 'grey80') +
+    labs(x = 'Running time (min)', y = 'Density')
+```
 
-### Avoid trusting a density curve just because it looks smooth
-
-A smooth curve is still an estimate based on a particular bandwidth.
-Too little smoothing can emphasize incidental details,
-while too much can hide distinct clusters or narrow peaks.
-Compare several bandwidths and ask which features matter for your question.
 
 :::
 
@@ -529,11 +547,11 @@ alt.hconcat(*density_panels).resolve_scale(x='shared', y='shared')
 ::: {.callout-default .ex-prompt}
 
 The curve below was calculated from a set of movie runtimes.
-Before opening the solution, sketch what you think the individual observations
+Before opening the solution,
+sketch what you think the individual observations
 might look like along the x-axis:
 use a small tick for each movie to create a **rug plot**.
 Roughly how many ticks would you draw, and where would you place them?
-Could a very different number of observations produce a similar curve?
 
 ```{python}
 #| label: sparse-runtime-density-question
@@ -572,8 +590,11 @@ runtime_comparison_curve('Five movies')
 
 :::: {.callout-default .ex-hint}
 
-The area under the curve is normalized to one regardless of the number of movies.
-Does a smooth outline tell us how many observations contributed to it?
+Remember that the area under the curve is normalized to one
+regardless of the number of movies.
+Does a smooth outline necessarily imply
+that there are many underlying observations
+or could a very different number of observations produce a similar curve?
 
 ::::: {.callout-default .ex-solution}
 
@@ -582,8 +603,10 @@ Their runtimes are 87, 95, 104, 117, and 137 minutes.
 Compare their density and rug with those for all **797 movies**:
 
 ```{python}
-#| label: sparse-runtime-density-reveal
 #| echo: false
+#| label: fig-sparse-runtime-density-reveal
+#| fig-cap: Two near identical density charts with widely different numbers of underlying observations.
+
 runtime_reveal_panels = []
 for label, values in [('Five movies', sparse_runtimes), ('All movies', runtime_values)]:
     curve = runtime_comparison_curve(label, width=230, height=140)
@@ -599,16 +622,15 @@ for label, values in [('Five movies', sparse_runtimes), ('All movies', runtime_v
 alt.hconcat(*runtime_reveal_panels)
 ```
 
-The curves look nearly identical, but the rugs reveal very different amounts of data.
-We deliberately selected five movies spread across the full dataset's distribution
-to illustrate this possibility; this is not a random sample or a claim that any five movies
-would reproduce the full dataset's shape.
-Both curves use the same bandwidth of 18 minutes and the same axis limits.
-
-There is no unique correct rug that you could have reconstructed from the curve alone.
-Its smoothness comes from the estimation procedure,
-not from having many observations to support a smooth distribution.
-The five-movie curve gives a much weaker basis for claims about the population's shape,
+The curves use the same bandwidth and look nearly identical,
+but visualizing the individual observations
+reveal very different amounts of underlying data.
+The smoothness of the curve
+comes from the density estimation procedure,
+not from having many observations
+to support a smooth distribution.
+The five-movie curve gives a much
+weaker basis for claims about the population's shape,
 even though it looks just as convincing.
 
 :::::
@@ -619,31 +641,27 @@ even though it looks just as convincing.
 
 ::: {.callout-warning}
 
-### Avoid density charts for just a few observations
+### Avoid trusting a density curve just because it looks smooth
 
-A density estimate can draw a smooth, polished curve through the contributions
-of just a handful of observations.
-With only three to ten values, that smoothness can suggest more evidence
-about the distribution's shape than we actually have.
-Prefer showing the individual observations directly, for example with a strip or dot plot.
-If you include a density curve, show the observations alongside it and report the sample size.
-
-Unlike a **count histogram**, a standard density plot does not tell us
-how many observations fall within an interval:
-its total area is normalized to one, whether it represents five movies or hundreds.
-Histograms normalized to density or proportion also hide the total sample size.
-Rugs are therefore especially useful companions to density curves,
-although overlapping ticks can still hide repeated values;
-an explicit sample-size label removes that ambiguity.
-**A smooth curve is not evidence of a well-supported distribution.**
+Unlike a histogram of counts,
+a standard density plot does not tell us
+how many observations fall within an interval;
+its total area is normalized to one,
+whether it represents five movies or five hundred.
+A smooth curve is not evidence of a well-supported distribution,
+and you should always explore / communicate
+how many observations the density chart is constructed from.
 
 :::
 
-Just as with histograms,
-a density curve can be easier to interpret when we can also see the observations.
-A rug plot marks the position of each observation with a small tick.
-It can help us see whether a bump in the density corresponds to a concentration
-of observations, and where a smooth curve extends beyond the observed values.
+Just as for histograms
+(but even more important for densities)
+the individual observations can be added under the density chart
+with a rugplot or siilar.
+This can help us see
+whether a bump in the density corresponds
+to a concentration of observations,
+and where a smooth curve extends beyond the observed values.
 
 ::: {.panel-tabset group="language"}
 
