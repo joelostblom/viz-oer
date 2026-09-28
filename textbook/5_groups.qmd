@@ -48,7 +48,7 @@ from utils import show_df
      to those of other groups
      since it shows the observations for each group separately.
 
-3. **Apply** grouping strategies using color, size, shape and position
+3. **Apply** grouping strategies using color, shape, and position
    to visually distinguish between categories,
    e.g. `encode(color='category')` and `aes(color=category)`.
 
@@ -250,7 +250,7 @@ that we can group by (such as 18-25, 25-35, 35-45).
 
 Generally speaking, position
 and color are the two most effective visual channels to use for grouping.
-Shape and size can also be used,
+Shape can also be used,
 but often either in combination with one of the other two or
 for a specific purpose.
 
@@ -274,12 +274,6 @@ encode(color='category_column')
 
 ```{.python}
 encode(shape='category_column')
-```
-
-### Size
-
-```{.python}
-encode(size='category_column')
 ```
 
 ### Position
@@ -306,12 +300,6 @@ aes(color=category_column)
 
 ```{.r}
 aes(shape=category_column)
-```
-
-### Size
-
-```{.r}
-aes(size=category_column)
 ```
 
 ### Position
@@ -539,54 +527,31 @@ ggplot(income_df) +
 
 :::
 
-### Size
+::: {.callout-warning}
+
+## Avoid using size to group by a categorical variable
 
 Size is often used to represent the magnitude of quantitative data.
 Under limited circumstances,
 it can also be used for grouping data according to a categorical variable,
 but in general this is best avoided.
 
-::: {.callout-warning}
-
-## Avoid using size to group by a categorical variable
-
 Since size has an inherent direction from small to large,
 it works better for ordinal than nominal categorical data.
 One example is the World Bank income levels, ranging from low to high.
-However, even when used for ordinal data it is often difficult to tell different
+However, even when used for ordinal data
+it is often difficult to tell different
 sizes apart as you can see in the chart below.
-
-:::: {.panel-tabset}
-
-## Altair
 
 ```{python}
 #| label: income-size-alt
-alt.Chart(income_df).mark_point().encode(
+#| echo: false
+alt.Chart(income_df).mark_point(color='#FF0039').encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
     size='income_group',
 )
 ```
-
-## ggplot
-
-`ggplot` even displays a warning to be cautious
-when using size for categorical variable.
-
-```{r fig.width=8, fig.height=6}
-#| label: income-size-gg
-
-ggplot(income_df) +
-    aes(
-        x=percentage_heavy_drinkers, 
-        y=life_expectancy_at_65, 
-        size=income_group,
-    ) + 
-    geom_point()
-```
-
-::::
 
 :::
 
@@ -649,7 +614,7 @@ but in general it is best avoided.
 ```{python}
 #| label: region-position-alt-xy-swap
 #| echo: false
-alt.Chart(income_df).mark_point().encode(
+alt.Chart(income_df).mark_point(color='#FF0039').encode(
     x='region',
     y='percentage_heavy_drinkers',
 )
