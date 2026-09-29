@@ -36,23 +36,30 @@ import pandas as pd
 pd.set_option('display.max_rows', 6)
 ```
 
-## What is data visualization?
-
-At its core,
-data visualization is about representing numbers with graphical elements
-such as the position of a point, the length of a bar, or the color of a line.
 
 ## What is the purpose of visualizing data?
 
-Broadly speaking,
-we can say that there are two main uses for visualization.
-Either we employ it
-to improve own understanding of a dataset
-or to effectively communicate our data insights to others.
+At its core,
+data visualization is about representing data with graphical elements
+such as the position of a point, the length of a bar, or the color of a line.
+We usually visualize data for two main purposes:
+[to improve own understanding of a dataset]{.slide-text}
+or [to improve someone's else's understanding]{.slide-text} by communicating
+what we have learned.
 While we often use visualization
 to answer a specific question about a dataset,
 it can also be more exploratory
 and help us generate new questions.
+
+In this sense,
+we can [think of data visualization as a human "data language"]{.slide-text}
+that helps us gain and communicate data insights effectively.
+This role is equally relevant
+when an analysis comes from another person or from a machine,
+such as a generative AI agent:
+in either case, the goal is to support human understanding.
+By supporting both exploration and communication,
+[visualization is often where a data analysis begins and ends]{.slide-text}.
 
 ## Why bother visualizing data instead of showing raw numbers?
 
