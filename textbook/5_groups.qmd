@@ -30,29 +30,30 @@ from utils import show_df
 
 1. **Explain** the two main purposes of grouping:
    - Making direct comparisons between groups,
-       e.g. observations in group A tends to have higher values
+        e.g., observations in group A tend to have higher values
        than those in group B.
-   - Avoid making incorrectly generalized conclusions,
-       e.g. there could be a general positive trend
-       when all data is looked at together,
+    - Avoiding incorrect generalizations,
+        e.g., there could be an overall positive trend
+        when all observations are viewed together,
        while the data for individual groups displays negative trends
        or no trend at all.
 
 2. **Evaluate** which grouping strategy is the most suitable in a specific
    context:
-   - Position and color (or color + shape) are the most effective strategies to
-     use when comparing exact values between groups since they enable
-     observations to be drawn close to each other in the same chart.
-   - Faceting is the most effective
+    - Color (optionally combined with shape) distinguishes groups while keeping
+      observations close together on shared positional scales for comparing values.
+    - Grouping by position gives each category its own lane
+      for comparing values of another variable.
+    - Faceting is often effective
      when comparing the pattern or trend of a group
      to those of other groups
      since it shows the observations for each group separately.
 
 3. **Apply** grouping strategies using color, shape, and position
    to visually distinguish between categories,
-   e.g. `encode(color='category')` and `aes(color=category)`.
+    e.g., `encode(color='category')` and `aes(color = category)`.
 
-4. **Apply** the faceting grouping strategy via `facet` and `facet_wrap` method
+4. **Apply** faceting via Altair's `facet()` method and ggplot's `facet_wrap()` function
    to split data into separate facets.
 :::
 
@@ -60,29 +61,29 @@ from utils import show_df
 
 ## Why grouping matters
 
-So far you have created declarative visualizations by representing them
-as identical point **marks** on a canvas with encoded x- and y-axis positions.
+So far, you have created declarative visualizations by representing observations
+as point **marks** on a canvas, using position and color to represent quantitative variables.
 This is the foundation for all the visualizations we will make,
 but it is rarely sufficient on its own to give a complete picture of the data.
-In particular, messy real-world data might show overall trends in the datasets,
-that evaporate when explored more closely.
+In particular, real-world datasets might show overall trends
+that disappear or change when individual groups are explored more closely.
 The goal of grouping is to distinguish between groups by basing the visual
-appearance of points in a chart on the value of categorical variable.
+appearance or placement of points in a chart on the value of a categorical variable.
 Let's see this in action in the following exercise.
 
 ::::: {.callout-default .ex-prompt}
 
 In Viridia, historians have been studying the remains from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors. During their research, they uncovered records of a beverage known as "alcohol".
 
-Given the high prevalence of alcohol drinking in many of Earth's nations, the Viridians thought the drink must have had many positive effects and allowed humans to live long and healthy lives. Curious to explore whether this was indeed the case, Viridian historians were excited to uncover a dataset containing the percent of heavy drinkers in each nation together with the average number of years people lived after retirement^[Source: Global Burden of Disease Study 2021 (GBD 2021) Results; The World Bank https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups].
+Given the high prevalence of alcohol consumption in many of Earth's nations, the Viridians thought the drink must have had many positive effects and allowed humans to live long and healthy lives. Curious to explore whether this was indeed the case, Viridian historians were excited to uncover a dataset containing the percentage of heavy drinkers in each nation together with the average remaining life expectancy at age 65.^[Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; [World Bank country and lending groups](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups).]
 
-To assess whether nations with a high percentage of heavy drinkers did indeed also tend to live longer lives, the historians created a scatterplot where each point represented a country, the x-axis showing the percentage of heavy alcohol drinkers, and the y-axis showing the average number of years left to live after reaching age 65.^[Retirement age differs between countries. We have used age 65 as it is close to the average in OECD countries. https://www.oecd-ilibrary.org/docserver/9bf0cb7f-en.pdf]
+To assess whether countries with a high percentage of heavy drinkers also tended to have higher remaining life expectancy at age 65, the historians created a scatterplot where each point represented a country. The x-axis shows the percentage of heavy drinkers, and the y-axis shows the average number of years a person reaching age 65 can expect to live beyond that age.^[Retirement age differs between countries. We have used age 65 as it is close to the average in OECD countries. [OECD report](https://www.oecd-ilibrary.org/docserver/9bf0cb7f-en.pdf).]
 
-Before viewing what this chart looks like in the solution, draw out (either on paper or in your mind) what you think this chart would look like.
+Before viewing the chart in the solution, sketch (either on paper or in your mind) what you think it would look like.
 
 :::: {.callout-default .ex-hint}
 
-Think about what trend would you expect to see in this data. Do you think nations with a high percentage of heavy drinkers have long or short life spans?
+Think about what trend you would expect to see in this dataset. Do you think countries with a high percentage of heavy drinkers have high or low remaining life expectancy at age 65?
 
 ::: {.callout-default .ex-solution}
 
@@ -103,7 +104,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-From this scatter plot, the Viridians observe that nations with a high percentage of heavy drinkers does indeed tend to also have longer lifespans, such great news! Excited about their findings, the historians hurry to find out how to produce this noble alcohol beverage to hopefully introduce it into Viridian society as soon as possible.
+From this scatterplot, the Viridians observe that countries with a high percentage of heavy drinkers do indeed tend to have higher remaining life expectancy at age 65. Such great news! Excited about their findings, the historians hurry to find out how to produce this noble alcoholic beverage, hoping to introduce it into Viridian society as soon as possible.
 
 :::
 
@@ -117,17 +118,17 @@ to find out if there is more to this dataset than meets the eye!
 
 ::::: {.callout-default .ex-prompt}
 
-"Not so fast" you caution the Viridian historians.
+"Not so fast," you caution the Viridian historians.
 Your memories of alcohol are dim,
 particularly from those nights when you ingested the substance,
-but you have a vague recollection of that it is not the health solution
+but you have a vague recollection that it is not the health solution
 that the Viridians are looking for.
 You ask to see the raw data,
-which you should always inspect before taking any rash decisions.
+which you should inspect before making any hasty decisions.
 Confident in their findings,
 the historians show you the first few rows of the data in the table below,
 and inform you that you can hover over the points
-in the chart above to see additional information for each observations.
+in the chart above to see additional information about each observation.
 
 ```{python}
 #| label: income-data-preview
@@ -135,21 +136,21 @@ in the chart above to see additional information for each observations.
 show_df(income_df[['country', 'region', 'income_group', 'percentage_heavy_drinkers', 'life_expectancy_at_65']])
 ```
 
-Study the table and the tooltip of the previous chart.
+Study the table and the tooltips in the previous chart.
 What do you think might be the reason
 that countries with a higher percentage of heavy drinkers
-also have a higher life expectancy?
+also have higher remaining life expectancy at age 65?
 Suggest one visual change to the chart
-that would help you explore if your suggested reason
-could influence the relationship between alcohol consumption and lifespan.
+that would help you explore whether your suggested reason
+could influence the relationship between alcohol consumption and life expectancy.
 
 :::: {.callout-default .ex-hint}
 
-Do you think other variables in the dataset could influence alcohol consumption? E.g. the average income of the country or the region of the world where it is located? To see this in the chart, could you include some type of grouping according to that column, e.g. shape or color?
+Could other variables in the dataset be related to both alcohol consumption and life expectancy? For example, consider the country's income group or world region. Could you group the points by one of these variables using shape or color?
 
 ::: {.callout-default .ex-solution}
 
-Both the country's income group and region might have an effect on the alcohol consumption and the lifespan. Here, we will explore this for the income group only, and you are free to explore the region on your own. To effectively add this information to the chart, we could use different colors to visually group the points by the income group variable:
+Both a country's income group and its region might help explain differences in alcohol consumption and life expectancy. Here, we will explore income group only; you can explore region on your own. To add this information to the chart, we could use different colors to group the points visually by income group:
 
 ```{python}
 #| label: income-groups-revealed
@@ -161,9 +162,9 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-Notice how the data points form clusters by income group. Coloring reveals that both national alcoholism levels and life expectancy are correlated with income. <span style="color: #9CCCC8; font-weight: bold">High income</span> countries tend to have longer lifespans and a greater proportion of heavy alcohol drinkers. We see the opposite picture for most <span style="color: #5D84A8; font-weight: bold">low income countries</span>, where both indicators are lower. 
+Notice how the data points form clusters by income group. Coloring reveals that both the percentage of heavy drinkers and remaining life expectancy at age 65 are associated with income group. **High-income countries** tend to have higher values for both measures. We see the opposite picture for most **low-income countries**, where both measures are lower.
 
-This could explain the mysterious relationship the historians found between heavy drinkers and life expectancy! It seems like countries that have a higher average income are likely to both have people who drink more and people who live longer. By using color to group the data, we have revealed that income level could be a [confounding variable](https://en.wikipedia.org/wiki/Confounding): it likely influences both life expectancy and alcohol consumption. If we had data at finer resolution, which contained each individual, we would probably see that they people who drink a lot don't live the longest lives, but we don't have access to that data here.
+This could help explain the mysterious relationship the historians found! Income level could be a [confounding variable](https://en.wikipedia.org/wiki/Confounding), influencing both alcohol consumption and life expectancy. The chart suggests this possibility but does not establish those causal effects. Crucially, the points represent countries, not people: we cannot conclude that the people who drink heavily are the same people who live longer. We would need individual-level data and an appropriate study design to investigate that relationship.
 
 The insights you have revealed are sobering news for the Viridian historians,
 who are sure to proceed more cautiously in future projects!
@@ -177,33 +178,32 @@ who are sure to proceed more cautiously in future projects!
 ## The two main purposes of grouping
 
 As we have seen in the exercises above, grouping can have major benefits.
-We can divide these benefits into to two main categories,
-which helps us arrive at more accurate conclusions about our data:
+We can divide these benefits into two main categories,
+both of which help us arrive at more accurate conclusions about our data:
 
 1. **Directly compare** observations between groups.
 2. **Reveal patterns** within individual groups that are obscured
    when viewing the data from all groups together.
 
 These benefits are often connected and can be explored simultaneously.
-When the alcohol consumption data was grouped by income level,
-it revealed that the patterns within groups did not correspond to what seemed to
-be the overall trend in the data, and it also made it easier to compare
+When we grouped the alcohol consumption data by income level,
+the positive relationship in the pooled data was much less apparent within groups.
+Grouping also made it easier to compare
 observations between groups.
 
-Obscured group-level patterns is a phenomena often referred to
-as Simpson's Paradox (named after its inventor rather than the TV series).
-It represents a curious phenomenon
-where a trend present in individual groups of data can disappear
-when they are combined.
+Differences between overall and within-group relationships are central to
+**Simpson's paradox** (named after the statistician Edward H. Simpson, rather than the TV series).
+In the classic form of this phenomenon,
+a trend within individual groups reverses when the groups are combined.
+Grouping can also reveal trends that are weak or absent in the pooled data.
 
-Below we show a simplified illustration of Simpson's Paradox.
-Notice how the overall dataset doesn't appear to show any noticeable pattern,
+Below we show a simplified illustration of this aggregation effect.
+Notice how the overall dataset shows little apparent relationship between X and Y,
 but when the observations are colored by group,
-you can see that each groups exhibit the same negative trend between X and Y,
-i.e. larger values of X are associated with smaller values of Y and vice versa.
+you can see that both groups exhibit a negative trend between X and Y:
+larger values of X tend to be associated with smaller values of Y, and vice versa.
 This is a prime example of the utility of grouping in deepening our
-understanding of a data set; without it we would have drawn different (and
-uninformative) conclusions about this data set.
+understanding of a dataset; without it, we would have missed the within-group relationships.
 
 ::: {.panel-tabset}
 
@@ -236,15 +236,15 @@ alt.Chart(simpsons_df).mark_point().encode(
 
 ## What type of column can we use for grouping?
 
-In general, we are interesting in grouping data by "categorical" columns.
-If the there is a natural order to the categories (e.g. days of the week
+In general, we are interested in grouping data by "categorical" columns.
+If there is a natural order to the categories (e.g., education levels
 or letter grades), we can be more precise and call the column "ordinal".
 If there is no such order,
-we say that the column is "nominal" (e.g. fruits or colors).
+we say that the column is "nominal" (e.g., types of fruit or color names).
 As a general rule, we will not group data by quantitative columns
-that hold continuous data (e.g. height or age), but there are exceptions;
-we might for example turn a column with ages into categorical intervals
-that we can group by (such as 18-25, 25-35, 35-45).
+that hold continuous data (e.g., height or age), but there are exceptions.
+For example, we might turn ages recorded in whole years into categories
+that we can group by, such as 18–24, 25–34, and 35–44.
 
 ## Strategies for grouping
 
@@ -259,24 +259,24 @@ for a specific purpose.
 The grammar of graphics allows
 for these to be conveniently defined via an easily interchangeable syntax:
 
+::: {.panel-tabset group="language"}
+
+### Altair
 ::: {.panel-tabset}
 
-## Altair
-::: {.panel-tabset}
-
-### Color
+#### Color
 
 ```{.python}
 encode(color='category_column')
 ```
 
-### Shape
+#### Shape
 
 ```{.python}
 encode(shape='category_column')
 ```
 
-### Position
+#### Position
 
 ```{.python}
 encode(x='category_column')
@@ -287,29 +287,29 @@ encode(y='category_column')
 ```
 :::
 
-## ggplot
+### ggplot
 ::: {.panel-tabset}
 
-### Color
+#### Color
 
 ```{.r}
-aes(color=category_column)
+aes(color = category_column)
 ```
 
-### Shape
+#### Shape
 
 ```{.r}
-aes(shape=category_column)
+aes(shape = category_column)
 ```
 
-### Position
+#### Position
 
 ```{.r}
-aes(x=category_column)
+aes(x = category_column)
 ```
 
 ```{.r}
-aes(y=category_column)
+aes(y = category_column)
 ```
 :::
 :::
@@ -325,7 +325,7 @@ Epub 2018 Nov 13.
 PMID: 30472539; PMCID: PMC6513732.] which means
 that the brain can tell apart colors even without conscious attention.
 This is heightened when there is a high contrast,
-such as between the complimentary colors blue and orange.
+such as between the complementary colors blue and orange.
 
 This is great news for grouping!
 By encoding our categorical variable as color,
@@ -335,15 +335,15 @@ or structure of the data visualization,
 so it's an efficient way to compare the exact values of data points between
 groups.
 
-In the second exercise of this chapter we already saw how color could be used to
+In the second exercise of this chapter, we already saw how color could be used to
 group our life expectancy data by income group.
-Let's now see what the code to create this charts looks like:
+Let's now see what the code to create this chart looks like:
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
-## Altair
+#### Altair
 
-Here we use `color='region'`:
+Here we use `color='income_group'`:
 
 ```{python}
 #| label: income-color-alt
@@ -360,9 +360,9 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-## ggplot
+#### ggplot
 
-Here we use `color=region`:
+Here we use `color = income_group`:
 
 ```{r}
 #| label: grouping-tidyverse-setup
@@ -380,19 +380,19 @@ library(tidyverse)
 
 income_df <- read_csv('data/income_lifeexp_alcohol.csv')
 
-ggplot(income_df,aes(
-        x=percentage_heavy_drinkers,
-        y=life_expectancy_at_65,
-        color=income_group
+ggplot(income_df, aes(
+        x = percentage_heavy_drinkers,
+        y = life_expectancy_at_65,
+        color = income_group
     )) +
     geom_point()
 ```
 
 :::
 
-::: {.callout-warning }
+::: {.callout-warning}
 
-## Avoid using color for more than 5-7 groups
+#### Avoid using color for more than 5–7 groups
 
 Using too many colors or colors
 that are too similar can blur the differences between groups.
@@ -401,7 +401,7 @@ such as how to ensure accessibility,
 particularly for people with color vision deficiencies.
 We will learn more about these topics in a later chapter,
 but for now it's enough to remember that
-when there are around 5-7 groups in the data,
+when there are more than about 5–7 groups in the data,
 it might be better to break it down into separate charts instead of grouping by
 color.
 
@@ -409,29 +409,30 @@ color.
 
 ### Shape
 
-Shape is less a effective grouping strategy on its own, but it can be combined with color to provide an additional visual cue. Let's take a look at a classic example: the infamous traffic light. 
+Shape is a less effective grouping strategy on its own, but it can be combined with color to provide an additional visual cue. Let's take a look at a familiar example: the traffic light.
 
-Do you think that traffic lights are well designed? At first glance, they break a major rule of accessibility, using the worst possible color combination for people with red/green color vision deficiency. Thankfully, in many countries, traffic lights are encoded using both position (vertically along the "y-axis"), color, and shape.
+Do you think that traffic lights are well designed? At first glance, their use of red and green presents a challenge for people with red–green color vision deficiency. Thankfully, signals can communicate their meaning through position and shape as well as color, as in the pedestrian signals below.
 
 ![](/img/traffic.png)
 
-Grouping by three encoding channels reinforces the visual contrast and has probably prevented many accidents.
-Even in traffic light signals for cars that often lack the shape encoding, the vertical positioning of the different signals is effective enough so that the lack of a shape encoding is not a major hazard.
+Using several visual channels for the same distinction gives viewers more than one cue to interpret.
+Even traffic signals for cars that lack distinct shapes typically use a consistent arrangement,
+so drivers can use position as well as color to distinguish the signals.
 
 ::: {.column-margin}
 **Shape up**
 
-Some regions around the world has noticed that car traffic lights would be even safer if including shape as well, such as in this example from Nova Scotia in Eastern Canada
+Some regions also use shape to distinguish traffic signals for cars, as in this example from Nova Scotia in eastern Canada.
 
 ![](https://upload.wikimedia.org/wikipedia/commons/1/11/Colourblind_traffic_signal.JPG)
 
 :::
 
-The syntax for encoding a shape aesthetic, is similar to that for color: 
+The syntax for mapping a variable to the shape channel is similar to that for color:
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
-## Altair
+#### Altair
 
 ```{python}
 #| label: income-shape-alt
@@ -456,43 +457,43 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 )
 ```
 
-## ggplot
+#### ggplot
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-shape-gg
 ggplot(income_df) +
     aes(
-        x=percentage_heavy_drinkers,
-        y=life_expectancy_at_65,
-        color=income_group,
-        shape=income_group
+        x = percentage_heavy_drinkers,
+        y = life_expectancy_at_65,
+        color = income_group,
+        shape = income_group
     ) +
     geom_point()
 ```
 
 :::
 
-While this combined approach makes grouping clearer, there are some pitfalls. For instance, line icons limit the total area that can be colored, reducing the impact of color. It is better to use solid shapes when combining shape and color.
+While this combined approach can make grouping clearer, there are some pitfalls. For instance, hollow symbols limit the total area that can be colored, reducing the impact of color. Filled shapes can make color easier to see when combining shape and color.
 Additionally, smaller shapes are difficult to distinguish, so when plotting a dense scatterplot of small marks, try restricting the number of unique shapes to three or fewer, or consider avoiding using shape altogether.
 <!--TODO number of shapes -->
 
-::: {.callout-warning }
+::: {.callout-warning}
 
-## Avoid using color and shape for different variables
+#### Avoid using color and shape for different variables
 
-It is rarely effective to encode a different data variable in the `color`
-and `shape` channels.
+It is often difficult to interpret charts that map one variable to `color`
+and another to `shape`.
 This tends to lead to too much visual information
 and it is difficult to distinguish the many different combinations visually.
 
 The many combinations of income group
 and region in this chart are hard to separate visually,
 which makes this chart ineffective:
-<!--TODO Include some coloring of the background to cleary show bad examples? Too similar to book ufdndation? -->
+<!-- TODO Include background coloring to clearly identify ineffective examples? Too similar to Fundamentals of Data Visualization? -->
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
-## Altair
+##### Altair
 
 ```{python}
 #| label: income-region-alt
@@ -504,21 +505,17 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 )
 ```
 
-## ggplot
-
-The many combinations of income group and region in this chart
-are hard to separate visually,
-which makes this chart ineffective:
+##### ggplot
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-region-gg
 ggplot(income_df) +
     aes(
-        x=percentage_heavy_drinkers, 
-        y=life_expectancy_at_65, 
-        color=income_group,
-        shape=region
-    ) + 
+        x = percentage_heavy_drinkers,
+        y = life_expectancy_at_65,
+        color = income_group,
+        shape = region
+    ) +
     geom_point()
 ```
 
@@ -529,7 +526,7 @@ ggplot(income_df) +
 
 ::: {.callout-warning}
 
-## Avoid using size to group by a categorical variable
+#### Avoid using size to group by a categorical variable
 
 Size is often used to represent the magnitude of quantitative data.
 Under limited circumstances,
@@ -539,9 +536,9 @@ but in general this is best avoided.
 Since size has an inherent direction from small to large,
 it works better for ordinal than nominal categorical data.
 One example is the World Bank income levels, ranging from low to high.
-However, even when used for ordinal data
+However, even when used for ordinal data,
 it is often difficult to tell different
-sizes apart as you can see in the chart below.
+sizes apart, as you can see in the chart below.
 
 ```{python}
 #| label: income-size-alt
@@ -557,24 +554,23 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 
 ### Position
 
-#### X & Y
+#### X and Y position
 
 Grouping by position often creates the clearest separation between groups.
-Distributing the groups along the x
-or y axis gives each group its own visual lane,
-avoiding that observations from different groups overlap.
-However, the grouping column now also occupies one positional visual channel
+Distributing the groups along the x- or y-axis gives each group its own visual lane,
+preventing observations from different groups from overlapping.
+However, the grouping column now occupies one positional visual channel,
 so there is only one positional channel left
 for encoding the values we want to compare between the groups.
 
-Below, we distribution the income groups along the y-axis.
-This leaves us with a choice whether we want to use the x-axis
-for the `percentage_heavy_drinkers` or the `life_expectancy_at_65`,
-but we can't fit both into the same chart.
+Below, we distribute the regions along the y-axis.
+This leaves us with a choice of whether to use the x-axis
+for `percentage_heavy_drinkers` or `life_expectancy_at_65`.
+We cannot represent both quantitative variables with position in this chart.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
-#### Altair
+##### Altair
 
 
 ```{python}
@@ -585,15 +581,15 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-#### ggplot
+##### ggplot
 
 ```{r fig.width=8, fig.height=6}
 #| label: region-position-gg
 ggplot(income_df) +
     aes(
-        x=percentage_heavy_drinkers,
-        y=region,
-    ) + 
+        x = percentage_heavy_drinkers,
+        y = region,
+    ) +
     geom_point()
 ```
 
@@ -601,15 +597,12 @@ ggplot(income_df) +
 
 ::: {.callout-warning}
 
-#### Avoid rotated categorical names along the x-axis
+##### Avoid rotated category labels along the x-axis
 
-We could have swapped the x and y variables above,
-but then the text of the regions become hard to read
-since we have to read it sideways.
-For short labels that we can fit horizontally 
-if we rotate them,
-it can be fine to have a categorical value on the x-axis,
-but in general it is best avoided.
+We could swap the x and y variables above,
+but then the region labels would be rotated and harder to read.
+Short category labels that fit horizontally can work well on the x-axis.
+For longer labels, placing the categories on the y-axis usually makes the text easier to read.
 
 ```{python}
 #| label: region-position-alt-xy-swap
@@ -632,28 +625,29 @@ Faceting is particularly effective for highlighting distinct trends
 and patterns within each subset,
 as well as identifying extreme values or outliers within groups.
 We could think of faceting as a type of position grouping,
-but its advantage is that it keeps both the x and y axis free
+but its advantage is that it keeps both the x- and y-axes free
 for other variables.
 
 Let's create a separate facet for each income group,
 so that the relationship between `percentage_heavy_drinkers`
 and `life_expectancy_at_65` within each group stands out.
-We can lay out the facets differently depending on what we are the most
+We can lay out the facets differently depending on what we are most
 interested in comparing.
 If the y-axis is the primary channel
-for comparison we would spread the facets out horizontally in a single row
+for comparison, we would spread the facets out horizontally in a single row.
 If the x-axis is the primary channel
-for comparison we would spread the facets out vertically in a single column.
-Neither of these scenarios apply to use
-since we are interested in comparing the overall pattern within each group of
-the points, so we will instead lay out the facets in an even grid to save space.
+for comparison, we would spread the facets out vertically in a single column.
+In either case, the scales should be shared for direct comparisons.
+Neither axis is our sole focus here:
+we are interested in comparing the overall pattern within each group,
+so we will lay out the facets in a compact grid to save space.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
-## Altair
+##### Altair
 
 To facet by income group, we can append `.facet('income_group')` to our chart.
-We create an even 2x2 grid of facets by using the `columns` parameter.
+We create a 2 × 2 grid of facets by using the `columns` parameter.
 
 ```{python}
 #| label: income-facets-alt
@@ -670,26 +664,24 @@ In addition to faceting on a single variable in the data,
 faceting can also be done over two variables:
 one spread horizontally and one spread out vertically in the faceted charts.
 In Altair, we would use the `column`
-and `row` parameter in order to achieve this.
+and `row` parameters to achieve this.
 For example, to have facets that are grouped by both income group and region,
 we could use `facet(column='income_group', row='region')`.
 This can be effective when we need to group our data further,
-but it does risk making the chart hard to overview,
+but it can make the chart difficult to take in at a glance,
 so it is best used when there are fewer categories in the faceting variables.
 
-## ggplot
+##### ggplot
 
 To facet by income group,
-we can append `.facet_wrap(vars(income_group))` to our chart.
-The `vars` function is required for `facet_wrap` to understand
-that we are referring to column names,
-just like `aes` is required when typing out column names
-for the different visual channels.
+we can add `+ facet_wrap(vars(income_group))` to our chart.
+The `vars()` function specifies which columns to use for faceting,
+just as `aes()` specifies the mappings from variables to visual channels.
 
-The default layout in ggplot is to achieve and even number of columns and rows,
+By default, `facet_wrap()` arranges these four groups in a 2 × 2 grid,
 which is appropriate for our visualization.
-Yet, we use the `ncol` argument to illustrate how you could manipulate the
-shaper of the facet grid if you desired something else than an even grid.
+Here, we set the `ncol` argument explicitly to illustrate how you can control
+the number of columns in the facet grid.
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-facets-gg
@@ -699,36 +691,36 @@ ggplot(income_df) +
         y = life_expectancy_at_65
     ) +
     geom_point() +
-    facet_wrap(vars(income_group), ncol=2)
+    facet_wrap(vars(income_group), ncol = 2)
 ```
 
 In addition to faceting on a single variable in the data,
 faceting can also be done over two variables:
 one spread horizontally and one spread out vertically in the faceted charts.
-In ggplot, we would swap out `facet_wrap` to `facet_grid` in order to do this.
+In ggplot, we would replace `facet_wrap()` with `facet_grid()` to do this.
 For example, to have facets that are grouped by both income group and region,
-we could use `facet_grid(vars(income_group), vars(region))`.
+we could use `facet_grid(rows = vars(region), cols = vars(income_group))`.
 This can be effective when we need to group our data further,
-but it does risk making the chart hard to overview,
+but it can make the chart difficult to take in at a glance,
 so it is best used when there are fewer categories in the faceting variables.
 
 :::
 
-As you can see above, faceting makes it easy to observse the overall shape of the distribution for each income group and how tightly clustered the values are. It also reveals potential outliers in the Upper Middle Income facet – we can easily spot two countries with a higher percentage of heavy drinkers. On the other hand, it is now harder to compare the exact values between two groups because the points are spread out in different charts, instead of right next to each other in a single chart.
+As you can see above, faceting makes it easier to observe the overall pattern for each income group and how tightly clustered the values are. It also reveals potential outliers in the upper-middle-income facet: we can easily spot two countries with a higher percentage of heavy drinkers than the others in that group. On the other hand, it is now harder to compare individual values between groups because the points are spread across different charts instead of being close together in a single chart.
 
-All the previous grouping strategies that we have discussed can be utilized within each facet as additional layers of grouping. This nested grouping can be powerful to stratify our data according to multiple categorical variables, but keep in mind that it can become confusing if we try to fit too much into a single visualization. Exactly how many levels of grouping you can use depends on how  well separated your data is and how many observations you have; more observations and less separation between groups means that you will have to be more careful and use less levels of grouping to keep the visualization easy to interpret.
+All the previous grouping strategies can be used within each facet as additional layers of grouping. This nested grouping can be useful for dividing our data according to multiple categorical variables, but it can become confusing if we try to fit too much into a single visualization. How many grouping variables you can use depends on how well separated the groups are and how many observations you have. More observations and less separation between groups mean that you need to be more careful and may need fewer layers of grouping to keep the visualization easy to interpret.
 
 Let's try out an example of how we can use faceting together with other grouping strategies.
 
 ::::: {.callout-default .ex-prompt}
 
-Edit this chart to use both faceting and grouping.
-Facet by world region (`region`) and group by World Bank income group (`income_group`). 
+Edit this chart to use both faceting and color for grouping.
+Facet by world region (`region`) and color the points by World Bank income group (`income_group`).
 Ensure that only two facets are shown per row.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
-## Altair
+##### Altair
 
 ```{pyodide}
 #| label: facet-exercise-python-setup
@@ -753,7 +745,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-## ggplot
+##### ggplot
 
 ```{webr fig.width=8, fig.height=6}
 #| label: facet-exercise-r-setup
@@ -768,13 +760,13 @@ url <- 'data/income_lifeexp_alcohol.csv'
 ```{webr fig.width=8, fig.height=6}
 #| label: facet-r-exercise
 #| exercise: facet_ggplot
-income_df <- readr::read_csv(url, show_col_types=FALSE)
+income_df <- readr::read_csv(url, show_col_types = FALSE)
 
 ggplot(income_df) +
     aes(
-        x=percentage_heavy_drinkers, 
-        y=life_expectancy_at_65, 
-    ) + 
+        x = percentage_heavy_drinkers,
+        y = life_expectancy_at_65,
+    ) +
     geom_point()
 ```
 
@@ -782,9 +774,9 @@ ggplot(income_df) +
 
 ::: {.callout-default .ex-solution}
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
-## Altair
+##### Altair
 
 ```{python}
 #| label: region-facets-alt
@@ -798,7 +790,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-## ggplot
+##### ggplot
 
 ```{r fig.width=8, fig.height=6}
 #| label: region-facets-gg
@@ -806,10 +798,10 @@ ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
         y = life_expectancy_at_65,
-        color=income_group
+        color = income_group
     ) +
     geom_point() +
-    facet_wrap(vars(region), ncol=2)
+    facet_wrap(vars(region), ncol = 2)
 ```
 
 :::
@@ -819,4 +811,3 @@ ggplot(income_df) +
 
 
 :::::
-
