@@ -170,7 +170,7 @@ alt.Chart(bars, height=120, width=200).mark_bar(
 <!-- https://mglerner.com/blog/posts/histograms-and-kernel-density-estimation-kde-2/ -->
 <!-- https://zfit-tutorials.readthedocs.io/en/latest/tutorials/components/13%20-%20Kernel%20Density%20Estimation.html#improved-sheather-jones-algorithm -->
 
-SJ https://aakinshin.net/posts/kde-bw/
+<!-- SJ https://aakinshin.net/posts/kde-bw/ -->
 
 <!-- TODO histogram advantage = easy to understand -->
 
@@ -752,102 +752,27 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 ## Multiple distributions
 
-Let's return to comparing the movie genres.
-We need a separate density estimate for each genre,
-rather than a single estimate for all movies combined.
-Using the same bandwidth makes the amount of smoothing comparable between groups.
+Similarly to histograms,
+multiple density areas in the same chart can get messy,
+but generally speaking
+it is easier to separate the continuous areas shapes
+than the jagged histograms,
+so it is often more forgiving
+to include additional groups when visualizing distributions as densities.
 
-::: {.callout-warning}
+As with histograms,
+it can also be beneficial to stratify densities
+into separate facets.
+One drawback with faceting into subplots,
+is that it can be difficult to compare small difference
+since the distributions are now far apart.
+Here,
+densities has an additional advantage
+in that they also work well with line marks,
+which makes it easier to compare small changes
+between many distributions.
 
-### Avoid hiding distributions behind overlapping areas
-
-Filling under the curves can make their shapes easy to see,
-but with several overlapping distributions the filled regions can obscure one another.
-Transparency helps, but it does not completely solve the problem.
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-Use `groupby` when calculating the densities so that the transform
-produces a separate curve for each genre and retains the genre column.
-Then map that column to color.
-Set `stack(False)` so the areas share a baseline rather than stacking up.
-
-```{python}
-#| label: genre-kde-areas-alt
-alt.Chart(movies, height=200).transform_density(
-    'Running Time min',
-    groupby=['Major Genre'],
-    as_=['runtime', 'density'],
-    bandwidth=5,
-    extent=[40, 260],
-).mark_area(opacity=0.5).encode(
-    x=alt.X('runtime:Q').title('Running time (min)'),
-    y=alt.Y('density:Q').title('Density').stack(False),
-    color='Major Genre:N',
-)
-```
-
-### ggplot
-
-Mapping the genre to `fill` also tells ggplot to calculate a density for each group.
-Unlike `geom_histogram()`, `geom_density()` does not stack the groups by default.
-We add transparency with `alpha`.
-
-```{r}
-#| label: genre-kde-areas-gg
-ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
-    geom_density(bw = 5, alpha = 0.5) +
-    scale_x_continuous(limits = c(40, 260)) +
-    labs(x = 'Running time (min)', y = 'Density')
-```
-
-:::
-
-Filled areas can work well when there are only a few distributions
-or when they are well separated along the x-axis.
-For example, comparing just Comedy and Drama makes the overlap easier to follow:
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: two-genre-kde-alt
-alt.Chart(
-    movies.query('`Major Genre`.isin(["Comedy", "Drama"])'), height=200
-).transform_density(
-    'Running Time min',
-    groupby=['Major Genre'],
-    as_=['runtime', 'density'],
-    bandwidth=5,
-    extent=[40, 260],
-).mark_area(opacity=0.5).encode(
-    x=alt.X('runtime:Q').title('Running time (min)'),
-    y=alt.Y('density:Q').title('Density').stack(False),
-    color='Major Genre:N',
-)
-```
-
-### ggplot
-
-```{r}
-#| label: two-genre-kde-gg
-ggplot(
-    dplyr::filter(movies, `Major Genre` %in% c('Comedy', 'Drama')),
-    aes(x = `Running Time min`, fill = `Major Genre`)
-) +
-    geom_density(bw = 5, alpha = 0.5) +
-    scale_x_continuous(limits = c(40, 260)) +
-    labs(x = 'Running time (min)', y = 'Density')
-```
-
-:::
-
-:::
-
-### Using lines instead of areas
+### Lines instead of areas
 
 With several distributions in the same chart,
 lines can make it easier to follow each curve without hiding the others.
@@ -857,18 +782,21 @@ The density calculation stays the same; only the mark changes.
 
 #### Altair
 
+Since we are coloring by the Major Genre,
+we need to include it as a grouping variable
+in the transform so that a separate density
+is computed for each area.
+
 ```{python}
 #| label: genre-kde-lines-alt
 alt.Chart(movies, height=200).transform_density(
     'Running Time min',
+    as_=['Running Time min', 'Density'],
     groupby=['Major Genre'],
-    as_=['runtime', 'density'],
-    bandwidth=5,
-    extent=[40, 260],
 ).mark_line().encode(
-    x=alt.X('runtime:Q').title('Running time (min)'),
-    y=alt.Y('density:Q').title('Density'),
-    color='Major Genre:N',
+    x=alt.X('Running Time min:Q'),
+    y=alt.Y('Density:Q'),
+    color='Major Genre',
 )
 ```
 
@@ -877,190 +805,202 @@ alt.Chart(movies, height=200).transform_density(
 ```{r}
 #| label: genre-kde-lines-gg
 ggplot(movies, aes(x = `Running Time min`, color = `Major Genre`)) +
-    geom_density(bw = 5) +
-    scale_x_continuous(limits = c(40, 260)) +
-    labs(x = 'Running time (min)', y = 'Density')
+    geom_density(bw = 'SJ')
 ```
+
+:::
+
+::: {.column-margin}
+
+Note the impact of each library's default
+bandwidth estimation on the density
+for horror movie running times.
 
 :::
 
 Each group's full density curve has area one,
 regardless of how many movies are in that group.
-This lets us compare **shapes** without a larger group automatically having a taller curve.
-But it also means that a taller peak does not necessarily mean more movies:
-it indicates greater concentration relative to the other runtimes within that group.
+This lets us compare the density *shapes*
+without a larger group automatically having a taller curve.
+But it also means that a taller peak
+does not indicate more movies,
+but rather a greater concentration
+relative to the other running time within that group.
 If the number of observations is central to the question,
-show group sizes as well or return to a count-based display.
+show group sizes separately
+or scale the densities by their count
+(while being aware of all the issues of count-based densities mentioned earlier).
 
-### Faceting into subplots
+### Violins instead of facets
 
-Even line plots can become difficult to read when the curves cross repeatedly.
-We can separate the genres into facets,
-just as we did for histograms.
-Putting the facets in a single column aligns their runtime axes,
-making differences in location and spread easier to compare.
-
-::: {.panel-tabset group="language"}
-
-#### Altair
-
-```{python}
-#| label: genre-kde-facets-alt
-alt.Chart(movies, height=80).transform_density(
-    'Running Time min',
-    groupby=['Major Genre'],
-    as_=['runtime', 'density'],
-    bandwidth=5,
-    extent=[40, 260],
-).mark_area().encode(
-    x=alt.X('runtime:Q').title('Running time (min)'),
-    y=alt.Y('density:Q').title('Density'),
-).facet(
-    'Major Genre:N',
-    columns=1,
-)
-```
-
-#### ggplot
-
-```{r}
-#| label: genre-kde-facets-gg
-#| fig-height: 6
-ggplot(movies, aes(x = `Running Time min`)) +
-    geom_density(bw = 5, fill = 'grey80') +
-    facet_wrap(vars(`Major Genre`), ncol = 1) +
-    scale_x_continuous(limits = c(40, 260)) +
-    labs(x = 'Running time (min)', y = 'Density')
-```
-
-:::
-
-Now we can compare the broad spread of Adventure runtimes
-with the more concentrated Comedy runtimes.
-We use common scales so that differences in the curves reflect differences in the data,
-rather than a different axis range in each panel.
-
-## Comparing groups with violin plots
-
-A violin plot takes a density curve and mirrors it around a group's position
+A violin plot takes a density curve
+and mirrors it around a group's position
 on a categorical axis.
-Its width at a particular runtime shows how concentrated the observations are there.
-This gives us a compact way to compare several distributions.
+The width of the violin at a particular runtime
+thus corresponds to how concentrated the observations are there.
+This gives us a compact way to compare several distributions,
+which also de-emphasizes reading the density values
+since they are no longer visible on the y-axis.
 
-We will use ggplot's violin geom for this representation.
-In Altair, we will keep using a column of faceted densities:
-these show the same kind of distributional information without mirroring the curves.
+When violin plots were introduced,
+it was claimed that their symmetrical appearance
+made them easier to read.
+They are commonly depicted
+with interquartile ranges and a median or mean,
+effectively combining the strengths of density plots
+with the convenience of seeing a few easy to compare summary statistics.
+
+Since we are no longer showing an axis width density values,
+we can scale the areas by the counts
+without introducing a hard to interpret axis.
+This gives an indication of the relative sizes between groups,
+but can make it harder to see the distribution
+of groups with few observations.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
-We can make the facets shorter and omit the density-axis labels
-to emphasize comparison along the common runtime axis.
-The density scale is still shared between panels.
+In Altair,
+there is no dedicated mark to create a violin plot.
+Instead,
+we would need to use facets
+to plot separate densities for each group.
+Here we show how to style these facets
+to make them less prominent
+and bring the densities closer to each other
+for easier comparison.
+This makes the code more verbose
+and it is not strictly necessary
+for an effective visualization.
 
 ```{python}
-#| label: compact-genre-densities-alt
+#| label: compact-densities-alt
 alt.Chart(movies, height=60).transform_density(
     'Running Time min',
     groupby=['Major Genre'],
-    as_=['runtime', 'density'],
+    as_=['Running Time min', 'Density'],
+    counts=True,
     bandwidth=5,
-    extent=[40, 260],
 ).mark_area().encode(
-    x=alt.X('runtime:Q').title('Running time (min)'),
-    y=alt.Y('density:Q').title(None).axis(labels=False, ticks=False),
+    x=alt.X('Running Time min:Q'),
+    y=alt.Y('Density:Q').axis(None),
 ).facet(
-    'Major Genre:N',
-    columns=1,
+    row=alt.Row('Major Genre:N').header(
+        labelAngle=0, labelAlign='left', labelAnchor='start'
+    ).title(None),
+    spacing=0
+).configure_view(
+    stroke=None
 )
 ```
 
 ### ggplot
 
-`geom_violin()` calculates the density and draws the mirrored shape.
-Because runtime is on the x-axis, these violins lie horizontally.
-The `bw` parameter controls smoothing in the same way as for `geom_density()`.
+`geom_violin()` calculates the density
+and draws the mirrored violin shape.
 
 ```{r}
 #| label: runtime-violins-gg
 #| fig-height: 4
 ggplot(movies, aes(x = `Running Time min`, y = `Major Genre`)) +
-    geom_violin(bw = 5, fill = 'grey80') +
-    labs(x = 'Running time (min)', y = NULL)
+    geom_violin(bw = 'SJ', fill = 'grey80', scale = 'count')
 ```
-
-By default, violin width does not encode group size.
-Setting `scale = 'count'` would make their areas proportional to the number of observations
-before trimming, but it changes what their relative sizes mean.
 
 :::
 
-### Adding observations and medians
-
-As with histograms and boxplots,
-we can combine the distribution display with the observations it summarizes.
-A median provides an additional reference point for comparing the groups.
+We can extend this approach
+to compare multiple groups within the same genre.
+We first create a new column
+indicating which movies are friendly for you children
+and are more suitable for kids aged 13 and up.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+In addition to the densities,
+we also visualize the mean of each group
+to facilitate comparing both the distribution
+and central tendency of the observations.
 
-We layer a rug and a dashed median line onto each density,
-then facet the combined chart by genre.
-The rug makes the observed runtimes visible without giving them a density value.
+### Altair
 
 ```{python}
-#| label: genre-density-rug-median-alt
-density = alt.Chart(movies).transform_density(
-    'Running Time min',
-    groupby=['Major Genre'],
-    as_=['runtime', 'density'],
-    bandwidth=5,
-    extent=[40, 260],
-).mark_area(opacity=0.5).encode(
-    x=alt.X('runtime:Q').title('Running time (min)'),
-    y=alt.Y('density:Q').title(None),
+#| label: compact-densities-groups-alt
+movies['Age rating'] = (
+    movies['MPAA Rating']
+    .isin(['G', 'PG'])
+    .replace({True: '0-13', False: '13+'})
 )
-
-rug = alt.Chart(movies).mark_tick(opacity=0.25, size=8).encode(
-    x=alt.X('Running Time min:Q').title('Running time (min)'),
-    y=alt.value(70),
-)
-
-median = alt.Chart(movies).mark_rule(color='black', strokeDash=[4, 3]).encode(
-    x=alt.X('median(Running Time min):Q').title('Running time (min)'),
-)
-
-(density + rug + median).properties(height=70).facet(
-    'Major Genre:N',
-    columns=1,
+alt.layer(
+    alt.Chart(movies).mark_rule().encode(
+        x=alt.X('mean(Running Time min)').title('Running time min'),
+        color='Age rating'
+    ),
+    alt.Chart(movies, height=60).transform_density(
+        'Running Time min',
+        groupby=['Major Genre', 'Age rating'],
+        as_=['Running Time min', 'Density'],
+        bandwidth=5,
+        counts=True,
+    ).mark_area(opacity=0.5).encode(
+        x=alt.X('Running Time min:Q'),
+        y=alt.Y('Density:Q').axis(None).stack(False),
+        color='Age rating',
+    )
+).facet(
+    row=alt.Row('Major Genre:N').header(
+        labelAngle=0, labelAlign='left', labelAnchor='start'
+    ).title(None),
+    spacing=0
+).configure_view(
+    stroke=None
 )
 ```
 
-#### ggplot
+### ggplot
 
-We add jittered observations and a white point marking the median.
-Setting `width = 0` keeps the measured runtimes unchanged;
-only positions along the categorical axis are jittered.
+In addition to the densities,
+we also visualize the mean of each group
+to facilitate comparing both the distribution
+and central tendency of the observations.
+The lines for the 25th, 50th (median) and 75th quantiles
+are computed by default in `geom_violin`
+and we can make them visible by setting the style of the quantile lines.
 
 ```{r}
-#| label: runtime-violins-jitter-median-gg
-#| fig-height: 4
-#| fig-cap: >
-#|   Movie runtimes by genre. Violins show estimated density, small points show
-#|   individual movies, and white points mark the median of each genre.
-set.seed(42)
-ggplot(movies, aes(x = `Running Time min`, y = `Major Genre`)) +
-    geom_violin(bw = 5, fill = 'grey90') +
-    geom_jitter(width = 0, height = 0.1, alpha = 0.3, size = 1) +
-    geom_point(stat = 'summary', fun = median, shape = 21, fill = 'white', size = 2.5) +
-    labs(x = 'Running time (min)', y = NULL)
+#| fig-height: 6
+#| fig-width: 6
+#| label: runtime-violins-groups-gg
+movies |>
+  dplyr::mutate(
+      `Age rating` = dplyr::if_else(
+          `MPAA Rating` %in% c("G", "PG"), "0-13", "13+"
+        )
+    ) |>
+    ggplot(
+        aes(
+            x = `Running Time min`,
+            y = `Major Genre`,
+            fill = `Age rating`
+        )
+    ) +
+        geom_violin(bw = 'SJ', quantile.linetype = 3, scale = 'count') +
+        geom_point(
+            stat = 'summary',
+            fun = mean,
+            position = position_dodge(0.9)
+        )
 ```
+
+We need to use `position_dodge` to position the points
 
 :::
 
-The density and violin displays make the overall shapes easier to compare,
-while the observations remind us where the data actually are.
-Neither a smooth outline nor a median replaces that information:
-they are complementary views of the same distributions.
+We can see that movies made for younger audiences
+tend to be shorter
+and that divide is specifically prevalent
+for adventure movies.
+There are also no horror movies made for children under 13,
+which is expected.
+
+<!-- TODO sina density clouds -->
