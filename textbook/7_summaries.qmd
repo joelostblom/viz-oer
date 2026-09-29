@@ -16,30 +16,35 @@ fig-height: 3.75
 
 :::
 
-## Why do we care?
+## Why bother?
 
-In [Order](6_order.qmd), we connected supplied values to make their sequence clear.
+In [Order](6_order.qmd), we connected observations to make their sequence clear.
 Sometimes, however, our question concerns a collection of observations:
 How many are there? What is their total? What is a typical value?
 A summary helps answer these questions by reducing many values to a few.
 In this chapter, we will explore how to reduce a collection
-of observations to useful quantities—and ask what information that reduction leaves out.
+of observations to useful quantities.
 
 That reduction is useful, but it also leaves information out.
 As we work through this chapter, keep asking:
 **What did we lose, and how much of it do we need to put back?**
-We will explore those questions in the following chapters.
+We will explore these questions here and in the following chapters.
 
 
 ::: {.callout-default .ex-prompt}
 
-Long term meditation has document effects
-in terms of .... ref.
-But what about if you have never meditaated before 
-and just want to feel a bit less stressed about your next exam?
-There was a paper that explored exactly that and here are the results
-using the best practices we learned about grouping with position
-and position on the same scale to compare values:
+<!--TODO add long term medition benefits and phrasing "but what if you never meditated before and just want to feel less stresstd before the exam"
+Suppose you are interested in whether meditation could help you feel less stressed
+before your next exam.
+The dataset below is a 500-observation sample from a randomized study by Sparacio and colleagues.^[Sparacio et al. (2024), [*Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study*](https://doi.org/10.1038/s41562-024-01907-7), *Nature Human Behaviour*, 8, 1716–1725.]
+It contains stress scores from four meditation conditions
+and a control condition in which participants listened to a story excerpt.
+The score averages 20 items from the State-Trait Anxiety Inventory's state-anxiety questionnaire
+(STAI Form Y-1), after reverse-scoring the relevant items; it ranges from 1 to 4,
+with higher scores indicating greater self-reported distress after the activity.
+How do the recorded stress scores differ between conditions?
+We start by applying the strategies we have learned so far:
+grouping observations by position and comparing their values on a shared scale.
 
 :::: {.panel-tabset group="language"}
 
@@ -506,11 +511,16 @@ informed by the study design.
 
 What about the magnitude of the differences?
 In this dataset, the meditation conditions have mean stress scores
-about 0.14–0.28 units below the book-reading control condition.
+about 0.14–0.28 units below the story-listening control condition.
 Is that a lot or a little?
-To judge practical importance, we need to know how stress was measured,
-what the score's units and range mean, and what difference would matter in this context.
+These are differences on the 1–4 questionnaire scale described above;
+judging their practical importance also requires considering what difference would matter in this context.
 The charts help us describe the sample,
 but they do not by themselves establish that meditation caused the differences
 or that the differences are large enough to matter in practice.
-<!-- TODO Add the original paper's interpretation once its reference and stress-score definition are confirmed. -->
+
+The original study's main analysis, using 2,239 participants across 37 sites,
+found evidence that all four 15-minute mindfulness exercises reduced self-reported stress
+relative to the active control.
+The largest mean difference was for body scan: 0.27 points lower than the control on the 1–4 scale.
+The authors concluded that even these brief exercises can offer modest, short-term benefits.
