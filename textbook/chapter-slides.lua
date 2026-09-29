@@ -40,9 +40,48 @@ function Pandoc(doc)
     output:insert(pandoc.Header(2, title, pandoc.Attr(identifier or "")))
   end
 
-  local function show_text(blocks)
-    output:insert(pandoc.Div(blocks,
-      pandoc.Attr("", {"slide-content", "fragment", "fade-in"})))
+  local function capitalize_paragraph(block)
+    local found = false
+    return block:walk({
+      traverse = "topdown",
+      Str = function(str)
+        if found then return nil end
+        for offset, codepoint in utf8.codes(str.text) do
+          local char = utf8.char(codepoint)
+          local upper = pandoc.text.upper(char)
+          if upper ~= pandoc.text.lower(char) then
+            str.text = str.text:sub(1, offset - 1) .. upper .. str.text:sub(offset + #char)
+            found = true
+            return str
+          end
+        end
+      end,
+      -- Keep leading identifiers/formulas literal, rather than changing code
+      -- or capitalizing the word that follows it (e.g. `x` is a variable).
+      Code = function() found = true end,
+      Math = function() found = true end,
+      Note = function(note) return note, false end,
+      Image = function(image) return image, false end
+    })
+  end
+
+  local function show_text(blocks, capitalize)
+    local fragment = pandoc.Div(blocks,
+      pandoc.Attr("", {"slide-content", "fragment", "fade-in"}))
+    if capitalize then
+      local items = pandoc.List()
+      for _, block in ipairs(blocks) do
+        if block.t == "BulletList" or block.t == "OrderedList" then
+          items:extend(block.content)
+        else
+          items:insert(pandoc.List({block}))
+        end
+      end
+      fragment.content = pandoc.List({pandoc.BulletList(items)})
+      -- walk returns a transformed copy, preserving the chapter/notes wording.
+      fragment = fragment:walk({Para = capitalize_paragraph, Plain = capitalize_paragraph})
+    end
+    output:insert(fragment)
   end
 
   local function selected_spans(block)
@@ -60,6 +99,37 @@ function Pandoc(doc)
     return selections
   end
 
+  local function highlighted_notes(block)
+    local function emphasize(inlines)
+      -- Avoid double-bold markup when an excerpt already contains emphasis.
+      local content = pandoc.Span(inlines):walk({
+        Strong = function(strong) return strong.content end
+      }).content
+      return pandoc.Strong(content)
+    end
+    local function emphasize_paragraph(paragraph)
+      paragraph.content = pandoc.Inlines({emphasize(paragraph.content)})
+      return paragraph
+    end
+    -- Transform only the notes copy. Semantic bold also works in Reveal's
+    -- separate speaker window, which does not inherit our slide stylesheet.
+    local wrapper = pandoc.Div({block}):walk({
+      traverse = "topdown",
+      Div = function(div)
+        if div.classes:includes("slide-text") then
+          return div:walk({Para = emphasize_paragraph, Plain = emphasize_paragraph}), false
+        end
+      end,
+      Span = function(span)
+        if span.classes:includes("slide-text") then
+          span.content = pandoc.Inlines({emphasize(span.content)})
+          return span, false
+        end
+      end
+    })
+    return wrapper.content[1]
+  end
+
   for _, block in ipairs(doc.blocks) do
     if block.t == "Header" then
       start_slide(block.content, block.identifier)
@@ -70,8 +140,8 @@ function Pandoc(doc)
       if not current_title then
         start_slide("Introduction", "introduction")
       end
-      show_text(block.content)
-      notes:insert(block)
+      show_text(block.content, true)
+      notes:insert(highlighted_notes(block))
     elseif block.t == "Div" and block.classes:includes("slide-visual") then
       if not current_title then
         start_slide("Visualization", "visualization")
@@ -85,10 +155,10 @@ function Pandoc(doc)
       visual_count = visual_count + 1
     elseif current_title then
       for _, selection in ipairs(selected_spans(block)) do
-        show_text({selection})
+        show_text({selection}, true)
       end
       -- Retain the full paragraph as notes, including the selected excerpt.
-      notes:insert(block)
+      notes:insert(highlighted_notes(block))
     end
   end
   flush_notes()

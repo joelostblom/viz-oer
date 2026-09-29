@@ -1,4 +1,4 @@
-# Standalone project template used by build_chapter_slides.py.
+# Standalone project template used by src/build_chapter_slides.py.
 project:
   type: default
   output-dir: _output
@@ -26,7 +26,7 @@ format:
     transition-speed: fast
     background-transition: fade
     auto-stretch: false
-    overview: false
+    overview: true
     include-in-header:
       - text: |
           <meta name="chapter-url" content="../1_why-visualize-data.html">
