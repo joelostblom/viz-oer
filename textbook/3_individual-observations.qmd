@@ -20,7 +20,7 @@ include-in-header:
 1. **Apply** the visualization grammars in Altair and ggplot
    to create a basic chart via
    `alt.Chart(data).mark_point().encode(x='...', y='...', color='...')`
-   and <br> `ggplot(data, aes(x=..., y=..., color=...)) + geom_point()`
+   and <br> `ggplot(data, aes(x = ..., y = ..., color = ...)) + geom_point()`.
 
 2. **Interpret** relationships between individual observations in a scatterplot without assuming causation.
 
@@ -38,30 +38,26 @@ from utils import show_df
 
 ## Why bother?
 
-Learning how to visualize each individual observation separately
-can be thought of as the most fundamental or naive way to visualize data.
-We're not summarizing the data in any way
-and we are not adding any additional decorative or guiding graphical elements.
-All we're doing is
+Plotting each individual observation separately
+is one of the most direct ways to visualize data.
+Rather than summarizing groups of observations,
+we're simply
 putting one graphical point in our chart
 for every record in our table.
-Like we saw in the introductory chapter,
+As we saw in the introductory chapter,
 even this simple form of visualization
-can lead to insights that numbers alone could never bring.
+can reveal patterns that are difficult to spot in a table of numbers.
 
 ## Creating our first chart
 
 It's time to start coding!
-Let's start by defining some example data to visualize.
-The use of data in libraries that implements a grammar of graphics
-generally follow the principles of ["tidy"](http://vita.had.co.nz/papers/tidy-data.html) data.
-Tidy data is defined as a set of named data *columns*
-(also referred to as *variables* or *fields*)
-with one feature each
-and rows with one observation each.
-We will start by,
-loading in a small dataset relating to cars
-containing historical trends in automotive design, performance, and efficiency.
+First, we need some example data to visualize.
+Libraries that implement a grammar of graphics
+generally work with ["tidy"](https://vita.had.co.nz/papers/tidy-data.html) data.
+In tidy data, each column represents a *variable* (also called a *field*),
+and each row represents an *observation*.
+We will start by loading a small historical dataset
+with information about cars' design, performance, and fuel efficiency.
 
 :::: {.panel-tabset group="language"}
 
@@ -109,7 +105,7 @@ show_df(cars)
 Looking at the table above,
 we might start to generate questions about our data.
 Perhaps the cars with the best fuel efficiency
-(the ones that travel the most `Miles_per_gallon` of fuel)
+(the ones with the highest `Miles_per_Gallon`)
 are also the cars with the least powerful engines (lowest `Horsepower`)?
 This sounds reasonable since a more powerful engine
 generally uses more fuel.
@@ -122,7 +118,7 @@ such as `x` and `y`.
 
 ::: {.panel-tabset group="language"}
 
-## Altair
+### Altair
 
 First,
 we create a canvas linked to the cars dataframe
@@ -139,7 +135,7 @@ alt.Chart(cars).mark_point().encode(
 )
 ```
 
-## ggplot
+### ggplot
 
 First,
 we create a canvas linked to the cars dataframe
@@ -163,19 +159,19 @@ ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower)) +
 **Different defaults**
 
 You can see that there are some differences in the default choices
-made in each library:
+made by each library.
 
 Different styles have different advantages,
 and they are easy to customize to look however you want,
 which we will learn about later.
 
-Including the origin (x=0, y=0),
-or zooming in to the data
-can both be sensible defaults in different context,
+Including the origin (x = 0, y = 0)
+or zooming in on the data
+can both be sensible defaults in different contexts,
 which we will also learn more about in later chapters.
 
 Observations with missing values in either `Miles_per_Gallon` or `Horsepower`
-are dropped since there is no way to visualize there.
+are omitted because they cannot be positioned on both axes.
 Some libraries explicitly warn about this
 and others don't.
 
@@ -186,14 +182,13 @@ That's up to you to explore in the exercise below!
 
 ::::: {.callout-default .ex-prompt}
 
-Study the chart above,
-what can you say about the relationship
+Study the chart above.
+What can you say about the relationship
 between `Horsepower` and `Miles_per_Gallon`?
-If you choose to use statistical terms such as talking
-about the correlation between the two variables,
-try to express yourself in common English
+If you choose to use statistical terms such as correlation,
+also explain them in plain English,
 as if you were explaining what the chart means
-to someone of the general public.
+to someone unfamiliar with statistics.
 Finally,
 it's always good to ask yourself
 if your interpretation of the chart makes sense,
@@ -203,8 +198,8 @@ given your knowledge about how the world works.
 
 It can be helpful to start with a particular area of the chart.
 For example,
-look at the cars with the most powerful engines (highest horsepower),
-what is their fuel efficiency?
+look at the cars with the most powerful engines (highest horsepower).
+What is their fuel efficiency?
 Now do the same for the cars with the least powerful engines
 and compare the two.
 
@@ -214,12 +209,12 @@ From the chart,
 we can see that `Horsepower` and `Miles_per_Gallon`
 are "negatively correlated".
 In plain English,
-this means that cars with more powerful engines (higher Horsepower),
-have lower fuel efficiency (lower Miles_per_Gallon).
-This makes sense as more powerful engines often consume more gas
+this means that cars with more powerful engines (higher `Horsepower`)
+tend to have lower fuel efficiency (lower `Miles_per_Gallon`).
+This makes sense, as more powerful engines often consume more fuel
 than less powerful ones.
 Note that we can't make claims about a causal relationship from the chart alone,
-but in this case the observed relationship in the chart
+but in this case, the observed relationship in the chart
 supports our mechanistic understanding of the world.
 
 :::
@@ -228,8 +223,8 @@ supports our mechanistic understanding of the world.
 
 :::::
 
-Our conclusion above makes sense for the data we showed in chart.
-But remember that there are other variables in our dataframe,
+Our conclusion above makes sense for the data we showed in the chart.
+But remember that there are other variables in our dataframe;
 let's show it again as a reminder.
 
 ```{python}
@@ -239,18 +234,18 @@ let's show it again as a reminder.
 show_df(cars)
 ```
 
-What if one of the other columns also influence a car's fuel efficiency?
+What if one of the other variables also influences a car's fuel efficiency?
 For example,
 it seems reasonable that the weight of the car could impact fuel efficiency,
-since more force is needed to propel a larger mass.
+since more energy is needed to accelerate a heavier car to the same speed.
 To explore `Weight_in_lbs`
 together with the other two variables,
-we can add more dimensions to this chart,
-e.g. specifying that we want to color the points by this new column.
+we can add another visual encoding to this chart,
+for example, by coloring the points according to this column.
 When using the `color` encoding channel,
-higher level visualization libraties
+high-level visualization libraries
 will automatically figure out an appropriate color scale to use.
-Since `Weight_in_lbs` column contains continuous numerical data,
+Since the `Weight_in_lbs` column contains continuous numerical data,
 a continuous gradient will be used here.
 
 ::: {.panel-tabset group="language"}
@@ -262,8 +257,8 @@ we add the `color` encoding to the chart
 so that we can see how all three variables
 relate to each other.
 Note that the largest value in the `Weight_in_lbs` column
-is represented with a dark color
-since this has the highest contrast to the light background of the chart.
+is represented with a dark color,
+which contrasts strongly with the light background of the chart.
 
 ```{python}
 #| label: cars-weight-alt
@@ -280,9 +275,10 @@ Here,
 we add the `color` encoding to the chart
 so that we can see how all three variables
 relate to each other.
-Note that the largest value in the `Weight_in_lbs` column
-is represented with a light color
-since this has the highest contrast to the dark background of the chart.
+The default color gradient runs from dark blue for lower weights
+to light blue for higher weights.
+This is different from Altair's default scale,
+so check the legend when interpreting the colors.
 
 ```{r}
 #| label: cars-weight-gg
@@ -297,10 +293,10 @@ ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
 **Making space**
 
 Notice the difference in how the legend is added in the two libraries.
-In Altair the overall width of the figure was increased
+In Altair, the overall width of the figure increases
 to keep the dimensions of the chart area the same,
-whereas in ggplot the width of the figure is kept constant
-so the chart area must narrow to accommodate the legend.
+whereas in ggplot, the width of the figure stays constant,
+so the chart area narrows to accommodate the legend.
 In general,
 we don't want the chart area to shrink just because we are adding a legend,
 so here we would need to manually increase the width of the ggplot chart,
@@ -314,22 +310,21 @@ How does a car's weight relate to its fuel efficiency?
 
 :::: {.callout-default .ex-hint}
 
-As with the previous exercise,
-you can try to start with a specific area of the chart,
-first focusing on finding the fuel efficiency
-of the cars with the highest horsepower,
-and then compare it to the cars with the lowest horsepower.
+Use the color legend to find the heaviest cars.
+Where do they fall on the fuel-efficiency axis?
+Compare them with the lightest cars,
+then check how their horsepower differs too.
 
 ::: {.callout-default .ex-solution}
 
-We can see that weight is correlated positively with `Horsepower`
+We can see that `Weight_in_lbs` is positively correlated with `Horsepower`
 and negatively with `Miles_per_Gallon`.
 This aligns with our knowledge about the world:
-heavy cars require bigger engines
-and more fuel to propel them forward.
+heavier cars generally need more energy to accelerate to the same speed,
+and the heavier cars in this dataset tend to have more powerful engines.
 However,
-remember that we can't say anything about causation from the chart alone,
-we can just note that the correlation matches
+remember that we can't establish causation from the chart alone.
+We can only note that the correlation matches
 what we would expect
 based on our knowledge about the physics of moving objects.
 
@@ -340,16 +335,16 @@ based on our knowledge about the physics of moving objects.
 :::::
 
 As a final note,
-you might have reacted to that it was harder
-to tell exact values on the color scale
-compared to the x and y scales.
-This is an important consideration
+you might have noticed that it was harder
+to read exact values from the color scale
+than from the x- and y-axes.
+This is an important consideration,
 and we will dive deeper into
 which visual channels are the most effective
 at presenting information
 in a future chapter.
 
-<!-- TODO this section could combine theoretica lknowledge with coding, but the exercises throughout the chapter stays as conceptual exxcreisces to discover and motivate the content --> 
+<!-- TODO This section could combine theoretical knowledge with coding, but the exercises throughout the chapter remain conceptual exercises to discover and motivate the content. -->
 
 <!-- {{< include ./_extensions/r-wasm/live/_knitr.qmd >}} -->
 <!-- ## Exercise mission -->
@@ -361,12 +356,12 @@ in a future chapter.
 <!-- **Minister Reed**, -->
 <!-- head of the environment department, -->
 <!-- has called on you to step up to help -->
-<!-- and tasked with investigating emissions in the city of Viridia. -->
+<!-- and tasked you with investigating emissions in the city of Viridia. -->
 
 
 <!-- ::::: {.callout-default .ex-prompt} -->
 
-<!-- To start with your investigation, -->
+<!-- To start your investigation, -->
 <!-- you'll need to visualize the emissions data effectively. -->
 <!-- This will help unlock insights crucial for the Ministry of Environment. -->
 <!-- The data looks like this: -->
@@ -386,8 +381,8 @@ in a future chapter.
 
 <!-- ::::: {.callout-default .ex-prompt} -->
 
-<!-- It's time to put the Grammar of Graphics to good use. -->
-<!-- Create a scatter plot of the food supply and emissions data by following these steps: -->
+<!-- It's time to put the grammar of graphics to good use. -->
+<!-- Create a scatterplot of the food supply and emissions data by following these steps: -->
 
 <!-- 1. Instantiate the chart from the `food_emission` dataframe -->
 <!-- 2. Use the point mark to create a point for each observation in the data. -->
@@ -532,7 +527,7 @@ in a future chapter.
 
 <!-- These are striking results! There are some clear clusters and outliers in the data. -->
 
-<!-- With altair you can add a `tooltip` to your chart. Tooltips are labels that pop up when you hover over a datapoint. You can choose which variable is shown in your tooltip just as you have been using `x`, `y`, and `color`. -->
+<!-- With Altair, you can add a `tooltip` to your chart. Tooltips are labels that pop up when you hover over a data point. You can choose which variable is shown in your tooltip just as you have been using `x`, `y`, and `color`. -->
 
 <!-- Add a `tooltip` to investigate which foods stand out. -->
 
@@ -547,7 +542,7 @@ in a future chapter.
 <!-- ``` -->
 
 <!-- :::: {.callout-default .ex-hint} -->
-<!-- Take a closer look at the emissions data table - you'll need the correct column name for the tooltip. -->
+<!-- Take a closer look at the emissions data table—you'll need the correct column name for the tooltip. -->
 
 <!-- ::: {.callout-default .ex-solution} -->
 <!-- ```{python} -->
