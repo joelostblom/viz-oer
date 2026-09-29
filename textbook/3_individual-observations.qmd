@@ -28,8 +28,6 @@ include-in-header:
 
 :::
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-
 ```{python observations-setup}
 #| echo: false
 #| output: false
@@ -351,8 +349,10 @@ which visual channels are the most effective
 at presenting information
 in a future chapter.
 
-<!-- ## Exercise mission -->
+<!-- TODO this section could combine theoretica lknowledge with coding, but the exercises throughout the chapter stays as conceptual exxcreisces to discover and motivate the content --> 
 
+<!-- {{< include ./_extensions/r-wasm/live/_knitr.qmd >}} -->
+<!-- ## Exercise mission -->
 <!-- Apply what you have learned about individual observations in the following exercises. -->
 
 <!-- With a commitment to sustainability and a vision for a greener future, -->
