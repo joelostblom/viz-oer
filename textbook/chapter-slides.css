@@ -1,0 +1,149 @@
+/* Applied only to the presentation, not the reading view. */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
+
+:root {
+  --r-background-color: #1A1B26;
+  --r-main-font: "Ubuntu", sans-serif;
+  --r-heading-font: "Ubuntu", sans-serif;
+  --r-main-color: #c0caf5;
+  --r-heading-color: #7AA2F7;
+  --r-link-color: #FF9E64;
+  --r-link-color-dark: #FF9E64;
+  --r-link-color-hover: #FF9E64;
+  --r-selection-background-color: #FF9E64;
+  --r-selection-color: #1A1B26;
+}
+
+.reveal {
+  font-size: 32px;
+}
+
+/* Short, consistent fades for slide changes and heading-first content reveals. */
+.reveal[data-transition-speed="fast"] .slides section,
+.reveal .slides section .fragment {
+  transition-duration: 180ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Reset revisited slides immediately, without briefly showing their content. */
+.reveal .slides section.resetting-fragments .fragment {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-transition-speed="fast"] .slides section,
+  .reveal .slides section .fragment {
+    transition-duration: 0ms;
+  }
+}
+
+.reveal #title-slide .title {
+  color: #C099FF;
+}
+
+.reveal strong,
+.reveal b,
+.reveal em,
+.reveal a,
+.reveal a:hover,
+.reveal .controls {
+  color: var(--r-link-color);
+}
+
+.reveal .progress span {
+  background-color: var(--r-link-color);
+}
+
+.slide-menu-button a,
+.slide-menu-button i,
+.slide-menu-button i::before,
+.slide-menu-button svg {
+  color: var(--r-link-color) !important;
+  fill: var(--r-link-color) !important;
+}
+
+.reveal .slide-number {
+  color: var(--r-main-color);
+}
+
+.reveal .slide-number {
+  background: transparent;
+}
+
+.reveal .callout {
+  color: var(--r-main-color);
+  background-color: var(--r-background-color) !important;
+  border-color: var(--r-link-color) !important;
+}
+
+.reveal .callout.callout-note .callout-title {
+  color: var(--r-link-color);
+  background-color: var(--r-background-color) !important;
+  border-bottom: 1px solid var(--r-link-color);
+}
+
+.reveal .callout-icon-container {
+  display: none;
+}
+
+.reveal h2 {
+  font-size: 1.4em;
+  margin-bottom: 0.6em;
+}
+
+.reveal li {
+  margin-bottom: 0.7em;
+}
+
+.reveal .slide-media,
+.reveal .slide-media .quarto-figure,
+.reveal .slide-media figure,
+.reveal .slide-media figure > div {
+  text-align: left;
+}
+
+.reveal .slide-media figure,
+.reveal .slide-media table,
+.reveal .slide-media img {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.reveal .dataframe-grid {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.reveal .dataframe-grid table {
+  font-size: 21px;
+  margin: 0;
+}
+
+/* The summary table uses inline styles to emphasize its differing values. */
+.reveal .dataframe-grid td[style*="background-color"] {
+  background-color: var(--r-link-color) !important;
+  color: var(--r-background-color) !important;
+}
+
+.reveal .dataframe-grid td[style*="background-color"] b,
+.reveal .dataframe-grid td[style*="background-color"] strong {
+  color: inherit;
+}
+
+.reveal .slide-media img {
+  max-height: 560px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.reveal .vega-embed {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.reveal figcaption,
+.reveal caption {
+  display: none;
+}

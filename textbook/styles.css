@@ -3,6 +3,49 @@
 /*-- Importing Ubuntu fonts --*/
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
+/* Chapter actions share the title line instead of adding a toolbar below it. */
+.chapter-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chapter-title-row h1.title {
+  min-width: 0;
+  margin: 0;
+}
+
+.chapter-present-link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.25rem;
+  color: var(--bs-secondary-color, #526171);
+  text-decoration: none;
+}
+
+.chapter-present-link[hidden] {
+  display: none;
+}
+
+.chapter-present-link svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.chapter-present-link:hover {
+  color: var(--bs-link-color);
+  background: var(--bs-tertiary-bg, #f3f1ed);
+}
+
+.chapter-present-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
 /* A quiet graph-paper surround frames the white reading column on desktop.
    Use Quarto's grid lines: main spans the screen to accommodate margin content. */
 @media screen and (min-width: 992px) {

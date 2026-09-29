@@ -27,6 +27,109 @@ uv run quarto preview textbook
 
 Press Ctrl+C to stop the preview.
 
+### Chapter 1: reading and presentation views
+
+Chapter 1 opens as an ordinary textbook page. Its small **Present slides** icon
+beside the chapter title (a screen, with a tooltip and accessible label)
+opens a Reveal.js deck generated from the same `1_why-visualize-data.qmd` file.
+In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
+notes, and **Esc** to return to the matching section of the reading view.
+The opening title is purple; other slide titles are blue. Figures and tables
+are left aligned, with captions hidden in the deck and retained in the chapter.
+There is no presentation footer, and Reveal's slide overview is disabled.
+Slide changes and content reveals use quick 180 ms fades. Each slide opens with
+only its heading; the next advance reveals its learning-outcomes block, chart,
+table, or image as one fragment. Visuals stay intact rather than animating table
+cells or individual chart marks. Revisiting a slide resets it to heading-only.
+Reduced-motion preferences suppress the animation while keeping the same reveal
+steps.
+
+The pilot includes the title, learning outcomes, all section/subsection
+headings, both Anscombe tables, the Altair chart, and the Datasaurus animation.
+The section prose becomes speaker notes. Sections without a visual have a
+heading-only slide with their explanation in the notes.
+
+The chapter uses lightweight annotations:
+
+- `chapter-slides: slides/1_why-visualize-data.html` enables its presentation link.
+- A `.slide-outcomes` div wraps the learning outcomes.
+- A `.slide-visual` div wraps each chart, image, or table selected for slides.
+- A `.slide-text` span selects a phrase/sentence within a paragraph; a
+  `.slide-text` div selects a whole paragraph, list, or block.
+- All chapter headings become slide headings, including subsections.
+- Other content after a heading becomes speaker notes for that slide.
+
+To reuse part of a paragraph without writing it twice:
+
+```markdown
+Visualization helps us [**recognize patterns** more quickly]{.slide-text}
+than a table of raw numbers.
+```
+
+The entire paragraph appears normally in the textbook and remains available in
+speaker notes. Only the marked phrase appears on the slide, as a fade-in fragment
+under the current heading. Formatting and links inside the brackets are retained.
+Multiple marked spans become separate fragments, in reading order.
+
+For a whole paragraph or a group of bullets, use a div instead:
+
+```markdown
+::: {.slide-text}
+Visualization supports both exploration and communication.
+:::
+```
+
+The block appears normally in the chapter and becomes one slide fragment. These
+are project-specific annotations implemented by `chapter-slides.lua`, not native
+Quarto selection syntax. Place inline selections after their section heading.
+
+These wrappers do not hide or duplicate material in the reading view. Code
+executes normally before slide selection, so data-loading cells remain available
+to later chart cells. To add another visual to this pilot deck, wrap it in:
+
+```markdown
+::: {.slide-visual}
+
+![Caption](img/example.svg)
+
+:::
+```
+
+For a new local image or data file, also add its path to the staging list in
+`build_chapter_slides.py`. The pilot currently stages the Datasaurus image and
+the shared knitr setup include; the chart data come from Altair's dataset loader.
+
+`chapter-slides.lua` handles the two views. `_chapter-slides.yml` selects the
+Reveal format and output location; `chapter-slides.css` controls slide layout.
+`chapter-slides.js` implements Escape navigation using the chapter URL specified
+in the slide template and resets fragments when entering a slide.
+`chapter-title-tools.js` places the chapter's presentation icon beside its title.
+The chapter's normal render triggers `build_chapter_slides.py` as a Quarto
+post-render hook. It copies the chapter and its required assets into a temporary
+standalone project outside the book directory, renders the deck there, and copies the
+finished presentation into `_book/slides/`. Isolation prevents the slide build
+from changing Quarto's cached preview format for the reading page. This also works
+with `make preview` updates and `make book`, without an extra manual slide build.
+The pilot executes chapter 1 twice: once for each output format.
+
+Generated files:
+
+- Reading view: `textbook/_book/1_why-visualize-data.html`
+- Slide view: `textbook/_book/slides/1_why-visualize-data.html`
+
+Both are part of the published `_book` directory. The deck has its own generated
+assets, so the reading page is not overwritten. To render only the pilot deck:
+
+```sh
+. .uvr/activate
+uv run python textbook/build_chapter_slides.py --force
+```
+
+Other chapters are unaffected. Expanding the pilot requires registering another
+chapter and its assets in the build hook/template and setting its return link, as well as adding
+the chapter annotations. Restart an existing preview after changing project
+configuration or the hook.
+
 ### Synchronized language tabs
 
 Tabsets sharing `group="language"` still switch languages together.

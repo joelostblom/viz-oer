@@ -1,5 +1,6 @@
 ---
 title: "Why visualize data?"
+chapter-slides: slides/1_why-visualize-data.html
 fig-width: 4
 fig-height: 4
 include-in-header:
@@ -8,6 +9,8 @@ include-in-header:
         .table.dataframe { width: auto; text-align: right; }
       </style>
 ---
+
+:::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
@@ -20,6 +23,8 @@ include-in-header:
 3. **Explain** why similar summary statistics can hide very different patterns in the underlying data.
 
 :::
+
+::::
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -80,6 +85,8 @@ Can you describe the datasets
 just from looking at the numbers?
 How are they different from one another?
 
+::: {.slide-visual}
+
 ```{python}
 #| echo: false
 #| label: tbl-anscombe
@@ -113,12 +120,16 @@ html_content = '<div class="dataframe-grid">' + s + '</div>'
 HTML(html_content)
 ```
 
+:::
+
 ### Summary statistics don't tell the whole story either
 
 You are likely not able to see much difference between the data sets
 in the table above.
 What about if we looked at
 a few commonly used statistical summaries of the data?
+
+::: {.slide-visual}
 
 ```{python}
 #| echo: false
@@ -145,6 +156,8 @@ html_content = '<div class="dataframe-grid">' + s + '</div>'
 
 HTML(html_content)
 ```
+
+:::
 
 <br>
 Above,
@@ -173,6 +186,8 @@ Sounds about right
 so let's go ahead
 and plot them to have a quick look...
 
+::: {.slide-visual}
+
 ```{python}
 #| echo: false
 #| label: fig-anscombe-charts
@@ -191,6 +206,8 @@ alt.Chart(anscombe).mark_circle(size=80).encode(
   title=None
 )
 ```
+
+:::
 
 ... what... how can they be so different...
 there must be something wrong, right?
@@ -226,7 +243,11 @@ It displays several different datasets,
 all with nearly the same mean, standard deviation and correlation between X and Y,
 but looking at the data graphically shows us how different these datasets actually are:
 
+::: {.slide-visual}
+
 ![The Datasaurus Dozen: Datasets with near identical summary statistics but widely different distributions.](img/DinoSequentialSmaller.gif){#fig-datasaurus fig-alt="Data Taurus Dozen Animation"}
+
+:::
 
 Now that you have experienced the benefits of visualizing data,
 let's figure out how to create such visualizations!

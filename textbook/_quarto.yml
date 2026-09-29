@@ -1,5 +1,7 @@
 project:
   type: book
+  post-render:
+    - build_chapter_slides.py
 
 book:
   title: "Data Visualization"
@@ -23,12 +25,14 @@ book:
 
 filters:
   - custom-callouts.lua
+  - chapter-slides.lua
 
 # Shared table helpers and browser behavior; utils.py also supports Python exercises.
 resources:
   - utils.py
   - utils.R
   - tabset-scroll.js
+  - chapter-title-tools.js
 
 format:
   live-html:
@@ -39,6 +43,7 @@ format:
     include-after-body:
       - text: |
           <script src="tabset-scroll.js"></script>
+          <script src="chapter-title-tools.js"></script>
     monofont: "Ubuntu Mono"
     mainfont: Ubuntu
     number-depth: 2
