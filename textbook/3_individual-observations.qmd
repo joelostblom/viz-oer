@@ -351,228 +351,228 @@ which visual channels are the most effective
 at presenting information
 in a future chapter.
 
-## Exercise mission
+<!-- ## Exercise mission -->
 
-Apply what you have learned about individual observations in the following exercises.
+<!-- Apply what you have learned about individual observations in the following exercises. -->
 
-With a commitment to sustainability and a vision for a greener future,
-Viridia is taking proactive steps to investigate and mitigate its environmental impact.
-One significant area of focus is the emissions associated with food consumption and production.
-**Minister Reed**,
-head of the environment department,
-has called on you to step up to help
-and tasked with investigating emissions in the city of Viridia.
-
-
-::::: {.callout-default .ex-prompt}
-
-To start with your investigation,
-you'll need to visualize the emissions data effectively.
-This will help unlock insights crucial for the Ministry of Environment.
-The data looks like this:
-
-```{python}
-#| label: food-emissions-data
-#| echo: false
-
-food_emission = pd.read_csv("data/aggregated__food_data.csv")
-show_df(food_emission)
-```
-
-Remind me why you are including the Total Food Supply in your analysis?
-Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product)
-
-:::::
-
-::::: {.callout-default .ex-prompt}
-
-It's time to put the Grammar of Graphics to good use.
-Create a scatter plot of the food supply and emissions data by following these steps:
-
-1. Instantiate the chart from the `food_emission` dataframe
-2. Use the point mark to create a point for each observation in the data.
-3. Encode `Total Food Supply (kg/capita/yr)` in the x channel
-   and `Emissions (Kg CO2 / kg product)` in the y channel.
-
-You can use the code cells below to code your answer:
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{pyodide}
-#| label: food-exercise-python-setup
-#| setup: true
-#| exercise:
-#|   - initial_chart_alt
-#|   - tooltip_chart_alt
-import altair as alt
-import pandas as pd
-from utils import assert_chart_equal
-
-url = 'data/aggregated__food_data.csv'
-food_emission = pd.read_csv(url)
-```
-
-```{pyodide}
-#| label: food-scatter-python-exercise
-#| exercise: initial_chart_alt
-alt.Chart(______).mark_point().encode(
-    x=______,
-    y=______,
-)
-```
-
-```{pyodide}
-#| label: food-scatter-python-check
-#| exercise: initial_chart_alt
-#| check: true
-solution = alt.Chart(food_emission).mark_point().encode(
-    x='Total Food Supply (kg/capita/yr)',
-    y='Emissions (Kg CO2 / kg product)',
-)
-assert_chart_equal(solution, result)
-```
-
-### ggplot
-
-```{webr}
-#| label: food-exercise-r-setup
-#| setup: true
-#| exercise:
-#|   - initial_chart_gg
-#|   - tooltip_chart_gg
-library(ggplot2)
-
-url <- 'data/aggregated__food_data.csv'
-food_emission <- readr::read_csv(url, show_col_types=FALSE)
-```
-
-```{webr}
-#| label: food-scatter-r-exercise
-#| exercise: initial_chart_gg
-# TODO change column names so that backticks are not required
-ggplot(______) +
-    aes(
-        x=`______`,
-        y=`______`,
-    ) +
-    geom_point()
-```
-
-```{webr}
-#| label: food-scatter-r-check
-#| exercise: initial_chart_gg
-#| check: true
-solution <- ggplot(food_emission) +
-    aes(
-        x=`Total Food Supply (kg/capita/yr)`,
-        y=`Emissions (Kg CO2 / kg product)`,
-    ) +
-    geom_point()
-# TODO fix check
-# if (identical(.result, solution)) {
-#   list(correct = TRUE, message = "Nice work!")
-# } else {
-#    list(correct = FALSE, message = "That's incorrect, sorry.")
-# }
-list(correct = TRUE, message = "This check is not working yet")
-```
-
-:::
-
-:::: {.callout-default .ex-hint}
-
-For a reminder of the syntax,
-review section @sec-learning-to-speak.
-
-::: {.callout-default .ex-solution}
-
-::: {.panel-tabset group="language"}
-
-### Altair
-
-```{python}
-#| label: food-scatter-alt
-alt.Chart(food_emission).mark_point().encode(
-    x='Total Food Supply (kg/capita/yr)',
-    y='Emissions (Kg CO2 / kg product)',
-)
-```
-
-### ggplot
-
-```{r}
-#| label: load-food-emissions-r
-#| echo: false
-url <- 'data/aggregated__food_data.csv'
-food_emission <- readr::read_csv(url, show_col_types=FALSE)
-```
-
-```{r}
-#| label: food-scatter-gg
-ggplot(food_emission) +
-    aes(
-        x=`Total Food Supply (kg/capita/yr)`,
-        y=`Emissions (Kg CO2 / kg product)`,
-    ) +
-    geom_point()
-```
-
-:::
-
-:::
-
-::::
-
-:::::
+<!-- With a commitment to sustainability and a vision for a greener future, -->
+<!-- Viridia is taking proactive steps to investigate and mitigate its environmental impact. -->
+<!-- One significant area of focus is the emissions associated with food consumption and production. -->
+<!-- **Minister Reed**, -->
+<!-- head of the environment department, -->
+<!-- has called on you to step up to help -->
+<!-- and tasked with investigating emissions in the city of Viridia. -->
 
 
-::::: {.callout-default .ex-prompt}
+<!-- ::::: {.callout-default .ex-prompt} -->
 
-These are striking results! There are some clear clusters and outliers in the data.
+<!-- To start with your investigation, -->
+<!-- you'll need to visualize the emissions data effectively. -->
+<!-- This will help unlock insights crucial for the Ministry of Environment. -->
+<!-- The data looks like this: -->
 
-With altair you can add a `tooltip` to your chart. Tooltips are labels that pop up when you hover over a datapoint. You can choose which variable is shown in your tooltip just as you have been using `x`, `y`, and `color`.
+<!-- ```{python} -->
+<!-- #| label: food-emissions-data -->
+<!-- #| echo: false -->
 
-Add a `tooltip` to investigate which foods stand out.
+<!-- food_emission = pd.read_csv("data/aggregated__food_data.csv") -->
+<!-- show_df(food_emission) -->
+<!-- ``` -->
 
-```{pyodide}
-#| label: food-tooltip-exercise
-#| exercise: tooltip_chart_alt
-alt.Chart(food_emission).______.______(
-    ______
-    ______
-    tooltip=______,
-)
-```
+<!-- Remind me why you are including the Total Food Supply in your analysis? -->
+<!-- Guide them toward understanding why a complete picture is necessary and why including the Total Food Supply (kg/capita/yr) column matters (alongside the Emissions Kg CO2 / kg product) -->
 
-:::: {.callout-default .ex-hint}
-Take a closer look at the emissions data table - you'll need the correct column name for the tooltip.
+<!-- ::::: -->
 
-::: {.callout-default .ex-solution}
-```{python}
-#| label: food-tooltip-solution
-alt.Chart(food_emission).mark_point().encode(
-    x='Total Food Supply (kg/capita/yr)',
-    y='Emissions (Kg CO2 / kg product)',
-    tooltip='Food Item',
-)
-```
+<!-- ::::: {.callout-default .ex-prompt} -->
 
-```{pyodide}
-#| label: food-tooltip-check
-#| exercise: tooltip_chart_alt
-#| check: true
-solution = alt.Chart(food_emission).mark_point().encode(
-    x='Total Food Supply (kg/capita/yr)',
-    y='Emissions (Kg CO2 / kg product)',
-    tooltip='Food Item',
-)
-assert_chart_equal(solution, result)
-```
+<!-- It's time to put the Grammar of Graphics to good use. -->
+<!-- Create a scatter plot of the food supply and emissions data by following these steps: -->
 
-:::
+<!-- 1. Instantiate the chart from the `food_emission` dataframe -->
+<!-- 2. Use the point mark to create a point for each observation in the data. -->
+<!-- 3. Encode `Total Food Supply (kg/capita/yr)` in the x channel -->
+<!--    and `Emissions (Kg CO2 / kg product)` in the y channel. -->
 
-::::
+<!-- You can use the code cells below to code your answer: -->
 
-:::::
+<!-- ::: {.panel-tabset group="language"} -->
+
+<!-- ### Altair -->
+
+<!-- ```{pyodide} -->
+<!-- #| label: food-exercise-python-setup -->
+<!-- #| setup: true -->
+<!-- #| exercise: -->
+<!-- #|   - initial_chart_alt -->
+<!-- #|   - tooltip_chart_alt -->
+<!-- import altair as alt -->
+<!-- import pandas as pd -->
+<!-- from utils import assert_chart_equal -->
+
+<!-- url = 'data/aggregated__food_data.csv' -->
+<!-- food_emission = pd.read_csv(url) -->
+<!-- ``` -->
+
+<!-- ```{pyodide} -->
+<!-- #| label: food-scatter-python-exercise -->
+<!-- #| exercise: initial_chart_alt -->
+<!-- alt.Chart(______).mark_point().encode( -->
+<!--     x=______, -->
+<!--     y=______, -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ```{pyodide} -->
+<!-- #| label: food-scatter-python-check -->
+<!-- #| exercise: initial_chart_alt -->
+<!-- #| check: true -->
+<!-- solution = alt.Chart(food_emission).mark_point().encode( -->
+<!--     x='Total Food Supply (kg/capita/yr)', -->
+<!--     y='Emissions (Kg CO2 / kg product)', -->
+<!-- ) -->
+<!-- assert_chart_equal(solution, result) -->
+<!-- ``` -->
+
+<!-- ### ggplot -->
+
+<!-- ```{webr} -->
+<!-- #| label: food-exercise-r-setup -->
+<!-- #| setup: true -->
+<!-- #| exercise: -->
+<!-- #|   - initial_chart_gg -->
+<!-- #|   - tooltip_chart_gg -->
+<!-- library(ggplot2) -->
+
+<!-- url <- 'data/aggregated__food_data.csv' -->
+<!-- food_emission <- readr::read_csv(url, show_col_types=FALSE) -->
+<!-- ``` -->
+
+<!-- ```{webr} -->
+<!-- #| label: food-scatter-r-exercise -->
+<!-- #| exercise: initial_chart_gg -->
+<!-- # TODO change column names so that backticks are not required -->
+<!-- ggplot(______) + -->
+<!--     aes( -->
+<!--         x=`______`, -->
+<!--         y=`______`, -->
+<!--     ) + -->
+<!--     geom_point() -->
+<!-- ``` -->
+
+<!-- ```{webr} -->
+<!-- #| label: food-scatter-r-check -->
+<!-- #| exercise: initial_chart_gg -->
+<!-- #| check: true -->
+<!-- solution <- ggplot(food_emission) + -->
+<!--     aes( -->
+<!--         x=`Total Food Supply (kg/capita/yr)`, -->
+<!--         y=`Emissions (Kg CO2 / kg product)`, -->
+<!--     ) + -->
+<!--     geom_point() -->
+<!-- # TODO fix check -->
+<!-- # if (identical(.result, solution)) { -->
+<!-- #   list(correct = TRUE, message = "Nice work!") -->
+<!-- # } else { -->
+<!-- #    list(correct = FALSE, message = "That's incorrect, sorry.") -->
+<!-- # } -->
+<!-- list(correct = TRUE, message = "This check is not working yet") -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- :::: {.callout-default .ex-hint} -->
+
+<!-- For a reminder of the syntax, -->
+<!-- review section @sec-learning-to-speak. -->
+
+<!-- ::: {.callout-default .ex-solution} -->
+
+<!-- ::: {.panel-tabset group="language"} -->
+
+<!-- ### Altair -->
+
+<!-- ```{python} -->
+<!-- #| label: food-scatter-alt -->
+<!-- alt.Chart(food_emission).mark_point().encode( -->
+<!--     x='Total Food Supply (kg/capita/yr)', -->
+<!--     y='Emissions (Kg CO2 / kg product)', -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ### ggplot -->
+
+<!-- ```{r} -->
+<!-- #| label: load-food-emissions-r -->
+<!-- #| echo: false -->
+<!-- url <- 'data/aggregated__food_data.csv' -->
+<!-- food_emission <- readr::read_csv(url, show_col_types=FALSE) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| label: food-scatter-gg -->
+<!-- ggplot(food_emission) + -->
+<!--     aes( -->
+<!--         x=`Total Food Supply (kg/capita/yr)`, -->
+<!--         y=`Emissions (Kg CO2 / kg product)`, -->
+<!--     ) + -->
+<!--     geom_point() -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- ::: -->
+
+<!-- :::: -->
+
+<!-- ::::: -->
+
+
+<!-- ::::: {.callout-default .ex-prompt} -->
+
+<!-- These are striking results! There are some clear clusters and outliers in the data. -->
+
+<!-- With altair you can add a `tooltip` to your chart. Tooltips are labels that pop up when you hover over a datapoint. You can choose which variable is shown in your tooltip just as you have been using `x`, `y`, and `color`. -->
+
+<!-- Add a `tooltip` to investigate which foods stand out. -->
+
+<!-- ```{pyodide} -->
+<!-- #| label: food-tooltip-exercise -->
+<!-- #| exercise: tooltip_chart_alt -->
+<!-- alt.Chart(food_emission).______.______( -->
+<!--     ______ -->
+<!--     ______ -->
+<!--     tooltip=______, -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- :::: {.callout-default .ex-hint} -->
+<!-- Take a closer look at the emissions data table - you'll need the correct column name for the tooltip. -->
+
+<!-- ::: {.callout-default .ex-solution} -->
+<!-- ```{python} -->
+<!-- #| label: food-tooltip-solution -->
+<!-- alt.Chart(food_emission).mark_point().encode( -->
+<!--     x='Total Food Supply (kg/capita/yr)', -->
+<!--     y='Emissions (Kg CO2 / kg product)', -->
+<!--     tooltip='Food Item', -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ```{pyodide} -->
+<!-- #| label: food-tooltip-check -->
+<!-- #| exercise: tooltip_chart_alt -->
+<!-- #| check: true -->
+<!-- solution = alt.Chart(food_emission).mark_point().encode( -->
+<!--     x='Total Food Supply (kg/capita/yr)', -->
+<!--     y='Emissions (Kg CO2 / kg product)', -->
+<!--     tooltip='Food Item', -->
+<!-- ) -->
+<!-- assert_chart_equal(solution, result) -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- :::: -->
+
+<!-- ::::: -->

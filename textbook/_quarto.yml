@@ -18,7 +18,7 @@ book:
     - 8_counts.qmd
     - 9_distributions.qmd
     - 10_multiple-distributions.qmd
-    - 11_trends.qmd
+    # - 11_trends.qmd
     - 99_misc.qmd
 
 filters:
