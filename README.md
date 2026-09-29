@@ -14,6 +14,7 @@ From the repository root:
 ```sh
 make preview  # Start the live preview
 make book     # Render the textbook
+make slides   # Render only the chapter 1 presentation
 ```
 
 Preview and book builds use the shared `activate-uvr` recipe fragment to activate the
@@ -33,10 +34,12 @@ Chapter 1 opens as an ordinary textbook page. Its small **Present slides** icon
 beside the chapter title (a screen, with a tooltip and accessible label)
 opens a Reveal.js deck generated from the same `1_why-visualize-data.qmd` file.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
-notes, and **Esc** to return to the matching section of the reading view.
+notes, **O** to toggle the slide overview, and **Esc** to return to the matching
+section of the reading view (including when the overview is open).
 The opening title is purple; other slide titles are blue. Figures and tables
 are left aligned, with captions hidden in the deck and retained in the chapter.
-There is no presentation footer, and Reveal's slide overview is disabled.
+There is no presentation footer. The custom Escape shortcut exits the deck
+without disabling Reveal's normal overview shortcut.
 Slide changes and content reveals use quick 180 ms fades. Each slide opens with
 only its heading; the next advance reveals its learning-outcomes block, chart,
 table, or image as one fragment. Visuals stay intact rather than animating table
@@ -67,9 +70,14 @@ than a table of raw numbers.
 ```
 
 The entire paragraph appears normally in the textbook and remains available in
-speaker notes. Only the marked phrase appears on the slide, as a fade-in fragment
+speaker notes, where the selected passages are bold to make them easy to locate.
+Only the marked phrase appears on the slide, as a bulleted fade-in fragment
 under the current heading. Formatting and links inside the brackets are retained.
 Multiple marked spans become separate fragments, in reading order.
+The first letter of each selected paragraph or list item is automatically
+capitalized in slides, including excerpts starting with bold text or a link.
+The rest of the capitalization is preserved; chapter text and speaker notes
+retain their original wording. Leading code identifiers and formulas stay literal.
 
 For a whole paragraph or a group of bullets, use a div instead:
 
@@ -79,7 +87,10 @@ Visualization supports both exploration and communication.
 :::
 ```
 
-The block appears normally in the chapter and becomes one slide fragment. These
+The block appears normally in the chapter and becomes one bulleted slide fragment.
+Its paragraphs and list items are also bold in speaker notes.
+Each paragraph becomes a bullet; existing lists are used directly without adding
+an extra bullet level. These
 are project-specific annotations implemented by `chapter-slides.lua`, not native
 Quarto selection syntax. Place inline selections after their section heading.
 
@@ -96,7 +107,7 @@ to later chart cells. To add another visual to this pilot deck, wrap it in:
 ```
 
 For a new local image or data file, also add its path to the staging list in
-`build_chapter_slides.py`. The pilot currently stages the Datasaurus image and
+`textbook/src/build_chapter_slides.py`. The pilot currently stages the Datasaurus image and
 the shared knitr setup include; the chart data come from Altair's dataset loader.
 
 `chapter-slides.lua` handles the two views. `_chapter-slides.yml` selects the
@@ -104,7 +115,7 @@ Reveal format and output location; `chapter-slides.css` controls slide layout.
 `chapter-slides.js` implements Escape navigation using the chapter URL specified
 in the slide template and resets fragments when entering a slide.
 `chapter-title-tools.js` places the chapter's presentation icon beside its title.
-The chapter's normal render triggers `build_chapter_slides.py` as a Quarto
+The chapter's normal render triggers `textbook/src/build_chapter_slides.py` as a Quarto
 post-render hook. It copies the chapter and its required assets into a temporary
 standalone project outside the book directory, renders the deck there, and copies the
 finished presentation into `_book/slides/`. Isolation prevents the slide build
@@ -121,9 +132,13 @@ Both are part of the published `_book` directory. The deck has its own generated
 assets, so the reading page is not overwritten. To render only the pilot deck:
 
 ```sh
-. .uvr/activate
-uv run python textbook/build_chapter_slides.py --force
+make slides
 ```
+
+This activates the same R/Python environments as the other Make targets and runs
+`uv run python textbook/src/build_chapter_slides.py --force`. `make book` and
+`make preview` invoke the builder indirectly through the post-render hook in
+`textbook/_quarto.yml`, so they do not need a separate `slides` prerequisite.
 
 Other chapters are unaffected. Expanding the pilot requires registering another
 chapter and its assets in the build hook/template and setting its return link, as well as adding
