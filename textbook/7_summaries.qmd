@@ -47,6 +47,7 @@ and position on the same scale to compare values:
 ### Altair
 
 ```{python}
+#| label: meditation-observations-alt
 import pandas as pd
 import altair as alt
 
@@ -61,11 +62,12 @@ alt.Chart(meditation).mark_point().encode(
 ### ggplot
 
 ```{r}
+#| label: meditation-observations-gg
 #| message: false
 library(readr)
 library(ggplot2)
 
-meditation = read_csv('data/meditation-stress-sample.csv')
+meditation <- read_csv('data/meditation-stress-sample.csv')
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_point()
 ```
@@ -76,15 +78,16 @@ What conclusions can you draw?
 
 :::: {.callout-default .ex-hint}
 
-Can you say anything at all
-
+Can you tell where most observations lie in each condition?
+Could several observations share the same position in the chart?
 
 ::::: {.callout-default .ex-solution}
 
-Although we followed the best practices of what we learned so far,
-we can't really draw any meaningful conclusions from this chart
-since there are too many overlapping points.
-Read on to find out what we could do to improve on this situation.
+Although we followed the strategies we have learned so far,
+overlapping points make it difficult to compare where observations are concentrated.
+We can see the range of recorded scores,
+but not how many observations share each position.
+Read on to find out how we could make these comparisons easier.
 
 :::::
 
@@ -94,25 +97,26 @@ Read on to find out what we could do to improve on this situation.
 
 ## Visualizing statistical summaries
 
-Similar to what we learned in [Why visualize data?](1_why-visualize-data.qmd)
-where we saw that collapsing data into a statistical summary
-could make it easier to understand than a raw table of numbers.
-We could employ a similar strategy here and 
+In [Why visualize data?](1_why-visualize-data.qmd),
+we saw that statistical summaries can make some patterns easier to identify
+than they are in a raw table of numbers.
+We can use a similar strategy here by comparing the mean stress score in each condition.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
 In Altair,
-we can write [any aggregation
+we can write a [supported aggregation
 function](https://altair-viz.github.io/user_guide/encodings/index.html#encoding-aggregates)
 such as mean, median, or sum
 directly as a string
 wrapping the column name,
-e.g. `'median(stress)'`:
+for example, `'mean(stress)'`:
 
 
 ```{python}
+#| label: meditation-means-alt
 alt.Chart(meditation).mark_point().encode(
     y='condition',
     x='mean(stress)'
@@ -122,45 +126,48 @@ alt.Chart(meditation).mark_point().encode(
 ### ggplot
 
 In ggplot,
-we can tell each geom to use a summary statistics
-instead of the raw observation values.
-We then also need to specify which kind of summary,
-which can be any aggregate function, such as `mean`, `median`, `sum`, etc
-(when we don't specify any explicit value to `stat`,
-the default is `'identity'`, i.e. the raw values):
+we can tell `geom_point()` to use a summary statistic
+instead of the individual observation values.
+We set `stat = 'summary'` and specify a function that returns a single value,
+such as `mean`, `median`, or `sum`.
+For `geom_point()`, the default stat is `'identity'`, which uses the supplied values directly;
+other geoms can have different defaults.
 
 ```{r}
+#| label: meditation-means-gg
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_point(stat = 'summary', fun = mean)
 ```
 
-Instead of calling the `geom_point` function and define the `stat` parameter,
-we could call the `stat_summary` function and define the `geom` parameter:
+Instead of calling `geom_point()` and setting the `stat` parameter,
+we could call `stat_summary()` and set the `geom` parameter:
 
 ```{r}
+#| label: meditation-means-stat-summary-gg
 #| output: false
 ggplot(meditation, aes(y = condition, x = stress)) +
-    stat_summary(geom = "point", fun = mean)
+    stat_summary(geom = 'point', fun = mean)
 ```
 
-These two approaches are **identical** in terms of functionality
+These two calls produce **the same chart**,
 and both are commonly used.
 Sticking with the `geom_` approach makes the code syntax more consistent,
-regardless of whether we are plotting the raw identity value, or summaries.
-[This is a nice SO answer if you want to know
-more](https://stackoverflow.com/questions/38775661/what-is-the-difference-between-geoms-and-stats-in-ggplot2/44226841#44226841).
+whether we are plotting individual observations or summaries.
+[This Stack Overflow answer explains the relationship between geoms and stats
+in more detail](https://stackoverflow.com/questions/38775661/what-is-the-difference-between-geoms-and-stats-in-ggplot2/44226841#44226841).
 
-::::
+:::
 
 ::: {.column-margin}
 
 <br><br>
-**To include 0 or not**
+**Should the axis include zero?**
+
 As you can see,
-different packages make different decision about whether to include the 0 by default.
-Whether you should include it depends on whether
-you want to emphasize the differences between groups or not,
-which we will discuss more later.
+different packages make different decisions about whether to include zero by default.
+For point summaries, the appropriate axis range depends on the comparisons we want to make
+and the meaning of the scale.
+We will discuss axis limits in more detail later.
 
 :::
 
@@ -169,31 +176,29 @@ that **on average** there are some differences between the groups.
 
 ## Visualizing spread
 
-But including the mean value completely remove all the variability.
-This is not a good idea
-because how the individual data points are distributed
-also impacts which conclusions we can draw from the data.
+But showing only the mean hides the variability in the observations.
+How the individual values are distributed
+also affects the conclusions we can draw from the data.
 
 So,
 whenever we show a measure of central tendency such as the mean or median,
-it is could to couple it with an indication of the underlying variability.
+it is helpful to pair it with an indication of the underlying variability.
 
-Variability comes in two flavors,
-we can either talk about the spread of the underlying data (descriptive statistics)
-or the uncertainty in the estimate of central tendency (inferential statistics).
-These two types of variability answers two different question,
+Here, we need to distinguish two concepts:
+the spread of the underlying data (descriptive statistics)
+and the uncertainty in the estimate of central tendency (inferential statistics).
+These answer two different questions,
 but graphically they are often depicted similarly.
 In this chapter,
 we will focus on how spread out the underlying data distribution is,
-and come back to confidence intervals and similar inferential variability measures
+and return to confidence intervals and other measures of inferential uncertainty
 in a future chapter.
 <!-- TODO which chapter for ci, link to it and include more discussion around bootstrap there? and also talk about how more points changes the interval to become smaller -->
 <!-- TODO mention error bar -->
 
 One measure of the spread in the underlying data
 is the [standard deviation](https://en.wikipedia.org/wiki/Standard_deviation),
-which quantifies how far a typical observation is from the mean
-(technically the standard deviation is the [root mean squared distance](https://en.wikipedia.org/wiki/Root_mean_square_deviation)).
+which measures how spread out observations are around the mean.^[The population standard deviation is the [root mean squared deviation](https://en.wikipedia.org/wiki/Root_mean_square_deviation) from the population mean.]
 Let's see how we can include the standard deviation
 together with the mean
 in our charts:
@@ -202,70 +207,75 @@ in our charts:
 
 ### Altair
 
-The `errorbar` mark allows us to plot different common
+The `errorbar` mark allows us to plot several common
 measures of variability,
-including the standard deviation.
+including an interval from one standard deviation below the mean to one above it.
 We're changing the color of the point marks to match the error bar.
 We are using `mark_circle`
 as a shortcut for `mark_point(filled=True)`.
+The point layer calculates the mean,
+while the error-bar layer calculates its interval
+from the individual stress scores.
 
 ```{python}
-points = alt.Chart(meditation).mark_circle(color='black').encode(
+#| label: meditation-mean-sd-alt
+base = alt.Chart(meditation).encode(
     y='condition',
-    x='mean(stress)'
+    x='stress'
 )
+points = base.mark_circle(color='black').encode(x='mean(stress)')
 
-points + points.mark_errorbar(extent='stdev')
+points + base.mark_errorbar(extent='stdev', color='black')
 ```
 
 ### ggplot
 
-Like the name implies,
+As the name implies,
 the `pointrange` geom creates both a point and a range.
-Previously we have passed specific statistic summary functions to the `fun` parameter,
-but here we will use `fun.data` because we need both the lower and upper bond
-of where to plot the line for the standard deviation range.
-Whereas `fun` only allows functions that return a single value
-which decides where to draw the point on the y-axis
-(such as `'mean'`),
-`fun.data` allows functions to return three values (the min, middle, and max y-value).
+Previously, we passed a summary function to the `fun` parameter.
+Here, we use `fun.data` because we need a central value and the lower and upper endpoints
+of the interval.
+Whereas `fun` accepts functions that return a single value, such as `mean`,
+`fun.data` accepts functions that return a dataframe with the summary and interval endpoints.
+In this horizontal chart, those values determine positions along the x-axis.
 
 The `fun.args` parameter looks a bit cryptic.
 What it does is to pass `mult = 1` (multiplier) to the `mean_sdl` function,
 which otherwise multiplies the standard deviation by 2 by default.
 
 ```{r}
+#| label: meditation-mean-sd-gg
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_pointrange(stat = 'summary', fun.data = mean_sdl, fun.args = list(mult = 1))
 ```
 
-Note that you need the `Hmisc` package installed in order to use `mean_sdl`;
-if you don't nothing will show up but you wont get an error,
-so it can be tricky to realize what is wrong.
+The `mean_sdl()` function requires the `Hmisc` package.
+If it is missing, ggplot may report a failed statistical computation and omit the layer;
+check the rendering messages if the summary does not appear.
 
 :::
 
-This give us some additional information:
+This gives us some additional information:
 we can see that all the conditions
 had a similar spread in the underlying data.
 While pairing a mean with an indication of its standard deviation
 is better than just showing a mean alone,
-it is not a satisfactory visualization in most cases.
-Just as we learned about statistical summaries of raw numbers in the first chapter
-graphical statistical summaries don't tell the whole story.
+it can still hide important features of the data.
+As we learned in the first chapter,
+statistical summaries don't tell the whole story, even when we plot them.
 Let's explore that more in this exercise.
 
 ::: {.callout-default .ex-prompt}
 
 To the left,
-we can see the mean + standard deviation
-of a set observations.
+we can see the mean ± one standard deviation
+for two groups of observations.
 To the right,
 there are four different suggestions
 for what these underlying observations might look like.
 By studying this chart,
-which of the sets of possible underlying observation
-do you think was used to create the summary chart to the left?
+which sets of possible underlying observations
+do you think could produce the summary chart on the left?
 
 ```{python}
 #| echo: false
@@ -282,7 +292,7 @@ base = alt.Chart(data, height=200, width=alt.Step(44)).encode(
 
 intervals = base.mark_errorbar(extent='stdev', thickness=2).encode(y=y)
 means = base.mark_point(filled=True, size=60).encode(y=y.aggregate('mean')).properties(
-    title=alt.Title('Mean + SD', fontSize=12)
+    title=alt.Title('Mean ± SD', fontSize=12)
 )
 summaries = (
     (intervals + means).transform_filter(alt.datum['dataset'] == 'Symmetric')
@@ -305,32 +315,29 @@ It's more than just one of them...
 ::::: {.callout-default .ex-solution}
 
 In this case,
-**all** of the four distributions above
-gave rise to the same summary chart!
-That means if that you only look at the summary chart with the mean + SD,
-you don't really have any idea what your data looks like.
+**all four** scenarios produce the same means and standard deviations for groups A and B!
+If you only look at the mean ± SD chart,
+you cannot tell which of these very different datasets it represents.
 This matters because depending on what your observations look like,
 you will come to different conclusions.
 For example,
-in the case of the outlier,
-maybe that's a technical error
-and the average between the two groups
-would be the same without that one point?
+an outlier might be a genuine observation or a measurement error.
+Seeing it lets us investigate its origin and its influence on the summary.
 Or what if group A follows a symmetric distribution
 whereas group B shows a bimodal spread?
 
 Note that in the case of the bimodal distribution of observations
 we should ask ourselves whether it is at all useful
 to include a mean.
-Maybe we should skip it all since none of the observations
+Maybe we should omit it here, since few of the observations
 are actually close to the mean
 and the mean therefore does not tell us much
 about the underlying observations.
-In this case it would be more helpful
+In this case, it may be more helpful
 to talk about the two clusters
-instead of trying to represent all the observation
+instead of trying to represent all the observations
 with a single average value.
-<!-- TODO consider including an example with e..g the geyser eruption at old faithful to drive this home further -->
+<!-- TODO Consider an example using Old Faithful's geyser eruptions to reinforce this point. -->
 
 :::::
 
@@ -343,11 +350,10 @@ with a single average value.
 To avoid being misled by a lone summary statistic,
 we can show the underlying observations of each group
 together with the statistical summaries.
-When doing this,
-it can help to "jitter" the observations
-so that they 
-
-Another caution when using position for grouping, is that plotting data points along a single axis can lead to overlap. That's where **jittering** comes to the rescue. Jittering introduces slight variation, or 'jitter', in the position of data points in each lane, making them easier to see. 
+Plotting every observation in a group along the same line can lead to overlap.
+**Jittering** adds small random offsets to the points to help separate them.
+Here, we jitter only along the categorical y-axis,
+so each point's horizontal position still represents its recorded stress score.
 
 ::: {.column-margin}
 
@@ -363,8 +369,12 @@ Back in the 1930s, the jitterbug was a lively, often wild, dance style that matc
 
 ### Altair
 
-<!-- TODO explain this and the r code below. How much depends on what I introdude earlier for altair -->
+We calculate a random value for each observation and use `yOffset`
+to spread the points within each condition's row.
+We then layer the mean and standard deviation interval over those points.
+
 ```{python}
+#| label: meditation-jitter-summary-alt
 base = alt.Chart(meditation, height=alt.Step(30)).encode(
     y=alt.Y('condition').scale(padding=0.4),
     x='stress'
@@ -386,6 +396,7 @@ points + base.mark_errorbar(extent='stdev', thickness=1.5) + base.mark_circle(si
 ### ggplot
 
 ```{r}
+#| label: meditation-jitter-summary-gg
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_point(position = 'jitter', color = 'grey') +
     geom_pointrange(stat = 'summary', fun.data = mean_sdl, fun.args = list(mult = 1))
@@ -398,35 +409,35 @@ you could also use the specialized geom `geom_jitter()`.
 
 ## Showing medians with boxplots
 
-What about if we visualize the median instead of the mean?
-Showing the median can especially useful
+What if we visualize the median instead of the mean?
+Showing the median can be especially useful
 when there are a few extreme values in the data
 since these impact the mean more than the median,
 and the median thus becomes a more helpful indication
-of the representative observation.
-But this decision is context dependent:
+of a typical value.
+But this decision is context-dependent:
 if we are interested in these extreme values,
-then they should probably have a big impact
-on the measure of central tendency
-that we choose to show.
+the mean may capture their influence in a way that is relevant to our question.
 Therefore,
 it is often a good idea to show means and medians together,
-since they tell us difference things about the population.
+since they tell us different things about the data.
 
-A common measure for distribution spread
-that is used together with medians,
+A common measure of spread
+used together with medians
 is a percentile interval,
-which shows all the data
-between the chosen percentiles
-(as a point of reference,
-one standard deviation
-is the equivalent of a ~68% percentile interval
-in a normally distributed data set).
+which marks the range between two chosen percentiles.
+For comparison, the interval from one standard deviation below the mean
+to one above it contains about 68% of a normal distribution.
 
-The most common way to show median plus a percentile interval is via a boxplot.
+A common way to show the median and a percentile interval is a **boxplot**.
+The box spans the 25th to the 75th percentile, enclosing the middle 50% of the data,
+with a line marking the median.
+In the default boxplots below, the whiskers extend to the most extreme observations
+within 1.5 interquartile ranges of the box edges;
+observations beyond the whiskers are drawn separately.
 This illustration can help you interpret the different parts of the box:
 
-![The elements of a boxplot.](img/boxplot-elements.svg){#fig-boxplot-anotomy}
+![The elements of a boxplot.](img/boxplot-elements.svg){#fig-boxplot-anatomy}
 
 
 ::: {.panel-tabset group="language"}
@@ -434,6 +445,7 @@ This illustration can help you interpret the different parts of the box:
 ### Altair
 
 ```{python}
+#| label: meditation-boxplots-alt
 alt.Chart(meditation).mark_boxplot().encode(
     y='condition',
     x='stress'
@@ -443,6 +455,7 @@ alt.Chart(meditation).mark_boxplot().encode(
 ### ggplot
 
 ```{r}
+#| label: meditation-boxplots-gg
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_boxplot()
 ```
@@ -462,40 +475,42 @@ after having inspected the underlying observations ourselves.
 
 This illustration from [Autodesk
 Research](https://www.autodesk.com/research/publications/same-stats-different-graphs)
-show how boxplots look the same even when the distribution of the underlying observations changes drastically.
+shows how boxplots can look the same even when the distribution of the underlying observations changes drastically.
 
 :::
 
-::: {.callout-warning }
+::: {.callout-warning}
 
-## Avoid drawing conclusions from summary charts alone
+### Avoid drawing conclusions from summary charts alone
 
-Summary charts like mean + SD are boxplots are useful
+Summary charts such as mean ± SD plots and boxplots are useful
 since aggregation reduces the complexity of the chart.
 But even if you are interested
 in comparing group summaries such as means or medians,
 you should always also inspect the underlying observations
-to understand how they are distributed and if there are any outliers in the data,
-since this will impact which conclusions you can derive from the chart.
+to understand how they are distributed and whether there are any outliers,
+since this affects the conclusions you can draw from the chart.
 
 :::
 
 ## What conclusions *can* we draw from the data?
 
-It is important to note that we can not draw any
-conclusions around the statistical significance of the differences we see here.
-We haven't performed any statistical tests
-or plotted any elements that can be used for inference
-such as confidence intervals.
-So we cannot say anything about how likely it is that we would observe
-these results out of random chance, 
-even if there was no difference between the groups.
+The charts show differences in recorded stress scores between conditions in this sample.
+However, we have not assessed the statistical significance of those differences.
+Standard deviations and boxplots describe the spread of the observations,
+not the uncertainty in the group means or their differences.
+In particular, overlap between these descriptive intervals does not establish
+whether a difference is statistically significant.
+That would require an appropriate inferential analysis,
+informed by the study design.
 
-What about the magnitude of the change?
-It seems like the difference between the meditation conditions
-and the book reading is about 0.25 units.
+What about the magnitude of the differences?
+In this dataset, the meditation conditions have mean stress scores
+about 0.14–0.28 units below the book-reading control condition.
 Is that a lot or a little?
-One way to see it is that it is a difference of 
-To comment on that we would need to know more about the domain
-that the results from 
-<!-- TODO include conclusions from paper and more reasonong -->
+To judge practical importance, we need to know how stress was measured,
+what the score's units and range mean, and what difference would matter in this context.
+The charts help us describe the sample,
+but they do not by themselves establish that meditation caused the differences
+or that the differences are large enough to matter in practice.
+<!-- TODO Add the original paper's interpretation once its reference and stress-score definition are confirmed. -->
