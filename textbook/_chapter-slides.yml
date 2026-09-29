@@ -27,6 +27,7 @@ format:
     background-transition: fade
     auto-stretch: false
     overview: true
+    footer: 'Press **?** for shortcuts'
     include-in-header:
       - text: |
           <meta name="chapter-url" content="../1_why-visualize-data.html">

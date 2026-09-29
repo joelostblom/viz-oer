@@ -37,7 +37,9 @@ function Pandoc(doc)
     flush_notes()
     current_title = title
     visual_count = 0
-    output:insert(pandoc.Header(2, title, pandoc.Attr(identifier or "")))
+    -- The shortcuts footer belongs only to Quarto's generated title slide.
+    output:insert(pandoc.Header(2, title,
+      pandoc.Attr(identifier or "", {}, {footer = "false"})))
   end
 
   local function capitalize_paragraph(block)

@@ -34,12 +34,14 @@ Chapter 1 opens as an ordinary textbook page. Its small **Present slides** icon
 beside the chapter title (a screen, with a tooltip and accessible label)
 opens a Reveal.js deck generated from the same `1_why-visualize-data.qmd` file.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
-notes, **O** to toggle the slide overview, and **Esc** to return to the matching
-section of the reading view (including when the overview is open).
+notes, **O** to toggle the slide overview, **M** for the menu, and **?** for
+keyboard shortcuts. **Esc** dismisses an open menu, help overlay, or overview
+first; from a normal slide it returns to the matching section of the reading view.
+Esc also resumes a paused/black screen before allowing an exit.
 The opening title is purple; other slide titles are blue. Figures and tables
 are left aligned, with captions hidden in the deck and retained in the chapter.
-There is no presentation footer. The custom Escape shortcut exits the deck
-without disabling Reveal's normal overview shortcut.
+Only the title slide has a footer: **Press ? for shortcuts**. The bottom-left
+hamburger icon is hidden; the menu remains available through **M**.
 Slide changes and content reveals use quick 180 ms fades. Each slide opens with
 only its heading; the next advance reveals its learning-outcomes block, chart,
 table, or image as one fragment. Visuals stay intact rather than animating table

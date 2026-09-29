@@ -54,12 +54,16 @@
   background-color: var(--r-link-color);
 }
 
-.slide-menu-button a,
-.slide-menu-button i,
-.slide-menu-button i::before,
-.slide-menu-button svg {
-  color: var(--r-link-color) !important;
-  fill: var(--r-link-color) !important;
+.slide-menu-button {
+  display: none !important;
+}
+
+.reveal .footer {
+  color: var(--r-main-color);
+}
+
+.reveal.overview .footer {
+  display: none;
 }
 
 .reveal .slide-number {
