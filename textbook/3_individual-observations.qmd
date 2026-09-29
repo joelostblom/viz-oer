@@ -240,7 +240,7 @@ it seems reasonable that the weight of the car could impact fuel efficiency,
 since more energy is needed to accelerate a heavier car to the same speed.
 To explore `Weight_in_lbs`
 together with the other two variables,
-we can add another visual encoding to this chart,
+we can use another visual channel in this chart,
 for example, by coloring the points according to this column.
 When using the `color` encoding channel,
 high-level visualization libraries
@@ -276,9 +276,9 @@ we add the `color` encoding to the chart
 so that we can see how all three variables
 relate to each other.
 The default color gradient runs from dark blue for lower weights
-to light blue for higher weights.
-This is different from Altair's default scale,
-so check the legend when interpreting the colors.
+to light blue for higher weights,
+since light colors have the highest contrast
+to the chart's dark background.
 
 ```{r}
 #| label: cars-weight-gg
