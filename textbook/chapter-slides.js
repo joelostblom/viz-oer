@@ -1,11 +1,22 @@
 // Escape dismisses Reveal's UI first, and exits only from a normal slide.
 (() => {
-  const chapter = document.querySelector('meta[name="chapter-url"]');
-  if (!chapter) return;
+  // Decks live in slides/ with the same filename as their reading-view chapter.
+  const filename = window.location.pathname.split("/").pop();
+  const chapter = new URL(`../${filename}`, window.location.href);
 
   const headingFirst = () => {
     const deck = window.Reveal;
     if (!deck) return;
+    let footerTimer;
+    const showTitleHint = () => {
+      clearTimeout(footerTimer);
+      const root = deck.getRevealElement();
+      const onTitle = deck.getCurrentSlide()?.id === "title-slide";
+      root.classList.toggle("show-title-hint", onTitle);
+      if (onTitle) {
+        footerTimer = setTimeout(() => root.classList.remove("show-title-hint"), 5000);
+      }
+    };
     const resetFragments = () => {
       const slide = deck.getCurrentSlide();
       if (!slide) return;
@@ -17,11 +28,15 @@
     };
     const onReady = () => {
       resetFragments();
+      showTitleHint();
       deck.registerKeyboardShortcut("ESC, O",
         "O: toggle overview. Esc: close open tools; otherwise return to the chapter.");
     };
     deck.on("ready", onReady);
-    deck.on("slidechanged", resetFragments);
+    deck.on("slidechanged", () => {
+      resetFragments();
+      showTitleHint();
+    });
     if (deck.isReady()) onReady();
   };
   if (document.readyState === "loading") {
@@ -52,8 +67,9 @@
       return;
     }
 
-    const destination = new URL(chapter.content, document.baseURI);
-    const slide = deck.getCurrentSlide()?.id;
+    const destination = new URL(chapter.href);
+    const current = deck.getCurrentSlide();
+    const slide = current?.dataset.chapterAnchor ?? current?.id;
     // Section IDs are shared by the chapter and deck. Synthetic slides have
     // no corresponding chapter anchor, so those return to the chapter top.
     if (slide && slide !== "title-slide" && slide !== "learning-outcomes"

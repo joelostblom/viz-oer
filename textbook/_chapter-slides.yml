@@ -2,8 +2,6 @@
 project:
   type: default
   output-dir: _output
-  render:
-    - 1_why-visualize-data.qmd
 
 filters:
   - chapter-slides.lua
@@ -30,7 +28,6 @@ format:
     footer: 'Press **?** for shortcuts'
     include-in-header:
       - text: |
-          <meta name="chapter-url" content="../1_why-visualize-data.html">
           <script src="chapter-slides.js" defer></script>
     toc: false
     number-sections: false

@@ -60,6 +60,26 @@
 
 .reveal .footer {
   color: var(--r-main-color);
+  width: max-content !important;
+  max-width: calc(100% - 4rem);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.5rem;
+  opacity: 0;
+  transition: opacity 180ms ease-in-out;
+}
+
+/* Opacity preserves the hover target even after the hint has faded away. */
+.reveal.show-title-hint .footer,
+.reveal .footer:hover,
+.reveal .footer:focus-within {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal .footer {
+    transition-duration: 0ms;
+  }
 }
 
 .reveal.overview .footer {
@@ -125,6 +145,19 @@
   margin: 0;
 }
 
+.reveal .slide-media pre {
+  font-size: 0.65em;
+}
+
+.reveal :not(pre) > code {
+  color: var(--r-link-color);
+  background-color: transparent;
+}
+
+.reveal .slide-media table.dataframe-preview {
+  font-size: 24px;
+}
+
 /* The summary table uses inline styles to emphasize its differing values. */
 .reveal .dataframe-grid td[style*="background-color"] {
   background-color: var(--r-link-color) !important;
@@ -140,6 +173,7 @@
   max-height: 560px;
   max-width: 100%;
   object-fit: contain;
+  object-position: left top;
 }
 
 .reveal .vega-embed {
