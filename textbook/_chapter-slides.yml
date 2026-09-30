@@ -4,6 +4,8 @@ project:
   output-dir: _output
 
 filters:
+  - path: chapter-slide-options.lua
+    at: pre-ast
   - chapter-slides.lua
 
 resources:

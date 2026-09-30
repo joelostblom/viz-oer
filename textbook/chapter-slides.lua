@@ -26,6 +26,7 @@ function Pandoc(doc)
   local current_title = nil
   local current_anchor = ""
   local visual_count = 0
+  local keep_content_together = false
   local continuation = 0
 
   local function flush_notes()
@@ -40,6 +41,7 @@ function Pandoc(doc)
     current_title = title
     current_anchor = chapter_anchor or identifier or ""
     visual_count = 0
+    keep_content_together = false
     -- The shortcuts footer belongs only to Quarto's generated title slide.
     output:insert(pandoc.Header(2, title,
       pandoc.Attr(identifier or "", {}, {
@@ -76,15 +78,25 @@ function Pandoc(doc)
     local fragment = pandoc.Div(blocks,
       pandoc.Attr("", {"slide-content", "fragment", "fade-in"}))
     if capitalize then
+      local content = pandoc.List()
       local items = pandoc.List()
+      local function flush_bullets()
+        if #items > 0 then
+          content:insert(pandoc.BulletList(items))
+          items = pandoc.List()
+        end
+      end
       for _, block in ipairs(blocks) do
         if block.t == "BulletList" or block.t == "OrderedList" then
-          items:extend(block.content)
+          flush_bullets()
+          -- Preserve list type, starting number, numbering style, and nesting.
+          content:insert(block)
         else
           items:insert(pandoc.List({block}))
         end
       end
-      fragment.content = pandoc.List({pandoc.BulletList(items)})
+      flush_bullets()
+      fragment.content = content
       -- walk returns a transformed copy, preserving the chapter/notes wording.
       fragment = fragment:walk({Para = capitalize_paragraph, Plain = capitalize_paragraph})
     end
@@ -154,7 +166,21 @@ function Pandoc(doc)
         -- for its later rendering passes instead of flattening them into notes.
         supporting_blocks:insert(block)
       elseif block.t == "Header" then
-        start_slide(block.content, block.identifier, parent_anchor)
+        if block.classes:includes("slide-skip") then
+          -- Omit this heading and its slide break, not the following content.
+        elseif block.classes:includes("slide-fragment") and current_title then
+          local heading = block:clone()
+          heading.level = 3 -- Below slide-level, so it cannot start a slide.
+          heading.classes:extend({"slide-heading", "fragment", "fade-in"})
+          output:insert(heading)
+          -- A leading Header makes Pandoc render this notes Div as a visible
+          -- section instead of Reveal's hidden aside. Use a label instead.
+          notes:insert(pandoc.Para({pandoc.Strong(block.content)}))
+          visual_count = 0
+          keep_content_together = true
+        else
+          start_slide(block.content, block.identifier, parent_anchor)
+        end
       elseif block.t == "Div" and block.classes:includes("slide-outcomes") then
         start_slide("Learning outcomes", "learning-outcomes", "")
         show_text(block.content)
@@ -164,18 +190,30 @@ function Pandoc(doc)
         end
         show_text(block.content, true)
         notes:insert(highlighted_notes(block))
-      elseif block.t == "Div" and block.classes:includes("slide-visual") then
+      elseif block.t == "Div" and (block.classes:includes("slide-visual")
+          or block.classes:includes("slide-fragment")) then
         local title = block.attributes["slide-title"]
-        if title then
+        local same_slide = block.classes:includes("slide-fragment")
+        if same_slide then
+          if not current_title then
+            start_slide("Visualization", "visualization", "")
+          end
+          if title then
+            block.content:insert(1, pandoc.Header(3, {pandoc.Str(title)},
+              pandoc.Attr("", {"slide-heading"})))
+          end
+        elseif title then
           continuation = continuation + 1
           start_slide(title, "visualization-continued-" .. continuation, current_anchor)
         elseif not current_title then
           start_slide("Visualization", "visualization", "")
-        elseif visual_count > 0 then
+        elseif visual_count > 0 and not keep_content_together then
           continuation = continuation + 1
           start_slide(current_title, "visualization-continued-" .. continuation, current_anchor)
         end
+        local code_chart = block.classes:includes("slide-code-chart")
         block.classes = pandoc.List({"slide-media", "fragment", "fade-in"})
+        if code_chart then block.classes:insert("slide-code-chart") end
         output:insert(block)
         visual_count = visual_count + 1
       elseif block.t == "Div" then
@@ -205,27 +243,3 @@ function Pandoc(doc)
   doc.meta["number-sections"] = false
   return doc
 end
-
--- Quarto parses tabsets into custom AST nodes before user filters run. Expand
--- them through its supported Tabset handler, rather than walking the internal
--- scaffold (whose content/title slots are not in document reading order).
-local chapter_deck = false
-local tab_number = 0
-return {
-  {Pandoc = function(doc)
-    chapter_deck = doc.meta["chapter-slides"] ~= nil and quarto.doc.is_format("revealjs")
-    tab_number = 0
-  end},
-  {Tabset = function(tabset)
-    if not chapter_deck then return nil end
-    local blocks = pandoc.List()
-    for _, tab in ipairs(tabset.tabs) do
-      tab_number = tab_number + 1
-      blocks:insert(pandoc.Header(tabset.level, quarto.utils.as_inlines(tab.title),
-        pandoc.Attr("tab-slide-" .. tab_number)))
-      blocks:extend(quarto.utils.as_blocks(tab.content))
-    end
-    return pandoc.Div(blocks, pandoc.Attr("", {"slide-tabs"}))
-  end},
-  {Pandoc = Pandoc}
-}

@@ -73,10 +73,65 @@ The chapter uses lightweight annotations:
   code with its chart so they appear together as one fragment.
 - A `.slide-text` span selects a phrase/sentence within a paragraph; a
   `.slide-text` div selects a whole paragraph, list, or block.
-- All chapter headings become slide headings, including subsections.
+- Plain chapter headings start new slides, including subsections.
+- A heading with `.slide-fragment` stays on the current slide and reveals as a
+  subheading. Subsequent selected content stays there until the next plain heading
+  or an explicit `slide-title` starts a new slide. This also works on tab headings.
+- Executable R/Python cells can select code, output, or both with `slide-show`.
 - Other content after a heading becomes speaker notes for that slide.
+- `.deep-dive` blocks are excluded entirely from presentations, including their
+  headings, selected content, and speaker notes. They remain in the textbook.
+- `.column-margin` blocks are likewise excluded entirely from presentations.
+- Add `.slide-skip` to a heading, for example `### Details {.slide-skip}`, to omit
+  only that heading and its slide break. Following content uses the preceding
+  slide and the normal selection rules (including automatic visual continuation
+  slides). The heading remains visible in the textbook.
 
-To reuse part of a paragraph without writing it twice:
+To control slide breaks and same-slide headings:
+
+```markdown
+## A new slide
+
+[First point]{.slide-text}
+
+### A heading on the same slide {.slide-fragment}
+
+[Another point]{.slide-text}
+
+## The next slide
+```
+
+The subheading and selected text reveal separately. In the textbook, these
+remain ordinary headings and paragraphs.
+
+For executable cells in the current knitr-based chapters:
+
+````markdown
+```{python}
+#| echo: false
+#| slide-show: both
+
+print(1 + 1)
+```
+````
+
+Use `slide-show: code` for source only, `output` for results only, or `both`
+for source and results together as one fragment. No `.slide-visual` wrapper is
+needed. These choices override `echo`, `output`, and `include` visibility only
+in slides; the example above still hides source in the textbook. Execution and
+dependencies are retained, and `eval: false` is respected. Cells without
+`slide-show` retain their existing behavior. Static code can still be selected
+with a `.slide-visual` wrapper.
+
+Slide code uses the custom `textbook/tokyo-night.theme`: dark background, purple
+keywords, green strings, orange numbers, and blue functions. It is configured
+only in the presentation template.
+Slide text and headings use the OS interface font (`system-ui`); code uses
+`ui-monospace` with platform-appropriate fallbacks. No Ubuntu webfont download
+is needed. The font stacks are set in `_chapter-slides.yml` and
+`chapter-slides.css`.
+
+To select an excerpt from a paragraph:
 
 ```markdown
 Visualization helps us [**recognize patterns** more quickly]{.slide-text}
@@ -103,8 +158,8 @@ Visualization supports both exploration and communication.
 
 The block appears normally in the chapter and becomes one bulleted slide fragment.
 Its paragraphs and list items are also bold in speaker notes.
-Each paragraph becomes a bullet; existing lists are used directly without adding
-an extra bullet level. These
+Each paragraph becomes a bullet; existing lists retain their type, numbering,
+and nesting without adding an extra bullet level. These
 are project-specific annotations implemented by `chapter-slides.lua`, not native
 Quarto selection syntax. Place inline selections after their section heading.
 
@@ -122,9 +177,32 @@ to later chart cells. To add another visual to this pilot deck, wrap it in:
 
 Add `slide-title="A classroom question"` to a `.slide-visual` div to give that
 visual a dedicated slide title. Otherwise it uses the current heading, with
-additional slides when multiple visual blocks would share a slide. Escape from
+additional slides when multiple visual blocks would share a slide (except after
+a `.slide-fragment` heading, which explicitly keeps content together). Escape from
 tab/exercise slides returns to the enclosing visible chapter section, rather
 than a hidden tab or collapsed solution.
+
+To reveal a visual on the preceding slide instead, use a `.slide-fragment` div:
+
+````markdown
+::: {.slide-fragment slide-title="Adding strings"}
+
+```python
+"one" + "two"
+```
+
+:::
+````
+
+The optional title and the block's content appear together as one fragment;
+this does not start a new slide. You can also combine `.slide-visual` and
+`.slide-fragment` on the same div. On headings, `.slide-fragment` continues to
+reveal the heading separately from subsequent selected content.
+
+For static code followed by a chart cell, add `.slide-code-chart` to the
+`.slide-visual` or `.slide-fragment` wrapper. This places code and chart side by
+side only in slides, with long code lines wrapping as needed. The book retains
+its normal stacked layout. Both syntax examples in chapter 2 use this layout.
 
 For a new local image or data file, also add its path to the staging list in
 `CHAPTER_ASSETS` in `textbook/src/build_chapter_slides.py`. Chapter 1 stages the
@@ -134,6 +212,9 @@ rendered through Quarto as in the textbook.
 
 `chapter-slides.lua` handles the two views. `_chapter-slides.yml` selects the
 Reveal format and output location; `chapter-slides.css` controls slide layout.
+`chapter-slide-options.lua` preserves tab-heading annotations before Quarto
+processes tabsets. The builder appends `_slide-chunks.qmd` to the staged knitr
+include to implement presentation-only cell visibility.
 `chapter-slides.js` implements Escape navigation and resets fragments when entering
 a slide. Decks and chapters use matching HTML filenames, with decks one directory
 deeper in `slides/`, so the return URL works for each chapter automatically.

@@ -115,6 +115,12 @@
   margin-bottom: 0.6em;
 }
 
+.reveal .slide-heading {
+  font-size: 1.4em;
+  margin-top: 0.65em;
+  margin-bottom: 0.35em;
+}
+
 .reveal li {
   margin-bottom: 0.7em;
 }
@@ -147,6 +153,52 @@
 
 .reveal .slide-media pre {
   font-size: 0.65em;
+}
+
+/* Separate displayed source from its result, including static pseudocode
+   followed by a separately executed chart cell. */
+.reveal .slide-media .code-copy-outer-scaffold + .cell-output,
+.reveal .slide-media .sourceCode + .cell-output,
+.reveal .slide-media > .code-copy-outer-scaffold + .cell,
+.reveal .slide-media > .sourceCode + .cell {
+  margin-top: 0.5em;
+}
+
+/* Presentation-only two-column layout: source on the left, chart on the right.
+   The annotation has no styling in the reading view. */
+.reveal .slide-code-chart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 0.75em;
+  align-items: start;
+}
+
+.reveal .slide-code-chart > * {
+  min-width: 0;
+}
+
+.reveal .slide-code-chart > .slide-heading {
+  grid-column: 1 / -1;
+}
+
+.reveal .slide-media.slide-code-chart > .cell {
+  margin-top: 0;
+}
+
+.reveal .slide-code-chart pre code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.reveal div.sourceCode,
+.reveal pre.sourceCode {
+  background-color: #24283b;
+  color: #c0caf5;
+  border-color: #414868;
+}
+
+.reveal .code-copy-button {
+  color: #c0caf5;
 }
 
 .reveal :not(pre) > code {
