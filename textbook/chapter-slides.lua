@@ -27,6 +27,7 @@ function Pandoc(doc)
   local current_anchor = ""
   local visual_count = 0
   local keep_content_together = false
+  local reveal_with_heading = false
   local continuation = 0
 
   local function flush_notes()
@@ -42,6 +43,7 @@ function Pandoc(doc)
     current_anchor = chapter_anchor or identifier or ""
     visual_count = 0
     keep_content_together = false
+    reveal_with_heading = false
     -- The shortcuts footer belongs only to Quarto's generated title slide.
     output:insert(pandoc.Header(2, title,
       pandoc.Attr(identifier or "", {}, {
@@ -74,7 +76,7 @@ function Pandoc(doc)
     })
   end
 
-  local function show_text(blocks, capitalize)
+  local function text_fragment(blocks, capitalize)
     local fragment = pandoc.Div(blocks,
       pandoc.Attr("", {"slide-content", "fragment", "fade-in"}))
     if capitalize then
@@ -99,6 +101,15 @@ function Pandoc(doc)
       fragment.content = content
       -- walk returns a transformed copy, preserving the chapter/notes wording.
       fragment = fragment:walk({Para = capitalize_paragraph, Plain = capitalize_paragraph})
+    end
+    return fragment
+  end
+
+  local function show_text(blocks, capitalize)
+    local fragment = text_fragment(blocks, capitalize)
+    if reveal_with_heading then
+      fragment.attributes["fragment-index"] = "0"
+      reveal_with_heading = false
     end
     output:insert(fragment)
   end
@@ -180,6 +191,14 @@ function Pandoc(doc)
           keep_content_together = true
         else
           start_slide(block.content, block.identifier, parent_anchor)
+          if block.classes:includes("slide-with-content") then
+            local heading = output[#output]
+            -- Reveal moves Header attributes onto the whole slide; animate
+            -- a span inside the heading instead of marking the section.
+            heading.content = pandoc.Inlines({pandoc.Span(heading.content,
+              pandoc.Attr("", {"fragment", "fade-in"}, {["fragment-index"] = "0"}))})
+            reveal_with_heading = true
+          end
         end
       elseif block.t == "Div" and block.classes:includes("slide-outcomes") then
         start_slide("Learning outcomes", "learning-outcomes", "")
@@ -211,7 +230,21 @@ function Pandoc(doc)
           continuation = continuation + 1
           start_slide(current_title, "visualization-continued-" .. continuation, current_anchor)
         end
+        -- Keep nested text selections' bullet formatting, but let the outer
+        -- visual own their animation so heading and text reveal together.
+        block = block:walk({Div = function(div)
+          if div.classes:includes("slide-text") then
+            notes:insert(highlighted_notes(div))
+            local text = text_fragment(div.content, true)
+            text.classes = pandoc.List({"slide-content"})
+            return text
+          end
+        end})
         block.classes = pandoc.List({"slide-media", "fragment", "fade-in"})
+        if reveal_with_heading then
+          block.attributes["fragment-index"] = "0"
+          reveal_with_heading = false
+        end
         output:insert(block)
         visual_count = visual_count + 1
       elseif block.t == "Div" then
@@ -227,9 +260,23 @@ function Pandoc(doc)
         local first_output = #output + 1
         process_blocks(block.content, parent_anchor or current_anchor)
         if block.classes:includes("slide-comparison") then
+          local widths = block.attributes["slide-widths"]
+          local left, right
+          if widths then
+            local first, second = widths:match("^%s*([%d%.]+)%s*,%s*([%d%.]+)%s*$")
+            left, right = tonumber(first), tonumber(second)
+            if not left or not right or left <= 0 or right <= 0
+                or left == math.huge or right == math.huge then
+              error('slide-widths must contain two positive numbers, e.g. slide-widths="40,60"')
+            end
+          end
           for index = first_output, #output do
             if output[index].t == "Header" and output[index].level == 2 then
               output[index].attributes["slide-comparison"] = "true"
+              if widths then
+                output[index].attributes["style"] = string.format(
+                  "--slide-left-width: %gfr; --slide-right-width: %gfr;", left, right)
+              end
               break
             end
           end
@@ -242,6 +289,30 @@ function Pandoc(doc)
       end
     end
   end
+  -- A nested fragment holds all results from a cell, so its source can be
+  -- discussed before revealing the answer. This pass also handles cells
+  -- selected inside a larger .slide-visual wrapper.
+  doc = doc:walk({Div = function(div)
+    local option = div.attributes["slide-output-fragment"]
+      or div.attributes["data-slide-output-fragment"]
+    if option ~= "true" then return nil end
+    local content = pandoc.List()
+    local results = pandoc.List()
+    for _, child in ipairs(div.content) do
+      if child.t == "Div" and (child.classes:includes("cell-output")
+          or child.classes:includes("cell-output-display")) then
+        results:insert(child)
+      else
+        content:insert(child)
+      end
+    end
+    if #results > 0 then
+      content:insert(pandoc.Div(results,
+        pandoc.Attr("", {"fragment", "fade-in", "slide-answer"})))
+      div.content = content
+      return div
+    end
+  end})
   process_blocks(doc.blocks)
   flush_notes()
   output:extend(supporting_blocks)

@@ -74,6 +74,8 @@ The chapter uses lightweight annotations:
 - A `.slide-text` span selects a phrase/sentence within a paragraph; a
   `.slide-text` div selects a whole paragraph, list, or block.
 - Plain chapter headings start new slides, including subsections.
+- Add `.slide-with-content` to a heading to start a new slide and reveal that
+  heading together with its first selected text or visual block.
 - A heading with `.slide-fragment` stays on the current slide and reveals as a
   subheading. Subsequent selected content stays there until the next plain heading
   or an explicit `slide-title` starts a new slide. This also works on tab headings.
@@ -122,6 +124,12 @@ in slides; the example above still hides source in the textbook. Execution and
 dependencies are retained, and `eval: false` is respected. Cells without
 `slide-show` retain their existing behavior. Static code can still be selected
 with a `.slide-visual` wrapper.
+
+Add `#| slide-output-fragment: true` alongside `#| slide-show: both` to reveal
+the source first and all of that cell's output together on the next advance.
+This is useful for asking students to predict the answer. The output still
+executes during rendering; only its presentation is delayed. The option also
+works for cells inside a `.slide-visual` wrapper and does not affect the book.
 
 Slide code uses the custom `textbook/tokyo-night.theme`: dark background, purple
 keywords, green strings, orange numbers, and blue functions. It is configured
@@ -199,10 +207,27 @@ this does not start a new slide. You can also combine `.slide-visual` and
 `.slide-fragment` on the same div. On headings, `.slide-fragment` continues to
 reveal the heading separately from subsequent selected content.
 
-For static code followed by a chart cell, add `.slide-code-chart` to the
-`.slide-visual` or `.slide-fragment` wrapper. This places code and chart side by
-side only in slides, with long code lines wrapping as needed. The book retains
-its normal stacked layout. Both syntax examples in chapter 2 use this layout.
+A `.slide-text` div nested inside a `.slide-fragment` block still converts plain
+paragraphs to bullets and preserves existing lists. It shares the outer block's
+animation, so a heading and its bullets can reveal together in a single step.
+
+For a two-example comparison like chapter 2's syntax examples, add
+`.slide-comparison` to the enclosing tabset. Use a plain heading for the first
+example, a `.slide-fragment` heading for the second, and one `.slide-visual`
+block per example. Slides put the first heading and example in the left column
+and the second in the right column. Each chart stays below its code, with long
+code lines wrapping as needed. The book retains its normal tabs and stacked
+code/output layout.
+
+Set `slide-widths` on that same tabset to adjust the left/right proportions:
+
+```markdown
+::: {.panel-tabset .slide-comparison slide-widths="40,60"}
+```
+
+The two positive numbers are relative weights: `40,60` gives 40%/60% of the
+available column space after the gap, and `2,3` gives the same split. Omitting
+the option gives equal columns. This setting affects only the presentation.
 
 For a new local image or data file, also add its path to the staging list in
 `CHAPTER_ASSETS` in `textbook/src/build_chapter_slides.py`. Chapter 1 stages the

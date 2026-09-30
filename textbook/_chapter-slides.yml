@@ -18,6 +18,7 @@ format:
     monofont: 'ui-monospace, "Cascadia Code", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace'
     highlight-style: tokyo-night.theme
     code-block-bg: '#24283b'
+    code-line-numbers: false
     css: chapter-slides.css
     slide-level: 2
     width: 1280
