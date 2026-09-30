@@ -1,23 +1,25 @@
 ---
-title: "Counts & Proportions"
+title: "Counts & proportions"
 fig-width: 5
 fig-height: 3.75
 ---
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Count** observations in numerical intervals with histograms and in categorical groups with bar charts.
+1. **Count** observations in categorical groups and **visualize** them with points and bars.
 
-2. **Compare** counts across groups using color, stacking, and faceting.
+2. **Compare** counts across groups using color, stacked bars, and side-by-side bars.
 
-3. **Choose** histogram bins and **order** categorical bars to make patterns easier to interpret.
+3. **Distinguish** counts from proportions and **identify** the denominator used to calculate a proportion.
+
+4. **Order** categorical bars and **choose** between bar and pie charts to make comparisons easier.
 
 :::
 
 In [Summaries](7_summaries.qmd), we explored central values and variability.
-Another useful summary is the number of observations in a group or interval.
-We will start with histograms of movie runtimes, then explore categorical bar charts
-and take a closer look at bin choices and tooltips.
+Another useful summary is the number of observations in a group.
+We will return to the meditation dataset to compare counts across conditions,
+then explore proportions and different ways to show parts of a whole.
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -25,6 +27,7 @@ and take a closer look at bin choices and tooltips.
 ## Counts
 
 ```{python}
+#| label: counts-python-setup
 #| echo: false
 #| output: false
 import pandas as pd
@@ -34,16 +37,17 @@ meditation = pd.read_csv('data/meditation-stress-sample.csv')
 ```
 
 ```{r}
+#| label: counts-r-setup
 #| echo: false
 #| output: false
 library(readr)
 library(ggplot2)
 
-meditation = read_csv('data/meditation-stress-sample.csv')
+meditation <- read_csv('data/meditation-stress-sample.csv')
 ```
 
-Another useful statistics we can compute
-is the counts of observations in each group.
+We can summarize the number of observations in each group
+by computing a count.
 
 ::: {.panel-tabset group="language"}
 
@@ -51,11 +55,16 @@ is the counts of observations in each group.
 
 We can use the `'count()'` aggregation
 to count observations.
+By default,
+the categories are sorted alphabetically
+from top to bottom
+on the y-axis.
 
 ```{python}
+#| label: condition-count-points-alt
 alt.Chart(meditation).mark_point().encode(
-    y='condition',
-    x='count()'
+    x='count()',
+    y='condition'
 )
 ```
 
@@ -63,12 +72,15 @@ alt.Chart(meditation).mark_point().encode(
 
 We can use `stat = 'count'`
 to count observations.
-Since there is only one way of counting
-we don't need to specify a function
-(in contrast, there are many ways of summarizing:
-mean, median, sum, etc).
+This stat computes the counts itself,
+so we don't need to supply a summary function such as `mean` or `median`.
+By default,
+the categories are sorted alphabetically
+from bottom to top
+on the y-axis.
 
 ```{r}
+#| label: condition-count-points-gg
 ggplot(meditation, aes(y = condition)) +
     geom_point(stat = 'count')
 ```
@@ -80,10 +92,10 @@ it can be beneficial to replace our point mark
 with a bar
 to be able to more clearly compare groups.
 Bar charts visualize magnitudes as position and length.
-Since the bar is drawn from zero 
+Since the bar is drawn from zero,
 it makes the accumulated amount explicit through its length
 (you can think of the bar
-as representing all the individual observation
+as representing all the individual observations
 stacked on top of each other).
 
 ::: {.panel-tabset group="language"}
@@ -91,9 +103,10 @@ stacked on top of each other).
 ### Altair
 
 ```{python}
+#| label: condition-count-bars-alt
 alt.Chart(meditation).mark_bar().encode(
-    y='condition',
-    x='count()'
+    x='count()',
+    y='condition'
 )
 ```
 
@@ -104,21 +117,22 @@ so the default for `geom_bar` is actually `stat = 'count'`,
 which means we can write just `geom_bar()`.
 
 ```{r}
+#| label: condition-count-bars-gg
 #| fig-height: 2
 ggplot(meditation, aes(y = condition)) +
     geom_bar()
 ```
 
-Note that we have reduced the figure height 
-so that the bars have a reasonable width.
+Note that we have reduced the figure height
+so that the horizontal bars have a reasonable thickness.
 In this book,
 ggplot size adjustments are done
-separate from the R code
-(i.e. via Quarto chunk options).
+separately from the R code
+(via Quarto chunk options).
 There are [various ways
 to adjust the figure sizes
 in different
-environment](https://stackoverflow.com/questions/29587881/increase-plot-size-width-in-ggplot2).
+environments](https://stackoverflow.com/questions/29587881/increase-plot-size-width-in-ggplot2).
 
 :::
 
@@ -127,22 +141,22 @@ environment](https://stackoverflow.com/questions/29587881/increase-plot-size-wid
 ### Avoid giant bars
 
 Some libraries have a fixed chart size
-and expands any categories
+and expand the space allocated to categories
 to fill the entire chart
 instead of allocating a fixed space per category.
 This can lead to giant bars
 (and other marks),
-particularly when there are fewer categories
+particularly when there are few categories,
 as in the figure below.
-These are generally difficult to grasp
-so the overall figure size should be
-adjusted to make the bars more narrow.
+Excessively thick bars can make a chart feel crowded.
+Adjusting the overall figure size can make the bars narrower.
 
 ```{r}
+#| label: oversized-count-bars-gg
 #| echo: false
 meditation |>
     dplyr::filter(condition %in% c('Mindful walking', 'Body scan')) |>
-ggplot(aes(y = condition)) +
+    ggplot(aes(y = condition)) +
     geom_bar(fill = '#FF0039')
 ```
 
@@ -150,16 +164,15 @@ ggplot(aes(y = condition)) +
 
 ::: {.callout-warning}
 
-### Avoid bar charts for mean and median
+### Avoid bar charts for means and medians
 
 Remember that the length of the bar suggests
 that we started at zero and added something up,
-e.g. the count or sum of observations.
-Using bars for means have also been observed to
-bias people to thinking that the
-distribution of points are more likely to lie
-within the graphical region
-of the bar^[[Bar graphs depicting averages are perceptually misinterpreted:
+such as a count or sum.
+Using bars for means has also been observed to
+bias viewers toward thinking that individual observations are more likely to fall
+within the graphical region of the bar than beyond it,
+even at equal distances from the mean.^[[Bar graphs depicting averages are perceptually misinterpreted:
 The within-the-bar bias](https://link.springer.com/article/10.3758/s13423-012-0247-5)]
 :::
 
@@ -167,23 +180,22 @@ The within-the-bar bias](https://link.springer.com/article/10.3758/s13423-012-02
 
 In our chart above,
 the groups on the y-axis are sorted in alphabetical order.
-To make it easier to see which group has the most observation
-and compare groups with similar amounts of observations
-and highlight those that have the most and least observations,
-we can instead sort by the count.
+Sorting by count instead makes it easier to compare groups with similar counts
+and identify those with the most and fewest observations.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+#### Altair
 
 The `sort()` method takes the name of another
 visual channel to sort by,
 such as `'x'`, `'color'`, etc.
 
 ```{python}
+#| label: condition-sorted-bars-alt
 alt.Chart(meditation).mark_bar().encode(
-    y=alt.Y('condition').sort('x'),
-    x='count()'
+    x='count()',
+    y=alt.Y('condition').sort('x')
 )
 ```
 
@@ -193,7 +205,7 @@ to have the largest bar the closest to the value axis as above.
 This is not a hard rule however,
 and we can reverse the order by passing `'-x'` instead of `'x'`.
 
-### ggplot
+#### ggplot
 
 The base R function `reorder`
 can be used to sort a column
@@ -206,6 +218,7 @@ we use `add_count` to first create a column (automatically named `n`),
 as the sorting key for our x-axis column:
 
 ```{r}
+#| label: condition-sorted-bars-gg
 #| fig-height: 2
 meditation |>
     dplyr::add_count(condition) |>
@@ -221,30 +234,72 @@ This is not a hard rule however.
 
 :::
 
-This advice generally applies too all types of charts,
-such as when showing points for means etc.
-One exception is 
-Unless there is a natural order to the data 
-
-### Stacked bars
-
-Similar to area charts
-bar charts can also show multiple groups
-as segments stacked on top of each other.
-Let's learn how  that more in this exercise:
-
-::: {.callout-default .ex-prompt}
-
-
-For example,
-we might be interested in how the participants of the survey
-self-reported their gender.
+Ordering categories by their plotted values can also help in other charts,
+such as point charts of group means.
+However, when categories have a meaningful order,
+such as education levels or days of the week,
+preserving that order is generally more useful than sorting by value.
+Here,
+there is no such natural order,
+but we show an example of how we would define one.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
+The custom order is passed to `sort`,
+just as when ordering by another visual channel.
+
 ```{python}
+#| label: condition-custom-sorted-bars-alt
+custom_order = ['Control (book chapter)', 'Mindful breathing', 'Body scan', 'Mindful walking', 'Loving kindness']
+alt.Chart(meditation).mark_bar().encode(
+    x='count()',
+    y=alt.Y('condition').sort(custom_order)
+)
+```
+
+### ggplot
+
+When ordering by another visual channel
+we used `reorder` to change the order of the dataframe column.
+To define a custom order,
+we need to directly manipulate order of the scale
+that the categorical variable is plotting on,
+in this case the y scale.
+
+```{r}
+#| label: condition-custom-sorted-bars-gg
+#| fig-height: 2
+custom_order <- c('Control (book chapter)', 'Mindful breathing', 'Body scan', 'Mindful walking', 'Loving kindness')
+ggplot(meditation, aes(y = condition)) +
+    geom_bar() +
+    scale_y_discrete(limits = custom_order)
+```
+:::
+
+<!-- TODO add counts in 2D, either here or in joint distributions. Might fit better there because all the visual techniques will be the same and can contrast heatmap from -->
+
+### Stacked bars
+
+Like area charts,
+bar charts can also show multiple groups
+as segments stacked on top of each other.
+Let's explore this in the following exercise:
+
+::: {.callout-default .ex-prompt}
+
+
+For example,
+we might be interested in how participants' self-reported gender
+is distributed across the study conditions.
+
+::: {.panel-tabset group="language"}
+
+#### Altair
+
+```{python}
+#| label: condition-gender-stacked-alt
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x='count()',
@@ -252,9 +307,10 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-### ggplot
+#### ggplot
 
 ```{r}
+#| label: condition-gender-stacked-gg
 #| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar()
@@ -265,35 +321,33 @@ ggplot(meditation, aes(y = condition, fill = gender)) +
 In this chart,
 it is easy to see that
 all conditions have more female than male respondents.
-But if we are trying to figure out which 
-Is it also easy to see which had the most male and female respondents?
-Why and what could we do to make this difficult comparison easier?
+Is it equally easy to identify which conditions have the most male and female participants?
+Why, and how could we make the harder comparison easier?
 
 :::: {.callout-default .ex-hint}
 
-The reason that the counts of males are hard to compare between conditions
-is the same as for stacked areas.
+Look at which bar segments start at zero and which start at another segment's endpoint.
+The difficulty is the same as for stacked areas.
 But the solution is slightly different
 since we have more options than just layering the bars on top of each other.
 
 ::::: {.callout-default .ex-solution}
 
-It is difficult to compare the counts of male respondents
-because the corresponding bar segments do not share a common baseline.
+It is difficult to compare counts when the corresponding bar segments
+do not share a common baseline.
 This means that we are left trying to mentally align the bars
 to compare their lengths in our mind.
 This is much harder than
-simply reading a value of the x-axis for the 
+reading the endpoints against a shared x-axis baseline.
 
 We could switch to a point mark,
 just as we switched from areas to lines to solve a similar problem,
-but there is one more solution available to use for bars
-that were not there for areas,
-we can put the bars next to each other:
+but bars also offer a useful alternative:
+we can put them next to each other within each condition.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+##### Altair
 
 The `yOffset`/`xOffset` encodings
 that we used for jittering
@@ -301,6 +355,7 @@ can also take a categorical variable
 to offset groups next to each other.
 
 ```{python}
+#| label: condition-gender-grouped-alt
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x='count()',
@@ -309,24 +364,25 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-### ggplot
+##### ggplot
 
 The `position` parameter
 that we used for jittering
 can also take the `'dodge'` value,
-which means that the geoms should "dodge"
-stacking on top of each other
-and be place next to one another instead.
+which places bars next to one another instead of stacking them.
 
 ```{r}
+#| label: condition-gender-grouped-gg
 #| fig-height: 3
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'dodge')
 ```
 
-Now it is easy to see which condition had the most male participants too!
-
 :::
+
+Now both gender categories can be compared across conditions using a shared zero baseline.
+Body scan and mindful breathing tie for the most male participants, with 36 each;
+the control condition has the most female participants, with 86.
 
 :::::
 
@@ -338,16 +394,14 @@ Now it is easy to see which condition had the most male participants too!
 
 ### Avoid stacked bar charts when exact group comparisons matter
 
-Just like for stacked areas,
+As with stacked areas,
 it is difficult to compare the bar segments
 that do not share a baseline,
 since we have to rely on their length
-rather than the position of the top of the bars on the same axis.
-We should therefore only use stacked bars
-if the total (e.g. the total count per condition)
-is of primary importance
-and the comparisons between the groups
-is of secondary importance.
+rather than aligned endpoint positions.
+Stacked bars work best when the total, such as the count per condition,
+is of primary importance and precise comparisons between segments
+are of secondary importance.
 
 :::
 
@@ -355,16 +409,19 @@ is of secondary importance.
 
 ## Proportions
 
-Proportions (and percentages) are counts that have been normalized
-to a total number of observations for a wider group.
-They can be effectively visualized with bars
-that indicate how big part they are of the whole.
+A proportion expresses a part relative to a whole.
+For categorical counts, we calculate it by dividing the count for a subgroup
+by the total count for the relevant group; multiplying by 100 gives a percentage.
+Here, each condition is the whole, and the gender categories are its parts.
+Normalizing each bar to the same length lets us compare gender proportions
+even though the conditions have different numbers of participants.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
 ```{python}
+#| label: condition-gender-proportions-alt
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x=alt.X('count()').stack('normalize'),
@@ -374,9 +431,11 @@ alt.Chart(meditation).mark_bar().encode(
 
 We could change the displayed axis values
 from percentages to proportions
-by formatting the labels of the axis as 1 decimal floats (`.1f`):
+by formatting the axis labels as decimals with one digit after the decimal point (`.1f`).
+Here, `labelExpr` formats each tick value directly, overriding the default percentage labels:
 
 ```{python}
+#| label: condition-gender-proportions-format-alt
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x=alt.X('count()')
@@ -386,11 +445,10 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-<!-- TODO change to    .axis(format='.1f'), -->
-
 ### ggplot
 
 ```{r}
+#| label: condition-gender-proportions-gg
 #| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'fill')
@@ -401,6 +459,7 @@ from proportions to percentages
 by specifying that the scale labels are percentages:
 
 ```{r}
+#| label: condition-gender-percentages-gg
 #| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'fill') +
@@ -410,60 +469,56 @@ ggplot(meditation, aes(y = condition, fill = gender)) +
 :::
 
 
-When we show proportions in a stacked bar chart
-with only two groups,
-both groups are easy to compare since the second group
-(i.e. the male group above)
-also share a common baseline at the top of the scale
-(i.e. where the proportion is 1 to the right).
-A third group would however be difficult to compare 
-since it would be a floating segment in the middle
-of the bars without a common baseline.
+With two segments in each normalized bar,
+both proportions can be compared against a shared reference:
+one segment starts at zero, and the other ends at one (100%).
+With three or more segments, those in the middle generally lack an aligned endpoint,
+making them harder to compare.
+Proportions can also be shown with side-by-side bars sharing a zero baseline.
 
-Proportional bars can also be put next to each other
-
-For proportions,
-it is also 
-
-Based on these results we can see there were mostly females
+Always make the denominator clear.
+These bars show proportions **within each condition**, not proportions of the whole sample.
+Normalizing also hides differences in sample size: the conditions contain between 84 and 113 participants,
+but all five normalized bars have the same total length.
+Across the complete 500-observation sample, 344 participants reported female gender (68.8%).
 
 ### Pie charts
 
 Pie charts use angles and areas to indicate magnitude.
 They should generally be avoided
-as stacked and offset bar charts
+as bar charts with a shared baseline
 tend to communicate the same insights more effectively.
 A minor point in favor of pie charts
-is that they can make even proportions (such as 1/4 and 1/2)
-more quickly recognizable than a bar chart
-and can thus be helpful for more illustrative purposes
-when there are max 2-3 groups.
+is that familiar fractions, such as one-quarter and one-half,
+can be easy to recognize.
+They can therefore be useful for illustration and simple comparisons
+with just two or (maybe) three groups.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+#### Altair
 
-`Theta` is the encoding channel that controls the angle/size
+`theta` is the visual channel that controls the angle
 of each slice in the pie.
 
 ```{python}
+#| label: gender-pie-alt
 alt.Chart(meditation).mark_arc().encode(
     theta=alt.Theta('count()').stack(True),
     color='gender'
 )
 ```
 
-We could also [set the inner and outer radius](https://altair-viz.github.io/gallery/radial_chart.html)
-if we want to create a donut chart
-or radial bar chart.
+We can also [adjust the inner and outer radii](https://altair-viz.github.io/gallery/radial_chart.html).
+Setting an inner radius greater than zero creates a donut chart.
 
-### ggplot
+#### ggplot
 
-The grammar of graphics defines a pie chart
-as a bar chart projected into polar coordinate space,
-which ggplot allows us to do via `coord_polar()`.
+In ggplot, we can construct a pie chart by transforming
+a stacked bar into polar coordinates with `coord_polar()`; a very grammatical operation!.
 
 ```{r}
+#| label: gender-pie-gg
 ggplot(meditation, aes(x = factor(1), fill = gender)) +
     geom_bar() +
     coord_polar(theta = 'y')
@@ -540,4 +595,4 @@ alt.hconcat(
 :::
 
 Another way of thinking of these count charts is that we are viewing distributions of categorical values.
-This concept can also be applied to quantitative values as we will see in the next chapter.
+This concept can also be applied to quantitative values, as we will see in [Binned distributions](9_binned-distributions.qmd).
