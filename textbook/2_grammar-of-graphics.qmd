@@ -1,5 +1,6 @@
 ---
 title: "The grammar of graphics"
+chapter-slides: slides/2_grammar-of-graphics.html
 fig-width: 4
 fig-height: 4
 include-in-header:
@@ -8,6 +9,8 @@ include-in-header:
         .table.dataframe { width: auto; text-align: right; }
       </style>
 ---
+
+:::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
@@ -22,6 +25,8 @@ include-in-header:
 3. **Identify** the data-linked canvas, aesthetic encodings, and geometric marks in Altair and ggplot.
 
 :::
+
+::::
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -63,6 +68,8 @@ let's start with an example,
 using the following small toy dataset:
 
 
+::: {.slide-visual}
+
 ```{python}
 #| echo: false
 #| label: grammar-example-data
@@ -75,6 +82,8 @@ df = pd.DataFrame({
 show_df(df)
 ```
 
+:::
+
 A helpful way to illustrate the difference
 between the two approaches to syntax
 is to imagine that we want to create a chart
@@ -82,9 +91,11 @@ where we color the points according to their group.
 Here is pseudocode^[Pseudocode is an informal way of writing code that is often used to explain a concept to the reader.]
 that illustrates this difference:
 
-::: {.panel-tabset}
+::: {.panel-tabset .slide-comparison}
 
 ### Declarative syntax
+
+:::: {.slide-visual}
 
 ```{.python}
 chart(
@@ -107,7 +118,11 @@ alt.Chart(df, width=200, height=200).mark_point().encode(
 ```
 
 
-### Imperative syntax
+::::
+
+### Imperative syntax {.slide-fragment}
+
+:::: {.slide-visual}
 
 ```{.python}
 fig = create_figure()
@@ -127,6 +142,8 @@ alt.Chart(df, width=200, height=200).mark_point().encode(
     color='group'
 )
 ```
+
+::::
 
 :::
 
@@ -172,6 +189,8 @@ is to consider the difference between giving an instruction in each:
 
 ### Declarative instruction
 
+:::: {.slide-text}
+
 **"Color by the column `group` in the dataframe."**
 
 **Focus**: Declaring links between data variables (e.g., `group`)
@@ -180,7 +199,11 @@ The rest of the plot details
 (such as which colors to use)
 are handled automatically.
 
-### Imperative instruction
+::::
+
+### Imperative instruction {.slide-fragment}
+
+:::: {.slide-text}
 
 **"Loop over the dataframe
 and plot observations in group `a` in blue
@@ -188,6 +211,9 @@ and observations in group `b` in orange."**
 
 **Focus**: Being explicit with all the details
 for creating the chart via loops and low-level drawing commands.
+
+::::
+
 :::
 
 In this book, we will learn about
@@ -258,7 +284,11 @@ so let's see an example in the following exercise:
 The idea of a grammar of graphics originates from
 [Leland Wilkinson's book *The Grammar of Graphics*](https://en.wikipedia.org/wiki/Wilkinson%27s_Grammar_of_Graphics).
 
+:::: {.slide-visual slide-title="Grammatical origins"}
+
 ![](https://pictures.abebooks.com/isbn/9780387987743-us.jpg)
+
+::::
 
 :::
 
@@ -267,9 +297,13 @@ The idea of a grammar of graphics originates from
 What do you think the output of the following Python code would be?
 
 
+::: {.slide-visual slide-title="Adding numbers"}
+
 ```{.python}
 1 + 2
 ```
+
+:::
 
 As you might have expected,
 the output is `3`
@@ -283,9 +317,13 @@ Do you think it differs between programming languages?
 
 <!-- For some reason, syntax highlighting is messed up if this is a python block -->
 
+::: {.slide-fragment slide-title="Adding strings"}
+
 ```{.js}
 'one' + 'two'
 ```
+
+:::
 
 :::: {.callout-default .ex-hint}
 
@@ -324,6 +362,8 @@ there are some core steps
 which are present in most
 grammars of graphics:
 
+::: {.slide-text}
+
 1. **Create a data-linked canvas**:
     This step creates a background canvas
     that other graphical components are drawn upon
@@ -335,6 +375,8 @@ grammars of graphics:
 3. **Add geometric marks**:
     This step selects the graphical elements
     used to represent the data (e.g., points or bars).
+
+:::
 
 As a result of the predictable structure,
 a grammar of graphics allows you to create
@@ -366,11 +408,13 @@ we described above.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-fragment}
 
 In the Python package Altair,
 a general representation of the core chart components
 would look like this:
+
+:::: {.slide-visual}
 
 ```{.python}
 alt.Chart(data).encode().mark()
@@ -379,6 +423,8 @@ alt.Chart(data).encode().mark()
 1. `alt.Chart(data)` creates the data-linked canvas.
 2. `encode(...)` encodes the visual aesthetics, such as `x` and `y`.
 3. `mark_*(...)` adds geometric marks, such as points or bars.
+
+::::
 
 Note that we wrote the Altair syntax in the same form
 as in our general grammar of graphics example above
@@ -402,15 +448,21 @@ Vega was named after a star
 and the name "Altair" was picked because
 it represents another star in the same astronomical pattern.
 
+::: {.slide-visual slide-title="Stellar naming"}
+
 ![](https://upload.wikimedia.org/wikipedia/commons/6/69/Altair.jpg)
+
+:::
 
 ::::
 
-### ggplot
+### ggplot {.slide-fragment}
 
 In the R library ggplot2,
 a general representation of the core chart components
 would look like this:
+
+:::: {.slide-visual}
 
 ```{.r}
 ggplot(data) + aes() + geom()
@@ -419,6 +471,8 @@ ggplot(data) + aes() + geom()
 1. `ggplot(data)` creates the data-linked canvas.
 2. `aes(...)` encodes the visual aesthetics, such as `x` and `y`.
 3. `geom_*(...)` A geom function adds geometric marks, such as points or bars.
+
+::::
 
 Note that we wrote the ggplot syntax in the same form
 as in our general grammar of graphics example above
@@ -457,6 +511,8 @@ since you are likely to encounter some of them in the wild.
 In this diagram,
 you can see an overview of the available tools
 and how they are connected.
+
+:::: {.slide-visual}
 
 ```{mermaid}
 %%| label: visualization-ecosystem
@@ -526,6 +582,10 @@ graph TD
     js --> htmlwidgets & bokeh & plotly_py
 ```
 
+::::
+
+:::: {.slide-visual slide-title="Visualization ecosystem legend"}
+
 ```{mermaid}
 %%| label: ecosystem-legend
 %%| mermaid-format: png
@@ -541,5 +601,7 @@ graph TD
     LL[Low-level]:::lowLevel
     JS[JavaScript]:::javascript
 ```
+
+::::
 
 :::
