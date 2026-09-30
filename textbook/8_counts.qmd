@@ -112,8 +112,8 @@ alt.Chart(meditation).mark_bar().encode(
 
 ### ggplot
 
-ggplot discourages people from using bars for summaries,
-so the default for `geom_bar` is actually `stat = 'count'`,
+To discourage the use of bars for summaries,
+the default for `geom_bar` is `stat = 'count'`,
 which means we can write just `geom_bar()`.
 
 ```{r}
@@ -178,6 +178,8 @@ The within-the-bar bias](https://link.springer.com/article/10.3758/s13423-012-02
 
 ### Sorting groups
 
+<!-- TODO also mentions that we should sort points of mean, medians etc -->
+
 In our chart above,
 the groups on the y-axis are sorted in alphabetical order.
 Sorting by count instead makes it easier to compare groups with similar counts
@@ -199,38 +201,43 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-Generally,
-it tends to be a bit more visually appealing
-to have the largest bar the closest to the value axis as above.
-This is not a hard rule however,
-and we can reverse the order by passing `'-x'` instead of `'x'`.
+This places the largest bar at the bottom,
+nearest the x-axis.
+To place it at the top instead,
+pass `'-x'` rather than `'x'`.
+Either direction can work,
+but generally it is more visually appealing
+to have the longest bar,
+the closest to the axis.
 
 #### ggplot
 
-The base R function `reorder`
-can be used to sort a column
-based on another existing column,
-e.g. `reorder(column_to_sort, column_to_use_as_sorting_order)`.
-It requires an extra step to do it based on a non-existing column,
-such as the count.
+The base R function `reorder()` sets the order of categorical levels
+based on another column in the dataframe,
+for example,
+`reorder(column_to_sort, column_to_use_as_sorting_order)`.
+To order the categories by their counts,
+we first need to calculate those counts
+and add them to the dataframe.
 Here,
-we use `add_count` to first create a column (automatically named `n`),
-as the sorting key for our x-axis column:
+we use `dplyr::add_count()` to create a column automatically named `n`,
+then use it to order the categories on the y-axis.
 
 ```{r}
 #| label: condition-sorted-bars-gg
 #| fig-height: 2
 meditation |>
     dplyr::add_count(condition) |>
-    ggplot(aes(y = reorder(condition, n))) +
+    ggplot(aes(y = reorder(condition, -n))) +
         geom_bar()
 ```
 
-Generally,
-it tends to be a bit more visually appealing
-to have the largest bar the closest to the value axis,
-which we can achieve with `reorder(condition, -n)`.
-This is not a hard rule however.
+We used used `-n` to put the longest bar the closest to the axis.
+To put the largest count at the top instead, use `reorder(condition, n)`.
+Either direction can work;
+but generally it is more visually appealing
+to have the longest bar,
+the closest to the axis.
 
 :::
 
@@ -515,7 +522,8 @@ Setting an inner radius greater than zero creates a donut chart.
 #### ggplot
 
 In ggplot, we can construct a pie chart by transforming
-a stacked bar into polar coordinates with `coord_polar()`; a very grammatical operation!.
+a stacked bar into polar coordinates with `coord_polar()`;
+a very grammatically coherent way to express a pie chart!
 
 ```{r}
 #| label: gender-pie-gg
