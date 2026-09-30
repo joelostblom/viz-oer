@@ -536,54 +536,55 @@ ggplot(meditation, aes(x = factor(1), fill = gender)) +
 
 ::: {.callout-warning}
 
-### Avoid pie charts other than for simple purposes
+#### Avoid pie charts for precise comparisons
 
 It is almost always better to use some form of a bar chart.
 When there are many groups in the data,
 pie charts can be disorienting.
-In the chart below you can see the results from the Swedish election in 2026,
-with parties designated
-to the block they identified with before the election.
+The charts below show parliamentary seats from the 2026 Swedish election.^[Source: [Swedish Election Authority, final results for 2026](https://www.val.se/valresultat-och-statistik/riksdags--region--och-kommunval/valresultat-2026)],
+with parties grouped into their blocs from last election.
 In the bar chart to the left,
-you can immediately see that Block 1 got slightly more votes
-whereas in the middle pie chart
-it is impossible to determine this information.
+it is easier to see that Bloc 1 has slightly more seats: 176 compared with 173,
+and we could make this even clearer
+by adding a line/rule at the majority cutoff
+or by making the figure larger.
+In the middle pie chart, comparing the bloc totals is much harder
+because each bloc is split across several party slices.
 Even in the simplified rightmost pie chart
-that shows only the votes per block,
-it is really difficult to see that the angle/area of block 1
-is slightly greater than block 2.
+which shows only the seats per bloc,
+the small difference between the two slices is difficult to judge.
 
 ```{python}
+#| label: election-bars-and-pies
 #| echo: false
 data = (
-    ['V', 30, 'Block1'],
-    ['S', 99, 'Block1'],
-    ['MP', 22, 'Block1'],
-    ['C', 25, 'Block1'],
-    ['L', 19, 'Block2'],
-    ['KD', 22, 'Block2'],
-    ['M', 70, 'Block2'],
-    ['SD', 62, 'Block2'],
+    ['V', 30, 'Bloc 1'],
+    ['S', 99, 'Bloc 1'],
+    ['MP', 22, 'Bloc 1'],
+    ['C', 25, 'Bloc 1'],
+    ['L', 19, 'Bloc 2'],
+    ['KD', 22, 'Bloc 2'],
+    ['M', 70, 'Bloc 2'],
+    ['SD', 62, 'Bloc 2'],
 )
 
-election = pd.DataFrame(data, columns=["Party", "Mandate", 'Block'])
+election = pd.DataFrame(data, columns=['Party', 'Seats', 'Bloc'])
 
-bars = alt.Chart(election, height=180).mark_bar().encode(
-    x=alt.X("Block:N", title=None),
-    y=alt.Y("sum(Mandate)", title="Mandate"),
-    color=alt.Color("Party:N").legend(None)
+bars = alt.Chart(election, width=120, height=180).mark_bar().encode(
+    x=alt.X('Bloc:N').title(None).axis(labelAngle=0),
+    y=alt.Y('sum(Seats):Q').title('Seats'),
+    color=alt.Color('Party:N').legend(None)
 )
 
 pie_parties = alt.Chart(election, width=180, height=180).mark_arc().encode(
-    theta=alt.Theta("sum(Mandate):Q", title="Mandate"),
-    color=alt.Color("Party:N").legend(None),
-    # detail=alt.Color("Party:N"),
+    theta=alt.Theta('sum(Seats):Q').title('Seats'),
+    color=alt.Color('Party:N').legend(None),
 )
 
 pie_blocks = pie_parties.encode(
-    color=alt.Color("Block:N").legend(None),
+    color=alt.Color('Bloc:N').legend(title=None, orient='bottom'),
 ).properties(
-    title='One color per block'
+    title='One color per bloc'
 )
 
 alt.hconcat(
