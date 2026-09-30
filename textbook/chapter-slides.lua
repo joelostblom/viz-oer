@@ -211,9 +211,7 @@ function Pandoc(doc)
           continuation = continuation + 1
           start_slide(current_title, "visualization-continued-" .. continuation, current_anchor)
         end
-        local code_chart = block.classes:includes("slide-code-chart")
         block.classes = pandoc.List({"slide-media", "fragment", "fade-in"})
-        if code_chart then block.classes:insert("slide-code-chart") end
         output:insert(block)
         visual_count = visual_count + 1
       elseif block.t == "Div" then
@@ -226,7 +224,16 @@ function Pandoc(doc)
         end
         -- Return from nested slides to a visible outer section in the chapter,
         -- rather than an anchor inside a collapsed solution or inactive tab.
+        local first_output = #output + 1
         process_blocks(block.content, parent_anchor or current_anchor)
+        if block.classes:includes("slide-comparison") then
+          for index = first_output, #output do
+            if output[index].t == "Header" and output[index].level == 2 then
+              output[index].attributes["slide-comparison"] = "true"
+              break
+            end
+          end
+        end
       elseif current_title then
         for _, selection in ipairs(selected_spans(block)) do
           show_text({selection}, true)

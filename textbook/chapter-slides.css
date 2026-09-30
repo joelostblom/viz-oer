@@ -170,28 +170,38 @@
   margin-top: 0.5em;
 }
 
-/* Presentation-only two-column layout: source on the left, chart on the right.
-   The annotation has no styling in the reading view. */
-.reveal .slide-code-chart {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 0.75em;
+/* Two complete examples side by side; code and output remain stacked within
+   each example. Only the marked slide uses this layout. */
+.reveal .slides section.present[data-slide-comparison],
+.reveal.overview .slides section[data-slide-comparison] {
+  display: grid !important; /* Override Reveal's inline display: block. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto 1fr;
+  column-gap: 1em;
   align-items: start;
 }
 
-.reveal .slide-code-chart > * {
+.reveal section[data-slide-comparison] > * {
   min-width: 0;
 }
 
-.reveal .slide-code-chart > .slide-heading {
-  grid-column: 1 / -1;
+.reveal section[data-slide-comparison] > h2 {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.reveal .slide-media.slide-code-chart > .cell {
+.reveal section[data-slide-comparison] > .slide-heading {
+  grid-column: 2;
+  grid-row: 1;
   margin-top: 0;
+  margin-bottom: 0.6em;
 }
 
-.reveal .slide-code-chart pre code {
+.reveal section[data-slide-comparison] > .slide-media {
+  grid-row: 2;
+}
+
+.reveal section[data-slide-comparison] pre code {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
