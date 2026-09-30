@@ -37,8 +37,12 @@ resources:
 format:
   live-html:
     theme:
-      - cosmo
-      - callouts.scss
+      light:
+        - cosmo
+        - callouts.scss
+      dark:
+        - darkly
+        - callouts.scss
     css: styles.css
     include-after-body:
       - text: |

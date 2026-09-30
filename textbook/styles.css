@@ -110,8 +110,8 @@ html.tabset-scroll-stabilizing body {
 }
 
 .boxed {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
+    background-color: var(--bs-body-bg, #ffffff);
+    border: 1px solid var(--bs-border-color, #ddd);
     padding: 15px 15px 0 15px;
     margin: 10px 0;
     border-radius: 5px;
@@ -212,6 +212,30 @@ h4 {
   --callout-body-bg: #fff3f5;
   --callout-header-bg: #ffe4e9;
   --callout-outline: #f2cbd4;
+}
+
+/* Use Quarto's theme state for custom callout surfaces as well. */
+.quarto-dark .callout {
+  --callout-dark-accent: #adb5bd;
+  --callout-body-bg: color-mix(in srgb, var(--bs-body-bg) 92%, var(--callout-dark-accent));
+  --callout-header-bg: color-mix(in srgb, var(--bs-body-bg) 82%, var(--callout-dark-accent));
+  --callout-outline: color-mix(in srgb, var(--bs-body-bg) 65%, var(--callout-dark-accent));
+}
+
+.quarto-dark .callout:is(.callout-note, .callout-ex-prompt) {
+  --callout-dark-accent: #7aa2f7;
+}
+
+.quarto-dark .callout.callout-tip {
+  --callout-dark-accent: #9ece6a;
+}
+
+.quarto-dark .callout:is(.callout-caution, .callout-ex-hint, .callout-ex-solution) {
+  --callout-dark-accent: #e0af68;
+}
+
+.quarto-dark .callout:is(.callout-important, .callout-warning) {
+  --callout-dark-accent: #f7768e;
 }
 
 /* Active tab labels blend into the nearest callout instead of the white page. */
