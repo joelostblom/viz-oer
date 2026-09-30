@@ -1,0 +1,51 @@
+/*-- scss:defaults --*/
+
+// Book-sized typography and Bootstrap components, using the slide palette.
+$body-bg: #1a1b26;
+$body-color: #c0caf5;
+$headings-color: #7aa2f7;
+$link-color: #ff9e64;
+$link-hover-color: #ff9e64;
+$primary: #7aa2f7;
+$secondary: #414868;
+$border-color: #414868;
+$body-secondary-color: #a9b1d6;
+$body-tertiary-bg: #24283b;
+$code-color: #ff9e64;
+$code-block-bg: #24283b;
+$code-block-border-color: #414868;
+$input-bg: #24283b;
+$input-color: #c0caf5;
+$input-border-color: #414868;
+$navbar-bg: #1a1b26;
+$navbar-fg: #c0caf5;
+$sidebar-bg: #1a1b26;
+$sidebar-fg: #c0caf5;
+$sidebar-hl: #ff9e64;
+$toc-color: #ff9e64;
+
+/*-- scss:rules --*/
+
+// Scoped so Quarto's alternate stylesheet never affects the light palette.
+body.quarto-dark {
+  .chapter-number,
+  .header-section-number,
+  figcaption,
+  .figure-caption,
+  .table-caption,
+  caption {
+    color: #6889cc !important; // Muted heading blue; override context-specific numbering colors.
+  }
+
+  ::selection {
+    background: #ff9e64;
+    color: #1a1b26;
+  }
+
+  .nav-tabs {
+    --bs-nav-tabs-link-active-color: #7aa2f7;
+    --bs-nav-tabs-link-active-bg: #24283b;
+    --bs-nav-tabs-border-color: #414868;
+    --bs-nav-tabs-link-active-border-color: #414868 #414868 #24283b;
+  }
+}

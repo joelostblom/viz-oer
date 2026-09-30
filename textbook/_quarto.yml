@@ -43,6 +43,10 @@ format:
       dark:
         - darkly
         - callouts.scss
+        - tokyo-night.scss
+    highlight-style:
+      light: arrow
+      dark: tokyo-night.theme
     css: styles.css
     include-after-body:
       - text: |
