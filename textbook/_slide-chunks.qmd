@@ -1,0 +1,24 @@
+```{r}
+#| label: chapter-slides-cell-setup
+#| include: false
+
+# The slide builder appends this to its temporary knitr include only.
+# Book cells keep their normal echo/output/include options.
+knitr::opts_hooks$set(`slide-show` = function(options) {
+  mode <- options[["slide-show"]]
+  if (length(mode) != 1L || !mode %in% c("code", "output", "both")) {
+    stop("slide-show must be 'code', 'output', or 'both' in chunk '", options$label, "'.")
+  }
+  options$classes <- unique(c(options$classes, "slide-visual", paste0("slide-show-", mode)))
+  options$include <- TRUE
+  options$echo <- mode != "output"
+  options$results <- if (mode == "code") "hide" else "markup"
+  options$fig.show <- if (mode == "code") "hide" else "asis"
+  if (mode == "code") {
+    options$message <- FALSE
+    options$warning <- FALSE
+  }
+  # Do not change eval: display choices must not alter execution/dependencies.
+  options
+})
+```
