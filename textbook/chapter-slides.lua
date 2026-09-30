@@ -28,6 +28,7 @@ function Pandoc(doc)
   local visual_count = 0
   local keep_content_together = false
   local reveal_with_heading = false
+  local reveal_group = 0
   local continuation = 0
 
   local function flush_notes()
@@ -108,7 +109,7 @@ function Pandoc(doc)
   local function show_text(blocks, capitalize)
     local fragment = text_fragment(blocks, capitalize)
     if reveal_with_heading then
-      fragment.attributes["fragment-index"] = "0"
+      fragment.attributes["slide-reveal-group"] = tostring(reveal_with_heading)
       reveal_with_heading = false
     end
     output:insert(fragment)
@@ -183,6 +184,12 @@ function Pandoc(doc)
           local heading = block:clone()
           heading.level = 3 -- Below slide-level, so it cannot start a slide.
           heading.classes:extend({"slide-heading", "fragment", "fade-in"})
+          reveal_with_heading = false
+          if block.classes:includes("slide-with-content") then
+            reveal_group = reveal_group + 1
+            heading.attributes["slide-reveal-group"] = tostring(reveal_group)
+            reveal_with_heading = reveal_group
+          end
           output:insert(heading)
           -- A leading Header makes Pandoc render this notes Div as a visible
           -- section instead of Reveal's hidden aside. Use a label instead.
@@ -192,12 +199,14 @@ function Pandoc(doc)
         else
           start_slide(block.content, block.identifier, parent_anchor)
           if block.classes:includes("slide-with-content") then
+            reveal_group = reveal_group + 1
             local heading = output[#output]
             -- Reveal moves Header attributes onto the whole slide; animate
             -- a span inside the heading instead of marking the section.
             heading.content = pandoc.Inlines({pandoc.Span(heading.content,
-              pandoc.Attr("", {"fragment", "fade-in"}, {["fragment-index"] = "0"}))})
-            reveal_with_heading = true
+              pandoc.Attr("", {"fragment", "fade-in"},
+                {["slide-reveal-group"] = tostring(reveal_group)}))})
+            reveal_with_heading = reveal_group
           end
         end
       elseif block.t == "Div" and block.classes:includes("slide-outcomes") then
@@ -242,7 +251,7 @@ function Pandoc(doc)
         end})
         block.classes = pandoc.List({"slide-media", "fragment", "fade-in"})
         if reveal_with_heading then
-          block.attributes["fragment-index"] = "0"
+          block.attributes["slide-reveal-group"] = tostring(reveal_with_heading)
           reveal_with_heading = false
         end
         output:insert(block)
@@ -259,7 +268,8 @@ function Pandoc(doc)
         -- rather than an anchor inside a collapsed solution or inactive tab.
         local first_output = #output + 1
         process_blocks(block.content, parent_anchor or current_anchor)
-        if block.classes:includes("slide-comparison") then
+        if block.classes:includes("slide-columns")
+            or block.classes:includes("slide-comparison") then
           local widths = block.attributes["slide-widths"]
           local left, right
           if widths then
@@ -272,7 +282,7 @@ function Pandoc(doc)
           end
           for index = first_output, #output do
             if output[index].t == "Header" and output[index].level == 2 then
-              output[index].attributes["slide-comparison"] = "true"
+              output[index].attributes["slide-columns"] = "true"
               if widths then
                 output[index].attributes["style"] = string.format(
                   "--slide-left-width: %gfr; --slide-right-width: %gfr;", left, right)
@@ -317,6 +327,39 @@ function Pandoc(doc)
   flush_notes()
   output:extend(supporting_blocks)
   doc.blocks = output
+  -- Assign every fragment in reading order, sharing an index only for a
+  -- heading/content pair. Multiple pairs on one slide must remain separate.
+  local fragment_index = 0
+  local group_indices = {}
+  local function index_fragment(element)
+    if element.classes:includes("fragment") then
+      local group = element.attributes["slide-reveal-group"]
+      local index = group and group_indices[group]
+      if index == nil then
+        index = fragment_index
+        fragment_index = fragment_index + 1
+        if group then group_indices[group] = index end
+      end
+      element.attributes["fragment-index"] = tostring(index)
+      element.attributes["slide-reveal-group"] = nil
+      return element
+    end
+  end
+  doc = doc:walk({
+    traverse = "topdown",
+    Header = function(heading)
+      if heading.level == 2 then
+        fragment_index = 0
+        group_indices = {}
+      end
+      return index_fragment(heading)
+    end,
+    Div = function(div)
+      if div.classes:includes("notes") then return div, false end
+      return index_fragment(div)
+    end,
+    Span = index_fragment
+  })
   doc.meta.toc = false
   doc.meta["number-sections"] = false
   return doc

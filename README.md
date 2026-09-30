@@ -58,7 +58,8 @@ also includes the exercise dataset, declarative/imperative charts and pseudocode
 arithmetic code examples, grammar implementations, margin images, and both
 visualization-ecosystem diagrams.
 
-Nested tab headings become separate slides. Exercise callout boxes are unpacked:
+Nested tab headings follow the same slide-placement rules as other headings.
+Exercise callout boxes are unpacked:
 their selected visuals appear directly on slides, while prompts, hints, and
 solutions remain in speaker notes. Notes label exercise, hint, and solution
 sections, and keep explanatory footnotes inline. Sections without selected
@@ -69,13 +70,16 @@ The chapter uses lightweight annotations:
 - `chapter-slides: slides/1_why-visualize-data.html` enables its presentation link.
 - A `.slide-outcomes` div wraps the learning outcomes.
 - A `.slide-visual` div wraps each chart, image, or table selected for slides.
-  It can be nested inside an exercise, tabset, or margin note. It can also contain
+  It can be nested inside an exercise or tabset. It can also contain
   code with its chart so they appear together as one fragment.
 - A `.slide-text` span selects a phrase/sentence within a paragraph; a
   `.slide-text` div selects a whole paragraph, list, or block.
 - Plain chapter headings start new slides, including subsections.
 - Add `.slide-with-content` to a heading to start a new slide and reveal that
   heading together with its first selected text or visual block.
+  Combine it with `.slide-fragment` to reveal a heading and its first selected
+  block together on the current slide. Each heading/content pair gets its own
+  animation step.
 - A heading with `.slide-fragment` stays on the current slide and reveals as a
   subheading. Subsequent selected content stays there until the next plain heading
   or an explicit `slide-title` starts a new slide. This also works on tab headings.
@@ -89,7 +93,24 @@ The chapter uses lightweight annotations:
   slide and the normal selection rules (including automatic visual continuation
   slides). The heading remains visible in the textbook.
 
-To control slide breaks and same-slide headings:
+#### Headings: placement and animation
+
+Prefer **heading annotations for headings**, and **wrappers for selecting and
+grouping content**. Keep real headings outside `.slide-text` and `.slide-visual`
+wrappers so their slide placement is explicit.
+
+| Intent | Heading markup |
+|---|---|
+| New slide; heading appears first | `### Title` |
+| New slide; heading and first selected block reveal together | `### Title {.slide-with-content}` |
+| Same slide; heading reveals separately | `### Title {.slide-fragment}` |
+| Same slide; heading and first selected block reveal together | `### Title {.slide-fragment .slide-with-content}` |
+
+With `.slide-with-content`, the heading and its first selected block share one
+advance. Later blocks retain their own reveal steps. Multiple heading/content
+pairs on the same slide reveal in sequence, rather than all at once.
+
+For separate heading and text reveals:
 
 ```markdown
 ## A new slide
@@ -105,6 +126,27 @@ To control slide breaks and same-slide headings:
 
 The subheading and selected text reveal separately. In the textbook, these
 remain ordinary headings and paragraphs.
+
+For a heading and its bullets to reveal together on the current slide:
+
+```markdown
+### Imperative instruction {.slide-fragment .slide-with-content}
+
+::: {.slide-text}
+
+**"Loop over the dataframe and plot observations in each group."**
+
+**Focus**: Explicit instructions for constructing the chart.
+
+:::
+```
+
+Remove `.slide-fragment` from the heading to start a new slide instead, while
+keeping the heading and bullets in the same animation step. The same heading
+annotations work when the next selected block is `.slide-visual` rather than
+`.slide-text`.
+
+#### Executable code and output
 
 For executable cells in the current knitr-based chapters:
 
@@ -139,6 +181,8 @@ Slide text and headings use the OS interface font (`system-ui`); code uses
 is needed. The font stacks are set in `_chapter-slides.yml` and
 `chapter-slides.css`.
 
+#### Selecting text
+
 To select an excerpt from a paragraph:
 
 ```markdown
@@ -171,6 +215,8 @@ and nesting without adding an extra bullet level. These
 are project-specific annotations implemented by `chapter-slides.lua`, not native
 Quarto selection syntax. Place inline selections after their section heading.
 
+#### Visuals and grouped fragments
+
 These wrappers do not hide or duplicate material in the reading view. Code
 executes normally before slide selection, so data-loading cells remain available
 to later chart cells. To add another visual to this pilot deck, wrap it in:
@@ -184,13 +230,16 @@ to later chart cells. To add another visual to this pilot deck, wrap it in:
 ```
 
 Add `slide-title="A classroom question"` to a `.slide-visual` div to give that
-visual a dedicated slide title. Otherwise it uses the current heading, with
+visual a dedicated, presentation-only slide title. Use this when there is no
+corresponding source heading; do not repeat the title as a heading inside the
+wrapper. Otherwise it uses the current heading, with
 additional slides when multiple visual blocks would share a slide (except after
 a `.slide-fragment` heading, which explicitly keeps content together). Escape from
 tab/exercise slides returns to the enclosing visible chapter section, rather
 than a hidden tab or collapsed solution.
 
-To reveal a visual on the preceding slide instead, use a `.slide-fragment` div:
+Use a `.slide-fragment` div to reveal a group of content blocks together on the
+current slide, particularly when there is no source heading:
 
 ````markdown
 ::: {.slide-fragment slide-title="Adding strings"}
@@ -204,12 +253,16 @@ To reveal a visual on the preceding slide instead, use a `.slide-fragment` div:
 
 The optional title and the block's content appear together as one fragment;
 this does not start a new slide. You can also combine `.slide-visual` and
-`.slide-fragment` on the same div. On headings, `.slide-fragment` continues to
-reveal the heading separately from subsequent selected content.
+`.slide-fragment` on the same div. For real source headings, prefer the heading
+annotations in the table above.
 
 A `.slide-text` div nested inside a `.slide-fragment` block still converts plain
 paragraphs to bullets and preserves existing lists. It shares the outer block's
-animation, so a heading and its bullets can reveal together in a single step.
+animation. Existing markup with a heading inside a `.slide-fragment` or
+`.slide-visual` wrapper remains supported for compatibility, but heading
+annotations are the recommended approach for new content.
+
+#### Two-column comparisons
 
 For a two-example comparison like chapter 2's syntax examples, add
 `.slide-comparison` to the enclosing tabset. Use a plain heading for the first

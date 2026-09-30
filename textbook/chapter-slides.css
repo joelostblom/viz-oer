@@ -175,9 +175,9 @@
 /* Two complete examples side by side; code and output remain stacked within
    each example. Reveal keeps outgoing slides displayed during transitions:
    retain their grid until it hides them, even after .present is removed. */
-.reveal .slides section.present[data-slide-comparison],
-.reveal .slides section[data-slide-comparison][style*="display: block"],
-.reveal.overview .slides section[data-slide-comparison] {
+.reveal .slides section.present[data-slide-columns],
+.reveal .slides section[data-slide-columns][style*="display: block"],
+.reveal.overview .slides section[data-slide-columns] {
   display: grid !important; /* Override Reveal's inline display: block. */
   grid-template-columns: minmax(0, var(--slide-left-width, 1fr))
     minmax(0, var(--slide-right-width, 1fr));
@@ -186,27 +186,27 @@
   align-items: start;
 }
 
-.reveal section[data-slide-comparison] > * {
+.reveal section[data-slide-columns] > * {
   min-width: 0;
 }
 
-.reveal section[data-slide-comparison] > h2 {
+.reveal section[data-slide-columns] > h2 {
   grid-column: 1;
   grid-row: 1;
 }
 
-.reveal section[data-slide-comparison] > .slide-heading {
+.reveal section[data-slide-columns] > .slide-heading {
   grid-column: 2;
   grid-row: 1;
   margin-top: 0;
   margin-bottom: 0.6em;
 }
 
-.reveal section[data-slide-comparison] > .slide-media {
+.reveal section[data-slide-columns] > .slide-media {
   grid-row: 2;
 }
 
-.reveal section[data-slide-comparison] pre code {
+.reveal section[data-slide-columns] pre code {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
