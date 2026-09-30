@@ -30,6 +30,7 @@ function Pandoc(doc)
   local reveal_with_heading = false
   local reveal_group = 0
   local continuation = 0
+  local current_slide_index = nil
 
   local function flush_notes()
     if #notes > 0 then
@@ -50,6 +51,33 @@ function Pandoc(doc)
       pandoc.Attr(identifier or "", {}, {
         footer = "false", ["chapter-anchor"] = current_anchor
       })))
+    current_slide_index = #output
+  end
+
+  local function reveal_title_with_content()
+    reveal_group = reveal_group + 1
+    local heading = output[current_slide_index]
+    -- Header attributes belong to the slide section in Reveal; animate an
+    -- inner span so only the title shares the content's reveal step.
+    heading.content = pandoc.Inlines({pandoc.Span(heading.content,
+      pandoc.Attr("", {"fragment", "fade-in"},
+        {["slide-reveal-group"] = tostring(reveal_group)}))})
+    reveal_with_heading = reveal_group
+  end
+
+  local function set_columns(heading, block)
+    heading.attributes["slide-columns"] = "true"
+    local widths = block.attributes["slide-widths"]
+    if widths then
+      local first, second = widths:match("^%s*([%d%.]+)%s*,%s*([%d%.]+)%s*$")
+      local left, right = tonumber(first), tonumber(second)
+      if not left or not right or left <= 0 or right <= 0
+          or left == math.huge or right == math.huge then
+        error('slide-widths must contain two positive numbers, e.g. slide-widths="40,60"')
+      end
+      heading.attributes["style"] = string.format(
+        "--slide-left-width: %gfr; --slide-right-width: %gfr;", left, right)
+    end
   end
 
   local function capitalize_paragraph(block)
@@ -199,14 +227,7 @@ function Pandoc(doc)
         else
           start_slide(block.content, block.identifier, parent_anchor)
           if block.classes:includes("slide-with-content") then
-            reveal_group = reveal_group + 1
-            local heading = output[#output]
-            -- Reveal moves Header attributes onto the whole slide; animate
-            -- a span inside the heading instead of marking the section.
-            heading.content = pandoc.Inlines({pandoc.Span(heading.content,
-              pandoc.Attr("", {"fragment", "fade-in"},
-                {["slide-reveal-group"] = tostring(reveal_group)}))})
-            reveal_with_heading = reveal_group
+            reveal_title_with_content()
           end
         end
       elseif block.t == "Div" and block.classes:includes("slide-outcomes") then
@@ -227,17 +248,35 @@ function Pandoc(doc)
             start_slide("Visualization", "visualization", "")
           end
           if title then
-            block.content:insert(1, pandoc.Header(3, {pandoc.Str(title)},
-              pandoc.Attr("", {"slide-heading"})))
+            local heading = pandoc.Header(3, {pandoc.Str(title)},
+              pandoc.Attr("", {"slide-heading"}))
+            if output[current_slide_index].attributes["slide-columns"] then
+              -- Align the second title with the first column's heading while
+              -- retaining a single reveal step for this title and its content.
+              reveal_group = reveal_group + 1
+              heading.classes:extend({"fragment", "fade-in"})
+              heading.attributes["slide-reveal-group"] = tostring(reveal_group)
+              reveal_with_heading = reveal_group
+              output:insert(heading)
+            else
+              block.content:insert(1, heading)
+            end
           end
         elseif title then
           continuation = continuation + 1
           start_slide(title, "visualization-continued-" .. continuation, current_anchor)
+          if block.classes:includes("slide-with-content") then
+            reveal_title_with_content()
+          end
         elseif not current_title then
           start_slide("Visualization", "visualization", "")
         elseif visual_count > 0 and not keep_content_together then
           continuation = continuation + 1
           start_slide(current_title, "visualization-continued-" .. continuation, current_anchor)
+        end
+        if block.classes:includes("slide-columns")
+            or block.classes:includes("slide-comparison") then
+          set_columns(output[current_slide_index], block)
         end
         -- Keep nested text selections' bullet formatting, but let the outer
         -- visual own their animation so heading and text reveal together.
@@ -270,23 +309,9 @@ function Pandoc(doc)
         process_blocks(block.content, parent_anchor or current_anchor)
         if block.classes:includes("slide-columns")
             or block.classes:includes("slide-comparison") then
-          local widths = block.attributes["slide-widths"]
-          local left, right
-          if widths then
-            local first, second = widths:match("^%s*([%d%.]+)%s*,%s*([%d%.]+)%s*$")
-            left, right = tonumber(first), tonumber(second)
-            if not left or not right or left <= 0 or right <= 0
-                or left == math.huge or right == math.huge then
-              error('slide-widths must contain two positive numbers, e.g. slide-widths="40,60"')
-            end
-          end
           for index = first_output, #output do
             if output[index].t == "Header" and output[index].level == 2 then
-              output[index].attributes["slide-columns"] = "true"
-              if widths then
-                output[index].attributes["style"] = string.format(
-                  "--slide-left-width: %gfr; --slide-right-width: %gfr;", left, right)
-              end
+              set_columns(output[index], block)
               break
             end
           end

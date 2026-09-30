@@ -14,7 +14,7 @@
       const onTitle = deck.getCurrentSlide()?.id === "title-slide";
       root.classList.toggle("show-title-hint", onTitle);
       if (onTitle) {
-        footerTimer = setTimeout(() => root.classList.remove("show-title-hint"), 5000);
+        footerTimer = setTimeout(() => root.classList.remove("show-title-hint"), 3000);
       }
     };
     const resetFragments = () => {
@@ -29,8 +29,8 @@
     const onReady = () => {
       resetFragments();
       showTitleHint();
-      deck.registerKeyboardShortcut("ESC, O",
-        "O: toggle overview. Esc: close open tools; otherwise return to the chapter.");
+      deck.registerKeyboardShortcut("ESC, Q, O",
+        "O: toggle overview. Esc/Q: close open tools; otherwise return to the chapter.");
     };
     deck.on("ready", onReady);
     deck.on("slidechanged", () => {
@@ -46,17 +46,30 @@
   }
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
+    if (event.key !== "Escape" && event.key.toLowerCase() !== "q") return;
     const deck = window.Reveal;
     if (!deck?.isReady?.()) return;
+    if (event.target instanceof Element
+        && (event.target.isContentEditable
+          || event.target.matches("input, textarea, select"))) return;
+
+    // Dispatch Escape so Q follows the same contextual behavior, including
+    // Reveal's own handlers for menus, help, and overview.
+    if (event.key.toLowerCase() === "q") {
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      event.target.dispatchEvent(new KeyboardEvent("keydown", {
+        key: "Escape", code: "Escape", keyCode: 27, which: 27,
+        bubbles: true, cancelable: true
+      }));
+      return;
+    }
 
     // Let Reveal and its plugins handle Escape while their interfaces are open.
     // In particular, closing help must not immediately exit the presentation.
     if (deck.getPlugin("menu")?.isOpen() || deck.isOverview()
         || deck.getRevealElement().querySelector(".overlay")) return;
-    if (event.target instanceof Element
-        && (event.target.isContentEditable
-          || event.target.matches("input, textarea, select"))) return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
