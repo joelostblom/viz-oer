@@ -1,33 +1,37 @@
 ---
-title: "Distributions"
+title: "Binned distributions"
 fig-height: 2.5
 fig-width: 4
 resources:
   - slides-lec3.pdf
+  - data/movies.csv
+  - data/london_marathon_finish_times.csv
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Visualize** distributions with density plots and **explain** how they are constructed and how they differ from histograms.
+1. **Construct** histograms by dividing a quantitative variable into bins and counting the observations in each interval.
 
-2. **Select** an appropriate distribution plot based on its strengths and limitations.
+2. **Evaluate** how bin width and placement affect the patterns visible in a histogram.
 
-3. **Create** density plots to compare a few distributions, controlling bandwidth, grouping, transparency, and count scaling.
+3. **Combine** histograms with rug plots to inspect the underlying observations.
+
+4. **Compare** distributions across groups using overlapping histograms or facets with common bins and scales.
 
 :::
 
-<!-- TODO a histogram deep dive could be explaning how the bin width auto selection rules work -->
+<!-- TODO A histogram deep dive could explain how automatic bin-width selection rules work. -->
 
-<!-- TODO change from maxbins and bins to steps and binwidth to encaourage thinking in units of the data and aboid altair issues with not exact bin numbe being set from maxbins -->
+<!-- TODO Consider changing from maxbins and bins to step and binwidth to encourage thinking in units of the data and avoid implying that maxbins sets an exact bin count. -->
 
 ## Why bother?
 
 In [Summaries](7_summaries.qmd),
 we learned that it is important to inspect the underlying observations
-to see how they are distributed,
-which would be hidden if we just looked at a summary like the mean or median.
+to see how they are distributed.
+Much of that information would be hidden if we looked only at a summary like the mean or median.
 But what happens when we have too many data points
 to visualize all of them individually?
 
@@ -35,14 +39,15 @@ to visualize all of them individually?
 ::: {.callout-default .ex-prompt}
 
 In this chart,
-there are so many observation
+there are so many observations
 that the plot is saturated
-and it is impossible to tell
+and it is difficult to tell
 how the data points are distributed.
 How do you think we could plot the observations
 to more clearly see how they are distributed?
 
 ```{python}
+#| label: runtime-jitter-motivation
 #| echo: false
 import altair as alt
 import pandas as pd
@@ -60,10 +65,10 @@ alt.Chart(movies).mark_circle().encode(
 
 :::: {.callout-default .ex-hint}
 
-We could of course increase the size of the chart
+We could, of course, increase the size of the chart
 to jitter the points more,
 but it would still be difficult
-to get an overall idea of how the observation are distributed.
+to get an overall idea of how the observations are distributed.
 What if we could use what we learned
 in the previous chapter about counting
 to help us here?
@@ -72,11 +77,11 @@ to help us here?
 
 Instead of showing each individual observation,
 we could visualize the counts of observations
-along intervals (or "bins") of the quantitative variable on the x-axis.
+within intervals (or "bins") of the quantitative variable on the x-axis.
 Conceptually, we could think of this
 as first creating bins along the x-axis
-(e.g. one bin could be Running Time 80-100 min)
-then counting all the observations that fall within that bin
+(for example, one bin could include runtimes from 80 up to, but not including, 100 minutes),
+then counting all the observations that fall within each bin,
 and finally drawing a bar
 with a height corresponding to the count of observations.
 This type of chart is called a histogram.
@@ -87,7 +92,7 @@ This type of chart is called a histogram.
 
 :::
 
-<!-- TODO consider setting ta global theme with lower height for all figures i this chapter -->
+<!-- TODO Consider a shared theme with a lower height for all figures in this chapter. -->
 
 ## How to create histograms
 
@@ -96,13 +101,10 @@ can be viewed in this animated schematic:
 
 ![Animated schematic of creating a histogram](img/histogram-buildup.gif){#fig-hist-buildup}
 
-The reason we create the bins along the x-axis
-is that for a quantitative variable,
-there are very few observations
-with **exactly** the same value.
-So if we were to create
-a count chart without binning,
-the histogram would look spiky and sparse:
+Binning is useful because observations of a continuous or finely measured variable
+may rarely have **exactly** the same value.
+Counting each distinct value separately can produce a spiky, sparse chart.
+Grouping nearby values into intervals helps us see broader patterns.
 
 We could create the intervals manually in the dataframe
 and plot a categorical count chart
@@ -111,17 +113,19 @@ but there is a special type of chart to help us
 create the bins and counts for a quantitative variable:
 the histogram.
 
-Let's create a histogram for the entire data set first,
+Let's create a histogram for the entire dataset first,
 before breaking it down into the different movie genres.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
-Vegafusion makes it easier to work with large datasets in Altair.
-We must use it whenever we have a dataset with more than 5,000 rows,
-and can use it as a default even for smaller datasets
-(you can [read more about how Vegfusion work in the Altair docs](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
+VegaFusion makes it easier to work with large datasets in Altair
+by precomputing supported data transformations in Python.
+Altair's default data transformer limits inline datasets to 5,000 rows;
+VegaFusion is one way to work with larger datasets, such as the marathon example later in this chapter.
+It also works with smaller datasets
+([read more about VegaFusion in the Altair documentation](https://altair-viz.github.io/user_guide/large_datasets.html#vegafusion-data-transformer)).
 
 ```{python}
 #| label: runtime-histogram-alt-setup
@@ -132,12 +136,12 @@ alt.data_transformers.enable('vegafusion')
 ```
 
 We can use the `bin()` method
-on the `alt.X/alt.Y` helper classes
-to automatically bin the axis
-of the quantitative variable.
-Histograms tend to look more visually appealing
-when the height is less than the width of the bar,
-so we reduce the height of the chart here.
+on the `alt.X` or `alt.Y` helper class
+to divide the quantitative variable into intervals along that axis.
+A distribution chart that is wider than it is tall
+is often more visually appealing
+and can make the distribution shape easier to follow,
+so we use a compact chart height here.
 
 ```{python}
 #| label: runtime-histogram-alt
@@ -148,9 +152,7 @@ alt.Chart(movies, height=150).mark_bar().encode(
 )
 ```
 
-The small space between the bins,
-makes it easier to see the individual
-and is also generally more visually appealing.
+The small gaps between the bars make it easier to distinguish individual bins.
 If we wanted to,
 we could show the histogram
 as one connected graphical unit,
@@ -168,38 +170,32 @@ alt.Chart(movies, height=150).mark_bar(binSpacing=0).encode(
 
 ### ggplot
 
-We can use `stat = 'bin'`
-to automatically bin the axis
-of the quantitative variable.
-Histograms tend to look more visually appealing
-when the height is less than the width of the bar,
-so we reduce the height of the chart here.
+We can use `stat = 'bin'` to divide the quantitative variable into intervals
+and count the observations in each one.
+A chart that is wider than it is tall can make the distribution easy to follow,
+so this chapter uses a compact default figure height.
 
 ```{r}
 #| label: runtime-histogram-gg
 #| message: false
 library(ggplot2)
 
-movies <- readr::read_csv('data/movies.csv')
-ggplot(movies, aes(x= `Running Time min`)) +
-    geom_bar(stat = "bin")
+movies <- readr::read_csv('data/movies.csv', show_col_types = FALSE)
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_bar(stat = 'bin')
 ```
 
-As a shortcut for `geom_bar(stat = "bin")`,
+As a shortcut for `geom_bar(stat = 'bin')`,
 we could use `geom_histogram()`,
 which we will do from now on.
 
-While showing the histogram
-as one connected graphical unit as above,
-can sometimes make it less messy
+Showing the histogram
+as one connected graphical unit, as above,
+can sometimes make it less cluttered
 to compare multiple histograms in the same chart,
-adding a small space between the bins,
-makes it easier to see the individual bin intervals
-and is also generally more visually appealing.
-Here,
-we add `color = 'white'`
-creates vertical white lines between bars
-(i.e. the appearance of spacing between them).
+but separating the bars makes it easier to distinguish individual bins.
+Here, adding `color = 'white'` draws white outlines around the bars,
+creating the appearance of gaps between them without changing the bin boundaries.
 
 
 ```{r}
@@ -207,35 +203,36 @@ creates vertical white lines between bars
 #| message: false
 library(ggplot2)
 
-ggplot(movies, aes(x= `Running Time min`)) +
+ggplot(movies, aes(x = `Running Time min`)) +
     geom_histogram(color = 'white')
 ```
 
 :::
 
-Although there are As we continue to highlight some  big advantage of histograms is that they are easy to 
+Histograms make counts within intervals explicit
+and they are easy to understand and explain,
+but their appearance depends heavily
+on how we choose those intervals.
 
 ## Bin properties
 
-Different visualization libraries use rules of varying appropriateness
-to determine the number of bins.
-Some prioritize adhering the bins
+Different visualization libraries use different rules
+to choose bin widths and boundaries.
+Some favor round-number boundaries, while others start from a requested number of bins.
 Regardless of which library you use,
-it is a good idea to try a few different values manually
-different properties of the histogram can stand out
-at different bin widths,
-so let's learn how to do that.
+it is a good idea to try several settings:
+different features of the distribution can stand out at different bin widths.
+For a given data range, requesting more bins generally produces narrower intervals.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
 We can pass `maxbins=` to the `bin()` method
-to control the number of bins.
-Note `maxbins` is an upper limit on the number of bins.
-Altair will create bins so that
-they form easy to read intervals
-(e.g. 5-10 instead of 6.3-9.4).
+to request a maximum number of bins rather than an exact count.
+The binning algorithm favors easy-to-read intervals
+(for example, 5–10 instead of 6.3–9.4),
+so different `maxbins` settings can sometimes produce the same bins.
 
 ```{python}
 #| label: runtime-histogram-bins-alt
@@ -247,16 +244,16 @@ alt.Chart(movies, height=150).mark_bar().encode(
 
 ### ggplot
 
-We can use `stat = 'bin'`
-to automatically bin the axis
-of the quantitative variable.
+We can pass `bins` to `geom_histogram()`
+to request a number of bins.
+Here, we request 10 instead of the default 30:
 
 <!-- TODO dropna in data? -->
 
 ```{r}
 #| label: runtime-histogram-bins-gg
 #| message: false
-ggplot(movies, aes(x= `Running Time min`)) +
+ggplot(movies, aes(x = `Running Time min`)) +
     geom_histogram(bins = 10, color = 'white')
 ```
 
@@ -265,27 +262,24 @@ ggplot(movies, aes(x= `Running Time min`)) +
 ::: {.callout-default .ex-prompt}
 
 Here we have created a few histograms for a dataset
-containing finish times from the 2023 London marathon
-(for male runners aged 18-39).
-Explore different bin numbers for histograms
+containing finish times from the 2023 London Marathon
+for male runners aged 18–39.
+Explore different requested bin counts
 using the dropdown widget below.
 Which do you think is the "right" number of bins?
-And how would you explain the peaks in the distribution
-that occur at higher bin numbers?
+How would you explain the peaks that become visible
+when the bins are narrower?
 
 ```{python}
+#| label: marathon-histogram-bins
 #| echo: false
-mara = pd.read_csv('/home/joel/Downloads/Respository London Marathon 18-23.csv').query('gender == 1 and agecat == "18-39"')
-mara['Time (minutes)'] = pd.to_timedelta(mara['fulltime'].str.split(' ').str[0]).dt.total_seconds() / 60
+mara = pd.read_csv('data/london_marathon_finish_times.csv')
 
-min_bins = 10
-max_bins = 50
-bin_step = 1
 bins = [20, 40, 80, 220]
 bins_param = alt.param(
     name="bins_param",
     value=20,
-    bind=alt.binding_select(options=bins, name='Bins: ')
+    bind=alt.binding_select(options=bins, name='Max bins (requested): ')
 )
 
 layers = [
@@ -302,16 +296,16 @@ layers = [
         tooltip=alt.Tooltip('Time (minutes)').bin(maxbins=n),
 
     )
-    for n in bins# range(min_bins, max_bins+1, bin_step)
+    for n in bins
 ]
 
 alt.layer(*layers).add_params(bins_param)
 ```
 
-To switch more quickly between the option,
+To switch more quickly between the options,
 you can use the arrow keys
 after clicking the dropdown once.
-You can also hover a bin with the pointer
+You can also hover over a bar with the pointer
 to see the exact values for that interval.
 
 :::: {.callout-default .ex-hint}
@@ -325,12 +319,13 @@ How many hours do these minute values correspond to?
 In this case,
 the peaks are not a binning artefact or technical noise;
 they reflect a real phenomena in the underlying data.
-Many people that run races such as marathons,
-set a time that they will finish faster than;
-among the more popular times are even numbers
-such as in this case 3, 3 h 30 min, and
-4h.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://pubsonline.informs.org/doi/abs/10.1287/mnsc.2015.2417?journalCode=mnsc)]
-
+These concentrations in finish times
+occur just before round-numbers,
+consistent with runners aiming to finish below a target time.
+Popular targets include 3 hours, 3 hours 30 minutes, and 4 hours,
+which correspond to 180, 210, and 240 minutes.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://doi.org/10.1287/mnsc.2015.2417)]
+Trying several bin widths helps us check whether these concentrations persist
+rather than trusting a peak that appears with only one binning choice.
 
 :::::
 
@@ -344,21 +339,19 @@ such as in this case 3, 3 h 30 min, and
 
 Various attributes of the distribution
 can stand out at different bin widths.
-It's therefore paramount
-to look at a few different histogram bin numbers
+It is therefore important
+to try a few different bin widths
 and reflect on which features of the underlying data
 they might highlight.
 
 :::
 
-In addition to the number of bins
-impacting the shape of the histogram,
-even histograms with the same number of bins
-can look quite different depending on
-the exact location of the bins along the x-axis.
+Bin width is not the only choice that affects a histogram's appearance.
+Even histograms with the same bin width can look quite different
+when their boundaries are shifted along the x-axis.
 In @fig-hist-bin-shift,
 we can see that the left histogram
-seem to show a long tailed distribution,
+seems to show a long-tailed distribution,
 but when the bins are shifted over in the rightmost histogram,
 it now looks like a potentially bimodal distribution
 with two peaks.
@@ -366,25 +359,29 @@ with two peaks.
 ```{python}
 #| echo: false
 #| label: fig-hist-bin-shift
-#| fig-cap: The two histograms have the same number of bins; in other words each bin has the same width, but the start and end points of the bins are shifted slightly between the two charts. This is just for illustrative purposes so the units in the underlying data doesn't matter.
-from random import choice
+#| fig-cap: >
+#|   Both histograms use bins 50 cubic inches wide, but their boundaries are shifted.
+#|   This illustrative car-displacement dataset has been modified: values from 235 to 285
+#|   cubic inches are moved into the 285–299 range. The observations are identical in both panels.
+from random import Random
 
-cars = alt.datasets.data.cars()
+cars = alt.datasets.data.cars().copy()
+rng = Random(42)
 bin_min = 235
 bin_max = 285
 
 mask_to_replace = cars['Displacement'].between(bin_min, bin_max)
-new_values = [choice(range(bin_max, 300)) for _ in range(mask_to_replace.sum())]
+new_values = [rng.choice(range(bin_max, 300)) for _ in range(mask_to_replace.sum())]
 cars.loc[mask_to_replace, 'Displacement'] = new_values
 
 hist = alt.Chart(cars, height=120, width=200).mark_bar().encode(
-    alt.X('Displacement').bin().title(None).scale(domain=(20, 500)),
+    alt.X('Displacement').bin(step=50).title(None).scale(domain=(20, 500)),
     alt.Y('count()').title(None)
 )
-tick_values = values=list(range(0, 500, 50))
+tick_values = list(range(0, 500, 50))
 hist | hist.encode(
     alt.X('Displacement')
-    .bin(nice=False, extent=[35, 490])
+    .bin(step=50, nice=False, extent=[35, 490])
     .title(None)
     .scale(domain=(20, 500))
     .axis(
@@ -398,16 +395,16 @@ hist | hist.encode(
 
 ## Adding back individual observations
 
-Because of the shortcomings of histograms
-it can be helpful to pair them with a chart of the individual observation.
-This can be a chart with jittered points as we saw in the start of the chapter
+Because histograms hide the exact positions of individual observations,
+it can be helpful to show those observations alongside them.
+We can use jittered points, as at the start of the chapter,
 or we can use a small tick to mark each observation
 in what is often called a "rug" plot.
 We have already covered the shortcomings
 of visualizing all individual observations,
-such as that the chart can easily become saturated,
-but they are often a good complement to a histogram
-(at least until you get up around a few thousands of observations).
+such as overlap that can saturate the chart.
+Even so, individual marks often complement a histogram well,
+especially with smaller datasets.
 
 ::: {.panel-tabset group="language"}
 
@@ -418,8 +415,8 @@ that we then concatenate vertically with the histogram
 using the operator `&`.
 We also indicate that the scale of the x-axes
 should be shared between the two charts
-so that the ticks line up
-and it is easy to say which observations 
+so that the ticks align with the histogram
+and it is easy to see which observations
 belong to which bin.
 
 ```{python}
@@ -440,10 +437,10 @@ rug = alt.Chart(movies).mark_tick().encode(
 ### ggplot
 
 We could have created a separate chart
-with the individual observation
+with the individual observations
 that we concatenated vertically
 with the histogram.
-But there is also `geom_rug`
+But there is also `geom_rug()`,
 which makes this a bit more convenient
 by plotting the individual observations
 directly in the margin of the canvas.
@@ -459,7 +456,7 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 ## Multiple distributions
 
-With all that we have learned about histogram in mind,
+With all that we have learned about histograms in mind,
 let's finally create a version of the plot we started this chapter with,
 using histograms rather than jittered points.
 
@@ -486,9 +483,10 @@ we need to set `stack(False)` on the y-axis,
 so that they all share a common baseline.
 To be able to see the bars
 behind each other,
-we also add some opacity to them.
+we make them partially transparent by setting `opacity=0.5`.
 
 ```{python}
+#| label: genre-histograms-overlaid-alt
 alt.Chart(movies, height=150).mark_bar(opacity=0.5).encode(
     x=alt.X('Running Time min').bin(maxbins=30),
     y=alt.Y('count()').stack(False),
@@ -503,13 +501,14 @@ we need to set `position = 'identity'`,
 so that they all share a common baseline.
 To be able to see the bars
 behind each other,
-we also add some opacity to them
+we make them partially transparent
 with the `alpha` parameter.
 
 
 ```{r}
+#| label: genre-histograms-overlaid-gg
 ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
-   geom_histogram(color = 'white', position = 'identity', alpha = 0.5)
+    geom_histogram(color = 'white', position = 'identity', alpha = 0.5)
 ```
 
 :::
@@ -522,6 +521,7 @@ then a colored histogram chart can be effective.
 
 
 ```{python}
+#| label: two-genre-histograms-alt
 #| echo: false
 (
     alt.Chart(
@@ -530,7 +530,7 @@ then a colored histogram chart can be effective.
         .sort_values("Major Genre"),
         height=150
     )
-    .mark_bar(opacity = 0.5)
+    .mark_bar(opacity=0.5)
     .encode(
         x=alt.X('Running Time min').bin(maxbins=30),
         y=alt.Y('count()').stack(False),
@@ -544,20 +544,21 @@ then a colored histogram chart can be effective.
 
 A more effective way
 to visualize multiple distributions as histograms
-is to spread out the individual film genres
-in separate facets.
+is to place each movie genre in a separate facet.
 Since we are interested in comparing
-the distributions between the genres
+the distributions across genres,
 we create all facets in a single column,
 which aligns their x-axes
 and facilitates seeing shifts in the distributions
-between conditions.
+between genres.
+Use the same bin boundaries and axis scales across facets to make those comparisons meaningful.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
 ```{python}
+#| label: genre-histograms-faceted-alt
 alt.Chart(movies, height=80).mark_bar().encode(
     x=alt.X('Running Time min').bin(maxbins=30),
     y='count()',
@@ -570,17 +571,16 @@ alt.Chart(movies, height=80).mark_bar().encode(
 ### ggplot
 
 ```{r}
+#| label: genre-histograms-faceted-gg
 #| fig-height: 6
 ggplot(movies, aes(x = `Running Time min`)) +
-   geom_histogram(color = 'white') +
-   facet_wrap(vars(`Major Genre`), ncol=1)
+    geom_histogram(color = 'white') +
+    facet_wrap(vars(`Major Genre`), ncol = 1)
 ```
 
 :::
 
 Now we can detect differences
 that we couldn't see in the original jittered point plot.
-E.g. the adventure genre has a quite flat distribution
-spread out over a vast range of runtimes,
-whereas comedy films
-tend to be of a more standardized runtime length.
+For example, adventure movies span a broad range of runtimes,
+whereas comedies tend to be more tightly concentrated.
