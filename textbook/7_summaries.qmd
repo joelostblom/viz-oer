@@ -33,7 +33,6 @@ We will explore these questions here and in the following chapters.
 
 ::: {.callout-default .ex-prompt}
 
-<!--TODO add long term medition benefits and phrasing "but what if you never meditated before and just want to feel less stresstd before the exam"
 Suppose you are interested in whether meditation could help you feel less stressed
 before your next exam.
 The dataset below is a 500-observation sample from a randomized study by Sparacio and colleagues.^[Sparacio et al. (2024), [*Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study*](https://doi.org/10.1038/s41562-024-01907-7), *Nature Human Behaviour*, 8, 1716–1725.]
