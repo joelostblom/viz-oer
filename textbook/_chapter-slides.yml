@@ -14,7 +14,10 @@ resources:
 format:
   revealjs:
     theme: default
-    mainfont: Ubuntu
+    mainfont: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+    monofont: 'ui-monospace, "Cascadia Code", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace'
+    highlight-style: tokyo-night.theme
+    code-block-bg: '#24283b'
     css: chapter-slides.css
     slide-level: 2
     width: 1280
