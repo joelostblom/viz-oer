@@ -110,6 +110,12 @@ html.tabset-scroll-stabilizing body {
   align-items: flex-start;
 }
 
+/* Space for native chart controls above horizontal scrollbars. */
+.vega-bindings:has(input[type="range"]) {
+  /* Keep overlay scrollbars clear of slider tracks in narrow chart outputs. */
+  padding-bottom: 0.5rem;
+}
+
 /* Code in quarto live blocks */
 .cm-content {
     font-size: 16px;
