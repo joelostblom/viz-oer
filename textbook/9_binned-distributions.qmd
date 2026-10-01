@@ -360,13 +360,18 @@ with two peaks.
 #| echo: false
 #| label: fig-hist-bin-shift
 #| fig-cap: >
-#|   Both histograms use bins 50 cubic inches wide, but their boundaries are shifted.
-#|   This illustrative car-displacement dataset has been modified: values from 235 to 285
-#|   cubic inches are moved into the 285–299 range. The observations are identical in both panels.
+    #| The same data has been used to create these two histograms,
+    #| which also share bin width.
+    #| The only difference is that
+    #| the start and end points of the bins
+    #| are shifted slightly between the two charts.
+    #| This figure is just for illustrative purposes
+    #| so we have kept the variable name of the axis.
+
 from random import Random
 
 cars = alt.datasets.data.cars().copy()
-rng = Random(42)
+rng = Random(4239402)
 bin_min = 235
 bin_max = 285
 
@@ -395,16 +400,16 @@ hist | hist.encode(
 
 ## Adding back individual observations
 
-Because histograms hide the exact positions of individual observations,
-it can be helpful to show those observations alongside them.
+The histogram shortcomings we have learned about
+can be somewhat alleviated
+by showing individual observations alongside the histogram.
 We can use jittered points, as at the start of the chapter,
 or we can use a small tick to mark each observation
 in what is often called a "rug" plot.
-We have already covered the shortcomings
+We have already covered the downsides
 of visualizing all individual observations,
 such as overlap that can saturate the chart.
-Even so, individual marks often complement a histogram well,
-especially with smaller datasets.
+Even so, individual marks often complement a histogram well.
 
 ::: {.panel-tabset group="language"}
 

@@ -18,10 +18,10 @@ book:
     - 6_order.qmd
     - 7_summaries.qmd
     - 8_counts.qmd
-    - 9_distributions.qmd
-    - 10_multiple-distributions.qmd
+    - 9_binned-distributions.qmd
+    - 10_smoothed-distributions.qmd
     # - 11_trends.qmd
-    - 99_misc.qmd
+    # - 99_misc.qmd
 
 filters:
   - custom-callouts.lua
