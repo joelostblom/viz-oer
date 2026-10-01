@@ -1,5 +1,4 @@
 ---
-title: "Why visualize data?"
 chapter-slides: slides/1_why-visualize-data.html
 fig-width: 4
 fig-height: 4
@@ -9,6 +8,8 @@ include-in-header:
         .table.dataframe { width: auto; text-align: right; }
       </style>
 ---
+
+# Why visualize data? {#sec-why-visualize-data}
 
 :::: {.slide-outcomes}
 

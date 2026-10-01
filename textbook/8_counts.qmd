@@ -1,8 +1,9 @@
 ---
-title: "Counts & proportions"
 fig-width: 5
 fig-height: 3.75
 ---
+
+# Counts & proportions {#sec-counts-proportions}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
@@ -16,7 +17,7 @@ fig-height: 3.75
 
 :::
 
-In [Summaries](7_summaries.qmd), we explored central values and variability.
+In @sec-summaries, we explored central values and variability.
 Another useful summary is the number of observations in a group.
 We will return to the meditation dataset to compare counts across conditions,
 then explore proportions and different ways to show parts of a whole.
@@ -604,4 +605,4 @@ alt.hconcat(
 :::
 
 Another way of thinking of these count charts is that we are viewing distributions of categorical values.
-This concept can also be applied to quantitative values, as we will see in [Binned distributions](9_binned-distributions.qmd).
+This concept can also be applied to quantitative values, as we will see in @sec-binned-distributions.

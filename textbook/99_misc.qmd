@@ -6,7 +6,7 @@ resources:
 number-sections: false
 ---
 
-# 99 Misc {.unnumbered}
+# 99 Misc {#sec-misc .unnumbered}
 
 This placeholder chapter collects material awaiting a permanent home.
 
@@ -42,7 +42,7 @@ gm <- read_csv('https://raw.githubusercontent.com/joelostblom/teaching-datasets/
 gm2018 <- gm %>% filter(year == 2018)
 ```
 
-The plot-configuration examples use the 2018 Gapminder data introduced in [Counts](8_counts.qmd).
+The plot-configuration examples use the 2018 Gapminder data introduced in @sec-order.
 
 ## Plot configuration
 

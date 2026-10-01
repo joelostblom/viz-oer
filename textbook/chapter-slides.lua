@@ -20,6 +20,17 @@ function Pandoc(doc)
     return doc
   end
 
+  -- The book takes its title from the chapter's H1. Reuse that heading as
+  -- Reveal's title metadata, rather than adding a duplicate content slide.
+  for index, block in ipairs(doc.blocks) do
+    if block.t == "Header" and block.level == 1 then
+      doc.meta.title = pandoc.MetaInlines(block.content)
+      doc.meta.pagetitle = pandoc.utils.stringify(block.content)
+      doc.blocks:remove(index)
+      break
+    end
+  end
+
   local output = pandoc.List()
   local supporting_blocks = pandoc.List()
   local notes = pandoc.List()

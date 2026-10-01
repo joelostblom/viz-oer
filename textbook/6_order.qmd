@@ -1,5 +1,4 @@
 ---
-title: "Order"
 fig-width: 5
 fig-height: 3.75
 resources:
@@ -7,6 +6,8 @@ resources:
   - utils.py
   - utils.R
 ---
+
+# Order {#sec-order}
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -28,7 +29,7 @@ resources:
 
 ## Why order matters
 
-In [Groups](5_groups.qmd), we learned how to distinguish groups of observations.
+In @sec-groups, we learned how to distinguish groups of observations.
 Now we will look at observations that also have a meaningful order,
 such as time of day or an increasing dose of a treatment.
 In the following exercise,

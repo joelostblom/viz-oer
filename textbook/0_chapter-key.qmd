@@ -1,4 +1,4 @@
-# Chapter key {.unnumbered}
+# Chapter key {#sec-chapter-key .unnumbered}
 
 ::: {.callout-note title="Learning outcomes" collapse=false}
 Every chapter starts with the "Learning outcomes",

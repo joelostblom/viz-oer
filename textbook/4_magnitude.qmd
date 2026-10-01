@@ -1,10 +1,11 @@
 ---
-title: "Magnitude"
 fig-width: 5
 fig-height: 3.75
 resources:
   - slides-lec2.pdf
 ---
+
+# Magnitude {#sec-magnitude}
 
 <!-- TODO Talk about different data types here? Also consider chapter naming: is "magnitude" just "quantitative"/"continuous", and is "groups" just "nominal"/"ordinal"? Is it confusing to have a chapter called "order" when we also have "ordinal" variables, since order is more about connecting continuous variables like time? -->
 

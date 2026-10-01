@@ -1,5 +1,4 @@
 ---
-title: "Groups"
 include-in-header:
   - text: |
       <style>
@@ -14,6 +13,8 @@ resources:
   - data
   - utils.py
 ---
+
+# Groups {#sec-groups}
 
 <!-- Temporarily needed for live coding exercises -->
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}

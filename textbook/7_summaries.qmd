@@ -1,8 +1,9 @@
 ---
-title: "Summaries"
 fig-width: 5
 fig-height: 3.75
 ---
+
+# Summaries {#sec-summaries}
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -18,7 +19,7 @@ fig-height: 3.75
 
 ## Why bother?
 
-In [Order](6_order.qmd), we connected observations to make their sequence clear.
+In @sec-order, we connected observations to make their sequence clear.
 Sometimes, however, our question concerns a collection of observations:
 How many are there? What is their total? What is a typical value?
 A summary helps answer these questions by reducing many values to a few.
@@ -101,7 +102,7 @@ Read on to find out how we could make these comparisons easier.
 
 ## Visualizing statistical summaries
 
-In [Why visualize data?](1_why-visualize-data.qmd),
+In @sec-why-visualize-data,
 we saw that statistical summaries can make some patterns easier to identify
 than they are in a raw table of numbers.
 We can use a similar strategy here by comparing the mean stress score in each condition.

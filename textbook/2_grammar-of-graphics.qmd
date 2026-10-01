@@ -1,5 +1,4 @@
 ---
-title: "The grammar of graphics"
 chapter-slides: slides/2_grammar-of-graphics.html
 fig-width: 4
 fig-height: 4
@@ -9,6 +8,8 @@ include-in-header:
         .table.dataframe { width: auto; text-align: right; }
       </style>
 ---
+
+# The grammar of graphics {#sec-grammar-of-graphics}
 
 :::: {.slide-outcomes}
 

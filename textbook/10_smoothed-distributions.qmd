@@ -1,11 +1,12 @@
 ---
-title: "Smoothed distributions"
 fig-width: 5
 fig-height: 3
 resources:
   - data/movies.csv
   - data/london_marathon_finish_times.csv
 ---
+
+# Smoothed distributions {#sec-smoothed-distributions}
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -25,7 +26,7 @@ resources:
 
 ## Why bother?
 
-In [Binned distributions](9_binned-distributions.qmd),
+In @sec-binned-distributions,
 we used histograms to see patterns that were hidden by overlapping observations.
 But the appearance of a histogram depends on the width and placement of its bins.
 And when we want to compare several groups in one chart,
@@ -749,10 +750,10 @@ when comparing the distributions of multiple groups.
 One drawback of faceting
 is that it can be difficult to compare small differences
 since the distributions are now far apart.
-As we learned in [Groups](5_groups.qmd),
+As we learned in @sec-groups,
 to highlight small differences between groups,
 we want their visual components close together.
-But we also learned in [Binned distributions](9_binned-distributions.qmd)
+But we also learned in @sec-binned-distributions
 that with several distributions in the same chart,
 overlapping distributions can obscure one another.
 To overcome this obstacle,

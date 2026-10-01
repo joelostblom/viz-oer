@@ -1,5 +1,4 @@
 ---
-title: "Binned distributions"
 fig-height: 2.5
 fig-width: 4
 resources:
@@ -7,6 +6,8 @@ resources:
   - data/movies.csv
   - data/london_marathon_finish_times.csv
 ---
+
+# Binned distributions {#sec-binned-distributions}
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -28,7 +29,7 @@ resources:
 
 ## Why bother?
 
-In [Summaries](7_summaries.qmd),
+In @sec-summaries,
 we learned that it is important to inspect the underlying observations
 to see how they are distributed.
 Much of that information would be hidden if we looked only at a summary like the mean or median.

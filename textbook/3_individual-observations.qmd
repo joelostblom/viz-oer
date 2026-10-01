@@ -1,5 +1,4 @@
 ---
-title: "Individual observations"
 fig-width: 4
 fig-height: 4
 resources:
@@ -14,6 +13,8 @@ include-in-header:
         .table.dataframe { width: auto; text-align: right; }
       </style>
 ---
+
+# Individual observations {#sec-individual-observations}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
