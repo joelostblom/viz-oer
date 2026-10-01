@@ -1,0 +1,68 @@
+name: Set up the textbook build
+description: Restore the same locked R and Python environments used locally.
+
+runs:
+  using: composite
+  steps:
+    - uses: astral-sh/setup-uv@v10
+      with:
+        version: '0.10.4'
+        enable-cache: true
+
+    - uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        version: '1.8.25'
+        tinytex: false
+
+    - name: Install uvr
+      shell: bash
+      env:
+        UVR_VERSION: v0.4.6
+      run: |
+        curl -fsSL https://raw.githubusercontent.com/nbafrank/uvr/v0.4.6/install.sh | sh
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+    - name: Cache R downloads and packages
+      uses: actions/cache@v6
+      with:
+        path: |
+          ~/.uvr/r-versions
+          ~/.cache/uvr
+        key: book-r-${{ runner.os }}-${{ runner.arch }}-uvr-0.4.6-${{ hashFiles('uvr.lock', 'uvr.toml') }}
+        restore-keys: |
+          book-r-${{ runner.os }}-${{ runner.arch }}-uvr-0.4.6-
+
+    - name: Restore R and Python dependencies
+      shell: bash
+      run: |
+        # Read the R pin directly from the lockfile instead of duplicating it.
+        r_version=$(python3 -c 'import tomllib; print(tomllib.load(open("uvr.lock", "rb"))["r"]["version"])')
+        uvr r install "$r_version"
+        sudo apt-get update
+        # Runtime libraries for prebuilt numerical R packages.
+        sudo apt-get install -y libblas3 liblapack3
+        uvr sync --frozen --install-system-deps
+        uvr activate --write-shim
+        . .uvr/activate
+        uv sync --locked
+        # Reticulate must not create its own minimal Python environment.
+        echo "RETICULATE_PYTHON=$GITHUB_WORKSPACE/.venv/bin/python" >> "$GITHUB_ENV"
+
+    - name: Install Chrome for Mermaid diagrams
+      id: chrome
+      uses: browser-actions/setup-chrome@v2
+      with:
+        chrome-version: stable
+        install-dependencies: true
+
+    - name: Select Chrome for Quarto
+      shell: bash
+      env:
+        CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+      run: echo "QUARTO_CHROMIUM=$CHROME_PATH" >> "$GITHUB_ENV"
+
+    - name: Verify rendering dependencies
+      shell: bash
+      run: |
+        . .uvr/activate
+        uv run --locked Rscript -e 'stopifnot(requireNamespace("knitr"), requireNamespace("rmarkdown")); reticulate::py_config(); reticulate::py_run_string("import pandas, altair, vegafusion, pyarrow")'
