@@ -1,6 +1,7 @@
 project:
   type: book
   post-render:
+    - src/chapter_reference_titles.py
     - src/build_chapter_slides.py
 
 book:
