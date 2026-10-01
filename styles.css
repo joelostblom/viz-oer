@@ -3,10 +3,106 @@
 /*-- Importing Ubuntu fonts --*/
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
-/* Regular code blocks */
-code {
-    font-size: 16px !important;
+/* Chapter actions share the title line instead of adding a toolbar below it. */
+.chapter-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
+
+.chapter-title-row h1.title {
+  min-width: 0;
+  margin: 0;
+}
+
+.chapter-present-link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.25rem;
+  color: var(--bs-secondary-color, #526171);
+  text-decoration: none;
+}
+
+.chapter-present-link[hidden] {
+  display: none;
+}
+
+.chapter-present-link svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.chapter-present-link:hover {
+  color: var(--bs-link-color);
+  background: var(--bs-tertiary-bg, #f3f1ed);
+}
+
+.chapter-present-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* A quiet graph-paper surround frames the white reading column on desktop.
+   Use Quarto's grid lines: main spans the screen to accommodate margin content. */
+@media screen and (min-width: 992px) {
+  body.nav-sidebar.quarto-light {
+    --book-surround: #f3f1ed;
+    --book-page-edge: #e2ded7;
+    background-color: var(--book-surround);
+    background-image: radial-gradient(circle, rgba(104, 98, 86, 0.32) 1px, transparent 1.25px);
+    background-size: 24px 24px;
+  }
+
+  body.nav-sidebar.quarto-light #quarto-content {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+  }
+
+  body.nav-sidebar.quarto-light #quarto-content::before {
+    content: "";
+    grid-column: body-start / body-end;
+    grid-row: content-top / page-bottom;
+    background: #fff;
+    border-left: 1px solid var(--book-page-edge);
+    border-right: 1px solid var(--book-page-edge);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  body.nav-sidebar.quarto-light #quarto-sidebar,
+  body.nav-sidebar.quarto-light #quarto-margin-sidebar > nav,
+  body.nav-sidebar.quarto-light .column-margin,
+  body.nav-sidebar.quarto-light .column-margin.column-container > div,
+  body.nav-sidebar.quarto-light .margin-aside,
+  body.nav-sidebar.quarto-light .margin-caption {
+    background-color: var(--book-surround);
+  }
+
+  body.nav-sidebar.quarto-light #quarto-margin-sidebar > nav,
+  body.nav-sidebar.quarto-light .column-margin.column-container > div {
+    padding: 0.5rem 0.75rem 0.75rem;
+    border-radius: 0.35rem;
+  }
+
+  body.nav-sidebar.quarto-light .column-margin,
+  body.nav-sidebar.quarto-light .margin-aside,
+  body.nav-sidebar.quarto-light .margin-caption {
+    color: #526171;
+  }
+}
+
+/* Let tabset-scroll.js handle anchoring during a synchronized language change. */
+html.tabset-scroll-stabilizing,
+html.tabset-scroll-stabilizing body {
+    overflow-anchor: none;
+    scroll-behavior: auto !important;
+}
+
 /* Code in quarto live blocks */
 .cm-content {
     font-size: 16px;
@@ -14,8 +110,8 @@ code {
 }
 
 .boxed {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
+    background-color: var(--bs-body-bg, #ffffff);
+    border: 1px solid var(--bs-border-color, #ddd);
     padding: 15px 15px 0 15px;
     margin: 10px 0;
     border-radius: 5px;
@@ -30,8 +126,23 @@ code {
     text-align: center;
 }
 
-.callout-header {
-    margin-bottom: 10px !important;
+/* Shared show_df previews: dtypes sit below their column headings. */
+table.dataframe-preview {
+    width: auto;
+}
+
+table.dataframe-preview thead tr:last-child th {
+    font-weight: normal;
+    font-size: 0.85em;
+    color: var(--bs-secondary-color, #666);
+}
+
+/* Match figure captions instead of Quarto's centered table-caption defaults. */
+caption,
+.table-caption,
+figure.quarto-float-tbl figcaption.quarto-float-caption-top,
+figure.quarto-float-tbl figcaption.quarto-float-caption-bottom {
+  text-align: left;
 }
 
 #mermaid-1 .cluster rect {
@@ -42,256 +153,6 @@ code {
 
 #JS_Ecosystem {
     display: none;
-}
-
-.song-container {
-    background: rgb(227, 227, 227);
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    margin: 20px 0;
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .song-details {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    margin-right: 20px;
-  }
-  .song-icon {
-    font-size: 1.5em;
-    margin-right: 15px;
-  }
-  .song-info {
-    flex-grow: 1;
-  }
-  .song-title {
-    font-family: 'Arial', sans-serif;
-    font-size: 1em;
-    font-weight: bold;
-    margin-bottom: 2px;
-    color: black;
-  }
-  .song-artist {
-    font-size: 0.8em;
-    color: #555;
-  }
-  .audio-player {
-    flex-shrink: 0;
-    width: 250px;
-  }
-  .audio-player audio {
-    width: 100%;
-  }
-  /* Custom audio player controls */
-  .audio-player audio::-webkit-media-controls-panel {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  .audio-player audio::-webkit-media-controls-current-time-display,
-  .audio-player audio::-webkit-media-controls-time-remaining-display {
-    color: #333;
-  }
-  
-  /* Responsive design for smaller screens */
-  @media (max-width: 600px) {
-    .song-container {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .song-details {
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-    .audio-player {
-      width: 100%;
-    }
-  }
-
-  .ministry-id-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    width: 640px;
-    height: 300px;
-    padding: 30px;
-    display: flex;
-    color: #333;
-    position: relative;
-    overflow: hidden;
-}
-.ministry-id-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        to bottom right,
-        rgba(240,240,240,0.1) 0%,
-        rgba(240,240,240,0.05) 25%,
-        transparent 50%
-    );
-    transform: rotate(-10deg);
-    pointer-events: none;
-}
-.ministry-id-card .left-column {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-.ministry-id-card .right-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-}
-.ministry-id-card .logo {
-    font-size: 13px;
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: #555;
-    margin-bottom: 20px;
-}
-.ministry-id-card .avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.ministry-id-card .info {
-    display: flex;
-    flex-wrap: wrap;
-}
-.ministry-id-card .info-item {
-    flex: 1 0 50%;
-    margin: 5px 0;
-    font-size: 13px;
-}
-.ministry-id-card .name {
-    font-size: 24px;
-    font-weight: 300;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
-}
-.ministry-id-card .label {
-    font-weight: 500;
-    color: #888;
-    display: block;
-}
-.ministry-id-card .value {
-    font-weight: 400;
-    color: #333;
-}
-.ministry-id-card .footer {
-    font-size: 11px;
-    color: #888;
-    align-self: flex-start;
-    margin-top: 15px;
-    letter-spacing: 1px;
-}
-.ministry-id-card .accent-line {
-    position: absolute;
-    top: 0;
-    left: 25px;
-    width: 3px;
-    height: 50px;
-    background-color: rgb(73, 101, 131);
-}
-
-#chat-container {
-  max-width: 800px;
-  padding: 30px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-#chat-display {
-  max-height: 500px;
-  overflow-y: auto;
-  margin-bottom: 30px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-}
-.chat-message {
-  display: flex;
-  margin-bottom: 25px;
-  align-items: flex-start;
-}
-.chat-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 15px;
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-}
-.chat-message-content {
-  background-color: #e7f3ff;
-  padding: 15px;
-  border-radius: 18px;
-  max-width: 75%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-.boss-message .chat-message-content {
-  background-color: #f0f0f0;
-}
-
-.user-message {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.chat-sender-name {
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
-}
-#user-input {
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-}
-#user-input:focus {
-  outline: none;
-  border-color: rgb(73, 101, 131);
-}
-#submit-button {
-  padding: 15px 25px;
-  background-color: rgb(73, 101, 131);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 16px;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-#submit-button:hover {
-  background-color: #45a049;
-}
-.highlight-line {
-  height: 4px;
-  background: rgb(73, 101, 131);
-  margin-bottom: 25px;
-  border-radius: 2px;
 }
 
 h4 {
@@ -305,11 +166,125 @@ h4 {
 
 /* Callout styling */
 
+/* Treat each callout as a tinted block, including nested and collapsed ones.
+   Reset the palette on every callout so unknown nested types don't inherit it. */
+.callout {
+  --callout-body-bg: #f4f5f7;
+  --callout-header-bg: #e8ebef;
+  --callout-outline: #d9dee5;
+  background-color: var(--callout-body-bg);
+  border-top-color: var(--callout-outline);
+  border-right-color: var(--callout-outline);
+  border-bottom-color: var(--callout-outline);
+  border-radius: 0.4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.callout.callout-note,
+.callout.callout-ex-prompt {
+  --callout-body-bg: #f3f7fc;
+  --callout-header-bg: #e4effb;
+  --callout-outline: #ccdef2;
+}
+
+.callout.callout-tip {
+  --callout-body-bg: #f2f9ef;
+  --callout-header-bg: #e3f2dc;
+  --callout-outline: #cfe4c5;
+}
+
+.callout.callout-caution,
+.callout.callout-ex-hint {
+  --callout-body-bg: #fff8ee;
+  --callout-header-bg: #fcebd2;
+  --callout-outline: #efdbbd;
+}
+
+.callout.callout-ex-solution {
+  --callout-body-bg: #fffbee;
+  --callout-header-bg: #fff3cd;
+  --callout-outline: #ecdfb3;
+}
+
+.callout.callout-important,
+.callout.callout-warning {
+  --callout-body-bg: #fff3f5;
+  --callout-header-bg: #ffe4e9;
+  --callout-outline: #f2cbd4;
+}
+
+/* Use Quarto's theme state for custom callout surfaces as well. */
+.quarto-dark .callout {
+  --callout-dark-accent: #adb5bd;
+  --callout-body-bg: color-mix(in srgb, var(--bs-body-bg) 92%, var(--callout-dark-accent));
+  --callout-header-bg: color-mix(in srgb, var(--bs-body-bg) 82%, var(--callout-dark-accent));
+  --callout-outline: color-mix(in srgb, var(--bs-body-bg) 65%, var(--callout-dark-accent));
+}
+
+.quarto-dark .callout:is(.callout-note, .callout-ex-prompt) {
+  --callout-dark-accent: #7aa2f7;
+}
+
+.quarto-dark .callout.callout-tip {
+  --callout-dark-accent: #9ece6a;
+}
+
+.quarto-dark .callout:is(.callout-caution, .callout-ex-hint, .callout-ex-solution) {
+  --callout-dark-accent: #e0af68;
+}
+
+.quarto-dark .callout:is(.callout-important, .callout-warning) {
+  --callout-dark-accent: #f7768e;
+}
+
+/* Active tab labels blend into the nearest callout instead of the white page. */
+.callout .panel-tabset > .nav-tabs {
+  --bs-nav-tabs-link-active-bg: var(--callout-body-bg);
+  --bs-nav-tabs-link-active-border-color: var(--bs-nav-tabs-border-color) var(--bs-nav-tabs-border-color) var(--callout-body-bg);
+}
+
+/* Match Quarto's border selector specificity without replacing accent borders. */
+.callout.callout-style-default,
+.callout.callout-style-simple {
+  border-top-color: var(--callout-outline);
+  border-right-color: var(--callout-outline);
+  border-bottom-color: var(--callout-outline);
+}
+
+/* Collapse buttons otherwise make custom headers taller than static cautions/warnings.
+   A shared minimum keeps short titles aligned while allowing long titles to wrap. */
+div.callout.callout-style-default > .callout-header {
+  background-color: var(--callout-header-bg);
+  min-height: 2.25rem;
+  align-items: center;
+  padding-top: 0;
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+  margin-bottom: 0;
+  border-top-right-radius: calc(0.4rem - 1px);
+}
+
+.callout.callout-style-default .callout-body {
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+}
+
+.callout.callout-style-simple {
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+}
+
+.callout.callout-style-default:is(.callout-caution, .callout-warning) > .callout-header > .callout-icon-container {
+  padding-top: 0;
+}
+
+.callout.callout-style-default:is(.callout-caution, .callout-warning) > .callout-header > .callout-title-container {
+  margin-top: 0;
+}
+
 .callout-ex-prompt {
   border-left-color: #2780e3 !important;
-}
-.callout-ex-prompt > .callout-header {
-  background-color: #ecf4fc !important;
 }
 .callout-ex-prompt > .callout-header::before {
   font-family: "Font Awesome 5 Free";
@@ -321,9 +296,6 @@ h4 {
 .callout-ex-hint {
   border-left-color: #f0ad4e !important;
 }
-.callout-ex-hint > .callout-header {
-  background-color: #fef8ef !important;
-}
 .callout-ex-hint > .callout-header::before {
   font-family: "Font Awesome 5 Free";
   content: "\f059";
@@ -334,9 +306,6 @@ h4 {
 .callout-ex-solution {
   border-left-color: #ffe79a !important;
 }
-.callout-ex-solution > .callout-header {
-  background-color: #fff9e7 !important;
-}
 .callout-ex-solution > .callout-header::before {
   font-family: "Font Awesome 5 Free";
   content: "\f058";
@@ -344,13 +313,10 @@ h4 {
   font-size: 13px;
 }
 
-.callout-optional {
+.callout-deep-dive {
   border-left-color: #52575C !important;
 }
-.callout-optional > .callout-header {
-  background-color: #F1F3F5 !important;
-}
-.callout-optional > .callout-header::before {
+.callout-deep-dive > .callout-header::before {
   font-family: "Font Awesome 5 Free";
   content: "\f14e";
   margin-right: 5px;
@@ -360,7 +326,7 @@ h4 {
 .callout-ex-prompt > .callout-header::after,
 .callout-ex-hint > .callout-header::after,
 .callout-ex-solution > .callout-header::after,
-.callout-optional > .callout-header::after {
+.callout-deep-dive > .callout-header::after {
   font-family: "Font Awesome 5 Free";
   content: "\f054";
   transition: transform .2s ease;
@@ -368,7 +334,7 @@ h4 {
 .callout-ex-prompt > .callout-header[aria-expanded="true"]::after,
 .callout-ex-hint > .callout-header[aria-expanded="true"]::after,
 .callout-ex-solution > .callout-header[aria-expanded="true"]::after,
-.callout-optional > .callout-header[aria-expanded="true"]::after {
+.callout-deep-dive > .callout-header[aria-expanded="true"]::after {
   transform: rotate(90deg);
 }
 .callout-header {

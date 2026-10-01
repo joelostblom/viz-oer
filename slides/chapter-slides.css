@@ -1,0 +1,260 @@
+/* Applied only to the presentation, not the reading view. */
+:root {
+  --r-background-color: #1A1B26;
+  --r-main-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --r-heading-font: var(--r-main-font);
+  --r-code-font: ui-monospace, "Cascadia Code", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --r-main-color: #c0caf5;
+  --r-heading-color: #7AA2F7;
+  --r-link-color: #FF9E64;
+  --r-link-color-dark: #FF9E64;
+  --r-link-color-hover: #FF9E64;
+  --r-selection-background-color: #FF9E64;
+  --r-selection-color: #1A1B26;
+}
+
+.reveal {
+  font-size: 32px;
+}
+
+.reveal pre,
+.reveal code,
+.reveal kbd,
+.reveal samp {
+  font-family: var(--r-code-font);
+}
+
+/* Short, consistent fades for slide changes and heading-first content reveals. */
+.reveal[data-transition-speed="fast"] .slides section,
+.reveal .slides section .fragment {
+  transition-duration: 180ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Reset revisited slides immediately, without briefly showing their content. */
+.reveal .slides section.resetting-fragments .fragment {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-transition-speed="fast"] .slides section,
+  .reveal .slides section .fragment {
+    transition-duration: 0ms;
+  }
+}
+
+.reveal #title-slide .title {
+  color: #FF9E64;
+}
+
+.reveal strong,
+.reveal b,
+.reveal em,
+.reveal a,
+.reveal a:hover,
+.reveal .controls {
+  color: var(--r-link-color);
+}
+
+.reveal .progress span {
+  background-color: var(--r-link-color);
+}
+
+.slide-menu-button {
+  display: none !important;
+}
+
+.reveal .footer {
+  color: var(--r-main-color);
+  width: max-content !important;
+  max-width: calc(100% - 4rem);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.5rem;
+  opacity: 0;
+  transition: opacity 180ms ease-in-out;
+}
+
+/* Opacity preserves the hover target even after the hint has faded away. */
+.reveal.show-title-hint .footer,
+.reveal .footer:hover,
+.reveal .footer:focus-within {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal .footer {
+    transition-duration: 0ms;
+  }
+}
+
+.reveal.overview .footer {
+  display: none;
+}
+
+.reveal .slide-number {
+  color: var(--r-main-color);
+}
+
+.reveal .slide-number {
+  background: transparent;
+}
+
+.reveal .callout {
+  color: var(--r-main-color);
+  background-color: var(--r-background-color) !important;
+  border-color: var(--r-link-color) !important;
+}
+
+.reveal .callout.callout-note .callout-title {
+  color: var(--r-link-color);
+  background-color: var(--r-background-color) !important;
+  border-bottom: 1px solid var(--r-link-color);
+}
+
+.reveal .callout-icon-container {
+  display: none;
+}
+
+.reveal h2 {
+  font-size: 1.4em;
+  margin-bottom: 0.6em;
+}
+
+.reveal .slide-heading {
+  font-size: 1.4em;
+  margin-top: 0.65em;
+  margin-bottom: 0.35em;
+}
+
+.reveal li {
+  margin-bottom: 0.7em;
+}
+
+.reveal .slide-media,
+.reveal .slide-media .quarto-figure,
+.reveal .slide-media figure,
+.reveal .slide-media figure > div {
+  text-align: left;
+}
+
+.reveal .slide-media figure,
+.reveal .slide-media table,
+.reveal .slide-media img {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.reveal .dataframe-grid {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.reveal .dataframe-grid table {
+  font-size: 21px;
+  margin: 0;
+}
+
+.reveal .slide-media pre {
+  font-size: 0.65em;
+}
+
+/* Separate displayed source from its result, including static pseudocode
+   followed by a separately executed chart cell. */
+.reveal .slide-media .code-copy-outer-scaffold + .cell-output,
+.reveal .slide-media .sourceCode + .cell-output,
+.reveal .slide-media .code-copy-outer-scaffold + .slide-answer,
+.reveal .slide-media .sourceCode + .slide-answer,
+.reveal .slide-media > .code-copy-outer-scaffold + .cell,
+.reveal .slide-media > .sourceCode + .cell {
+  margin-top: 0.5em;
+}
+
+/* Two complete examples side by side; code and output remain stacked within
+   each example. Reveal keeps outgoing slides displayed during transitions:
+   retain their grid until it hides them, even after .present is removed. */
+.reveal .slides section.present[data-slide-columns],
+.reveal .slides section[data-slide-columns][style*="display: block"],
+.reveal.overview .slides section[data-slide-columns] {
+  display: grid !important; /* Override Reveal's inline display: block. */
+  grid-template-columns: minmax(0, var(--slide-left-width, 1fr))
+    minmax(0, var(--slide-right-width, 1fr));
+  grid-template-rows: auto 1fr;
+  column-gap: 1em;
+  align-items: start;
+}
+
+.reveal section[data-slide-columns] > * {
+  min-width: 0;
+}
+
+.reveal section[data-slide-columns] > h2 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.reveal section[data-slide-columns] > .slide-heading {
+  grid-column: 2;
+  grid-row: 1;
+  margin-top: 0;
+  margin-bottom: 0.6em;
+}
+
+.reveal section[data-slide-columns] > .slide-media {
+  grid-row: 2;
+}
+
+.reveal section[data-slide-columns] pre code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.reveal div.sourceCode,
+.reveal pre.sourceCode {
+  background-color: #24283b;
+  color: #c0caf5;
+  border-color: #414868;
+}
+
+.reveal .code-copy-button {
+  color: #c0caf5;
+}
+
+.reveal :not(pre) > code {
+  color: var(--r-link-color);
+  background-color: transparent;
+}
+
+.reveal .slide-media table.dataframe-preview {
+  font-size: 24px;
+}
+
+/* The summary table uses inline styles to emphasize its differing values. */
+.reveal .dataframe-grid td[style*="background-color"] {
+  background-color: var(--r-link-color) !important;
+  color: var(--r-background-color) !important;
+}
+
+.reveal .dataframe-grid td[style*="background-color"] b,
+.reveal .dataframe-grid td[style*="background-color"] strong {
+  color: inherit;
+}
+
+.reveal .slide-media img {
+  max-height: 560px;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left top;
+}
+
+.reveal .vega-embed {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.reveal figcaption,
+.reveal caption {
+  display: none;
+}

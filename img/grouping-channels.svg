@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="451.2" height="288" viewBox="0 0 564 360" font-family="sans-serif" fill="#444" role="img" aria-labelledby="title description"><title id="title">Classical static identity channels for grouping</title>
+<desc id="description">Classical, context-dependent channel guidance. Adapted from Munzner and Maguire, Visualization Analysis and Design (2014), CC BY 4.0.</desc>
+<rect width="564" height="360" fill="white"/>
+<rect x="0" y="120" width="564" height="120" fill="#ebebeb"/>
+<rect x="0" width="48" height="360" fill="#262626"/>
+<text x="22" y="67.5" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">1</tspan></text>
+<text x="22" y="187.5" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">2</tspan></text>
+<text x="22" y="307.5" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">3</tspan></text>
+<defs><circle id="dot" r="6.3246"/><rect id="square" x="-6.3246" y="-6.3246" width="12.6491" height="12.6491"/><path id="triangle" d="M0 -5.4772L-6.3246 5.4772H6.3246Z"/></defs>
+<text x="397" y="53" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Spatial region</tspan><tspan x="397" dy="24">(position)</tspan></text>
+<text x="397" y="185" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Color hue</tspan></text>
+<text x="397" y="305" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Shape</tspan></text>
+<use href="#dot" x="109" y="46"/>
+<use href="#dot" x="137" y="46"/>
+<use href="#dot" x="109" y="74"/>
+<use href="#dot" x="137" y="74"/>
+<use href="#dot" x="206" y="46"/>
+<use href="#dot" x="234" y="46"/>
+<use href="#dot" x="206" y="74"/>
+<use href="#dot" x="234" y="74"/>
+<use href="#dot" x="303" y="46"/>
+<use href="#dot" x="331" y="46"/>
+<use href="#dot" x="303" y="74"/>
+<use href="#dot" x="331" y="74"/>
+<use href="#dot" x="105" y="156" fill="#0072b2"/>
+<use href="#dot" x="105" y="276"/>
+<use href="#dot" x="175" y="156" fill="#d55e00"/>
+<use href="#square" x="175" y="276"/>
+<use href="#dot" x="245" y="156" fill="#009e73"/>
+<use href="#triangle" x="245" y="276"/>
+<use href="#dot" x="315" y="156" fill="#0072b2"/>
+<use href="#dot" x="315" y="276"/>
+<use href="#dot" x="105" y="180" fill="#d55e00"/>
+<use href="#square" x="105" y="300"/>
+<use href="#dot" x="175" y="180" fill="#009e73"/>
+<use href="#triangle" x="175" y="300"/>
+<use href="#dot" x="245" y="180" fill="#0072b2"/>
+<use href="#dot" x="245" y="300"/>
+<use href="#dot" x="315" y="180" fill="#d55e00"/>
+<use href="#square" x="315" y="300"/>
+<use href="#dot" x="105" y="204" fill="#009e73"/>
+<use href="#triangle" x="105" y="324"/>
+<use href="#dot" x="175" y="204" fill="#0072b2"/>
+<use href="#dot" x="175" y="324"/>
+<use href="#dot" x="245" y="204" fill="#d55e00"/>
+<use href="#square" x="245" y="324"/>
+<use href="#dot" x="315" y="204" fill="#009e73"/>
+<use href="#triangle" x="315" y="324"/></svg>
