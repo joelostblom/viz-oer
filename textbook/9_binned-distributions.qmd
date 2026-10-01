@@ -15,7 +15,7 @@ resources:
 
 1. **Construct** histograms by dividing a quantitative variable into bins and counting the observations in each interval.
 
-2. **Evaluate** how bin width and placement affect the patterns visible in a histogram.
+2. **Choose** bin widths in meaningful data units and **evaluate** how width and placement affect the patterns visible in a histogram.
 
 3. **Combine** histograms with rug plots to inspect the underlying observations.
 
@@ -24,8 +24,6 @@ resources:
 :::
 
 <!-- TODO A histogram deep dive could explain how automatic bin-width selection rules work. -->
-
-<!-- TODO Consider changing from maxbins and bins to step and binwidth to encourage thinking in units of the data and avoid implying that maxbins sets an exact bin count. -->
 
 ## Why bother?
 
@@ -217,97 +215,112 @@ on how we choose those intervals.
 
 ## Bin properties
 
-Different visualization libraries use different rules
-to choose bin widths and boundaries.
-Some favor round-number boundaries, while others start from a requested number of bins.
-Regardless of which library you use,
-it is a good idea to try several settings:
-different features of the distribution can stand out at different bin widths.
-For a given data range, requesting more bins generally produces narrower intervals.
+The **bin width** controls how much detail we can see.
+Narrow bins separate nearby values and can reveal small concentrations or gaps,
+but they can also emphasize incidental variation.
+Wide bins combine more observations and emphasize broad patterns,
+but they can hide important features.
+Let's see how we can configure
+the bin width to be more narrow
+and reveal more details from the distribution.
+
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
-We can pass `maxbins=` to the `bin()` method
-to request a maximum number of bins rather than an exact count.
-The binning algorithm favors easy-to-read intervals
-(for example, 5–10 instead of 6.3–9.4),
-so different `maxbins` settings can sometimes produce the same bins.
+To show more detail,
+reduce the `step` of each bin to 5
+so that each bin now spans five minutes:
 
 ```{python}
 #| label: runtime-histogram-bins-alt
 alt.Chart(movies, height=150).mark_bar().encode(
-    x=alt.X('Running Time min').bin(maxbins=30),
+    x=alt.X('Running Time min').bin(step=5),
     y='count()',
 )
 ```
 
 ### ggplot
 
-We can pass `bins` to `geom_histogram()`
-to request a number of bins.
-Here, we request 10 instead of the default 30:
-
-<!-- TODO dropna in data? -->
+To show more detail,
+reduce the `binwidth` of each bin to 5
+so that each bin now spans five minutes:
 
 ```{r}
 #| label: runtime-histogram-bins-gg
 #| message: false
 ggplot(movies, aes(x = `Running Time min`)) +
-    geom_histogram(bins = 10, color = 'white')
+    geom_histogram(binwidth = 5, color = 'white')
 ```
 
 :::
 
+If no bin width is set,
+visualization libraries have different rules of thumb
+try to determine a suitable width.
+Libraries also tend to make different decisions
+around whether bins should favor round-number boundaries
+and regarding how axis labels and bins should align.
+Regardless of which library you use,
+it is a good idea to try several settings
+as different features of the distribution
+can stand out at different bin widths.
+When doing so,
+it is helpful to think about the variable's units,
+the question you want to answer,
+and whether aligning width to round numbers are important
+to make the chart easier to interpret.
+
 ::: {.callout-default .ex-prompt}
 
-Here we have created a few histograms for a dataset
+To experience the impact of different bin widths,
+we explore a dataset
 containing finish times from the 2023 London Marathon
 for male runners aged 18–39.
-Explore different requested bin counts
-using the dropdown widget below.
-Which do you think is the "right" number of bins?
-How would you explain the peaks that become visible
+Use the slider to explore different bin widths
+in the histogram.
+Which bin width would you choose?
+And how would you explain the peaks that become visible
 when the bins are narrower?
 
 ```{python}
 #| label: marathon-histogram-bins
 #| echo: false
 mara = pd.read_csv('data/london_marathon_finish_times.csv')
-
-bins = [20, 40, 80, 220]
-bins_param = alt.param(
-    name="bins_param",
-    value=20,
-    bind=alt.binding_select(options=bins, name='Max bins (requested): ')
+bin_widths = [2, 5, 8, 11, 14]
+width_param = alt.param(
+    name='marathon_bin_width',
+    value=5,
+    bind=alt.binding_range(min=2, max=14, step=3, name='Bin width (minutes): '),
 )
 
+# Each layer uses Altair's histogram binning; only the selected layer has data.
 layers = [
-    alt.Chart(mara, height=150)
-    .transform_filter(f"bins_param === {n}")
+    alt.Chart(mara, height=200, width=500)
+    .transform_filter(width_param == width)
     .mark_bar()
     .encode(
-        x=alt.X(
-            "Time (minutes)",
-            bin=alt.Bin(maxbins=n),
-            title="Finish time (minutes)"
-        ),
-        y=alt.Y("count()", title="Count"),
-        tooltip=alt.Tooltip('Time (minutes)').bin(maxbins=n),
-
+        x=alt.X('Time (minutes):Q').bin(step=width)
+            .title('Finish time (minutes)').scale(domain=[100, 540], nice=False)
+            .axis(values=list(range(100, 501, 50)), format='d'),
+        y=alt.Y('count()').title('Runners per bin').scale(zero=True),
+        tooltip=[
+            alt.Tooltip('Time (minutes):Q').bin(step=width)
+                .title('Finish-time interval (min)').format('.0f'),
+            alt.Tooltip('count()').title('Runners').format(',d'),
+        ],
     )
-    for n in bins
+    for width in bin_widths
 ]
 
-alt.layer(*layers).add_params(bins_param)
+alt.layer(*layers).add_params(width_param)
 ```
 
-To switch more quickly between the options,
-you can use the arrow keys
-after clicking the dropdown once.
-You can also hover over a bar with the pointer
-to see the exact values for that interval.
+You can hover over a bar to see its interval and count.
+Note that the count-axis varies
+as the bin-width changes,
+why do you think this is?
 
 :::: {.callout-default .ex-hint}
 
@@ -327,6 +340,13 @@ Popular targets include 3 hours, 3 hours 30 minutes, and 4 hours,
 which correspond to 180, 210, and 240 minutes.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://doi.org/10.1287/mnsc.2015.2417)]
 Trying several bin widths helps us check whether these concentrations persist
 rather than trusting a peak that appears with only one binning choice.
+
+The y-axis labels show lower count number for narrower bins,
+since less runners fit within each bin.
+Note that a lower count per bin
+does not imply a less concentrated distribution,
+just that we have distributed the counts across more individual bins
+within the same interval.
 
 :::::
 
@@ -361,13 +381,13 @@ with two peaks.
 #| echo: false
 #| label: fig-hist-bin-shift
 #| fig-cap: >
-    #| The same data has been used to create these two histograms,
-    #| which also share bin width.
-    #| The only difference is that
-    #| the start and end points of the bins
-    #| are shifted slightly between the two charts.
-    #| This figure is just for illustrative purposes
-    #| so we have kept the variable name of the axis.
+#|   The same data has been used to create these two histograms,
+#|   which also share a bin width of 50 units.
+#|   The only difference is that
+#|   the start and end points of the bins
+#|   are shifted slightly between the two charts.
+#|   This figure is just for illustrative purposes,
+#|   so we have kept the variable name off the axes.
 
 from random import Random
 
@@ -429,7 +449,7 @@ belong to which bin.
 #| label: runtime-histogram-rug-alt
 
 hist = alt.Chart(movies, height=150).mark_bar().encode(
-    x=alt.X('Running Time min').bin(maxbins=20),
+    x=alt.X('Running Time min').bin(step=10),
     y='count()',
 )
 
@@ -494,7 +514,7 @@ we make them partially transparent by setting `opacity=0.5`.
 ```{python}
 #| label: genre-histograms-overlaid-alt
 alt.Chart(movies, height=150).mark_bar(opacity=0.5).encode(
-    x=alt.X('Running Time min').bin(maxbins=30),
+    x=alt.X('Running Time min').bin(step=5),
     y=alt.Y('count()').stack(False),
     color='Major Genre',
 )
@@ -538,7 +558,7 @@ then a colored histogram chart can be effective.
     )
     .mark_bar(opacity=0.5)
     .encode(
-        x=alt.X('Running Time min').bin(maxbins=30),
+        x=alt.X('Running Time min').bin(step=5),
         y=alt.Y('count()').stack(False),
         color='Major Genre',
     )
@@ -566,7 +586,7 @@ Use the same bin boundaries and axis scales across facets to make those comparis
 ```{python}
 #| label: genre-histograms-faceted-alt
 alt.Chart(movies, height=80).mark_bar().encode(
-    x=alt.X('Running Time min').bin(maxbins=30),
+    x=alt.X('Running Time min').bin(step=5),
     y='count()',
 ).facet(
     'Major Genre',
