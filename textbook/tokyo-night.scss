@@ -28,6 +28,26 @@ $toc-color: #ff9e64;
 
 // Scoped so Quarto's alternate stylesheet never affects the light palette.
 body.quarto-dark {
+  // Vega bindings use native selects rather than Bootstrap form classes.
+  .vega-bind select {
+    color-scheme: dark;
+    background-color: $input-bg;
+    color: $input-color;
+    border: 1px solid $input-border-color;
+    border-radius: 0.25rem;
+    padding: 0.15rem 0.35rem;
+  }
+
+  .vega-bind select option {
+    background-color: $input-bg;
+    color: $input-color;
+  }
+
+  .vega-bind select:focus-visible {
+    outline: 2px solid $headings-color;
+    outline-offset: 2px;
+  }
+
   .chapter-number,
   .header-section-number {
     color: #6889cc !important; // Muted heading blue; override context-specific numbering colors.
