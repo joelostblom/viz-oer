@@ -33,9 +33,14 @@ jobs:
       
       # Push the website to the gh-pages branch 
       - name: Publish the book and slides to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./textbook/_book
-          keep_files: true
-          destination_dir: .
+          branch: gh-pages
+          folder: textbook/_book
+          clean: true
+          # Preserve complete PR snapshots while removing obsolete production files.
+          clean-exclude: |
+            /pull[0-9]*/***
+            /diff[0-9]*/***
+          # Rebase concurrent deployments instead of overwriting preview updates.
+          force: false

@@ -52,6 +52,11 @@ manifest and its lockfile; if frozen R installation reports a stale lock, run
 
 Production publishes `textbook/_book` to the existing `gh-pages` branch, matching
 the repository's Pages setting (**Deploy from a branch**, `gh-pages`, `/`).
+The production deployment removes obsolete pages and assets, while preserving
+the complete `pull<number>/` and `diff<number>/` PR snapshots. It uses
+`JamesIves/github-pages-deploy-action` with cleanup exclusions and non-forced
+pushes. Obsolete chapter URLs such as `1_intro.html` are removed rather than
+redirected.
 Same-repository PRs also publish preview/diff directories; fork PRs render for
 validation but skip publishing because their tokens lack write access.
 Push to `main` to publish, or use **Actions → Render and Publish → Run workflow**
