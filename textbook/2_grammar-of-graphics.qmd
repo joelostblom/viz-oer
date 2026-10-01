@@ -216,7 +216,6 @@ and observations in group `b` in orange."**
 for creating the chart via loops and low-level drawing commands.
 
 :::::
-::::
 :::
 
 In this book, we will learn about
@@ -300,7 +299,7 @@ The idea of a grammar of graphics originates from
 What do you think the output of the following Python code would be?
 
 
-::: {.slide-visual slide-title="Adding numbers" .slide-columns}
+::: {.slide-visual slide-title="Adding numbers" .slide-columns .slide-with-content}
 
 ```{.python}
 1 + 2

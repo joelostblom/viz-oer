@@ -47,6 +47,8 @@ experiential learning is best, in exercises student can experience the problem,n
 
 This book
 
+<!-- TODO separation of concept and implemenation (theory and priactice) so that it is modulear and possible to teach with many tools. I have various expertise so some are better than other, improvements welcome. ggsql, observable, seaborn -->
+
 
 ## acknolwedgmenets
 

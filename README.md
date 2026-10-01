@@ -30,6 +30,15 @@ Press Ctrl+C to stop the preview.
 
 ### Reading and presentation views
 
+The reading view offers Quarto's built-in light/dark theme toggle in the book
+sidebar. The default dark theme uses Darkly
+with a small `textbook/tokyo-night.scss` customization matching the slide palette.
+Dark-mode code highlighting reuses `textbook/tokyo-night.theme` from the slides;
+light mode uses Quarto's default Arrow highlighting.
+Cosmo remains available as the optional light theme.
+Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
+The slide decks retain their separate dark presentation theme.
+
 Chapters 1 and 2 open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
@@ -37,12 +46,14 @@ In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
 notes, **O** to toggle the slide overview, **M** for the menu, and **?** for
 keyboard shortcuts. **Esc** dismisses an open menu, help overlay, or overview
 first; from a normal slide it returns to the matching section of the reading view.
-Esc also resumes a paused/black screen before allowing an exit.
+Esc also resumes a paused/black screen before allowing an exit. **Q** is an
+alias for Esc, with the same behavior for overlays, overview, and returning to
+the chapter.
 The opening title uses the accent color; other slide titles are blue. Figures and tables
 are left aligned, with captions hidden in the deck and retained in the chapter.
 Only the title slide has a footer: **Press ? for shortcuts**. The bottom-left
 hamburger icon is hidden; the menu remains available through **M**.
-The hint fades away after five seconds each time the title slide is entered.
+The hint fades away after three seconds each time the title slide is entered.
 Hovering over its bottom-center area shows it again for as long as the pointer
 stays there.
 Slide changes and content reveals use quick 180 ms fades. Each slide opens with
@@ -234,7 +245,10 @@ visual a dedicated, presentation-only slide title. Use this when there is no
 corresponding source heading; do not repeat the title as a heading inside the
 wrapper. Otherwise it uses the current heading, with
 additional slides when multiple visual blocks would share a slide (except after
-a `.slide-fragment` heading, which explicitly keeps content together). Escape from
+a `.slide-fragment` heading, which explicitly keeps content together). Add
+`.slide-with-content` to a titled `.slide-visual` block to reveal its generated
+title and content together, including when it also has `.slide-columns`.
+Escape from
 tab/exercise slides returns to the enclosing visible chapter section, rather
 than a hidden tab or collapsed solution.
 
@@ -265,22 +279,50 @@ annotations are the recommended approach for new content.
 #### Two-column comparisons
 
 For a two-example comparison like chapter 2's syntax examples, add
-`.slide-comparison` to the enclosing tabset. Use a plain heading for the first
+`.slide-columns` to the enclosing tabset. Use a plain heading for the first
 example, a `.slide-fragment` heading for the second, and one `.slide-visual`
 block per example. Slides put the first heading and example in the left column
 and the second in the right column. Each chart stays below its code, with long
 code lines wrapping as needed. The book retains its normal tabs and stacked
 code/output layout.
 
+This layout currently supports two columns. The former `.slide-comparison`
+name remains supported as a compatibility alias; use `.slide-columns` for new
+content.
+
 Set `slide-widths` on that same tabset to adjust the left/right proportions:
 
 ```markdown
-::: {.panel-tabset .slide-comparison slide-widths="40,60"}
+::: {.panel-tabset .slide-columns slide-widths="40,60"}
 ```
 
 The two positive numbers are relative weights: `40,60` gives 40%/60% of the
 available column space after the gap, and `2,3` gives the same split. Omitting
 the option gives equal columns. This setting affects only the presentation.
+
+You can also start a two-column slide with a titled `.slide-visual` block,
+then supply the right column as a titled `.slide-fragment` block:
+
+````markdown
+::: {.slide-visual slide-title="Adding numbers" .slide-columns}
+
+```python
+1 + 2
+```
+
+:::
+
+::: {.slide-fragment slide-title="Adding strings"}
+
+```python
+"one" + "two"
+```
+
+:::
+````
+
+The second title and its content reveal together in the right column. Optional
+`slide-widths="40,60"` goes on the first block alongside `.slide-columns`.
 
 For a new local image or data file, also add its path to the staging list in
 `CHAPTER_ASSETS` in `textbook/src/build_chapter_slides.py`. Chapter 1 stages the
