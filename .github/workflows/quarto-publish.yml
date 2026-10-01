@@ -6,36 +6,33 @@ on:
       - main
   workflow_dispatch:
 
-# you need these permissions to publish to GitHub pages
-permissions: 
-    contents: write
-    pages: write
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-book
+  cancel-in-progress: false
 
 jobs:
   build-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
     env:
       URL: ${{ secrets.OPENAI_PROXY_URL }}
 
     steps:
-      - uses: actions/checkout@v4  # Checkout the repo to find files, such as the env
-      
-      - name: Setup the environment
-        uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-file: environment.yaml
-          init-shell: bash
-          cache-environment: true
-          post-cleanup: none
+      - uses: actions/checkout@v7
+
+      - uses: ./.github/actions/setup-book
 
       - name: Build the website
-        run: quarto render textbook; echo "quarto is done"
-        shell: bash -el {0}  # Required to see the mamba init env
-
-      - run: echo "Next step worked"
+        shell: bash
+        run: |
+          . .uvr/activate
+          uv run --locked quarto render textbook
       
       # Push the website to the gh-pages branch 
-      - name: Push the PR version of the website to gh-pages branch
+      - name: Publish the book and slides to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

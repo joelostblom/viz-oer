@@ -28,6 +28,36 @@ uv run quarto preview textbook
 
 Press Ctrl+C to stop the preview.
 
+### GitHub Actions publishing
+
+The publishing and PR-preview workflows share
+`.github/actions/setup-book/action.yml`. They use `uv.lock` and `uvr.lock`,
+rather than the older `environment.yaml` Conda environment:
+
+- uv 0.10.4 restores Python and packages with `uv sync --locked`, including the
+  pinned Altair Git revision. `.python-version` selects the Python version.
+- uvr 0.4.6 installs the R version recorded in `uvr.lock` and restores its
+  packages with `uvr sync --frozen --install-system-deps`.
+- Quarto 1.8.25 matches the tested local renderer. A current Chrome installation
+  is selected via `QUARTO_CHROMIUM` for Mermaid diagrams (the old Chromium
+  bundled with this Quarto version cannot render the current diagrams).
+- `RETICULATE_PYTHON` explicitly selects `.venv/bin/python` so Python chunks
+  cannot accidentally run in a separate reticulate-managed environment.
+- Both workflows activate `.uvr/activate` and run
+  `uv run --locked quarto render textbook`. The post-render hook builds the
+  slide decks as part of the same publication.
+
+Python and R downloads are cached. When changing dependencies, commit both the
+manifest and its lockfile; if frozen R installation reports a stale lock, run
+`uvr lock`, review the changes, then run `uvr sync --frozen` locally.
+
+Production publishes `textbook/_book` to the existing `gh-pages` branch, matching
+the repository's Pages setting (**Deploy from a branch**, `gh-pages`, `/`).
+Same-repository PRs also publish preview/diff directories; fork PRs render for
+validation but skip publishing because their tokens lack write access.
+Push to `main` to publish, or use **Actions → Render and Publish → Run workflow**
+after workflow changes have reached GitHub.
+
 ### Reading and presentation views
 
 The reading view offers Quarto's built-in light/dark theme toggle in the book

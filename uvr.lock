@@ -1195,12 +1195,11 @@ requires = [
 
 [[package]]
 name = "selectr"
-version = "0.7.0"
+version = "0.8.0"
 source = "cran"
-raw_version = "0.7-0"
-url = "https://cran.r-project.org/src/contrib/selectr_0.7-0.tar.gz"
-checksum = "md5:f257e86783ca708e19ed52cdd49188c7"
-requires = ["R6"]
+raw_version = "0.8-0"
+url = "https://cran.r-project.org/src/contrib/selectr_0.8-0.tar.gz"
+checksum = "md5:06a8ec7b306aec30a99f3654c60d5f59"
 
 [[package]]
 name = "stringi"
