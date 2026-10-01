@@ -59,6 +59,14 @@ after workflow changes have reached GitHub.
 
 ### Reading and presentation views
 
+Figures in the reading view are left-aligned and use margin captions by default
+(`fig-align: left`, `fig-cap-location: margin`). Figure captions display a bold
+**Figure N** label on its own line, followed by the caption text. The
+`figure-captions.js` helper aligns captions moved out of exercise callouts with
+their figures and updates positioning after resizing, chart loading, or
+expanding/collapsing an exercise. On narrow screens, Quarto's in-flow caption
+layout is used. Table captions remain below their tables.
+
 The reading view offers Quarto's built-in light/dark theme toggle in the book
 sidebar. The default dark theme uses Darkly
 with a small `textbook/tokyo-night.scss` customization matching the slide palette.

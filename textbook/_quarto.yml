@@ -34,6 +34,7 @@ resources:
   - utils.R
   - tabset-scroll.js
   - chapter-title-tools.js
+  - figure-captions.js
 
 format:
   live-html:
@@ -53,9 +54,12 @@ format:
       - text: |
           <script src="tabset-scroll.js"></script>
           <script src="chapter-title-tools.js"></script>
+          <script src="figure-captions.js"></script>
     monofont: "Ubuntu Mono"
     mainfont: Ubuntu
     number-depth: 2
+    fig-align: left
+    fig-cap-location: margin
     tbl-cap-location: bottom
 
 execute:

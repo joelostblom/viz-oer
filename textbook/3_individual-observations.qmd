@@ -291,6 +291,7 @@ ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
 
 ::: {.column-margin}
 
+<br><br>
 **Making space**
 
 Notice the difference in how the legend is added in the two libraries.
