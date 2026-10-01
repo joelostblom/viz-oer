@@ -17,6 +17,7 @@ CHAPTER_ASSETS = {
     "2_grammar-of-graphics": ("utils.py",),
 }
 SHARED_ASSETS = (
+    "illustrative-chart-actions.lua",
     "chapter-slides.lua", "chapter-slides.css", "chapter-slides.js",
     "chapter-slide-options.lua", "tokyo-night.theme",
     "_extensions/r-wasm/live/_knitr.qmd",

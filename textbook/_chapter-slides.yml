@@ -6,6 +6,7 @@ project:
 filters:
   - path: chapter-slide-options.lua
     at: pre-ast
+  - illustrative-chart-actions.lua
   - chapter-slides.lua
 
 resources:

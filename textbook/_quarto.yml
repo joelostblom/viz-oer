@@ -25,6 +25,7 @@ book:
     # - 99_misc.qmd
 
 filters:
+  - illustrative-chart-actions.lua
   - custom-callouts.lua
   - chapter-slides.lua
 
