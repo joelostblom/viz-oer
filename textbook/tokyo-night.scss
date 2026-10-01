@@ -29,12 +29,19 @@ $toc-color: #ff9e64;
 // Scoped so Quarto's alternate stylesheet never affects the light palette.
 body.quarto-dark {
   .chapter-number,
-  .header-section-number,
+  .header-section-number {
+    color: #6889cc !important; // Muted heading blue; override context-specific numbering colors.
+  }
+
+  .column-margin,
+  .column-margin.column-container > div,
+  .margin-aside,
+  .margin-caption,
   figcaption,
   .figure-caption,
   .table-caption,
   caption {
-    color: #6889cc !important; // Muted heading blue; override context-specific numbering colors.
+    color: #6889cc !important;
   }
 
   ::selection {
