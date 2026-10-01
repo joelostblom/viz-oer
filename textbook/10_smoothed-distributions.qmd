@@ -1,5 +1,5 @@
 ---
-title: "Multiple distributions"
+title: "Smoothed distributions"
 fig-width: 5
 fig-height: 3
 resources:
@@ -11,19 +11,21 @@ resources:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Explain** how a density plot represents the concentration of observations without dividing them into bins.
+1. **Explain** how kernel density estimation combines contributions centered on individual observations, and how this differs from histogram binning.
 
-2. **Adjust** the bandwidth and **evaluate** which features of a distribution remain visible at different amounts of smoothing.
+2. **Interpret** density heights and areas, distinguishing normalized densities from count-scaled densities.
 
-3. **Compare** multiple distributions using overlapping density curves and facets with common scales.
+3. **Adjust** the bandwidth and **evaluate** which features remain visible at different amounts of smoothing.
 
-4. **Combine** density plots with individual observations and medians, and **interpret** violin plots as mirrored densities.
+4. **Evaluate** when density plots may mislead, especially with few observations or bounded variables, and **combine** them with individual observations.
+
+5. **Compare** grouped distributions using density curves, facets, and violin plots, accounting for bandwidth, group sizes, and summary marks.
 
 :::
 
 ## Why bother?
 
-In [Distributions](9_distributions.qmd),
+In [Binned distributions](9_binned-distributions.qmd),
 we used histograms to see patterns that were hidden by overlapping observations.
 But the appearance of a histogram depends on the width and placement of its bins.
 And when we want to compare several groups in one chart,
@@ -32,10 +34,9 @@ overlapping bars can make their shapes difficult to follow.
 ::: {.callout-default .ex-prompt}
 
 In the previous chapter,
-we learned that
-since histograms start with binning the axis
-and then count the observation within each bin equally
-no matter how close to the edge of the bin they are.
+we learned that histograms first divide the axis into bins
+and then assign each observation entirely to one bin,
+regardless of how close it is to a bin edge.
 This gave rise to one of the shortcomings of histograms:
 that the exact position of the bins along the axis
 could drastically impact the appearance of the histogram
@@ -45,7 +46,7 @@ as we saw in @fig-hist-bin-shift.
 Can you try to think of how we could change
 the histogram creation process
 to remedy this shortcoming?
-Study the animation schematic in @fig-hist-buildup again
+Study the animated schematic in @fig-hist-buildup again
 to help you brainstorm possible improvements.
 
 :::: {.callout-default .ex-hint}
@@ -55,105 +56,74 @@ for the bin placement?
 
 ::::: {.callout-default .ex-solution}
 
-Instead of first binning the axis,
-we could center each bin on its observation.
-Where nearby bins overlap,
-their heights (i.e. the counts) will be added together,
+Instead of first dividing the axis into bins,
+we could center a rectangular window on each observation.
+Where nearby windows overlap,
+their contributions are added together,
 but only for the overlapping part,
 as can be seen in this animation:
 
-![Animated schematic of centering each bin on the observation](img/kde-rectangle-kernel-buildup.gif){#fig-kde-rect-buildup}
+![Animated schematic of centering a rectangular contribution on each observation.](img/kde-rectangle-kernel-buildup.gif){#fig-kde-rect-buildup}
+
 
 This modification removes the need to select
-fixed intervals for the bins along the axis,
-and thus makes the appearance of the distribution
-only depend on the width of each bin
-(i.e. one parameter less than the histogram.
+fixed bin boundaries along the axis
+and thus the appearance of the distribution
+depend only on the width of each bin
+(i.e. one parameter less than the histogram).
+For a fixed rectangular kernel shape, the estimate depends on the window width
+but no longer requires a separate choice of bin origin.
 
 If we applied this technique to the data used in @fig-hist-bin-shift,
-we would always end up with the following chart
-since the position of the bins is centered on each observation.
+we would get the same result for a given window width,
+because the windows are centered on the observations.
+The chart below shows a coarse stepped approximation of these overlap counts,
+using wider bars to make the connection to histograms easier to see;
+we will discuss normalization to a probability density next.
 
 ```{python}
 #| echo: false
 #| label: fig-hist-bin-shift-ch10
-#| fig-cap: Centering the bins on each observation creates histogram-like chart chart that does not depend on bin placement.
-from random import choice
+#| fig-cap: >
+#|   The same data as in @fig-hist-bin-shift, using 50-unit windows centered on the observations.
+#|   For this illustration, overlap counts are evaluated every 25 units and drawn as broad steps.
+#|   These steps approximate the estimate; they are not bins to which observations are assigned.
+from random import Random
 import altair as alt
+import numpy as np
+import pandas as pd
 
-cars = alt.datasets.data.cars()
+cars = alt.datasets.data.cars().copy()
+rng = Random(4239402)
 bin_min = 235
 bin_max = 285
 
 mask_to_replace = cars['Displacement'].between(bin_min, bin_max)
-new_values = [choice(range(bin_max, 300)) for _ in range(mask_to_replace.sum())]
+new_values = [rng.choice(range(bin_max, 300)) for _ in range(mask_to_replace.sum())]
 cars.loc[mask_to_replace, 'Displacement'] = new_values
 
-# hist = alt.Chart(cars, height=120, width=200).mark_bar().encode(
-#     alt.X('Displacement').bin().title(None).scale(domain=(20, 500)),
-#     alt.Y('count()').title(None)
-# )
-# tick_values = values=list(range(0, 500, 50))
-# hist | hist.encode(
-#     alt.X('Displacement')
-#     .bin(nice=False, extent=[35, 490])
-#     .title(None)
-#     .scale(domain=(20, 500))
-#     .axis(
-#         labelExpr=(
-#             f"indexof({tick_values}, datum.value - 35) % 2 === 0"
-#             " ? datum.label : ''"
-#         ),
-#     ),
-# )
+values = cars['Displacement'].dropna().to_numpy()
+window_width = 50
 
-
-import numpy as np
-import pandas as pd
-from sklearn.neighbors import KernelDensity
-
-values = cars["Displacement"].dropna().to_numpy()
-
-# Half-width of each rectangular kernel, in your variable's units
-bandwidth = 50
-
-kde = KernelDensity(
-    kernel="tophat",
-    bandwidth=bandwidth,
-).fit(values.reshape(-1, 1))
-
-# Evaluate the estimated density on a fine grid
-x = np.linspace(
-    values.min(), #- 2 * bandwidth,
-    values.max(), #+ 2 * bandwidth,
-    25,
-)
-
-density = pd.DataFrame({
-    "value": x,
-    "density": np.exp(kde.score_samples(x.reshape(-1, 1))),
+# Use a coarse display grid to emphasize the connection to histograms.
+# At this chart's width, 25-unit display steps have approximately the same
+# visual width as the 50-unit bins in the narrower chapter 9 panels.
+display_step = 12.5
+edges = np.arange(25, 501, display_step)
+midpoints = (edges[:-1] + edges[1:]) / 2
+overlap_counts = (
+    np.abs(midpoints[:, None] - values[None, :]) < window_width / 2
+).sum(axis=1)
+windows = pd.DataFrame({
+    'start': edges[:-1],
+    'end': edges[1:],
+    'count': overlap_counts,
 })
 
-n = len(values)  # Observations used to fit the KDE
-bin_width = 50    # Match your histogram's bin width
-density["Count"] = density["density"] * n * bin_width
-
-bars = density.sort_values("value").copy()
-bars["value_end"] = bars["value"].shift(-1)
-bars = bars.dropna(subset=["value_end"])
-
-alt.Chart(bars, height=120, width=200).mark_bar(
-    binSpacing=0,
-).encode(
-    x=alt.X(
-        "value:Q",
-        bin="binned",
-        title="Value",
-        # scale=alt.Scale(domain=(20, 500)),
-        # axis=alt.Axis(values=list(range(0, 500, 100)))
-    ),
-    x2="value_end:Q",
-    y=alt.Y("Count"),
+alt.Chart(windows, height=150, width=400).mark_bar(binSpacing=0).encode(
+    x=alt.X('start:Q', bin='binned').title(None).scale(domain=[20, 500]),
+    x2='end:Q',
+    y=alt.Y('count:Q').title(None),
 )
 
 ```
@@ -164,7 +134,7 @@ alt.Chart(bars, height=120, width=200).mark_bar(
 
 :::
 
-<!-- TODO deep dive: Another advantage of densities is that it is easier to create an optimizer for the bandwidth rather than for the binwidth. -->
+<!-- TODO Deep dive: investigate methods for choosing bandwidths and how their objectives compare with bin-width selection. -->
 <!-- https://www.mvstat.net/tduong/research/seminars/seminar-2001-05/ -->
 <!-- https://astroviking.github.io/ba-thesis/introduction.html#purpose-of-this-thesis -->
 <!-- https://mglerner.com/blog/posts/histograms-and-kernel-density-estimation-kde-2/ -->
@@ -177,44 +147,37 @@ alt.Chart(bars, height=120, width=200).mark_bar(
 ## Visualizing distributions with density plots
 
 In the exercise,
-we saw how centering the bin
-on the observation
-can lead to a more robust distribution plot.
+we saw how centering a window on each observation
+removes the histogram's sensitivity to bin alignment.
 Since we are no longer binning the axis
 at fixed intervals,
 this chart is technically no longer a histogram.
-Rather,
-it's called a density chart
-since it is depicting
-how the density of observations varies throughout the distribution.
-The method we use to create a density chart
-in the animation above
-is called a "Kernel Density Estimation",
-or "KDE" for short.
+To turn these overlapping contributions into a probability density,
+we sum them and normalize the resulting curve so that its total area is one.
+This method is called **kernel density estimation**, or **KDE**.
 As the name implies,
-this method is estimating
+this method estimates
 the unknown probability density function
 (i.e. the density of the underlying *population*),
-using kernels.
+using contributions called kernels.
 
-The "kernel" can be taught of as a bin
-that is centered on the data point.
+A kernel describes how an observation's contribution is spread
+around its recorded value.
 In the exercise above,
 we used a rectangular kernel
 to make the connection to histograms clearer.
-An issue with this shape is that it contributes
-a fully to the entire area within the kernel width
-and then drastically falls off to zero outside.
-Using a smoother kernel shape
-has the advantage
-of gradually reducing contribution from an observation
-avoiding the sudden cutoff of a rectangular kernel.
+This kernel has a constant height within its window
+and drops abruptly to zero outside it.
+A smooth kernel instead reduces an observation's contribution gradually
+as we move farther from its recorded value.
 The most commonly used shape is the Gaussian bell-shaped kernel,
-and summing such smooth individual kernels together
-would also produce a smooth density estimate for the entire distribution,
+and summing these smooth individual kernels,
+then normalizing the total area to one,
+produces a smooth density estimate for the distribution,
 as we can see in @fig-density-buildup.
 
-![Animated schematic of building a density estimate from individual observations using the typical bell-shaped kernels.](img/kde-buildup.gif){#fig-density-buildup}
+![Animated schematic of building a density estimate
+from individual observations using bell-shaped kernels.](img/kde-buildup.gif){#fig-density-buildup}
 
 <!-- TODO ref origin of gif -->
 
@@ -231,10 +194,9 @@ then draw the resulting curve with a line or area mark.
 The `as_` argument names the two output columns:
 `Running Time min` contains positions along the x-axis,
 and `Density` contains the estimated density at each position.
-We also specify `:Q` for the new `Density` column
-because it is calculated by the transform,
-rather than being a column
-whose type Altair can read from the original dataframe.
+We specify `:Q` for the `Density` column
+since it is newly created in the transform
+and Altair can't infer its type from the dataframe.
 
 ```{python}
 #| label: runtime-kde-alt
@@ -258,7 +220,7 @@ alt.Chart(movies, height=200).transform_density(
 In ggplot, `geom_density()` both estimates the density
 and draws its outline as a line.
 We can fill the area under the curve by specifying `fill = 'grey'`
-directly in the `geom`.
+directly in `geom_density()`.
 
 ```{r}
 #| label: runtime-kde-gg
@@ -280,66 +242,73 @@ A higher curve indicates a greater concentration of observations
 around that runtime.
 
 Importantly,
-it is the area over an interval
-(rather than the height at a specific point),
-that represents an estimated proportion of observations
-and the area of the entire density is normalized to sum to one
-(i.e. 100% of the sample).
-This means that the values on the y-axis
-depends on the range of the values on the x-axis,
-which can make the y-axis confusing to interpret
-(as you will experience in the example with counts below).
+it is the area under the curve over an interval,
+rather than the height at a specific point,
+that represents an estimated proportion.
+The full density curve is normalized to have area one.
+Its height therefore depends on the units of the variable:
+a density per minute has different numerical values from a density per second,
+even though both describe the same observations.
 
 For these reasons,
 use densities primarily to understand the shape of a distribution,
-rather than trying to read specific probabilities of the y-axis.
-And although densities are generally well-perceived
+rather than reading a density height as a probability.
+Although densities are generally correctly interpreted
 also by non-technical audiences,
 an advantage of histograms
 is that they are simpler to interpret and explain.
 
 ::: {.callout-warning}
 
-### Avoid using densities with counts
+### Avoid interpreting count-scaled densities as bin counts
 
-We can convert the density to a count
-by multiplying the density values
-with the total number of observations.
+Multiplying a density by the number of observations
+creates a **count-scaled density**.
 While this can be useful
 to indicate how many observations there are,
 it is not as straightforward to interpret
 as the counts in a histogram.
-Since the overall density *area*
-would sum to the total number of observations in the sample,
-a larger range on the x-axis
-leads to lower counts on the y-axis as we can see in @fig-runtime-kde-count-alt.
-Since the estimated density is continuous
-rather than the step-shaped histogram outline,
-what we see on the y-axis is really partial estimated counts.
-While these peculiarities might make sense
-when you understand how a density chart works
-they are not intuitive and can lead to misinterpretations.
+The area under its full curve
+equals the sample size,
+but its height is still a rate:
+here, estimated movies **per minute**.
+To estimate a count within an interval,
+we need the area under the curve over that interval.
+
+Changing measurement units changes this rate.
+In @fig-runtime-kde-count-alt,
+the right-hand plot expresses runtimes in half-minute units,
+so the numerical x-values double and the density heights halve.
+The observations and distribution shape are the same.
+Simply changing the axis limits would not have this effect.
+Count scaling can help communicate relative group sizes,
+but labeling the vertical axis merely "counts" can be misleading.
 
 ```{python}
 #| echo: false
 #| label: fig-runtime-kde-count-alt
-#| fig-cap: Twice the range on the x-axis leads to half the counts on the y-axis while the shape of the distribution stays the same. This is because we are effectively having twice as many 1-unit intervals along the x-axis in the rightmost chart, so the count for each of those intervals must be half that of the original wider intervals in the leftmost chart.
+#| fig-cap: >
+#|   The same runtimes measured in minutes (left) and half-minute units (right).
+#|   Count-scaled density heights halve when the numerical x-values double.
+#|   Bandwidths of 5 minutes and 10 half-minutes give the same amount of smoothing.
 density = alt.Chart(movies, height=120, width=220).transform_density(
     'Running Time min',
     as_=['Running Time min', 'Density'],
-    counts=True
+    counts=True,
+    bandwidth=5,
 ).mark_area(color="#FF0039").encode(
-    x=alt.X('Running Time min:Q'),
-    y=alt.Y('Density:Q').title('Estimated counts'),
+    x=alt.X('Running Time min:Q').scale(zero=False, nice=False).title('Running Time (minues)'),
+    y=alt.Y('Density:Q').title('Count-scaled density'),
 )
 
-density | alt.Chart(movies.assign(runtime_10 = lambda df: df['Running Time min'] * 2), height=120, width=220).transform_density(
-    'runtime_10',
-    as_=['2x Running Time min', 'Density'],
-    counts=True
+density | alt.Chart(movies.assign(runtime_half_minutes=lambda df: df['Running Time min'] * 2), height=120, width=220).transform_density(
+    'runtime_half_minutes',
+    as_=['Running Time (half-minutes)', 'Density'],
+    counts=True,
+    bandwidth=10,
 ).mark_area(color="#FF0039").encode(
-    x=alt.X('2x Running Time min:Q'),
-    y=alt.Y('Density:Q').title('Estimated counts'),
+    x=alt.X('Running Time (half-minutes):Q').scale(zero=False, nice=False),
+    y=alt.Y('Density:Q').title('Count-scaled density'),
 )
 ```
 
@@ -359,7 +328,7 @@ when we make the bandwidth larger?
 
 :::: {.callout-default .ex-hint}
 
-You can try a few different bandwidths 
+You can try a few different bandwidths
 on the marathon example from the previous chapter.
 Can you see the same features as with the histograms?
 
@@ -411,7 +380,7 @@ alt.Chart(marathon_densities, height=200, width=500).transform_filter(
 
 ::::: {.callout-default .ex-solution}
 
-A small bandwidth produces a more detailed, wiggly curve
+A small bandwidth produces a more detailed, wiggly curve,
 whereas a large bandwidth produces a smoother curve.
 
 :::::
@@ -419,23 +388,22 @@ whereas a large bandwidth produces a smoother curve.
 :::
 
 One of the advantages of a density over a histogram
-is that the estimation of the underlying PDF
-is less influenced by the kernel bandwidth
+is that they are less influenced by the kernel bandwidth
 than histograms are by bin width.
 It is also notably easier
-to approximate an optimal kernel bandwidth
-compared to an optimal bin width,
+to optimize for a suitable kernel bandwidth
+than a suitable bin width,
 so the default rules for density bandwidth estimation
 can be quite effective.
 
 However,
-as we just saw in the exercise
+as we just saw in the exercise,
 there is no single bandwidth that answers every question best.
 A wider bandwidth
 can help us describe the overall spread of a distribution,
 but it can also hide details and multimodality.
-A more narrow bandwidth while a smaller one is useful
-for investigating concentrations near particular targets,
+A narrower bandwidth is useful
+for investigating concentrations near particular values,
 but can introduce a spiky appearance
 that makes it harder to
 see the overall shape of the distribution.
@@ -448,7 +416,7 @@ for our density charts.
 
 ### Altair
 
-Set `bandwidth` in `transform_density`.
+Set `bandwidth` in `transform_density()`.
 It is measured in the units of the variable being plotted,
 so a bandwidth of 2 here means two minutes.
 
@@ -464,14 +432,14 @@ alt.Chart(movies, height=200).transform_density(
 )
 ```
 
-If left unset,
-the default bandwidth estimation
+The default bandwidth estimation in Altair
 is not very sophisticated,
 so it is particularly important to try different bandwidths.
+Try several bandwidths rather than assuming that the default best answers your question.
 
 ### ggplot
 
-Set `bw` in `geom_density`.
+Set `bw` in `geom_density()`.
 It is measured in the units of the variable,
 so `bw = 2` uses a bandwidth of two minutes.
 
@@ -483,19 +451,17 @@ ggplot(movies, aes(x = `Running Time min`)) +
 ```
 
 If left unset,
-the default bandwidth estimation
+the default bandwidth selection rule
 is not very sophisticated,
-but it is possible to switch to the Sheather-Jones estimation rule
-which is among the best in finding a suitable bandwidth
-that describes the distribution well on average.
-The Sheather-Jones rule is [one of the recommended
-defaults](https://rdrr.io/r/stats/density.html)
-although the differences are more noticeable for multimodal distributions.
-Remember that testing different bandwidths
-can still reveal different features of the chart.
+but it is possible to switch to the Sheather-Jones rule
+which is among the best in finding a reasonable bandwidth.
+The choice can be particularly noticeable for multimodal distributions.
+[R's documentation](https://rdrr.io/r/stats/density.html) notes that the default
+is retained for historical compatibility rather than as a general recommendation,
+and suggests Sheather–Jones as a preferred alternative.
 
 ```{r}
-#| label: runtime-kde-bandwidth-isj-gg
+#| label: runtime-kde-bandwidth-sj-gg
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_density(bw = 'SJ', fill = 'grey80') +
     labs(x = 'Running time (min)', y = 'Density')
@@ -504,33 +470,49 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 :::
 
-<!-- TODO deep dive into optimization of kernel bandwith -->
+<!-- TODO Deep dive into bandwidth selection. -->
 
 ::: {.callout-warning}
 
-### Avoid extending density curves beyond the data range
+### Avoid assigning density to impossible values
 
 Since each observation contributes to the overall density
 with a kernel centered on the observation,
 this could lead to the density curve
-extending into ranges that does not make
-sense for the measured variable.
+extending into ranges that are impossible
+for the measured variable.
 Take the (fictional) data set below
-about how much time students spend on their phone during lecture.
-The KDE in the chart to the right,
-makes it seem like some students
-spend a negative amount of time on their phones,
-although there are naturally no observations beyond 0 min.
+about how much time students spend on their phone during a 60-min lecture.
+The KDE on the right assigns density to negative durations,
+even though phone-use time must be between 0 and 60 minutes.
+
+In general,
+it is acceptable that the KDE
+extends beyond a minimum or maximum value in a sample
+as long as those values are sensible for the variable
+Since those the sample’s minimum and maximum are not necessarily population boundaries,
+so extending beyond them can be appropriate when estimating the population distribution
+It can,
+however,
+still be a good idea to clip the displayed curve
+at the most extreme values of the sample
+to clearly signal where the sample data ends
+(and with the Gaussian kernels used here,
+the omitted tails would simply taper smoothly toward zero).
 
 ```{python}
 #| echo: false
 #| label: fig-kde-beyond-range
-#| fig-cap: A KDE can either stop at the data range (left) or go past it (right).
-# Synthetic observations: 40 students in a 60-minute lecture.
+#| fig-cap: >
+#|   The same KDE displayed only over the observed range (left) or beyond it (right).
+#|   The red curve is multiplied by the sample size and 3-minute bin width for
+#|   comparison with the histogram counts. Truncating the display hides the negative tail
+#|   rather than re-computes and corrects the KDE near the boundary.
+# Synthetic observations: 23 students in a 60-minute lecture.
 df = pd.DataFrame({"minutes": [
     0.4, 0.5, 0.6, 0.7,
     1.9, 2, 2.2, 2.5, 2.8, 3.2, 3.8, 4.5, 5.5, 6.5,
-    8, 10, 12, 15, 18, 22, 27, 33, 40, 
+    8, 10, 12, 15, 18, 22, 27, 33, 40,
 ]})
 
 bin_width = 3
@@ -558,7 +540,7 @@ def panel(extent):
             extent=extent, steps=601, as_=["minutes", "density"]
         )
         # counts=True gives n * density; multiply by bin width
-        # to put the KDE on the histogram's count scale.
+        # to express the KDE as an approximate count per bin-width interval.
         .transform_calculate(smoothed_count=f"datum.density * {bin_width}")
         .mark_area(color="#FF0039", opacity=0.2,
                    line={"color": "#FF0039", "strokeWidth": 2})
@@ -584,6 +566,12 @@ chart = (
 
 chart
 ```
+
+Limiting the display to the observed range, as on the left, hides the impossible tail
+but also removes unobserved values that could be possible.
+It neither corrects boundary bias nor renormalizes the truncated curve.
+For bounded variables, consider a boundary-aware density estimator
+or a histogram with bins restricted to the valid range.
 
 :::
 
@@ -650,7 +638,7 @@ Compare their density and rug with those for all **797 movies**:
 ```{python}
 #| echo: false
 #| label: fig-sparse-runtime-density-reveal
-#| fig-cap: Two near identical density charts with widely different numbers of underlying observations.
+#| fig-cap: Two nearly identical density charts with very different numbers of underlying observations.
 
 runtime_reveal_panels = []
 for label, values in [('Five movies', sparse_runtimes), ('All movies', runtime_values)]:
@@ -669,7 +657,7 @@ alt.hconcat(*runtime_reveal_panels)
 
 The curves use the same bandwidth and look nearly identical,
 but visualizing the individual observations
-reveal very different amounts of underlying data.
+reveals very different amounts of underlying data.
 The smoothness of the curve
 comes from the density estimation procedure,
 not from having many observations
@@ -694,15 +682,15 @@ how many observations fall within an interval;
 its total area is normalized to one,
 whether it represents five movies or five hundred.
 A smooth curve is not evidence of a well-supported distribution,
-and you should always explore / communicate
-how many observations the density chart is constructed from.
+so inspect the underlying observations and report the sample size.
+Histograms normalized to density or proportion also hide the total sample size.
 
 :::
 
-Just as for histograms
-(but even more important for densities)
-the individual observations can be added under the density chart
-with a rugplot or siilar.
+As with histograms, we can add individual observations below a density curve
+using a rug plot.
+This is especially helpful since density smoothing
+might conceal how sparse the data is.
 This can help us see
 whether a bump in the density corresponds
 to a concentration of observations,
@@ -752,40 +740,37 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 ## Multiple distributions
 
-Similarly to histograms,
-multiple density areas in the same chart can get messy,
-but generally speaking
-it is easier to separate the continuous areas shapes
-than the jagged histograms,
-so it is often more forgiving
-to include additional groups when visualizing distributions as densities.
+### Contrasting small differences with density lines
 
 As with histograms,
 it can also be beneficial to stratify densities
-into separate facets.
-One drawback with faceting into subplots,
-is that it can be difficult to compare small difference
+into separate facets
+when comparing the distributions of multiple groups.
+One drawback of faceting
+is that it can be difficult to compare small differences
 since the distributions are now far apart.
-Here,
-densities has an additional advantage
-in that they also work well with line marks,
-which makes it easier to compare small changes
-between many distributions.
-
-### Lines instead of areas
-
-With several distributions in the same chart,
-lines can make it easier to follow each curve without hiding the others.
-The density calculation stays the same; only the mark changes.
+As we learned in [Groups](5_groups.qmd),
+to highlight small differences between groups,
+we want their visual components close together.
+But we also learned in [Binned distributions](9_binned-distributions.qmd)
+that with several distributions in the same chart,
+overlapping distributions can obscure one another.
+To overcome this obstacle,
+we could visualize density curves with lines
+instead of areas.
+While visualizing a histogram with a line is possible,
+it is generally easier to separate the groups
+when using the smooth density curves.
+<!-- TODO ad anot about frequency polygons when they are covered in ch 9 binned-->
 
 ::: {.panel-tabset group="language"}
 
 #### Altair
 
-Since we are coloring by the Major Genre,
+Since we are coloring by `Major Genre`,
 we need to include it as a grouping variable
 in the transform so that a separate density
-is computed for each area.
+is computed for each genre.
 
 ```{python}
 #| label: genre-kde-lines-alt
@@ -812,9 +797,8 @@ ggplot(movies, aes(x = `Running Time min`, color = `Major Genre`)) +
 
 ::: {.column-margin}
 
-Note the impact of each library's default
-bandwidth estimation on the density
-for horror movie running times.
+Note the impact of the various default bandwidth selection rules
+from different libraries.
 
 :::
 
@@ -822,51 +806,56 @@ Each group's full density curve has area one,
 regardless of how many movies are in that group.
 This lets us compare the density *shapes*
 without a larger group automatically having a taller curve.
-But it also means that a taller peak
+It also means that a taller peak
 does not indicate more movies,
 but rather a greater concentration
-relative to the other running time within that group.
+relative to other runtimes within that group.
 If the number of observations is central to the question,
 show group sizes separately
-or scale the densities by their count
-(while being aware of all the issues of count-based densities mentioned earlier).
+or use count-scaled densities
+(while remembering the caveats of count-based densities mentioned earlier).
 
-### Violins instead of facets
+### Violins for compact spatial separation
 
-A violin plot takes a density curve
-and mirrors it around a group's position
-on a categorical axis.
-The width of the violin at a particular runtime
+We have already learned about facetting
+as one strategy to separate groups spatially.
+We have also seen that it can be beneficial
+to distribute the groups along the x or y axis
+to introduce some spatial separation,
+but still having them near each other for easier comparison.
+While it is possible to do this with density curves directly,
+a more common way is to use a so called violin plot.
+
+Violin plots mirror a density estimate around a group’s position,
+creating a centered shape
+that can accommodate a boxplot or other summary marks.
+The thickness of the violin at a particular runtime
 thus corresponds to how concentrated the observations are there.
-This gives us a compact way to compare several distributions,
-which also de-emphasizes reading the density values
-since they are no longer visible on the y-axis.
+Their original authors
+suggested that the symmetry makes density magnitude easier to perceive,
+although this has not been experimentally confirmed,
+and [it has been argued
+that the mirroring is redundant](https://pmc.ncbi.nlm.nih.gov/articles/PMC6480976/).
+Mirroring adds no statistical information,
+so a one-sided density combined with a boxplot and individual observations
+is a similarly useful alternative,
+but not always as readily available in visualization libraries.
 
-When violin plots were introduced,
-it was claimed that their symmetrical appearance
-made them easier to read.
-They are commonly depicted
-with interquartile ranges and a median or mean,
-effectively combining the strengths of density plots
-with the convenience of seeing a few easy to compare summary statistics.
-
-Since we are no longer showing an axis width density values,
-we can scale the areas by the counts
-without introducing a hard to interpret axis.
+As with densities,
+we can also scale the areas of violins to reflect group sizes.
 This gives an indication of the relative sizes between groups,
 but can make it harder to see the distribution
 of groups with few observations.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+#### Altair
 
 In Altair,
-there is no dedicated mark to create a violin plot.
-Instead,
-we would need to use facets
-to plot separate densities for each group.
-Here we show how to style these facets
+there is no dedicated violin mark,
+although violins can be constructed using density transforms and area marks.
+Here, we use compact faceted densities as a simpler alternative.
+We style these facets
 to make them less prominent
 and bring the densities closer to each other
 for easier comparison.
@@ -880,7 +869,6 @@ alt.Chart(movies, height=60).transform_density(
     'Running Time min',
     groupby=['Major Genre'],
     as_=['Running Time min', 'Density'],
-    counts=True,
     bandwidth=5,
 ).mark_area().encode(
     x=alt.X('Running Time min:Q'),
@@ -895,57 +883,68 @@ alt.Chart(movies, height=60).transform_density(
 )
 ```
 
-### ggplot
+#### ggplot
 
 `geom_violin()` calculates the density
 and draws the mirrored violin shape.
+With `scale = 'count'`, violin areas are proportional to group density sizes.
+By default, the violins are trimmed to the observed range of each group,
+just like the densities.
 
 ```{r}
 #| label: runtime-violins-gg
 #| fig-height: 4
 ggplot(movies, aes(x = `Running Time min`, y = `Major Genre`)) +
-    geom_violin(bw = 'SJ', fill = 'grey80', scale = 'count')
+    geom_violin(bw = 'SJ', fill = 'grey80')
 ```
 
 :::
 
 We can extend this approach
 to compare multiple groups within the same genre.
-We first create a new column
-indicating which movies are friendly for you children
-and are more suitable for kids aged 13 and up.
-
-::: {.panel-tabset group="language"}
+To illustrate this,
+we keep movies rated G, PG, PG-13, or R
+and create two rating groups: **G/PG** and **PG-13/R**.
+G/PG movies are generally more family-oriented,
+while PG-13/R movies carry stronger content advisories or restrictions.
+We count-scale these density estimates
+as an indication of the relative sizes
+of these two groups within each genre.
 
 In addition to the densities,
-we also visualize the mean of each group
+we also visualize summary statistics of each group
 to facilitate comparing both the distribution
 and central tendency of the observations.
 
-### Altair
+::: {.panel-tabset group="language"}
+
+#### Altair
 
 ```{python}
 #| label: compact-densities-groups-alt
-movies['Age rating'] = (
-    movies['MPAA Rating']
+rating_movies = movies[
+    movies['MPAA Rating'].isin(['G', 'PG', 'PG-13', 'R'])
+].copy()
+rating_movies['Rating group'] = (
+    rating_movies['MPAA Rating']
     .isin(['G', 'PG'])
-    .replace({True: '0-13', False: '13+'})
+    .replace({True: 'G/PG', False: 'PG-13/R'})
 )
 alt.layer(
-    alt.Chart(movies).mark_rule().encode(
+    alt.Chart(rating_movies).mark_rule().encode(
         x=alt.X('mean(Running Time min)').title('Running time min'),
-        color='Age rating'
+        color='Rating group'
     ),
-    alt.Chart(movies, height=60).transform_density(
+    alt.Chart(rating_movies, height=60).transform_density(
         'Running Time min',
-        groupby=['Major Genre', 'Age rating'],
+        groupby=['Major Genre', 'Rating group'],
         as_=['Running Time min', 'Density'],
         bandwidth=5,
         counts=True,
     ).mark_area(opacity=0.5).encode(
         x=alt.X('Running Time min:Q'),
         y=alt.Y('Density:Q').axis(None).stack(False),
-        color='Age rating',
+        color='Rating group',
     )
 ).facet(
     row=alt.Row('Major Genre:N').header(
@@ -957,14 +956,10 @@ alt.layer(
 )
 ```
 
-### ggplot
+#### ggplot
 
-In addition to the densities,
-we also visualize the mean of each group
-to facilitate comparing both the distribution
-and central tendency of the observations.
-The lines for the 25th, 50th (median) and 75th quantiles
-are computed by default in `geom_violin`
+The 25th, 50th (median), and 75th percentiles
+are computed by default in `geom_violin()`
 and we can make them visible by setting the style of the quantile lines.
 
 ```{r}
@@ -972,35 +967,38 @@ and we can make them visible by setting the style of the quantile lines.
 #| fig-width: 6
 #| label: runtime-violins-groups-gg
 movies |>
-  dplyr::mutate(
-      `Age rating` = dplyr::if_else(
-          `MPAA Rating` %in% c("G", "PG"), "0-13", "13+"
+    dplyr::filter(`MPAA Rating` %in% c('G', 'PG', 'PG-13', 'R')) |>
+    dplyr::mutate(
+        `Rating group` = dplyr::if_else(
+            `MPAA Rating` %in% c('G', 'PG'), 'G/PG', 'PG-13/R'
         )
     ) |>
     ggplot(
         aes(
             x = `Running Time min`,
             y = `Major Genre`,
-            fill = `Age rating`
+            fill = `Rating group`
         )
     ) +
-        geom_violin(bw = 'SJ', quantile.linetype = 3, scale = 'count') +
-        geom_point(
-            stat = 'summary',
-            fun = mean,
-            position = position_dodge(0.9)
-        )
+    geom_violin(bw = 'SJ', quantile.linetype = 3, scale = 'count') +
+    geom_point(
+        stat = 'summary',
+        fun = mean,
+        position = position_dodge(0.9)
+    )
 ```
 
-We need to use `position_dodge` to position the points
+We use `position_dodge(0.9)` to align each mean point with its subgroup's violin,
+which is already dodged by default.
 
 :::
 
-We can see that movies made for younger audiences
+We can see that G- and PG-rated movies in this dataset
 tend to be shorter
-and that divide is specifically prevalent
+and that this difference is especially pronounced
 for adventure movies.
-There are also no horror movies made for children under 13,
-which is expected.
+There are no G- or PG-rated horror movies in this sample,
+which aligns with out expectations
+of low demand for this genre in among younger audiences.
 
 <!-- TODO sina density clouds -->
