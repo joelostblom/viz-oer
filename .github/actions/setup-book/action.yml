@@ -4,7 +4,7 @@ description: Restore the same locked R and Python environments used locally.
 runs:
   using: composite
   steps:
-    - uses: astral-sh/setup-uv@v10
+    - uses: astral-sh/setup-uv@v10.2.0
       with:
         version: '0.10.4'
         enable-cache: true
