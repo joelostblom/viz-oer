@@ -274,8 +274,8 @@ ggplot(world, aes(x = year, y = population)) +
 
 Although the historical curve might suggest that the population
 will keep growing rapidly,
-[the UN's 2024 projections suggest a peak of around 10.3 billion people
-before the end of the century, followed by a gradual decline](https://ourworldindata.org/world-population-growth-past-future).
+[the UN's 2024 projections](https://ourworldindata.org/world-population-growth-past-future) suggest a peak of around 10.3 billion people
+before the end of the century, followed by a gradual decline.
 
 :::
 

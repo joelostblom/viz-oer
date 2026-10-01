@@ -331,6 +331,7 @@ when we make the bandwidth larger?
 
 You can try a few different bandwidths
 on the marathon example from the previous chapter.
+Use the slider to choose a bandwidth of 1, 3, 5, 7, or 9 minutes.
 Can you see the same features as with the histograms?
 
 ```{python}
@@ -343,7 +344,7 @@ from scipy.stats import gaussian_kde
 
 mara = pd.read_csv('data/london_marathon_finish_times.csv')
 finish_times = mara['Time (minutes)'].to_numpy()
-bandwidths = [0.5, 2, 5, 15]
+bandwidths = [1, 3, 5, 7, 9]
 grid = np.linspace(120, 540, 1681)
 
 # Precompute this widget's curves so switching does not send all runners to the browser
@@ -361,8 +362,8 @@ marathon_densities = pd.concat([
 
 bandwidth_param = alt.param(
     name='marathon_bandwidth',
-    value=2,
-    bind=alt.binding_select(options=bandwidths, name='Bandwidth (minutes): '),
+    value=5,
+    bind=alt.binding_range(min=1, max=9, step=2, name='Bandwidth (minutes): '),
 )
 
 alt.Chart(marathon_densities, height=200, width=500).transform_filter(
