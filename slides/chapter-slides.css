@@ -254,6 +254,12 @@
   text-align: left;
 }
 
+/* Output-only charts have no action-menu wrapper around plot and bindings. */
+.reveal .vega-embed:not(.has-actions) {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .reveal figcaption,
 .reveal caption {
   display: none;

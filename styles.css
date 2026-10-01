@@ -103,6 +103,19 @@ html.tabset-scroll-stabilizing body {
     scroll-behavior: auto !important;
 }
 
+/* Without actions, Vega places the plot and bindings directly in its flex
+   container. Stack them so controls stay below the plot. */
+.vega-embed:not(.has-actions) {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Space for native chart controls above horizontal scrollbars. */
+.vega-bindings:has(input[type="range"]) {
+  /* Keep overlay scrollbars clear of slider tracks in narrow chart outputs. */
+  padding-bottom: 0.5rem;
+}
+
 /* Code in quarto live blocks */
 .cm-content {
     font-size: 16px;
@@ -138,6 +151,15 @@ table.dataframe-preview thead tr:last-child th {
 }
 
 /* Match figure captions instead of Quarto's centered table-caption defaults. */
+.figure-caption-label {
+  display: block;
+  font-weight: 700;
+}
+
+.figure-caption-positioned[hidden] {
+  display: none !important;
+}
+
 caption,
 .table-caption,
 figure.quarto-float-tbl figcaption.quarto-float-caption-top,

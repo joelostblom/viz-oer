@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>7&nbsp; Summaries – Data Visualization</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -69,17 +75,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./6_order.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-04403c1657fcf1820b2b65d736c17c31.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-c15f42e3d0c4dfe67de8d7f9ab699eef.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cacc210b5db7720134226e3049479d0b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-716f7ae15d82927a780ae0f5d1b458eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-7d3e44535dad097801191db85939c76c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-68a1d95f5651b2ab63e32e2cd8d87510.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -298,9 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Visualization</a> 
         <div class="sidebar-tools-main">
@@ -672,7 +675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>As you can see, different packages make different decisions about whether to include zero by default. For point summaries, the appropriate axis range depends on the comparisons we want to make and the meaning of the scale. We will discuss axis limits in more detail later.</p>
 </div></div><p>Now we can clearly see that <strong>on average</strong> there are some differences between the groups.</p>
 </section>
-<section id="visualizing-spread" class="level2" data-number="7.3">
+<section id="visualizing-spread" class="level2 page-columns page-full" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="visualizing-spread"><span class="header-section-number">7.3</span> Visualizing spread</h2>
 <p>But showing only the mean hides the variability in the observations. How the individual values are distributed also affects the conclusions we can draw from the data.</p>
 <p>So, whenever we show a measure of central tendency such as the mean or median, it is helpful to pair it with an indication of the underlying variability.</p>
@@ -771,8 +774,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-default ex-prompt">
 <p>To the left, we can see the mean ± one standard deviation for two groups of observations. To the right, there are four different suggestions for what these underlying observations might look like. By studying this chart, which sets of possible underlying observations do you think could produce the summary chart on the left?</p>
 <div class="cell">
-<div id="fig-summary-sd-obs" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<div id="fig-summary-sd-obs" class="cell-output-display quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure" aria-labelledby="fig-summary-sd-obs-caption">
 <div aria-describedby="fig-summary-sd-obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 
 
@@ -798,7 +801,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script>
     (function(vegaEmbed) {
       var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "hconcat": [{"layer": [{"mark": {"type": "errorbar", "extent": "stdev", "thickness": 2}, "encoding": {"color": {"field": "group", "legend": null, "type": "nominal"}, "x": {"axis": {"labelAngle": 0}, "field": "group", "title": null, "type": "nominal"}, "y": {"field": "value", "scale": {"domain": [0, 40]}, "title": null, "type": "quantitative"}}}, {"mark": {"type": "point", "filled": true, "size": 60}, "encoding": {"color": {"field": "group", "legend": null, "type": "nominal"}, "x": {"axis": {"labelAngle": 0}, "field": "group", "title": null, "type": "nominal"}, "y": {"aggregate": "mean", "field": "value", "scale": {"domain": [0, 40]}, "title": null, "type": "quantitative"}}, "title": {"text": "Mean \u00b1 SD", "fontSize": 12}}], "height": 200, "transform": [{"filter": "(datum['dataset'] === 'Symmetric')"}], "width": {"step": 44}}, {"facet": {"column": {"field": "dataset", "sort": ["Symmetric", "Outlier", "Bimodal", "Unequal n"], "title": "Possible underlying observations", "type": "nominal"}}, "spec": {"mark": {"type": "circle", "size": 30}, "encoding": {"color": {"field": "group", "legend": null, "type": "nominal"}, "x": {"axis": {"labelAngle": 0}, "field": "group", "title": null, "type": "nominal"}, "xOffset": {"field": "jitter", "scale": {"domain": [0, 1.5]}, "type": "quantitative"}, "y": {"field": "value", "scale": {"domain": [0, 40]}, "title": null, "type": "quantitative"}}, "height": 200, "transform": [{"calculate": "random()", "as": "jitter"}], "width": {"step": 44}}}], "data": {"name": "data-b2fef5d5acad7dc813e5c3cbaf7c8da3"}, "spacing": 30, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-b2fef5d5acad7dc813e5c3cbaf7c8da3": [{"dataset": "Symmetric", "group": "A", "observation": 1, "value": 13.965157790790224}, {"dataset": "Symmetric", "group": "A", "observation": 2, "value": 13.50407526454146}, {"dataset": "Symmetric", "group": "A", "observation": 3, "value": 14.981627754036978}, {"dataset": "Symmetric", "group": "A", "observation": 4, "value": 15.566831238956164}, {"dataset": "Symmetric", "group": "A", "observation": 5, "value": 10.937979661826668}, {"dataset": "Symmetric", "group": "A", "observation": 6, "value": 10.034842209209776}, {"dataset": "Symmetric", "group": "A", "observation": 7, "value": 14.453729723064695}, {"dataset": "Symmetric", "group": "A", "observation": 8, "value": 20.189225935294512}, {"dataset": "Symmetric", "group": "A", "observation": 9, "value": 9.546270276935305}, {"dataset": "Symmetric", "group": "A", "observation": 10, "value": 11.367522019462402}, {"dataset": "Symmetric", "group": "A", "observation": 11, "value": 7.760423975772762}, {"dataset": "Symmetric", "group": "A", "observation": 12, "value": 3.8107740647054857}, {"dataset": "Symmetric", "group": "A", "observation": 13, "value": 16.239576024227237}, {"dataset": "Symmetric", "group": "A", "observation": 14, "value": 12.210055192747287}, {"dataset": "Symmetric", "group": "A", "observation": 15, "value": 9.018372245963022}, {"dataset": "Symmetric", "group": "A", "observation": 16, "value": 11.789944807252713}, {"dataset": "Symmetric", "group": "A", "observation": 17, "value": 13.062020338173332}, {"dataset": "Symmetric", "group": "A", "observation": 18, "value": 18.168032808437765}, {"dataset": "Symmetric", "group": "A", "observation": 19, "value": 6.941478480605569}, {"dataset": "Symmetric", "group": "A", "observation": 20, "value": 8.433168761043836}, {"dataset": "Symmetric", "group": "A", "observation": 21, "value": 17.058521519394432}, {"dataset": "Symmetric", "group": "A", "observation": 22, "value": 5.831967191562236}, {"dataset": "Symmetric", "group": "A", "observation": 23, "value": 12.632477980537598}, {"dataset": "Symmetric", "group": "A", "observation": 24, "value": 10.49592473545854}, {"dataset": "Symmetric", "group": "B", "observation": 1, "value": 15.937979661826668}, {"dataset": "Symmetric", "group": "B", "observation": 2, "value": 19.981627754036975}, {"dataset": "Symmetric", "group": "B", "observation": 3, "value": 14.546270276935305}, {"dataset": "Symmetric", "group": "B", "observation": 4, "value": 20.56683123895616}, {"dataset": "Symmetric", "group": "B", "observation": 5, "value": 10.831967191562237}, {"dataset": "Symmetric", "group": "B", "observation": 6, "value": 13.433168761043836}, {"dataset": "Symmetric", "group": "B", "observation": 7, "value": 15.49592473545854}, {"dataset": "Symmetric", "group": "B", "observation": 8, "value": 16.789944807252713}, {"dataset": "Symmetric", "group": "B", "observation": 9, "value": 15.034842209209776}, {"dataset": "Symmetric", "group": "B", "observation": 10, "value": 18.965157790790222}, {"dataset": "Symmetric", "group": "B", "observation": 11, "value": 14.018372245963022}, {"dataset": "Symmetric", "group": "B", "observation": 12, "value": 22.058521519394432}, {"dataset": "Symmetric", "group": "B", "observation": 13, "value": 17.210055192747287}, {"dataset": "Symmetric", "group": "B", "observation": 14, "value": 8.810774064705486}, {"dataset": "Symmetric", "group": "B", "observation": 15, "value": 18.06202033817333}, {"dataset": "Symmetric", "group": "B", "observation": 16, "value": 25.189225935294512}, {"dataset": "Symmetric", "group": "B", "observation": 17, "value": 18.50407526454146}, {"dataset": "Symmetric", "group": "B", "observation": 18, "value": 21.23957602422724}, {"dataset": "Symmetric", "group": "B", "observation": 19, "value": 11.941478480605568}, {"dataset": "Symmetric", "group": "B", "observation": 20, "value": 16.367522019462402}, {"dataset": "Symmetric", "group": "B", "observation": 21, "value": 12.760423975772763}, {"dataset": "Symmetric", "group": "B", "observation": 22, "value": 17.632477980537598}, {"dataset": "Symmetric", "group": "B", "observation": 23, "value": 23.168032808437765}, {"dataset": "Symmetric", "group": "B", "observation": 24, "value": 19.453729723064697}, {"dataset": "Outlier", "group": "A", "observation": 1, "value": 8.433168761043836}, {"dataset": "Outlier", "group": "A", "observation": 2, "value": 14.981627754036978}, {"dataset": "Outlier", "group": "A", "observation": 3, "value": 12.210055192747287}, {"dataset": "Outlier", "group": "A", "observation": 4, "value": 18.168032808437765}, {"dataset": "Outlier", "group": "A", "observation": 5, "value": 13.965157790790224}, {"dataset": "Outlier", "group": "A", "observation": 6, "value": 13.50407526454146}, {"dataset": "Outlier", "group": "A", "observation": 7, "value": 10.034842209209776}, {"dataset": "Outlier", "group": "A", "observation": 8, "value": 17.058521519394432}, {"dataset": "Outlier", "group": "A", "observation": 9, "value": 12.632477980537598}, {"dataset": "Outlier", "group": "A", "observation": 10, "value": 10.49592473545854}, {"dataset": "Outlier", "group": "A", "observation": 11, "value": 9.546270276935305}, {"dataset": "Outlier", "group": "A", "observation": 12, "value": 11.367522019462402}, {"dataset": "Outlier", "group": "A", "observation": 13, "value": 3.8107740647054857}, {"dataset": "Outlier", "group": "A", "observation": 14, "value": 9.018372245963022}, {"dataset": "Outlier", "group": "A", "observation": 15, "value": 5.831967191562236}, {"dataset": "Outlier", "group": "A", "observation": 16, "value": 14.453729723064695}, {"dataset": "Outlier", "group": "A", "observation": 17, "value": 10.937979661826668}, {"dataset": "Outlier", "group": "A", "observation": 18, "value": 6.941478480605569}, {"dataset": "Outlier", "group": "A", "observation": 19, "value": 7.760423975772762}, {"dataset": "Outlier", "group": "A", "observation": 20, "value": 20.189225935294512}, {"dataset": "Outlier", "group": "A", "observation": 21, "value": 13.062020338173332}, {"dataset": "Outlier", "group": "A", "observation": 22, "value": 16.239576024227237}, {"dataset": "Outlier", "group": "A", "observation": 23, "value": 15.566831238956164}, {"dataset": "Outlier", "group": "A", "observation": 24, "value": 11.789944807252713}, {"dataset": "Outlier", "group": "B", "observation": 1, "value": 15.88551996110218}, {"dataset": "Outlier", "group": "B", "observation": 2, "value": 16.644638543072798}, {"dataset": "Outlier", "group": "B", "observation": 3, "value": 15.536591448715626}, {"dataset": "Outlier", "group": "B", "observation": 4, "value": 16.013829409874333}, {"dataset": "Outlier", "group": "B", "observation": 5, "value": 16.306762088264012}, {"dataset": "Outlier", "group": "B", "observation": 6, "value": 15.735989812718056}, {"dataset": "Outlier", "group": "B", "observation": 7, "value": 16.190314177895427}, {"dataset": "Outlier", "group": "B", "observation": 8, "value": 16.073866267526842}, {"dataset": "Outlier", "group": "B", "observation": 9, "value": 16.49510839468867}, {"dataset": "Outlier", "group": "B", "observation": 10, "value": 16.73468147004384}, {"dataset": "Outlier", "group": "B", "observation": 11, "value": 16.36679894591652}, {"dataset": "Outlier", "group": "B", "observation": 12, "value": 16.248187831432364}, {"dataset": "Outlier", "group": "B", "observation": 13, "value": 15.388783730765358}, {"dataset": "Outlier", "group": "B", "observation": 14, "value": 15.645946885747016}, {"dataset": "Outlier", "group": "B", "observation": 15, "value": 16.429197871361108}, {"dataset": "Outlier", "group": "B", "observation": 16, "value": 15.951430484429746}, {"dataset": "Outlier", "group": "B", "observation": 17, "value": 15.814506745832713}, {"dataset": "Outlier", "group": "B", "observation": 18, "value": 16.56612160995814}, {"dataset": "Outlier", "group": "B", "observation": 19, "value": 15.12024659738834}, {"dataset": "Outlier", "group": "B", "observation": 20, "value": 35.62277390840518}, {"dataset": "Outlier", "group": "B", "observation": 21, "value": 17.260381758402513}, {"dataset": "Outlier", "group": "B", "observation": 22, "value": 16.13244052435849}, {"dataset": "Outlier", "group": "B", "observation": 23, "value": 16.84403690707523}, {"dataset": "Outlier", "group": "B", "observation": 24, "value": 16.991844625025497}, {"dataset": "Bimodal", "group": "A", "observation": 1, "value": 7.85323276738759}, {"dataset": "Bimodal", "group": "A", "observation": 2, "value": 7.960560672270629}, {"dataset": "Bimodal", "group": "A", "observation": 3, "value": 8.488536091061276}, {"dataset": "Bimodal", "group": "A", "observation": 4, "value": 7.30084651393223}, {"dataset": "Bimodal", "group": "A", "observation": 5, "value": 15.634578265220355}, {"dataset": "Bimodal", "group": "A", "observation": 6, "value": 15.741906170103393}, {"dataset": "Bimodal", "group": "A", "observation": 7, "value": 8.060475906957702}, {"dataset": "Bimodal", "group": "A", "observation": 8, "value": 8.917807988235005}, {"dataset": "Bimodal", "group": "A", "observation": 9, "value": 7.572251292768204}, {"dataset": "Bimodal", "group": "A", "observation": 10, "value": 16.69915348606777}, {"dataset": "Bimodal", "group": "A", "observation": 11, "value": 15.841821404790466}, {"dataset": "Bimodal", "group": "A", "observation": 12, "value": 8.365421734779645}, {"dataset": "Bimodal", "group": "A", "observation": 13, "value": 15.082192011764995}, {"dataset": "Bimodal", "group": "A", "observation": 14, "value": 16.14676723261241}, {"dataset": "Bimodal", "group": "A", "observation": 15, "value": 16.427748707231796}, {"dataset": "Bimodal", "group": "A", "observation": 16, "value": 7.73011841110596}, {"dataset": "Bimodal", "group": "A", "observation": 17, "value": 8.646403209399033}, {"dataset": "Bimodal", "group": "A", "observation": 18, "value": 15.353596790600967}, {"dataset": "Bimodal", "group": "A", "observation": 19, "value": 16.26988158889404}, {"dataset": "Bimodal", "group": "A", "observation": 20, "value": 8.258093829896607}, {"dataset": "Bimodal", "group": "A", "observation": 21, "value": 15.939524093042298}, {"dataset": "Bimodal", "group": "A", "observation": 22, "value": 16.039439327729372}, {"dataset": "Bimodal", "group": "A", "observation": 23, "value": 15.511463908938724}, {"dataset": "Bimodal", "group": "A", "observation": 24, "value": 8.158178595209534}, {"dataset": "Bimodal", "group": "B", "observation": 1, "value": 13.917807988235005}, {"dataset": "Bimodal", "group": "B", "observation": 2, "value": 20.511463908938723}, {"dataset": "Bimodal", "group": "B", "observation": 3, "value": 21.4277487072318}, {"dataset": "Bimodal", "group": "B", "observation": 4, "value": 21.69915348606777}, {"dataset": "Bimodal", "group": "B", "observation": 5, "value": 20.634578265220355}, {"dataset": "Bimodal", "group": "B", "observation": 6, "value": 20.841821404790466}, {"dataset": "Bimodal", "group": "B", "observation": 7, "value": 12.960560672270628}, {"dataset": "Bimodal", "group": "B", "observation": 8, "value": 12.73011841110596}, {"dataset": "Bimodal", "group": "B", "observation": 9, "value": 13.158178595209534}, {"dataset": "Bimodal", "group": "B", "observation": 10, "value": 21.14676723261241}, {"dataset": "Bimodal", "group": "B", "observation": 11, "value": 21.26988158889404}, {"dataset": "Bimodal", "group": "B", "observation": 12, "value": 13.365421734779645}, {"dataset": "Bimodal", "group": "B", "observation": 13, "value": 13.060475906957702}, {"dataset": "Bimodal", "group": "B", "observation": 14, "value": 20.74190617010339}, {"dataset": "Bimodal", "group": "B", "observation": 15, "value": 12.30084651393223}, {"dataset": "Bimodal", "group": "B", "observation": 16, "value": 13.488536091061276}, {"dataset": "Bimodal", "group": "B", "observation": 17, "value": 13.646403209399033}, {"dataset": "Bimodal", "group": "B", "observation": 18, "value": 20.939524093042294}, {"dataset": "Bimodal", "group": "B", "observation": 19, "value": 13.258093829896607}, {"dataset": "Bimodal", "group": "B", "observation": 20, "value": 12.572251292768204}, {"dataset": "Bimodal", "group": "B", "observation": 21, "value": 21.03943932772937}, {"dataset": "Bimodal", "group": "B", "observation": 22, "value": 20.353596790600967}, {"dataset": "Bimodal", "group": "B", "observation": 23, "value": 20.082192011764995}, {"dataset": "Bimodal", "group": "B", "observation": 24, "value": 12.85323276738759}, {"dataset": "Unequal n", "group": "A", "observation": 1, "value": 13.50407526454146}, {"dataset": "Unequal n", "group": "A", "observation": 2, "value": 14.453729723064695}, {"dataset": "Unequal n", "group": "A", "observation": 3, "value": 13.965157790790224}, {"dataset": "Unequal n", "group": "A", "observation": 4, "value": 12.210055192747287}, {"dataset": "Unequal n", "group": "A", "observation": 5, "value": 11.367522019462402}, {"dataset": "Unequal n", "group": "A", "observation": 6, "value": 10.034842209209776}, {"dataset": "Unequal n", "group": "A", "observation": 7, "value": 7.760423975772762}, {"dataset": "Unequal n", "group": "A", "observation": 8, "value": 10.937979661826668}, {"dataset": "Unequal n", "group": "A", "observation": 9, "value": 8.433168761043836}, {"dataset": "Unequal n", "group": "A", "observation": 10, "value": 18.168032808437765}, {"dataset": "Unequal n", "group": "A", "observation": 11, "value": 3.8107740647054857}, {"dataset": "Unequal n", "group": "A", "observation": 12, "value": 17.058521519394432}, {"dataset": "Unequal n", "group": "A", "observation": 13, "value": 15.566831238956164}, {"dataset": "Unequal n", "group": "A", "observation": 14, "value": 10.49592473545854}, {"dataset": "Unequal n", "group": "A", "observation": 15, "value": 5.831967191562236}, {"dataset": "Unequal n", "group": "A", "observation": 16, "value": 9.546270276935305}, {"dataset": "Unequal n", "group": "A", "observation": 17, "value": 9.018372245963022}, {"dataset": "Unequal n", "group": "A", "observation": 18, "value": 14.981627754036978}, {"dataset": "Unequal n", "group": "A", "observation": 19, "value": 6.941478480605569}, {"dataset": "Unequal n", "group": "A", "observation": 20, "value": 13.062020338173332}, {"dataset": "Unequal n", "group": "A", "observation": 21, "value": 12.632477980537598}, {"dataset": "Unequal n", "group": "A", "observation": 22, "value": 16.239576024227237}, {"dataset": "Unequal n", "group": "A", "observation": 23, "value": 11.789944807252713}, {"dataset": "Unequal n", "group": "A", "observation": 24, "value": 20.189225935294512}, {"dataset": "Unequal n", "group": "B", "observation": 1, "value": 13.401830616605311}, {"dataset": "Unequal n", "group": "B", "observation": 2, "value": 16.361965074100986}, {"dataset": "Unequal n", "group": "B", "observation": 3, "value": 10.777774915532673}, {"dataset": "Unequal n", "group": "B", "observation": 4, "value": 23.22222508446733}, {"dataset": "Unequal n", "group": "B", "observation": 5, "value": 17.638034925899014}, {"dataset": "Unequal n", "group": "B", "observation": 6, "value": 20.59816938339469}, {"dataset": "Unequal n", "group": "B", "observation": 7, "value": 18.98242364795209}, {"dataset": "Unequal n", "group": "B", "observation": 8, "value": 15.017576352047914}]}};
-      var embedOpt = {"mode": "vega-lite"};
+      var embedOpt = {"actions":false,"mode":"vega-lite"};
 
       function showError(el, error){
           el.innerHTML = ('<div style="color:red;">'
@@ -817,9 +820,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-summary-sd-obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.1: Underlying distributions for mean and standard deviation. Adapted from <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002128">Beyond bar and line graphs</a>.
-</figcaption>
+
 </figure>
 </div>
 </div>
@@ -864,7 +865,9 @@ Figure&nbsp;7.1: Underlying distributions for mean and standard deviation. Adapt
 </div>
 </div>
 </div>
-</section>
+<div id="fig-summary-sd-obs-caption" class="margin-figure-caption column-margin callout-7-contents callout-collapse collapse show callout-margin-content">
+Figure&nbsp;7.1: Underlying distributions for mean and standard deviation. Adapted from .
+</div></section>
 <section id="including-the-underlying-observations" class="level2 page-columns page-full" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="including-the-underlying-observations"><span class="header-section-number">7.4</span> Including the underlying observations</h2>
 <p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap. <strong>Jittering</strong> adds small random offsets to the points to help separate them. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
@@ -959,17 +962,17 @@ Figure&nbsp;7.1: Underlying distributions for mean and standard deviation. Adapt
 </div>
 </div>
 </section>
-<section id="showing-medians-with-boxplots" class="level2" data-number="7.5">
+<section id="showing-medians-with-boxplots" class="level2 page-columns page-full" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="showing-medians-with-boxplots"><span class="header-section-number">7.5</span> Showing medians with boxplots</h2>
 <p>What if we visualize the median instead of the mean? Showing the median can be especially useful when there are a few extreme values in the data since these impact the mean more than the median, and the median thus becomes a more helpful indication of a typical value. But this decision is context-dependent: if we are interested in these extreme values, the mean may capture their influence in a way that is relevant to our question. Therefore, it is often a good idea to show means and medians together, since they tell us different things about the data.</p>
 <p>A common measure of spread used together with medians is a percentile interval, which marks the range between two chosen percentiles. For comparison, the interval from one standard deviation below the mean to one above it contains about 68% of a normal distribution.</p>
 <p>A common way to show the median and a percentile interval is a <strong>boxplot</strong>. The box spans the 25th to the 75th percentile, enclosing the middle 50% of the data, with a line marking the median. In the default boxplots below, the whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box edges; observations beyond the whiskers are drawn separately. This illustration can help you interpret the different parts of the box:</p>
-<div id="fig-boxplot-anatomy" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<div id="fig-boxplot-anatomy" class="quarto-float quarto-figure quarto-figure-left anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-boxplot-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/boxplot-elements.svg" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-boxplot-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.2: The elements of a boxplot.
 </figcaption>
 </figure>
@@ -1045,12 +1048,12 @@ Figure&nbsp;7.2: The elements of a boxplot.
 </div>
 </div>
 <p>Although boxplots show multiple percentiles, they still hide important information about the underlying observations and should therefore also ideally be used together with a plot of the underlying observations or as a concise summary of the data after having inspected the underlying observations ourselves.</p>
-<div id="fig-boxplot-drawbacks" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<div id="fig-boxplot-drawbacks" class="quarto-float quarto-figure quarto-figure-left anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-boxplot-drawbacks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/hist-point-box.gif" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-drawbacks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-boxplot-drawbacks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.3: This illustration from <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">Autodesk Research</a> shows how boxplots can look the same even when the distribution of the underlying observations changes drastically.
 </figcaption>
 </figure>
@@ -1088,7 +1091,7 @@ eyJjb250ZW50cyI6W119
 </div>
 </div>
 <script type="vfs-file">
-WyJ1dGlscy5weSIsInV0aWxzLlIiLCJ0YWJzZXQtc2Nyb2xsLmpzIiwiY2hhcHRlci10aXRsZS10b29scy5qcyJd
+WyJ1dGlscy5weSIsInV0aWxzLlIiLCJ0YWJzZXQtc2Nyb2xsLmpzIiwiY2hhcHRlci10aXRsZS10b29scy5qcyIsImZpZ3VyZS1jYXB0aW9ucy5qcyJd
 </script>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
@@ -1539,6 +1542,7 @@ window._ojs.runtime.interpretFromScriptTags();
 </div> <!-- /content -->
 <script src="tabset-scroll.js"></script>
 <script src="chapter-title-tools.js"></script>
+<script src="figure-captions.js"></script>
 
 
 

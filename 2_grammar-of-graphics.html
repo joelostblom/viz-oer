@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>2&nbsp; The grammar of graphics – Data Visualization</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -69,17 +75,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./1_why-visualize-data.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-04403c1657fcf1820b2b65d736c17c31.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-c15f42e3d0c4dfe67de8d7f9ab699eef.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cacc210b5db7720134226e3049479d0b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-716f7ae15d82927a780ae0f5d1b458eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-7d3e44535dad097801191db85939c76c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-68a1d95f5651b2ab63e32e2cd8d87510.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -301,9 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Visualization</a> 
         <div class="sidebar-tools-main">
@@ -564,7 +567,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script>
     (function(vegaEmbed) {
       var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-5eecd844cec7dbeb818476fd65b5f5dc"}, "mark": {"type": "point"}, "encoding": {"color": {"field": "group", "type": "nominal"}, "x": {"field": "x", "type": "quantitative"}, "y": {"field": "y", "type": "quantitative"}}, "height": 200, "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-5eecd844cec7dbeb818476fd65b5f5dc": [{"x": 0.2, "y": 0.6, "group": "a"}, {"x": 0.6, "y": 0.9, "group": "a"}, {"x": 1.2, "y": 1.8, "group": "b"}, {"x": 2.4, "y": 2.7, "group": "b"}]}};
-      var embedOpt = {"mode": "vega-lite"};
+      var embedOpt = {"actions":false,"mode":"vega-lite"};
 
       function showError(el, error){
           el.innerHTML = ('<div style="color:red;">'
@@ -619,7 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script>
     (function(vegaEmbed) {
       var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-5eecd844cec7dbeb818476fd65b5f5dc"}, "mark": {"type": "point"}, "encoding": {"color": {"field": "group", "type": "nominal"}, "x": {"field": "x", "type": "quantitative"}, "y": {"field": "y", "type": "quantitative"}}, "height": 200, "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-5eecd844cec7dbeb818476fd65b5f5dc": [{"x": 0.2, "y": 0.6, "group": "a"}, {"x": 0.6, "y": 0.9, "group": "a"}, {"x": 1.2, "y": 1.8, "group": "b"}, {"x": 2.4, "y": 2.7, "group": "b"}]}};
-      var embedOpt = {"mode": "vega-lite"};
+      var embedOpt = {"actions":false,"mode":"vega-lite"};
 
       function showError(el, error){
           el.innerHTML = ('<div style="color:red;">'
@@ -853,22 +856,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="the-r-and-python-visualization-ecosystems">The R and Python visualization ecosystems</h3>
 <p>There is a wide variety of high-level and low-level tools for visualizing data in R and Python. While we have already outlined the advantages of the libraries we chose, it can be helpful to be aware of which others are available since you are likely to encounter some of them in the wild. In this diagram, you can see an overview of the available tools and how they are connected.</p>
 <div class="slide-visual">
-<div class="cell" data-layout-align="default">
+<div class="cell" data-layout-align="left">
 <div class="cell-output-display">
 <div id="visualization-ecosystem">
 <div>
-<p><img src="2_grammar-of-graphics_files/figure-html/mermaid-figure-1.png" style="width:20.04in;height:8.79in"></p>
+<p><img src="2_grammar-of-graphics_files/figure-html/mermaid-figure-1.png" class="" style="width:20.04in;height:8.79in"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="slide-visual" data-slide-title="Visualization ecosystem legend">
-<div class="cell" data-layout-align="default">
+<div class="cell" data-layout-align="left">
 <div class="cell-output-display">
 <div id="ecosystem-legend">
 <div>
-<p><img src="2_grammar-of-graphics_files/figure-html/mermaid-figure-2.png" style="width:7.51in;height:0.73in"></p>
+<p><img src="2_grammar-of-graphics_files/figure-html/mermaid-figure-2.png" class="" style="width:7.51in;height:0.73in"></p>
 </div>
 </div>
 </div>
@@ -893,7 +896,7 @@ eyJjb250ZW50cyI6W119
 </div>
 </div>
 <script type="vfs-file">
-WyJ1dGlscy5weSIsInV0aWxzLlIiLCJ0YWJzZXQtc2Nyb2xsLmpzIiwiY2hhcHRlci10aXRsZS10b29scy5qcyJd
+WyJ1dGlscy5weSIsInV0aWxzLlIiLCJ0YWJzZXQtc2Nyb2xsLmpzIiwiY2hhcHRlci10aXRsZS10b29scy5qcyIsImZpZ3VyZS1jYXB0aW9ucy5qcyJd
 </script>
 </section>
 </section>
@@ -1346,6 +1349,7 @@ window._ojs.runtime.interpretFromScriptTags();
 </div> <!-- /content -->
 <script src="tabset-scroll.js"></script>
 <script src="chapter-title-tools.js"></script>
+<script src="figure-captions.js"></script>
 
 
 

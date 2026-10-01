@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>1&nbsp; Why visualize data? – Data Visualization</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -34,17 +40,16 @@ ul.task-list li input[type="checkbox"] {
 <link href="./0_chapter-key.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-04403c1657fcf1820b2b65d736c17c31.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-c15f42e3d0c4dfe67de8d7f9ab699eef.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cacc210b5db7720134226e3049479d0b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-716f7ae15d82927a780ae0f5d1b458eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-7d3e44535dad097801191db85939c76c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-68a1d95f5651b2ab63e32e2cd8d87510.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -84,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating slimcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -266,9 +271,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Visualization</a> 
         <div class="sidebar-tools-main">
@@ -376,7 +379,7 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -428,74 +431,74 @@ ul.task-list li input[type="checkbox"] {
 <p>At its core, data visualization is about representing data with graphical elements such as the position of a point, the length of a bar, or the color of a line. We usually visualize data for two main purposes: <span class="slide-text">to improve own understanding of a dataset</span> or <span class="slide-text">to improve someone’s else’s understanding</span> by communicating what we have learned. While we often use visualization to answer a specific question about a dataset, it can also be more exploratory and help us generate new questions.</p>
 <p>In this sense, we can <span class="slide-text">think of data visualization as a human “data language”</span> that helps us gain and communicate data insights effectively. This role is equally relevant when an analysis comes from another person or from a machine, such as a generative AI agent: in either case, the goal is to support human understanding. By supporting both exploration and communication, <span class="slide-text">visualization is often where a data analysis begins and ends</span>.</p>
 </section>
-<section id="why-bother-visualizing-data-instead-of-showing-raw-numbers" class="level2" data-number="1.2">
+<section id="why-bother-visualizing-data-instead-of-showing-raw-numbers" class="level2 page-columns page-full" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="why-bother-visualizing-data-instead-of-showing-raw-numbers"><span class="header-section-number">1.2</span> Why bother visualizing data instead of showing raw numbers?</h2>
 <p>To understand why visualizations are so powerful, it is helpful to remember that to answer a question, we often have to put the data in a format that is easy for us humans to interpret. Because our number systems have only been around for about 5,000 years, we need to assert effort and train ourselves to recognize structure in numerical data.</p>
 <p>Visual systems, on the other hand, have undergone refinement during 500,000,000 years of evolution, so we can instinctively recognize visual patterns and accurately estimate visual properties such as colors and distances without much conscious cognitive effort.</p>
 <p>In practice, this means that we can arrive at correct conclusions faster by studying graphical rather than numerical representations of the same data. For example, have a look at the four sets of data in the table below. Can you describe the datasets just from looking at the numbers? How are they different from one another?</p>
 <div class="slide-visual">
 <div class="cell">
-<div id="tbl-anscombe" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div id="tbl-anscombe" class="cell quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="dataframe-grid"><style type="text/css">
 </style>
 
-<table id="T_fc106" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_e8a02" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_fc106_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
+<th colspan="2" id="T_e8a02_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
 </tr>
 <tr class="even">
-<th id="T_fc106_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_fc106_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_e8a02_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_e8a02_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_fc106_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_fc106_row0_col1" class="data row0 col1">8.04</td>
+<td id="T_e8a02_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_e8a02_row0_col1" class="data row0 col1">8.04</td>
 </tr>
 <tr class="even">
-<td id="T_fc106_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_fc106_row1_col1" class="data row1 col1">6.95</td>
+<td id="T_e8a02_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_e8a02_row1_col1" class="data row1 col1">6.95</td>
 </tr>
 <tr class="odd">
-<td id="T_fc106_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_fc106_row2_col1" class="data row2 col1">7.58</td>
+<td id="T_e8a02_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_e8a02_row2_col1" class="data row2 col1">7.58</td>
 </tr>
 <tr class="even">
-<td id="T_fc106_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_fc106_row3_col1" class="data row3 col1">8.81</td>
+<td id="T_e8a02_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_e8a02_row3_col1" class="data row3 col1">8.81</td>
 </tr>
 <tr class="odd">
-<td id="T_fc106_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_fc106_row4_col1" class="data row4 col1">8.33</td>
+<td id="T_e8a02_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_e8a02_row4_col1" class="data row4 col1">8.33</td>
 </tr>
 <tr class="even">
-<td id="T_fc106_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_fc106_row5_col1" class="data row5 col1">9.96</td>
+<td id="T_e8a02_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_e8a02_row5_col1" class="data row5 col1">9.96</td>
 </tr>
 <tr class="odd">
-<td id="T_fc106_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_fc106_row6_col1" class="data row6 col1">7.24</td>
+<td id="T_e8a02_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_e8a02_row6_col1" class="data row6 col1">7.24</td>
 </tr>
 <tr class="even">
-<td id="T_fc106_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_fc106_row7_col1" class="data row7 col1">4.26</td>
+<td id="T_e8a02_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_e8a02_row7_col1" class="data row7 col1">4.26</td>
 </tr>
 <tr class="odd">
-<td id="T_fc106_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_fc106_row8_col1" class="data row8 col1">10.84</td>
+<td id="T_e8a02_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_e8a02_row8_col1" class="data row8 col1">10.84</td>
 </tr>
 <tr class="even">
-<td id="T_fc106_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_fc106_row9_col1" class="data row9 col1">4.81</td>
+<td id="T_e8a02_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_e8a02_row9_col1" class="data row9 col1">4.81</td>
 </tr>
 <tr class="odd">
-<td id="T_fc106_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_fc106_row10_col1" class="data row10 col1">5.68</td>
+<td id="T_e8a02_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_e8a02_row10_col1" class="data row10 col1">5.68</td>
 </tr>
 </tbody>
 </table>
@@ -503,60 +506,60 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_9b096" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_8028b" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_9b096_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
+<th colspan="2" id="T_8028b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
 </tr>
 <tr class="even">
-<th id="T_9b096_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_9b096_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_8028b_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_8028b_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_9b096_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_9b096_row0_col1" class="data row0 col1">9.14</td>
+<td id="T_8028b_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_8028b_row0_col1" class="data row0 col1">9.14</td>
 </tr>
 <tr class="even">
-<td id="T_9b096_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_9b096_row1_col1" class="data row1 col1">8.14</td>
+<td id="T_8028b_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_8028b_row1_col1" class="data row1 col1">8.14</td>
 </tr>
 <tr class="odd">
-<td id="T_9b096_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_9b096_row2_col1" class="data row2 col1">8.74</td>
+<td id="T_8028b_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_8028b_row2_col1" class="data row2 col1">8.74</td>
 </tr>
 <tr class="even">
-<td id="T_9b096_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_9b096_row3_col1" class="data row3 col1">8.77</td>
+<td id="T_8028b_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_8028b_row3_col1" class="data row3 col1">8.77</td>
 </tr>
 <tr class="odd">
-<td id="T_9b096_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_9b096_row4_col1" class="data row4 col1">9.26</td>
+<td id="T_8028b_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_8028b_row4_col1" class="data row4 col1">9.26</td>
 </tr>
 <tr class="even">
-<td id="T_9b096_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_9b096_row5_col1" class="data row5 col1">8.10</td>
+<td id="T_8028b_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_8028b_row5_col1" class="data row5 col1">8.10</td>
 </tr>
 <tr class="odd">
-<td id="T_9b096_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_9b096_row6_col1" class="data row6 col1">6.13</td>
+<td id="T_8028b_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_8028b_row6_col1" class="data row6 col1">6.13</td>
 </tr>
 <tr class="even">
-<td id="T_9b096_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_9b096_row7_col1" class="data row7 col1">3.10</td>
+<td id="T_8028b_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_8028b_row7_col1" class="data row7 col1">3.10</td>
 </tr>
 <tr class="odd">
-<td id="T_9b096_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_9b096_row8_col1" class="data row8 col1">9.13</td>
+<td id="T_8028b_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_8028b_row8_col1" class="data row8 col1">9.13</td>
 </tr>
 <tr class="even">
-<td id="T_9b096_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_9b096_row9_col1" class="data row9 col1">7.26</td>
+<td id="T_8028b_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_8028b_row9_col1" class="data row9 col1">7.26</td>
 </tr>
 <tr class="odd">
-<td id="T_9b096_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_9b096_row10_col1" class="data row10 col1">4.74</td>
+<td id="T_8028b_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_8028b_row10_col1" class="data row10 col1">4.74</td>
 </tr>
 </tbody>
 </table>
@@ -564,60 +567,60 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_31990" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_cf800" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_31990_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
+<th colspan="2" id="T_cf800_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
 </tr>
 <tr class="even">
-<th id="T_31990_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_31990_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_cf800_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_cf800_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_31990_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_31990_row0_col1" class="data row0 col1">7.46</td>
+<td id="T_cf800_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_cf800_row0_col1" class="data row0 col1">7.46</td>
 </tr>
 <tr class="even">
-<td id="T_31990_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_31990_row1_col1" class="data row1 col1">6.77</td>
+<td id="T_cf800_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_cf800_row1_col1" class="data row1 col1">6.77</td>
 </tr>
 <tr class="odd">
-<td id="T_31990_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_31990_row2_col1" class="data row2 col1">8.50</td>
+<td id="T_cf800_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_cf800_row2_col1" class="data row2 col1">8.50</td>
 </tr>
 <tr class="even">
-<td id="T_31990_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_31990_row3_col1" class="data row3 col1">7.11</td>
+<td id="T_cf800_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_cf800_row3_col1" class="data row3 col1">7.11</td>
 </tr>
 <tr class="odd">
-<td id="T_31990_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_31990_row4_col1" class="data row4 col1">7.81</td>
+<td id="T_cf800_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_cf800_row4_col1" class="data row4 col1">7.81</td>
 </tr>
 <tr class="even">
-<td id="T_31990_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_31990_row5_col1" class="data row5 col1">8.84</td>
+<td id="T_cf800_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_cf800_row5_col1" class="data row5 col1">8.84</td>
 </tr>
 <tr class="odd">
-<td id="T_31990_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_31990_row6_col1" class="data row6 col1">6.08</td>
+<td id="T_cf800_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_cf800_row6_col1" class="data row6 col1">6.08</td>
 </tr>
 <tr class="even">
-<td id="T_31990_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_31990_row7_col1" class="data row7 col1">5.39</td>
+<td id="T_cf800_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_cf800_row7_col1" class="data row7 col1">5.39</td>
 </tr>
 <tr class="odd">
-<td id="T_31990_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_31990_row8_col1" class="data row8 col1">8.15</td>
+<td id="T_cf800_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_cf800_row8_col1" class="data row8 col1">8.15</td>
 </tr>
 <tr class="even">
-<td id="T_31990_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_31990_row9_col1" class="data row9 col1">6.42</td>
+<td id="T_cf800_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_cf800_row9_col1" class="data row9 col1">6.42</td>
 </tr>
 <tr class="odd">
-<td id="T_31990_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_31990_row10_col1" class="data row10 col1">5.73</td>
+<td id="T_cf800_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_cf800_row10_col1" class="data row10 col1">5.73</td>
 </tr>
 </tbody>
 </table>
@@ -625,60 +628,60 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_7cad2" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_01822" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_7cad2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
+<th colspan="2" id="T_01822_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
 </tr>
 <tr class="even">
-<th id="T_7cad2_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_7cad2_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_01822_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_01822_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_7cad2_row0_col0" class="data row0 col0">8.00</td>
-<td id="T_7cad2_row0_col1" class="data row0 col1">6.58</td>
+<td id="T_01822_row0_col0" class="data row0 col0">8.00</td>
+<td id="T_01822_row0_col1" class="data row0 col1">6.58</td>
 </tr>
 <tr class="even">
-<td id="T_7cad2_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_7cad2_row1_col1" class="data row1 col1">5.76</td>
+<td id="T_01822_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_01822_row1_col1" class="data row1 col1">5.76</td>
 </tr>
 <tr class="odd">
-<td id="T_7cad2_row2_col0" class="data row2 col0">8.00</td>
-<td id="T_7cad2_row2_col1" class="data row2 col1">7.71</td>
+<td id="T_01822_row2_col0" class="data row2 col0">8.00</td>
+<td id="T_01822_row2_col1" class="data row2 col1">7.71</td>
 </tr>
 <tr class="even">
-<td id="T_7cad2_row3_col0" class="data row3 col0">8.00</td>
-<td id="T_7cad2_row3_col1" class="data row3 col1">8.84</td>
+<td id="T_01822_row3_col0" class="data row3 col0">8.00</td>
+<td id="T_01822_row3_col1" class="data row3 col1">8.84</td>
 </tr>
 <tr class="odd">
-<td id="T_7cad2_row4_col0" class="data row4 col0">8.00</td>
-<td id="T_7cad2_row4_col1" class="data row4 col1">8.47</td>
+<td id="T_01822_row4_col0" class="data row4 col0">8.00</td>
+<td id="T_01822_row4_col1" class="data row4 col1">8.47</td>
 </tr>
 <tr class="even">
-<td id="T_7cad2_row5_col0" class="data row5 col0">8.00</td>
-<td id="T_7cad2_row5_col1" class="data row5 col1">7.04</td>
+<td id="T_01822_row5_col0" class="data row5 col0">8.00</td>
+<td id="T_01822_row5_col1" class="data row5 col1">7.04</td>
 </tr>
 <tr class="odd">
-<td id="T_7cad2_row6_col0" class="data row6 col0">8.00</td>
-<td id="T_7cad2_row6_col1" class="data row6 col1">5.25</td>
+<td id="T_01822_row6_col0" class="data row6 col0">8.00</td>
+<td id="T_01822_row6_col1" class="data row6 col1">5.25</td>
 </tr>
 <tr class="even">
-<td id="T_7cad2_row7_col0" class="data row7 col0">19.00</td>
-<td id="T_7cad2_row7_col1" class="data row7 col1">12.50</td>
+<td id="T_01822_row7_col0" class="data row7 col0">19.00</td>
+<td id="T_01822_row7_col1" class="data row7 col1">12.50</td>
 </tr>
 <tr class="odd">
-<td id="T_7cad2_row8_col0" class="data row8 col0">8.00</td>
-<td id="T_7cad2_row8_col1" class="data row8 col1">5.56</td>
+<td id="T_01822_row8_col0" class="data row8 col0">8.00</td>
+<td id="T_01822_row8_col1" class="data row8 col1">5.56</td>
 </tr>
 <tr class="even">
-<td id="T_7cad2_row9_col0" class="data row9 col0">8.00</td>
-<td id="T_7cad2_row9_col1" class="data row9 col1">7.91</td>
+<td id="T_01822_row9_col0" class="data row9 col0">8.00</td>
+<td id="T_01822_row9_col1" class="data row9 col1">7.91</td>
 </tr>
 <tr class="odd">
-<td id="T_7cad2_row10_col0" class="data row10 col0">8.00</td>
-<td id="T_7cad2_row10_col1" class="data row10 col1">6.89</td>
+<td id="T_01822_row10_col0" class="data row10 col0">8.00</td>
+<td id="T_01822_row10_col1" class="data row10 col1">6.89</td>
 </tr>
 </tbody>
 </table>
@@ -698,31 +701,31 @@ Table&nbsp;1.1: This is a slightly modified version of <a href="https://en.wikip
 <p>You are likely not able to see much difference between the data sets in the table above. What about if we looked at a few commonly used statistical summaries of the data?</p>
 <div class="slide-visual">
 <div class="cell">
-<div id="tbl-anscombe-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div id="tbl-anscombe-summary" class="cell quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-anscombe-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="dataframe-grid"><style type="text/css">
 </style>
 
-<table id="T_1f02b" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_81a26" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_1f02b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
+<th colspan="2" id="T_81a26_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
 </tr>
 <tr class="even">
-<th id="T_1f02b_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_1f02b_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_81a26_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_81a26_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_1f02b_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_1f02b_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_81a26_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_81a26_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_1f02b_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_1f02b_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_81a26_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_81a26_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -730,24 +733,24 @@ Table&nbsp;1.1: This is a slightly modified version of <a href="https://en.wikip
 <style type="text/css">
 </style>
 
-<table id="T_8921f" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_1ebd0" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_8921f_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
+<th colspan="2" id="T_1ebd0_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
 </tr>
 <tr class="even">
-<th id="T_8921f_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_8921f_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_1ebd0_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_1ebd0_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_8921f_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_8921f_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_1ebd0_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_1ebd0_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_8921f_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_8921f_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_1ebd0_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_1ebd0_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -755,24 +758,24 @@ Table&nbsp;1.1: This is a slightly modified version of <a href="https://en.wikip
 <style type="text/css">
 </style>
 
-<table id="T_adf56" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_6f0a0" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_adf56_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
+<th colspan="2" id="T_6f0a0_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
 </tr>
 <tr class="even">
-<th id="T_adf56_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_adf56_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_6f0a0_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_6f0a0_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_adf56_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_adf56_row0_col1" class="data row0 col1" style="background-color: #4853a4; color: #ffffff"><strong>7.11</strong></td>
+<td id="T_6f0a0_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_6f0a0_row0_col1" class="data row0 col1" style="background-color: #4853a4; color: #ffffff"><strong>7.11</strong></td>
 </tr>
 <tr class="even">
-<td id="T_adf56_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_adf56_row1_col1" class="data row1 col1" style="background-color: #4853a4; color: #ffffff"><strong>1.15</strong></td>
+<td id="T_6f0a0_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_6f0a0_row1_col1" class="data row1 col1" style="background-color: #4853a4; color: #ffffff"><strong>1.15</strong></td>
 </tr>
 </tbody>
 </table>
@@ -780,24 +783,24 @@ Table&nbsp;1.1: This is a slightly modified version of <a href="https://en.wikip
 <style type="text/css">
 </style>
 
-<table id="T_a389a" class="do-not-create-environment cell table table-sm table-striped small">
+<table id="T_68ba9" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_a389a_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
+<th colspan="2" id="T_68ba9_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
 </tr>
 <tr class="even">
-<th id="T_a389a_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_a389a_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_68ba9_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_68ba9_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_a389a_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_a389a_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_68ba9_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_68ba9_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_a389a_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_a389a_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_68ba9_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_68ba9_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -815,13 +818,13 @@ Table&nbsp;1.2: Summary statistics of the modified Anscombe datasets.
 <p><br> Above, the mean and standard deviation indicate that set C is slightly different from the other three datasets in terms of the centre and spread of the sample distribution, while the remaining three sets of data have a similar centre and spread.</p>
 <p>Summaries, such as the mean and standard deviation, are helpful statistical tools that are often useful for summarizing and detecting the differences between datasets. However, since they collapse the data into just a few numbers, statistical summaries can’t tell the whole story about the data and there can be important differences between datasets that summaries fail to reveal.</p>
 </section>
-<section id="plotting-immediately-reveals-patterns-in-the-data" class="level3">
+<section id="plotting-immediately-reveals-patterns-in-the-data" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="plotting-immediately-reveals-patterns-in-the-data">Plotting immediately reveals patterns in the data</h3>
 <p>So if you can’t really see any patterns in the table and the statistical summaries are nearly all the same, that must mean that the four sets are pretty similar, right? Sounds about right so let’s go ahead and plot them to have a quick look…</p>
-<div class="slide-visual">
-<div class="cell">
-<div id="fig-anscombe-charts" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
+<div class="slide-visual page-columns page-full">
+<div class="cell page-columns page-full">
+<div id="fig-anscombe-charts" class="cell-output-display quarto-float quarto-figure quarto-figure-left anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-anscombe-charts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 
 
@@ -847,7 +850,7 @@ Table&nbsp;1.2: Summary statistics of the modified Anscombe datasets.
   <script>
     (function(vegaEmbed) {
       var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}, "header": {"title": null}}, "data": {"name": "data-640ca8c697f86a81b7a0efae7ed7b043"}, "facet": {"field": "Set", "type": "nominal"}, "spec": {"mark": {"type": "circle", "size": 80}, "encoding": {"x": {"field": "x", "type": "quantitative"}, "y": {"field": "y", "type": "quantitative"}}, "height": 200, "width": 200}, "columns": 2, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-640ca8c697f86a81b7a0efae7ed7b043": [{"x": 10, "y": 8.04, "Set": "A"}, {"x": 8, "y": 6.95, "Set": "A"}, {"x": 13, "y": 7.58, "Set": "A"}, {"x": 9, "y": 8.81, "Set": "A"}, {"x": 11, "y": 8.33, "Set": "A"}, {"x": 14, "y": 9.96, "Set": "A"}, {"x": 6, "y": 7.24, "Set": "A"}, {"x": 4, "y": 4.26, "Set": "A"}, {"x": 12, "y": 10.84, "Set": "A"}, {"x": 7, "y": 4.8100000000000005, "Set": "A"}, {"x": 5, "y": 5.68, "Set": "A"}, {"x": 10, "y": 9.14, "Set": "B"}, {"x": 8, "y": 8.14, "Set": "B"}, {"x": 13, "y": 8.74, "Set": "B"}, {"x": 9, "y": 8.77, "Set": "B"}, {"x": 11, "y": 9.26, "Set": "B"}, {"x": 14, "y": 8.1, "Set": "B"}, {"x": 6, "y": 6.13, "Set": "B"}, {"x": 4, "y": 3.1, "Set": "B"}, {"x": 12, "y": 9.13, "Set": "B"}, {"x": 7, "y": 7.26, "Set": "B"}, {"x": 5, "y": 4.74, "Set": "B"}, {"x": 10, "y": 7.46, "Set": "C"}, {"x": 8, "y": 6.77, "Set": "C"}, {"x": 13, "y": 8.5, "Set": "C"}, {"x": 9, "y": 7.11, "Set": "C"}, {"x": 11, "y": 7.8100000000000005, "Set": "C"}, {"x": 14, "y": 8.84, "Set": "C"}, {"x": 6, "y": 6.08, "Set": "C"}, {"x": 4, "y": 5.39, "Set": "C"}, {"x": 12, "y": 8.15, "Set": "C"}, {"x": 7, "y": 6.42, "Set": "C"}, {"x": 5, "y": 5.73, "Set": "C"}, {"x": 8, "y": 6.58, "Set": "D"}, {"x": 8, "y": 5.76, "Set": "D"}, {"x": 8, "y": 7.71, "Set": "D"}, {"x": 8, "y": 8.84, "Set": "D"}, {"x": 8, "y": 8.47, "Set": "D"}, {"x": 8, "y": 7.04, "Set": "D"}, {"x": 8, "y": 5.25, "Set": "D"}, {"x": 19, "y": 12.5, "Set": "D"}, {"x": 8, "y": 5.5600000000000005, "Set": "D"}, {"x": 8, "y": 7.91, "Set": "D"}, {"x": 8, "y": 6.89, "Set": "D"}]}};
-      var embedOpt = {"mode": "vega-lite"};
+      var embedOpt = {"actions":false,"mode":"vega-lite"};
 
       function showError(el, error){
           el.innerHTML = ('<div style="color:red;">'
@@ -866,7 +869,7 @@ Table&nbsp;1.2: Summary statistics of the modified Anscombe datasets.
 
 
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anscombe-charts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-anscombe-charts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1.1: Visualization of the modified Anscombe datasets revealing the pattern in the underlying observations.
 </figcaption>
 </figure>
@@ -876,16 +879,16 @@ Figure&nbsp;1.1: Visualization of the modified Anscombe datasets revealing the p
 <p>… what… how can they be so different… there must be something wrong, right? Well what is wrong is that humans are not good at detecting patterns in raw numbers, and we don’t have good intuition about which combination of numbers can contribute to the same statistical summaries. But remember what we excel at? Detecting visual patterns!</p>
 <p>It is immediately clear to us how the four datasets differ once they are shown as graphical objects instead of textual objects. Sets A and C are roughly linearly increasing at similar rates, whereas set B reaches a plateau and starts to drop, and set D has a constant X-value for all numbers except one big outlier. We could only detect these patterns after visualizing the data. Importantly, if we only had looked at the raw data or the summary statistics, we would have come to the wrong conclusions about how the datasets differ, and any research or business level decision based on solely a numerical analysis would have been misinformed.</p>
 </section>
-<section id="a-modern-take-on-anscombes-quartet" class="level3">
+<section id="a-modern-take-on-anscombes-quartet" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="a-modern-take-on-anscombes-quartet">A modern take on Anscombe’s quartet</h3>
 <p>For a more recent and dynamic illustration of how graphical representations are much easier for us to interpret, check out the <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">Datasaurus Dozen animation</a> below. It displays several different datasets, all with nearly the same mean, standard deviation and correlation between X and Y, but looking at the data graphically shows us how different these datasets actually are:</p>
-<div class="slide-visual">
-<div id="fig-datasaurus" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Data Taurus Dozen Animation">
-<figure class="quarto-float quarto-float-fig figure">
+<div class="slide-visual page-columns page-full">
+<div id="fig-datasaurus" class="quarto-float quarto-figure quarto-figure-left anchored page-columns page-full" alt="Data Taurus Dozen Animation">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-datasaurus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/DinoSequentialSmaller.gif" class="img-fluid figure-img" alt="Data Taurus Dozen Animation">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-datasaurus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-datasaurus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1.2: The Datasaurus Dozen: Datasets with near identical summary statistics but widely different distributions.
 </figcaption>
 </figure>
@@ -906,7 +909,7 @@ eyJjb250ZW50cyI6W119
 </div>
 </div>
 <script type="vfs-file">
-WyJ1dGlscy5weSIsInV0aWxzLlIiLCJ0YWJzZXQtc2Nyb2xsLmpzIiwiY2hhcHRlci10aXRsZS10b29scy5qcyJd
+WyJ1dGlscy5weSIsInV0aWxzLlIiLCJ0YWJzZXQtc2Nyb2xsLmpzIiwiY2hhcHRlci10aXRsZS10b29scy5qcyIsImZpZ3VyZS1jYXB0aW9ucy5qcyJd
 </script>
 </section>
 </section>
@@ -1351,6 +1354,7 @@ window._ojs.runtime.interpretFromScriptTags();
 </div> <!-- /content -->
 <script src="tabset-scroll.js"></script>
 <script src="chapter-title-tools.js"></script>
+<script src="figure-captions.js"></script>
 
 
 

@@ -6,8 +6,8 @@
 <script src="2_grammar-of-graphics_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="2_grammar-of-graphics_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="2_grammar-of-graphics_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="2_grammar-of-graphics_files/libs/quarto-html/quarto-syntax-highlighting-04403c1657fcf1820b2b65d736c17c31.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.25">
+<link href="2_grammar-of-graphics_files/libs/quarto-html/quarto-syntax-highlighting-c15f42e3d0c4dfe67de8d7f9ab699eef.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <title>The grammar of graphics</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,10 +16,16 @@
   <link rel="stylesheet" href="2_grammar-of-graphics_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="2_grammar-of-graphics_files/libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -96,7 +102,7 @@
     code span.vs { color: #9ece6a; } /* VerbatimString */
     code span.wa { color: #e0af68; } /* Warning */
   </style>
-  <link rel="stylesheet" href="2_grammar-of-graphics_files/libs/revealjs/dist/theme/quarto-681f31a983c888f75c435b8a8230951e.css">
+  <link rel="stylesheet" href="2_grammar-of-graphics_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
   <link rel="stylesheet" href="chapter-slides.css">
   <link href="2_grammar-of-graphics_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="2_grammar-of-graphics_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -347,7 +353,7 @@
   <script>
     (function(vegaEmbed) {
       var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-5eecd844cec7dbeb818476fd65b5f5dc"}, "mark": {"type": "point"}, "encoding": {"color": {"field": "group", "type": "nominal"}, "x": {"field": "x", "type": "quantitative"}, "y": {"field": "y", "type": "quantitative"}}, "height": 200, "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-5eecd844cec7dbeb818476fd65b5f5dc": [{"x": 0.2, "y": 0.6, "group": "a"}, {"x": 0.6, "y": 0.9, "group": "a"}, {"x": 1.2, "y": 1.8, "group": "b"}, {"x": 2.4, "y": 2.7, "group": "b"}]}};
-      var embedOpt = {"mode": "vega-lite"};
+      var embedOpt = {"actions":false,"mode":"vega-lite"};
 
       function showError(el, error){
           el.innerHTML = ('<div style="color:red;">'
@@ -402,7 +408,7 @@
   <script>
     (function(vegaEmbed) {
       var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-5eecd844cec7dbeb818476fd65b5f5dc"}, "mark": {"type": "point"}, "encoding": {"color": {"field": "group", "type": "nominal"}, "x": {"field": "x", "type": "quantitative"}, "y": {"field": "y", "type": "quantitative"}}, "height": 200, "width": 200, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-5eecd844cec7dbeb818476fd65b5f5dc": [{"x": 0.2, "y": 0.6, "group": "a"}, {"x": 0.6, "y": 0.9, "group": "a"}, {"x": 1.2, "y": 1.8, "group": "b"}, {"x": 2.4, "y": 2.7, "group": "b"}]}};
-      var embedOpt = {"mode": "vega-lite"};
+      var embedOpt = {"actions":false,"mode":"vega-lite"};
 
       function showError(el, error){
           el.innerHTML = ('<div style="color:red;">'
