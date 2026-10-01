@@ -38,9 +38,8 @@ rather than the older `environment.yaml` Conda environment:
   pinned Altair Git revision. `.python-version` selects the Python version.
 - uvr 0.4.6 installs the R version recorded in `uvr.lock` and restores its
   packages with `uvr sync --frozen --install-system-deps`.
-- Quarto 1.8.25 matches the tested local renderer. A current Chrome installation
-  is selected via `QUARTO_CHROMIUM` for Mermaid diagrams (the old Chromium
-  bundled with this Quarto version cannot render the current diagrams).
+- Quarto 1.10.18 matches the tested local renderer. A current Chrome installation
+  is explicitly selected via `QUARTO_CHROMIUM` for Mermaid diagrams.
 - `RETICULATE_PYTHON` explicitly selects `.venv/bin/python` so Python chunks
   cannot accidentally run in a separate reticulate-managed environment.
 - Both workflows activate `.uvr/activate` and run
