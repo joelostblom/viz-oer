@@ -6,7 +6,7 @@ project:
 
 book:
   title: "Data Visualization"
-  # author: "Norah Jones"
+  subtitle: "Concepts & Grammars"
   date: today
   chapters:
     - index.qmd
