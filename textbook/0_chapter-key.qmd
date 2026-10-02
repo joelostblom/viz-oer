@@ -1,5 +1,16 @@
 # Chapter key {#sec-chapter-key .unnumbered}
 
+There are slides available for each chapter.
+You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24" width="1.1em" height="1.1em"
+  style="vertical-align: -0.15em"
+  fill="none" stroke="currentColor" stroke-width="1.6"
+  stroke-linecap="round" stroke-linejoin="round"
+  aria-hidden="true" focusable="false">
+  <rect x="3" y="3" width="18" height="13" rx="1"/>
+  <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"/>
+</svg> beside a chapter title.
+
 ::: {.callout-note title="Learning outcomes" collapse=false}
 Every chapter starts with the "Learning outcomes",
 which describe what you will learn from this chapter.
@@ -46,8 +57,7 @@ try to use the hint to figure out the answer.
 
 ::: {.callout-default .ex-solution}
 
-The solution is inside the "Hint" section,
-to encourage you to first try to use the hint to solve the exercise.
+You got it!
 
 :::
 
@@ -87,43 +97,25 @@ seq(5)
 
 ::: {.column-margin}
 
-**Optional content**
+**Margin content**
 
-Content in the margin is optional
-and can include
-fun factual tidbits,
+Content in the margin usually
+includes
+figure legends,
+factual tidbits,
 historical explanations,
 etymology,
 and more.
 
 :::
 
-## Deep dive
+::: {.deep-dive}
 
-<details><summary>Click to expand the optional deep dive or proceed to the exercise mission.</summary>
-
-Every chapter contains a deep dive
-with optional content.
-This section elaborates on a concept that was learned in the chapter,
+Deep dives
+include content that
+is not essential to understand main topics of the chapter.
+Instead,
+these sections elaborate on concepts
 and often contains more challenging content.
 
-</details>
-
-## Exercise mission
-
-In addition to the exercises spread throughout the content,
-each chapter contains a set of connected exercises in the end
-that interweaves the content learned throughout the chapter.
-This challenges you to deepen your understanding
-as it requires comprehension of how the content fit together
-rather than solely mastering each section in isolation.
-
-To help you along the way on these exercises,
-you will be able to converse with an avatar from the fictional setting of the book.
-These will make it clear what your goal is for each section
-and help you along the way if you get stuck.
-
-Before you get started with this section,
-make sure you review the chapter summary
-in the learning outcomes
-and that you understand each of the items there.
+:::
