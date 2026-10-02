@@ -71,6 +71,9 @@ Figures in the reading view are left-aligned and use margin captions by default
 their figures and updates positioning after resizing, chart loading, or
 expanding/collapsing an exercise. On narrow screens, Quarto's in-flow caption
 layout is used. Table captions remain below their tables.
+`figure-caption-links.lua` preserves links and cross-references when Quarto
+moves figure captions into a callout's margin, by keeping the caption contents
+inside a single HTML wrapper.
 
 The reading view offers Quarto's built-in light/dark theme toggle in the book
 sidebar. The default dark theme uses Darkly

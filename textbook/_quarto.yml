@@ -44,6 +44,8 @@ filters:
   - illustrative-chart-actions.lua
   - custom-callouts.lua
   - chapter-slides.lua
+  - path: figure-caption-links.lua
+    at: post-render
 
 # Shared table helpers and browser behavior; utils.py also supports Python exercises.
 resources:
