@@ -233,7 +233,7 @@ meditation |>
         geom_bar()
 ```
 
-We used used `-n` to put the longest bar the closest to the axis.
+We used `-n` to put the longest bar the closest to the axis.
 To put the largest count at the top instead, use `reorder(condition, n)`.
 Either direction can work;
 but generally it is more visually appealing

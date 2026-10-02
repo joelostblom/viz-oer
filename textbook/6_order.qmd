@@ -325,7 +325,7 @@ The country-average fertility estimate does show a rise
 from the late 1930s to the early 1960s, followed by a decline.
 This "explosion" is what is commonly referred to as the "baby boom".
 However, remember that this chart averages country-level fertility estimates
-rather than taking the population into each country into account,
+rather than taking the population in each country into account,
 so it does not directly show the total number of babies born in the world.
 
 ::: {.callout-default .deep-dive}

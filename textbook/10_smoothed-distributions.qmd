@@ -1000,7 +1000,7 @@ tend to be shorter
 and that this difference is especially pronounced
 for adventure movies.
 There are no G- or PG-rated horror movies in this sample,
-which aligns with out expectations
-of low demand for this genre in among younger audiences.
+which aligns with our expectations
+of low demand for this genre among younger audiences.
 
 <!-- TODO sina density clouds -->

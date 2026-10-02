@@ -3,23 +3,26 @@
 <!-- This landing page will contain an image -->
 <!-- and a short text about the reasoning behind the book and what it is trying to achieve. -->
 
-This books takes an developmental approach to visualization
-motivating the introduction of each new principle or chart element
-with the shortcoming of the previous.
-This is because I have noticed that learners don't necessarily
-**understand why** to use one type of chart instead of another.
-Now, they might still **remember that** they should use one chart instead of another
-have memorized some rule like "never use bar chart for a mean"
-and then happily use a single point for the mean
-although that choice have similar shortcomings.
+This book takes a developmental approach to visualization
+motivating each new principle and chart element
+as a response to a limitation of what came before.
+The aim is to try to clearly visualize the underlying need
+rather than just learning rules of which charts are good for what.
+This is because I have noticed that learners
+can be apt at remembering that
+they should use one chart instead of another
+without understanding why that's the case.
+Or they might understand why for a specific example,
+but not be able to generalize that understanding further.
 
-I consider that helping student understand
-instead of remember is a way to empower learners' agency
-and improve their ability to predict what is an effective visualization choice
-outside the content of this book.
+I consider that helping learners understand and generalize
+is a way to empower their agency
+and improve their ability to predict
+what is an effective visualization choice
+for a visualization not previously encountered .
 At least it is my hope
 that this book can contribute to and encourage
-readers' critical thinking about any chart they encounter.
+readers' critical thinking about any chart they might come across.
 In my experience, this angle also makes learning more fun.
 
 This books interleaves exercises throughout the chapters
@@ -46,7 +49,7 @@ what **could** work based on understanding the rules of the grammar.
 <!-- of chart templtaes and names. -->
 
 This books also hopes to introduce students to some interesting data sets along the way,
-although this will likely be a work in progress over a longer time
+although this will likely be a work in progress over a longer time.
 
 <!-- I believe learning and exercises are tighyl coupled so therefore exercises --> 
 <!-- are spread throughout the chapters rather than all coming at the end; -->

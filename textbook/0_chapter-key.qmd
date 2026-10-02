@@ -22,7 +22,7 @@ instead of just stating what you are to learn in the chapter.
 
 For example,
 instead of simply stating:
-"Explain the main advantage of visualizing data instead"
+"Explain the main advantage of visualizing data"
 we would write:
 "Explain that the main advantage of visualizing data
 instead of presenting it with numbers is that they are easier to interpret for humans.
