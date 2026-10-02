@@ -10,8 +10,10 @@ You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000
   <rect x="3" y="3" width="18" height="13" rx="1"/>
   <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"/>
 </svg> beside a chapter title.
+Pressing `?` shows keyboard shortcuts for common operations,
+such as how to export the slides to PDF.
 
-::: {.callout-note title="Learning outcomes" collapse=false}
+::: {.callout-note title="Learning outcomes & Chapter summary" collapse=false}
 Every chapter starts with the "Learning outcomes",
 which describe what you will learn from this chapter.
 To make these learning outcomes more useful to you as a reader,
@@ -22,7 +24,8 @@ For example,
 instead of simply stating:
 "Explain the main advantage of visualizing data instead"
 we would write:
-"Explain that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.
+"Explain that the main advantage of visualizing data
+instead of presenting it with numbers is that they are easier to interpret for humans.
 
 As such,
 the learning objectives also serve as the summary of each chapter.
