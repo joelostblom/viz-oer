@@ -11,23 +11,33 @@ book:
   chapters:
     - index.qmd
     - 0_chapter-key.qmd
-    - 1_why-visualize-data.qmd
-    - 2_grammar-of-graphics.qmd
-    - 3_individual-observations.qmd
-    - 4_magnitude.qmd
-    - 5_groups.qmd
-    - 6_order.qmd
-    - 7_summaries.qmd
-    - 8_counts.qmd
-    - 9_binned-distributions.qmd
-    - 10_smoothed-distributions.qmd
-    - 11_cumulative-distributions.qmd
-    - 12_joint-distributions.qmd
-    - 13_communication.qmd
-    - 14_color.qmd
-    - 15_uncertainty.qmd
-    - 16_interactivity.qmd
-    - 17_geospatial.qmd
+    - part: "Introduction"
+      chapters:
+        - 1_why-visualize-data.qmd
+        - 2_grammar-of-graphics.qmd
+    - part: "Foundations"
+      chapters:
+        - 3_individual-observations.qmd
+        - 4_magnitude.qmd
+        - 5_groups.qmd
+        - 6_order.qmd
+    - part: "Summaries & distributions"
+      chapters:
+        - 7_summaries.qmd
+        - 8_counts.qmd
+        - 9_binned-distributions.qmd
+        - 10_smoothed-distributions.qmd
+        - 11_cumulative-distributions.qmd
+        - 12_joint-distributions.qmd
+    - part: "Communication & design"
+      chapters:
+        - 13_communication.qmd
+        - 14_color.qmd
+    - part: "Extensions & applications"
+      chapters:
+        - 15_uncertainty.qmd
+        - 16_interactivity.qmd
+        - 17_geospatial.qmd
     # - 99_misc.qmd
 
 filters:
