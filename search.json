@@ -14,7 +14,27 @@
     "href": "0_chapter-key.html",
     "title": "Chapter key",
     "section": "",
-    "text": "A heading\nThere are slides available for each chapter. You can view them by clicking the screen icon     beside a chapter title. Pressing ? shows keyboard shortcuts for common operations, such as how to export the slides to PDF.\nThe main text will go here. This can cover both practical and theoretical aspects of data visualization.",
+    "text": "Presentation shortcuts\nSlides are currently available for the chapter key and chapters 1 and 2. You can view them by clicking the screen icon     beside a chapter title.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "0_chapter-key.html#presentation-shortcuts",
+    "href": "0_chapter-key.html#presentation-shortcuts",
+    "title": "Chapter key",
+    "section": "",
+    "text": "Press ? to explore the keyboard shortcuts.\nClose the shortcut help with Esc or Q, then press E to enter PDF-export mode.\nOpen your browser’s print dialog and choose Save as PDF. Press E again to return to the slides.",
+    "crumbs": [
+      "Chapter key"
+    ]
+  },
+  {
+    "objectID": "0_chapter-key.html#learning-outcomes-summaries",
+    "href": "0_chapter-key.html#learning-outcomes-summaries",
+    "title": "Chapter key",
+    "section": "Learning outcomes & summaries",
+    "text": "Learning outcomes & summaries\n\n\n\n\n\n\nNoteLearning outcomes & Chapter summary\n\n\n\n\n\nEvery chapter starts with the “Learning outcomes”, which describe what you will learn from this chapter. To make these learning outcomes more useful to you as a reader, we have expanded them to include a summary of the “solution” for each outcome, instead of just stating what you are to learn in the chapter.\nFor example, instead of simply stating: “Explain the main advantage of visualizing data” we would write: “Explain that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.\nAs such, the learning objectives also serve as the summary of each chapter.",
     "crumbs": [
       "Chapter key"
     ]
@@ -23,8 +43,8 @@
     "objectID": "0_chapter-key.html#a-heading",
     "href": "0_chapter-key.html#a-heading",
     "title": "Chapter key",
-    "section": "",
-    "text": "A sub-heading\nThese will be used to divide content further.",
+    "section": "A heading",
+    "text": "A heading\nThe main text will go here. This can cover both practical and theoretical aspects of data visualization.\n\nA sub-heading\nThese will be used to divide content further.",
     "crumbs": [
       "Chapter key"
     ]
