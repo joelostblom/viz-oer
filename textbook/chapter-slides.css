@@ -212,7 +212,9 @@
 }
 
 .reveal div.sourceCode,
-.reveal pre.sourceCode {
+.reveal pre.sourceCode,
+.reveal .cell-output pre,
+.reveal .cell-output pre code {
   background-color: #24283b;
   color: #c0caf5;
   border-color: #414868;

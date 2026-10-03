@@ -1,6 +1,14 @@
+---
+chapter-slides: slides/0_chapter-key.html
+---
+
 # Chapter key {#sec-chapter-key .unnumbered}
 
-There are slides available for each chapter.
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Presentation shortcuts
+
+Slides are currently available for the chapter key and chapters 1 and 2.
 You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24" width="1.1em" height="1.1em"
   style="vertical-align: -0.15em"
@@ -10,11 +18,19 @@ You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000
   <rect x="3" y="3" width="18" height="13" rx="1"/>
   <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"/>
 </svg> beside a chapter title.
-Pressing `?` shows keyboard shortcuts for common operations,
-such as how to export the slides to PDF.
+
+::: {.slide-text}
+
+1. Press `?` to explore the keyboard shortcuts.
+2. Close the shortcut help with `Esc` or `Q`, then press `E` to enter PDF-export mode.
+3. Open your browser's print dialog and choose **Save as PDF**. Press `E` again to return to the slides.
+
+:::
+
+## Learning outcomes & summaries
 
 ::: {.callout-note title="Learning outcomes & Chapter summary" collapse=false}
-Every chapter starts with the "Learning outcomes",
+[Every chapter starts with the "Learning outcomes"]{.slide-text},
 which describe what you will learn from this chapter.
 To make these learning outcomes more useful to you as a reader,
 we have expanded them to include a summary of the "solution" for each outcome,
@@ -28,16 +44,16 @@ we would write:
 instead of presenting it with numbers is that they are easier to interpret for humans.
 
 As such,
-the learning objectives also serve as the summary of each chapter.
+[the learning objectives also serve as the summary of each chapter]{.slide-text}.
 :::
 
-## A heading
+## A heading {.slide-skip}
 
 The main text will go here.
 This can cover both practical
 and theoretical aspects of data visualization.
 
-### A sub-heading
+### A sub-heading {.slide-skip}
 
 These will be used to divide content further.
 
@@ -45,10 +61,10 @@ These will be used to divide content further.
 
 ::::: {.callout-default .ex-prompt}
 
-Exercises aim to engage you actively with the material,
+[Exercises aim to engage you actively with the material]{.slide-text},
 both to make it more fun to learn
 and to improve your learning.
-Try to solve the exercise on your own first,
+[Try to solve the exercise on your own first]{.slide-text},
 before looking at the hint and the solution;
 this active engagement is what aids your learning.
 Click the hint below to expand it.
@@ -70,7 +86,7 @@ You got it!
 
 ## Coding content
 
-Coding content will often include a panel with multiple tabs,
+[Coding content will often include a panel with multiple tabs]{.slide-text},
 so that you can easily see what the same code looks like
 for different visualization packages.
 These sections also include explanations
@@ -79,19 +95,23 @@ rather than being about data visualization in general.
 
 ::: {.panel-tabset}
 
-### Package One
+### Package One {.slide-fragment .slide-with-content}
 
 ```{python}
 #| label: package-example-python
+#| slide-show: both
+#| slide-output-fragment: true
 # Code for the first package, e.g.:
 range(5)
 
 ```
 
-### Package Two
+### Package Two {.slide-fragment .slide-with-content}
 
 ```{r}
 #| label: package-example-r
+#| slide-show: both
+#| slide-output-fragment: true
 # Code for the second package, e.g.:
 seq(5)
 ```

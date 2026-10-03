@@ -14,7 +14,7 @@ From the repository root:
 ```sh
 make preview  # Start the live preview
 make book     # Render the textbook
-make slides   # Render the chapter 1 and chapter 2 presentations
+make slides   # Render the chapter-key, chapter 1, and chapter 2 presentations
 ```
 
 Preview and book builds use the shared `activate-uvr` recipe fragment to activate the
@@ -84,7 +84,7 @@ Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
 The slide decks retain their separate dark presentation theme.
 
-Chapters 1 and 2 open as ordinary textbook pages. Their small **Present slides**
+The chapter key and chapters 1 and 2 open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
@@ -94,6 +94,9 @@ first; from a normal slide it returns to the matching section of the reading vie
 Esc also resumes a paused/black screen before allowing an exit. **Q** is an
 alias for Esc, with the same behavior for overlays, overview, and returning to
 the chapter.
+To export, close any open shortcut help, press **E** for PDF-export mode, then
+use the browser's print dialog to **Save as PDF**. Press **E** again to return
+to normal presentation mode.
 The opening title uses the accent color; other slide titles are blue. Figures and tables
 are left aligned, with captions hidden in the deck and retained in the chapter.
 Only the title slide has a footer: **Press ? for shortcuts**. The bottom-left
@@ -107,6 +110,11 @@ table, or image as one fragment. Visuals stay intact rather than animating table
 cells or individual chart marks. Revisiting a slide resets it to heading-only.
 Reduced-motion preferences suppress the animation while keeping the same reveal
 steps.
+
+The chapter-key deck is a compact five-slide test deck: title, presentation
+shortcuts, learning outcomes, exercises, and coding content. It demonstrates
+grouped heading/code reveals and delayed Python/R output, with exercise hints
+and solutions in speaker notes.
 
 Chapter 1 includes the title, learning outcomes, all section/subsection headings,
 both Anscombe tables, the Altair chart, and the Datasaurus animation. Chapter 2
@@ -395,6 +403,8 @@ An incremental render rebuilds only the deck for the chapter that was rendered.
 
 Generated files:
 
+- Reading view: `textbook/_book/0_chapter-key.html`
+- Slide view: `textbook/_book/slides/0_chapter-key.html`
 - Reading view: `textbook/_book/1_why-visualize-data.html`
 - Slide view: `textbook/_book/slides/1_why-visualize-data.html`
 - Reading view: `textbook/_book/2_grammar-of-graphics.html`

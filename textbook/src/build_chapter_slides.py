@@ -13,6 +13,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 CHAPTER_ASSETS = {
+    "0_chapter-key": (),
     "1_why-visualize-data": ("img/DinoSequentialSmaller.gif",),
     "2_grammar-of-graphics": ("utils.py",),
 }
