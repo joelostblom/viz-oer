@@ -26,6 +26,21 @@ function Div(div)
     -- including nested slide annotations and material destined for notes.
     return pandoc.List()
   end
+  if quarto.doc.is_format("revealjs") and div.classes:includes("callout-warning") then
+    -- Callout parsing consumes a leading Header as the box title. Preserve it
+    -- as a normal heading for slide selection, without changing book callouts.
+    div.classes = div.classes:filter(function(class)
+      return class ~= "callout" and not class:match("^callout%-")
+    end)
+    div.classes:insert("slide-warning")
+    local title = div.attributes["title"]
+    if title and title ~= "" then
+      div.content:insert(1, pandoc.Header(3,
+        pandoc.utils.blocks_to_inlines(pandoc.read(title, "markdown").blocks)))
+      div.attributes["title"] = nil
+    end
+    return div
+  end
   if quarto.doc.is_format("revealjs") and div.classes:includes("panel-tabset") then
     div.classes = div.classes:filter(function(class) return class ~= "panel-tabset" end)
     div.classes:insert("slide-tabs")

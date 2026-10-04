@@ -181,9 +181,9 @@
 /* Two complete examples side by side; code and output remain stacked within
    each example. Reveal keeps outgoing slides displayed during transitions:
    retain their grid until it hides them, even after .present is removed. */
-.reveal .slides section.present[data-slide-columns],
-.reveal .slides section[data-slide-columns][style*="display: block"],
-.reveal.overview .slides section[data-slide-columns] {
+.reveal .slides section.present[data-slide-columns="true"],
+.reveal .slides section[data-slide-columns="true"][style*="display: block"],
+.reveal.overview .slides section[data-slide-columns="true"] {
   display: grid !important; /* Override Reveal's inline display: block. */
   grid-template-columns: minmax(0, var(--slide-left-width, 1fr))
     minmax(0, var(--slide-right-width, 1fr));
@@ -196,25 +196,43 @@
   min-width: 0;
 }
 
-.reveal section[data-slide-columns] > h2 {
+.reveal section[data-slide-columns="true"] > h2 {
   grid-column: 1;
   grid-row: 1;
 }
 
-.reveal section[data-slide-columns] > .slide-heading {
+.reveal section[data-slide-columns="true"] > .slide-heading {
   grid-column: 2;
   grid-row: 1;
   margin-top: 0;
   margin-bottom: 0.6em;
 }
 
-.reveal section[data-slide-columns] > .slide-media {
+.reveal section[data-slide-columns="true"] > .slide-media {
   grid-row: 2;
 }
 
 .reveal section[data-slide-columns] pre code {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+/* A full-width slide title above two independent column headings/content. */
+.reveal .slide-columns-content {
+  display: grid;
+  grid-template-columns: minmax(0, var(--slide-left-width, 1fr))
+    minmax(0, var(--slide-right-width, 1fr));
+  column-gap: 1em;
+  align-items: start;
+}
+
+.reveal .slide-column {
+  min-width: 0;
+}
+
+.reveal .slide-column > .slide-heading {
+  margin-top: 0;
+  margin-bottom: 0.6em;
 }
 
 .reveal div.sourceCode,

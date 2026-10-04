@@ -91,6 +91,31 @@ function Pandoc(doc)
     end
   end
 
+  local function columns_below_title(first_output, source)
+    local columns = pandoc.List()
+    local column = nil
+    for index = first_output, #output do
+      local block = output[index]
+      if block.t == "Header" and block.classes:includes("slide-heading") then
+        if column then columns:insert(pandoc.Div(column, pandoc.Attr("", {"slide-column"}))) end
+        -- A non-heading first block keeps Pandoc from turning a column Div
+        -- into a section, which Reveal would mistake for another slide.
+        column = pandoc.List({pandoc.RawBlock("html", "<!-- column content -->"), block})
+      elseif column then
+        column:insert(block)
+      else
+        return -- This layout requires a heading for each column.
+      end
+    end
+    if column then columns:insert(pandoc.Div(column, pandoc.Attr("", {"slide-column"}))) end
+    if #columns ~= 2 or not current_slide_index then return end
+
+    set_columns(output[current_slide_index], source)
+    output[current_slide_index].attributes["slide-columns"] = "content"
+    while #output >= first_output do output:remove(#output) end
+    output:insert(pandoc.Div(columns, pandoc.Attr("", {"slide-columns-content"})))
+  end
+
   local function capitalize_paragraph(block)
     local found = false
     return block:walk({
@@ -116,6 +141,13 @@ function Pandoc(doc)
     })
   end
 
+  -- All three author classes use one renderer; only list formatting differs.
+  local function text_style(element)
+    if element.classes:includes("slide-subbullet") then return "subbullet" end
+    if element.classes:includes("slide-bullet") then return "bullet" end
+    if element.classes:includes("slide-text") then return "text" end
+  end
+
   local function text_fragment(blocks, capitalize)
     local fragment = pandoc.Div(blocks,
       pandoc.Attr("", {"slide-content", "fragment", "fade-in"}))
@@ -129,7 +161,21 @@ function Pandoc(doc)
         end
       end
       for _, block in ipairs(blocks) do
-        if block.t == "BulletList" or block.t == "OrderedList" then
+        if block.t == "Div" and (text_style(block) or block.classes:includes("slide-content")) then
+          flush_bullets()
+          if block.classes:includes("slide-content") then
+            content:insert(block)
+          else
+            local style = text_style(block)
+            local child = text_fragment(block.content, style ~= "text")
+            if style == "subbullet" then
+              child.classes:insert("slide-subbullet")
+            else
+              child.classes = pandoc.List({"slide-content"})
+            end
+            content:insert(child)
+          end
+        elseif block.t == "BulletList" or block.t == "OrderedList" then
           flush_bullets()
           -- Preserve list type, starting number, numbering style, and nesting.
           content:insert(block)
@@ -145,8 +191,9 @@ function Pandoc(doc)
     return fragment
   end
 
-  local function show_text(blocks, capitalize)
+  local function show_text(blocks, capitalize, subbullet)
     local fragment = text_fragment(blocks, capitalize)
+    if subbullet then fragment.classes:insert("slide-subbullet") end
     if reveal_with_heading then
       fragment.attributes["slide-reveal-group"] = tostring(reveal_with_heading)
       reveal_with_heading = false
@@ -159,7 +206,12 @@ function Pandoc(doc)
     block:walk({
       traverse = "topdown",
       Span = function(span)
-        if span.classes:includes("slide-text") then
+        local style = text_style(span)
+        if style == "text" or style == "subbullet" then
+          selections:insert(pandoc.Div({pandoc.Para(span.content)},
+            pandoc.Attr("", {style == "text" and "slide-text" or "slide-subbullet"})))
+          return span, false
+        elseif style == "bullet" then
           selections:insert(pandoc.Para(span.content))
           -- Nested selections belong to the same fragment, not a duplicate.
           return span, false
@@ -186,12 +238,12 @@ function Pandoc(doc)
     local wrapper = pandoc.Div({block}):walk({
       traverse = "topdown",
       Div = function(div)
-        if div.classes:includes("slide-text") then
+        if text_style(div) then
           return div:walk({Para = emphasize_paragraph, Plain = emphasize_paragraph}), false
         end
       end,
       Span = function(span)
-        if span.classes:includes("slide-text") then
+        if text_style(span) then
           span.content = pandoc.Inlines({emphasize(span.content)})
           return span, false
         end
@@ -250,11 +302,12 @@ function Pandoc(doc)
         else
           show_text(block.content)
         end
-      elseif block.t == "Div" and block.classes:includes("slide-text") then
+      elseif block.t == "Div" and text_style(block) then
         if not current_title then
           start_slide("Introduction", "introduction", "")
         end
-        show_text(block.content, true)
+        local style = text_style(block)
+        show_text(block.content, style ~= "text", style == "subbullet")
         notes:insert(highlighted_notes(block))
       elseif block.t == "Div" and (block.classes:includes("slide-visual")
           or block.classes:includes("slide-fragment")) then
@@ -267,7 +320,7 @@ function Pandoc(doc)
           if title then
             local heading = pandoc.Header(3, {pandoc.Str(title)},
               pandoc.Attr("", {"slide-heading"}))
-            if output[current_slide_index].attributes["slide-columns"] then
+            if output[current_slide_index].attributes["slide-columns"] == "true" then
               -- Align the second title with the first column's heading while
               -- retaining a single reveal step for this title and its content.
               reveal_group = reveal_group + 1
@@ -295,13 +348,18 @@ function Pandoc(doc)
             or block.classes:includes("slide-comparison") then
           set_columns(output[current_slide_index], block)
         end
-        -- Keep nested text selections' bullet formatting, but let the outer
+        -- Keep nested text selections' formatting, but let the outer
         -- visual own their animation so heading and text reveal together.
         block = block:walk({Div = function(div)
-          if div.classes:includes("slide-text") then
+          local style = text_style(div)
+          if style then
             notes:insert(highlighted_notes(div))
-            local text = text_fragment(div.content, true)
-            text.classes = pandoc.List({"slide-content"})
+            local text = text_fragment(div.content, style ~= "text")
+            if style == "subbullet" then
+              text.classes:insert("slide-subbullet")
+            else
+              text.classes = pandoc.List({"slide-content"})
+            end
             return text
           end
         end})
@@ -326,16 +384,24 @@ function Pandoc(doc)
         process_blocks(block.content, parent_anchor or current_anchor)
         if block.classes:includes("slide-columns")
             or block.classes:includes("slide-comparison") then
+          local new_slide = false
           for index = first_output, #output do
             if output[index].t == "Header" and output[index].level == 2 then
               set_columns(output[index], block)
+              new_slide = true
               break
             end
           end
+          if not new_slide then columns_below_title(first_output, block) end
         end
       elseif current_title then
         for _, selection in ipairs(selected_spans(block)) do
-          show_text({selection}, true)
+          if selection.t == "Div" then
+            local style = text_style(selection)
+            show_text(selection.content, style ~= "text", style == "subbullet")
+          else
+            show_text({selection}, true)
+          end
         end
         notes:insert(highlighted_notes(block))
       end
@@ -401,6 +467,61 @@ function Pandoc(doc)
       return index_fragment(div)
     end,
     Span = index_fragment
+  })
+  -- Attach child selections after assigning indices in source order. This
+  -- preserves reveal order even when nesting moves a child earlier in the DOM.
+  local function append_child(list, child)
+    local items = list.content
+    if #items == 0 then error(".slide-subbullet needs a preceding slide bullet") end
+    local item = items[#items]
+    item:insert(child)
+    items[#items] = item
+    list.content = items
+    return list
+  end
+  doc = doc:walk({
+    traverse = "topdown",
+    Div = function(div)
+      if div.classes:includes("notes") then return div, false end
+    end,
+    Blocks = function(blocks)
+      local result = pandoc.Blocks({})
+      local parent = nil
+      for _, block in ipairs(blocks) do
+        if block.t == "Div" and block.classes:includes("slide-subbullet")
+            and not block.attributes["subbullet-attached"] then
+          if not parent then
+            error(".slide-subbullet needs a preceding .slide-bullet in the same slide or column")
+          end
+          block.attributes["subbullet-attached"] = "true"
+          local target = result[parent]
+          if target.t == "BulletList" or target.t == "OrderedList" then
+            result[parent] = append_child(target, block)
+          else
+            local content = target.content
+            local last_list = nil
+            for index, entry in ipairs(content) do
+              if entry.t == "BulletList" or entry.t == "OrderedList" then last_list = index end
+            end
+            if not last_list then error(".slide-subbullet needs a preceding .slide-bullet") end
+            content[last_list] = append_child(content[last_list], block)
+            target.content = content
+            result[parent] = target
+          end
+        else
+          result:insert(block)
+          if block.t == "Header" or (block.t == "Div"
+              and block.classes:includes("slide-columns-content")) then
+            parent = nil
+          elseif block.t == "BulletList" or block.t == "OrderedList"
+              or (block.t == "Div" and block.classes:includes("slide-content")
+                and not block.classes:includes("slide-subbullet")) then
+            parent = #result
+          end
+        end
+      end
+      return result
+    end
   })
   doc.meta.toc = false
   doc.meta["number-sections"] = false

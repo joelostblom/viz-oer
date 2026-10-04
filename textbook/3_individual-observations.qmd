@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/3_individual-observations.html
 fig-width: 4
 fig-height: 4
 resources:
@@ -16,16 +17,22 @@ include-in-header:
 
 # Individual observations {#sec-individual-observations}
 
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+::: {.slide-outcomes}
+
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Apply** the visualization grammars in Altair and ggplot
+1. [**Apply** the visualization grammars in Altair and ggplot]{.slide-bullet}
    to create a basic chart via
    `alt.Chart(data).mark_point().encode(x='...', y='...', color='...')`
    and <br> `ggplot(data, aes(x = ..., y = ..., color = ...)) + geom_point()`.
 
-2. **Interpret** relationships between individual observations in a scatterplot without assuming causation.
+2. [**Interpret** relationships between individual observations in a scatterplot without assuming causation.]{.slide-bullet}
 
-3. **Encode** an additional quantitative variable with color and **use** tooltips to identify observations.
+3. [**Encode** an additional quantitative variable with color and **use** tooltips to identify observations.]{.slide-bullet}
+
+:::
 
 :::
 
@@ -43,8 +50,8 @@ Plotting each individual observation separately
 is one of the most direct ways to visualize data.
 Rather than summarizing groups of observations,
 we're simply
-putting one graphical point in our chart
-for every record in our table.
+[putting one graphical point in our chart
+for every record in our table]{.slide-bullet}.
 As we saw in the introductory chapter,
 even this simple form of visualization
 can reveal patterns that are difficult to spot in a table of numbers.
@@ -55,14 +62,14 @@ It's time to start coding!
 First, we need some example data to visualize.
 Libraries that implement a grammar of graphics
 generally work with ["tidy"](https://vita.had.co.nz/papers/tidy-data.html) data.
-In tidy data, each column represents a *variable* (also called a *field*),
-and each row represents an *observation*.
+In tidy data, [each column represents a *variable* (also called a *field*),
+and each row represents an *observation*]{.slide-bullet}.
 We will start by loading a small historical dataset
 with information about cars' design, performance, and fuel efficiency.
 
 :::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: load-cars-python
@@ -78,11 +85,13 @@ cars
 
 ```{python}
 #| label: show-cars-python
+#| slide-show: output
+#| slide-title: The cars dataset
 #| echo: false
 show_df(cars)
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: load-cars-r
@@ -119,7 +128,7 @@ such as `x` and `y`.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 First,
 we create a canvas linked to the cars dataframe
@@ -130,13 +139,15 @@ Here, it is suitable to show the data as points using `mark_point()`:
 
 ```{python}
 #| label: cars-scatter-alt
+#| slide-show: both
+#| slide-title: Scatterplot — Altair
 alt.Chart(cars).mark_point().encode(
     x='Miles_per_Gallon',
     y='Horsepower'
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 First,
 we create a canvas linked to the cars dataframe
@@ -148,6 +159,8 @@ Here, it is suitable to show the data as points using `geom_point()`:
 
 ```{r}
 #| label: cars-scatter-gg
+#| slide-show: both
+#| slide-title: Scatterplot — ggplot
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower)) +
     geom_point()
 ```
@@ -184,8 +197,8 @@ That's up to you to explore in the exercise below!
 ::::: {.callout-default .ex-prompt}
 
 Study the chart above.
-What can you say about the relationship
-between `Horsepower` and `Miles_per_Gallon`?
+[What can you say about the relationship
+between `Horsepower` and `Miles_per_Gallon`?]{.slide-bullet}
 If you choose to use statistical terms such as correlation,
 also explain them in plain English,
 as if you were explaining what the chart means
@@ -214,7 +227,7 @@ this means that cars with more powerful engines (higher `Horsepower`)
 tend to have lower fuel efficiency (lower `Miles_per_Gallon`).
 This makes sense, as more powerful engines often consume more fuel
 than less powerful ones.
-Note that we can't make claims about a causal relationship from the chart alone,
+Note that [we can't make claims about a causal relationship from the chart alone]{.slide-bullet},
 but in this case, the observed relationship in the chart
 supports our mechanistic understanding of the world.
 
@@ -251,7 +264,7 @@ a continuous gradient will be used here.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 Here,
 we add the `color` encoding to the chart
@@ -263,6 +276,8 @@ which contrasts strongly with the light background of the chart.
 
 ```{python}
 #| label: cars-weight-alt
+#| slide-show: both
+#| slide-title: Adding a quantitative color encoding — Altair
 alt.Chart(cars).mark_point().encode(
     x='Miles_per_Gallon',
     y='Horsepower',
@@ -270,7 +285,7 @@ alt.Chart(cars).mark_point().encode(
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 Here,
 we add the `color` encoding to the chart
@@ -283,6 +298,8 @@ to the chart's dark background.
 
 ```{r}
 #| label: cars-weight-gg
+#| slide-show: both
+#| slide-title: Adding a quantitative color encoding — ggplot
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
     geom_point()
 ```
@@ -308,7 +325,7 @@ which we will learn about in a future chapter.
 
 ::::: {.callout-default .ex-prompt}
 
-How does a car's weight relate to its fuel efficiency?
+[How does a car's weight relate to its fuel efficiency?]{.slide-bullet}
 
 :::: {.callout-default .ex-hint}
 

@@ -192,7 +192,7 @@ is to consider the difference between giving an instruction in each:
 
 ### Declarative instruction {.slide-with-content}
 
-:::: {.slide-text}
+:::: {.slide-bullet}
 
 **"Color by the column `group` in the dataframe."**
 
@@ -207,7 +207,7 @@ are handled automatically.
 ### Imperative instruction {.slide-fragment .slide-with-content}
 
 
-::::: {.slide-text}
+::::: {.slide-bullet}
 
 **"Loop over the dataframe
 and plot observations in group `a` in blue
@@ -365,7 +365,7 @@ there are some core steps
 which are present in most
 grammars of graphics:
 
-::: {.slide-text}
+::: {.slide-bullet}
 
 1. **Create a data-linked canvas**:
     This step creates a background canvas

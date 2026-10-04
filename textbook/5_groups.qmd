@@ -32,7 +32,7 @@ from utils import show_df
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. [**Explain** the two main purposes of grouping]{.slide-text}:
+1. [**Explain** the two main purposes of grouping]{.slide-bullet}:
    - Making direct comparisons between groups,
      e.g., observations in group A tend to have higher values
      than those in group B.
@@ -42,7 +42,7 @@ from utils import show_df
      while the data for individual groups displays negative trends
      or no trend at all.
 2. [**Evaluate** which grouping strategy is the most suitable in a specific
-   context]{.slide-text}:
+   context]{.slide-bullet}:
    - Color (optionally combined with shape) distinguishes groups while keeping
      observations close together on shared positional scales for comparing values.
    - Grouping by position gives each category its own lane
@@ -52,7 +52,7 @@ from utils import show_df
      to those of other groups
      since it shows the observations for each group separately.
 3. [**Apply** grouping strategies using color, shape, and position (including facets)
-   to visually distinguish between categories]{.slide-text}
+   to visually distinguish between categories]{.slide-bullet}
 :::
 
 ::::
@@ -80,7 +80,7 @@ What makes you expect that?
 
 We will [investigate a country-level dataset containing
 the percentage of heavy drinkers
-and the average remaining life expectancy at age 65]{.slide-text}.^[Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; [World Bank country and lending groups](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups).]
+and the average remaining life expectancy at age 65]{.slide-bullet}.^[Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; [World Bank country and lending groups](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups).]
 In our scatterplot, each point represents a country.
 The x-axis shows the percentage of heavy drinkers,
 and the y-axis shows the average number of years
@@ -93,7 +93,7 @@ sketch your prediction (either on paper or in your mind).
 
 Think about what trend you would expect to see in this dataset.
 [Do you think countries with a high percentage of heavy drinkers
-have high or low remaining life expectancy at age 65?]{.slide-text}
+have high or low remaining life expectancy at age 65?]{.slide-bullet}
 
 ```{python}
 #| label: fig-polar
@@ -194,7 +194,7 @@ and remaining life expectancy at age 65 are associated with income group.
 We see the opposite picture for most **low-income countries**, where both measures are lower.
 
 This gives us a possible explanation for the surprising overall trend.
-[Income level could be a [confounding variable](https://en.wikipedia.org/wiki/Confounding)]{.slide-text},
+[Income level could be a [confounding variable](https://en.wikipedia.org/wiki/Confounding)]{.slide-bullet},
 influencing both alcohol consumption and life expectancy.
 The chart suggests this possibility but does not establish those causal effects.
 Crucially, the points represent **countries, not people**:
@@ -219,7 +219,7 @@ As we have seen in the exercises above, grouping can have major benefits.
 We can divide these benefits into two main categories,
 both of which help us arrive at more accurate conclusions about our data:
 
-::: {.slide-text}
+::: {.slide-bullet}
 
 1. **Directly compare** observations between groups.
 2. **Reveal patterns** within individual groups that are obscured
@@ -281,7 +281,7 @@ alt.Chart(simpsons_df).mark_point().encode(
 
 ## What type of column can we use for grouping?
 
-In general, we are interested in [grouping data by "categorical" columns]{.slide-text}.
+In general, we are interested in [grouping data by "categorical" columns]{.slide-bullet}.
 If there is a natural order to the categories (e.g., education levels
 or letter grades), we can be more precise and call the column "ordinal".
 If there is no such order,
@@ -406,8 +406,8 @@ aes(y = category_column)
 
 ### Color
 
-[The human brain can detect color differences with little cognitive effort]{.slide-text}.
-[Color is a **preattentive feature**]{.slide-text}^[Wolfe JM, Utochkin IS.
+[The human brain can detect color differences with little cognitive effort]{.slide-bullet}.
+[Color is a **preattentive feature**]{.slide-bullet}^[Wolfe JM, Utochkin IS.
 What is a preattentive feature?
 Curr Opin Psychol. 2019 Oct;29:19-26. doi: 10.1016/j.copsyc.2018.11.005.
 Epub 2018 Nov 13.
@@ -420,19 +420,19 @@ This is great news for grouping!
 By encoding our categorical variable as color,
 we can leverage the brain's ability to infer groups.
 Conveniently, [color doesn't alter the layout
-or structure]{.slide-text} of the data visualization,
+or structure]{.slide-bullet} of the data visualization,
 so [it's an efficient way to compare the exact values of data points between
-groups]{.slide-text}.
+groups]{.slide-bullet}.
 
 In the second exercise of this chapter, we already saw how color could be used to
 group our life expectancy data by income group.
 Let's now see what the code to create this chart looks like:
 
-[Avoid using more than 4-6 colors]{.content-visible when-format="revealjs" .slide-text}
+[Avoid using more than 4-6 colors]{.content-visible when-format="revealjs" .slide-bullet}
 
 ::: {.content-visible when-format="revealjs"}
 
-:::: {.slide-text}
+:::: {.slide-bullet}
 
 What explanation would you suggest for this pattern?
 
@@ -514,8 +514,8 @@ color.
 
 ### Shape
 
-[Shape is a less effective grouping strategy on its own]{.slide-text},
-but [it can be combined with color to provide an additional visual cue]{.slide-text}.
+[Shape is a less effective grouping strategy on its own]{.slide-bullet},
+but [it can be combined with color to provide an additional visual cue]{.slide-bullet}.
 
 The syntax for mapping a variable to the shape channel is similar to that for color:
 
@@ -653,11 +653,11 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 
 #### X and Y position
 
-[Grouping by position often creates the clearest separation between groups]{.slide-text}.
+[Grouping by position often creates the clearest separation between groups]{.slide-bullet}.
 Distributing the groups along the x- or y-axis gives each group its own visual lane,
 preventing observations from different groups from overlapping.
-However, [the grouping column now occupies one positional visual channel]{.slide-text},
-so [there is only one positional channel left]{.slide-text}
+However, [the grouping column now occupies one positional visual channel]{.slide-bullet},
+so [there is only one positional channel left]{.slide-bullet}
 for encoding the values we want to compare between the groups.
 
 Below, we distribute the regions along the y-axis.
@@ -722,15 +722,15 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 Faceting takes the concept of grouping to the next level.
 Instead of using different visual channels within a single chart,
 [generates multiple charts (or "facets"),
-each dedicated to a grouped subset of the data]{.slide-text}.
+each dedicated to a grouped subset of the data]{.slide-bullet}.
 Faceting is [particularly effective for highlighting distinct trends
-and patterns within each subset]{.slide-text},
+and patterns within each subset]{.slide-bullet},
 as well as identifying extreme values or outliers within groups.
 We could think of faceting as a type of position grouping,
 but its advantage is that it [keeps both the x- and y-axes free
-for other variables]{.slide-text}.
+for other variables]{.slide-bullet}.
 
-[Previous grouping strategies can be used within each facet]{.content-visible when-format="revealjs" .slide-text}
+[Previous grouping strategies can be used within each facet]{.content-visible when-format="revealjs" .slide-bullet}
 
 Let's create a separate facet for each income group,
 so that the relationship between `percentage_heavy_drinkers`

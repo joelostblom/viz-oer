@@ -19,7 +19,7 @@ You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000
   <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"/>
 </svg> beside a chapter title.
 
-::: {.slide-text}
+::: {.slide-bullet}
 
 1. Press `?` to explore the keyboard shortcuts.
 2. Close the shortcut help with `Esc` or `Q`, then press `E` to enter PDF-export mode.
@@ -30,7 +30,7 @@ You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000
 ## Learning outcomes & summaries
 
 ::: {.callout-note title="Learning outcomes & Chapter summary" collapse=false}
-[Every chapter starts with the "Learning outcomes"]{.slide-text},
+[Every chapter starts with the "Learning outcomes"]{.slide-bullet},
 which describe what you will learn from this chapter.
 To make these learning outcomes more useful to you as a reader,
 we have expanded them to include a summary of the "solution" for each outcome,
@@ -44,7 +44,7 @@ we would write:
 instead of presenting it with numbers is that they are easier to interpret for humans.
 
 As such,
-[the learning objectives also serve as the summary of each chapter]{.slide-text}.
+[the learning objectives also serve as the summary of each chapter]{.slide-bullet}.
 :::
 
 ## A heading {.slide-skip}
@@ -61,10 +61,10 @@ These will be used to divide content further.
 
 ::::: {.callout-default .ex-prompt}
 
-[Exercises aim to engage you actively with the material]{.slide-text},
+[Exercises aim to engage you actively with the material]{.slide-bullet},
 both to make it more fun to learn
 and to improve your learning.
-[Try to solve the exercise on your own first]{.slide-text},
+[Try to solve the exercise on your own first]{.slide-bullet},
 before looking at the hint and the solution;
 this active engagement is what aids your learning.
 Click the hint below to expand it.
@@ -86,7 +86,7 @@ You got it!
 
 ## Coding content
 
-[Coding content will often include a panel with multiple tabs]{.slide-text},
+[Coding content will often include a panel with multiple tabs]{.slide-bullet},
 so that you can easily see what the same code looks like
 for different visualization packages.
 These sections also include explanations

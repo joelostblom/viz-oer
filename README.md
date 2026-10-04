@@ -145,13 +145,18 @@ The chapter uses lightweight annotations:
 
 - `chapter-slides: slides/1_why-visualize-data.html` enables its presentation link.
 - A `.slide-outcomes` div wraps the learning outcomes.
-  Optionally mark shorter `.slide-text` spans within it to show just those
+  Optionally mark shorter `.slide-bullet` spans within it to show just those
   excerpts; the complete outcomes remain in speaker notes and the textbook.
 - A `.slide-visual` div wraps each chart, image, or table selected for slides.
   It can be nested inside an exercise or tabset. It can also contain
   code with its chart so they appear together as one fragment.
-- A `.slide-text` span selects a phrase/sentence within a paragraph; a
-  `.slide-text` div selects a whole paragraph, list, or block.
+- `.slide-text` selects plain text without adding bullet points.
+- `.slide-bullet` selects bullet text: plain paragraphs become bullets, and
+  existing lists retain their type, numbering, and nesting.
+- `.slide-subbullet` adds a nested bullet beneath the preceding selected bullet,
+  with its own reveal step. It must follow a bullet on the same slide/column.
+  All three classes support inline spans and block divs and share the same
+  selection, fragment, and speaker-note handling.
 - Plain chapter headings start new slides, including subsections.
 - Add `.slide-with-content` to a heading to start a new slide and reveal that
   heading together with its first selected text or visual block.
@@ -175,7 +180,7 @@ The chapter uses lightweight annotations:
 #### Headings: placement and animation
 
 Prefer **heading annotations for headings**, and **wrappers for selecting and
-grouping content**. Keep real headings outside `.slide-text` and `.slide-visual`
+grouping content**. Keep real headings outside text-selection and `.slide-visual`
 wrappers so their slide placement is explicit.
 
 | Intent | Heading markup |
@@ -194,11 +199,11 @@ For separate heading and text reveals:
 ```markdown
 ## A new slide
 
-[First point]{.slide-text}
+[First point]{.slide-bullet}
 
 ### A heading on the same slide {.slide-fragment}
 
-[Another point]{.slide-text}
+[Another point]{.slide-bullet}
 
 ## The next slide
 ```
@@ -211,7 +216,7 @@ For a heading and its bullets to reveal together on the current slide:
 ```markdown
 ### Imperative instruction {.slide-fragment .slide-with-content}
 
-::: {.slide-text}
+::: {.slide-bullet}
 
 **"Loop over the dataframe and plot observations in each group."**
 
@@ -223,7 +228,7 @@ For a heading and its bullets to reveal together on the current slide:
 Remove `.slide-fragment` from the heading to start a new slide instead, while
 keeping the heading and bullets in the same animation step. The same heading
 annotations work when the next selected block is `.slide-visual` rather than
-`.slide-text`.
+`.slide-bullet` or `.slide-text`.
 
 #### Executable code and output
 
@@ -268,7 +273,7 @@ is needed. The font stacks are set in `_chapter-slides.yml` and
 To select an excerpt from a paragraph:
 
 ```markdown
-Visualization helps us [**recognize patterns** more quickly]{.slide-text}
+Visualization helps us [**recognize patterns** more quickly]{.slide-bullet}
 than a table of raw numbers.
 ```
 
@@ -277,7 +282,8 @@ speaker notes, where the selected passages are bold to make them easy to locate.
 Only the marked phrase appears on the slide, as a bulleted fade-in fragment
 under the current heading. Formatting and links inside the brackets are retained.
 Multiple marked spans become separate fragments, in reading order.
-The first letter of each selected paragraph or list item is automatically
+For bullet and subbullet selections, the first letter of each paragraph or list
+item is automatically
 capitalized in slides, including excerpts starting with bold text or a link.
 The rest of the capitalization is preserved; chapter text and speaker notes
 retain their original wording. Leading code identifiers and formulas stay literal.
@@ -285,7 +291,7 @@ retain their original wording. Leading code identifiers and formulas stay litera
 For a whole paragraph or a group of bullets, use a div instead:
 
 ```markdown
-::: {.slide-text}
+::: {.slide-bullet}
 Visualization supports both exploration and communication.
 :::
 ```
@@ -296,6 +302,35 @@ Each paragraph becomes a bullet; existing lists retain their type, numbering,
 and nesting without adding an extra bullet level. These
 are project-specific annotations implemented by `chapter-slides.lua`, not native
 Quarto selection syntax. Place inline selections after their section heading.
+
+For plain slide text, use `.slide-text` instead:
+
+```markdown
+::: {.slide-text}
+What else might explain this association?
+:::
+```
+
+To reveal supporting detail as a subbullet of the preceding bullet:
+
+```markdown
+[Compare observations within groups.]{.slide-bullet}
+
+[Income may be related to both variables.]{.slide-subbullet}
+
+[The pooled trend may differ from the within-group trend.]{.slide-subbullet}
+```
+
+Each child reveals separately beneath the parent; the chapter still displays
+the original text normally. A `.slide-subbullet` div can select a whole block,
+including several paragraphs or list items that should reveal together. It
+attaches to the last item of the preceding selected list. Plain `.slide-text`
+paragraphs are not parent bullets. Existing bullet annotations were migrated
+from `.slide-text` to `.slide-bullet` when this distinction was introduced.
+
+Warning-callout headings are preserved in slides (including headings used by
+Quarto as the callout title). Use `.slide-bullet` or `.slide-text` to select the
+warning's visible explanation; its remaining prose becomes speaker notes.
 
 #### Visuals and grouped fragments
 
@@ -345,7 +380,7 @@ this does not start a new slide. You can also combine `.slide-visual` and
 `.slide-fragment` on the same div. For real source headings, prefer the heading
 annotations in the table above.
 
-A `.slide-text` div nested inside a `.slide-fragment` block still converts plain
+A `.slide-bullet` div nested inside a `.slide-fragment` block still converts plain
 paragraphs to bullets and preserves existing lists. It shares the outer block's
 animation. Existing markup with a heading inside a `.slide-fragment` or
 `.slide-visual` wrapper remains supported for compatibility, but heading
@@ -382,6 +417,30 @@ that heading together with its chart, as in chapter 5's comparison:
 Cells inside this comparison should omit `slide-title`, which starts a dedicated
 slide. An output-only cell already reveals as a fragment; `slide-output-fragment`
 is useful when delaying a result after displayed code, and is unnecessary here.
+
+To put a **full-width title above both columns**, place a plain heading before
+the tabset and make both column headings fragments:
+
+```markdown
+## Simpson's paradox
+
+::: {.panel-tabset .slide-columns}
+
+### Overall {.slide-fragment .slide-with-content}
+
+<!-- Selected visual or cell with slide-show: output -->
+
+### By group {.slide-fragment .slide-with-content}
+
+<!-- Selected visual or cell with slide-show: output -->
+
+:::
+```
+
+The main title appears first. Each column heading and its first selected block
+then reveal together, left column followed by right column. `slide-widths` works
+with this layout too. The book retains its normal headings and tabs. Chapter 5
+uses this full-width-title layout for its aggregation comparison.
 
 This layout currently supports two columns. The former `.slide-comparison`
 name remains supported as a compatibility alias; use `.slide-columns` for new
