@@ -291,6 +291,12 @@ that hold continuous data (e.g., height or age), but there are exceptions.
 For example, we might turn ages recorded in whole years into categories
 that we can group by, such as 18–24, 25–34, and 35–44.
 
+[**Ordinal**: a natural order to the categories (e.g., education levels
+or letter grades)]{.content-visible when-format="revealjs" .slide-subbullet}
+[**Nominal**: no order (e.g., types of fruit or color names)]{.content-visible when-format="revealjs" .slide-subbullet}
+[Don't group data by quantitative columns
+that hold continuous data (e.g., height or age)]{.slide-bullet}
+
 ## Channels for grouping
 
 Generally speaking, position
@@ -482,7 +488,6 @@ options(readr.show_col_types = FALSE)
 #| slide-title: Color — ggplot
 library(tidyverse)
 
-
 income_df <- read_csv('data/income_lifeexp_alcohol.csv')
 
 ggplot(income_df, aes(
@@ -497,7 +502,9 @@ ggplot(income_df, aes(
 
 ::: {.callout-warning}
 
-#### Avoid using color for more than 5–7 groups
+#### Avoid using color for more than 5–7 groups {.slide-skip}
+
+<!-- TODO add an example with too many colors and then include this insteadof note on first color page -->
 
 Using too many colors or colors
 that are too similar can blur the differences between groups.
@@ -591,7 +598,6 @@ which makes this chart ineffective:
 ```{python}
 #| label: income-region-alt
 #| slide-show: output
-#| slide-title: Too many visual combinations
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -638,7 +644,6 @@ sizes apart, as you can see in the chart below.
 ```{python}
 #| label: income-size-alt
 #| slide-show: output
-#| slide-title: Avoid using size gor groups
 #| echo: false
 alt.Chart(income_df).mark_point(color='#FF0039').encode(
     x='percentage_heavy_drinkers',
