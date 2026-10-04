@@ -38,7 +38,7 @@ pd.set_option('display.max_rows', 6)
 ```
 
 
-## What is the purpose of visualizing data?
+## What is data visualization?
 
 At its core,
 data visualization is about representing data with graphical elements
@@ -48,9 +48,9 @@ We usually visualize data for two main purposes:
 or [to improve someone's else's understanding]{.slide-bullet} by communicating
 what we have learned.
 While we often use visualization
-to answer a specific question about a dataset,
+[to answer a specific question about a dataset]{.slide-bullet},
 it can also be more exploratory
-and help us generate new questions.
+and [help us generate new questions]{.slide-bullet}.
 
 In this sense,
 we can [think of data visualization as a human "data language"]{.slide-bullet}
@@ -62,32 +62,14 @@ in either case, the goal is to support human understanding.
 By supporting both exploration and communication,
 [visualization is often where a data analysis begins and ends]{.slide-bullet}.
 
-## Why bother visualizing data instead of showing raw numbers?
+## Why bother?
 
-To understand why visualizations are so powerful,
-it is helpful to remember that to answer a question,
-we often have to put the data in a format
-that is easy for us humans to interpret.
-Because our number systems have only been around for about 5,000 years,
-we need to assert effort and train ourselves
-to recognize structure in numerical data.
+Why do we visualize data instead of just showing raw numbers in tables?
+Let's find out in an exercise!
 
-Visual systems,
-on the other hand,
-have undergone refinement during 500,000,000 years of evolution,
-so we can instinctively recognize visual patterns
-and accurately estimate visual properties
-such as colors and distances
-without much conscious cognitive effort.
+::: {.callout-default .ex-prompt}
 
-In practice,
-this means that we can arrive at
-correct conclusions faster
-by studying graphical
-rather than numerical representations
-of the same data.
-For example,
-have a look at the four sets of data
+Have a look at the four sets of data
 in the table below.
 Can you describe the datasets
 just from looking at the numbers?
@@ -130,7 +112,8 @@ HTML(html_content)
 
 :::
 
-### Summary statistics don't tell the whole story either
+
+:::: {.callout-default .ex-hint}
 
 You are likely not able to see much difference between the data sets
 in the table above.
@@ -185,7 +168,7 @@ statistical summaries can't tell the whole story about the data
 and there can be important differences between datasets
 that summaries fail to reveal.
 
-### Plotting immediately reveals patterns in the data
+::::: {.callout-default .ex-solution}
 
 So if you can't really see any patterns in the table
 and the statistical summaries are nearly all the same,
@@ -194,7 +177,7 @@ Sounds about right
 so let's go ahead
 and plot them to have a quick look...
 
-::: {.slide-visual}
+::: {.slide-visual .slide-columns}
 
 ```{python}
 #| echo: false
@@ -223,7 +206,13 @@ Well what is wrong is that
 humans are not good at detecting patterns in raw numbers,
 and we don't have good intuition about which combination of numbers
 can contribute to the same statistical summaries.
-But remember what we excel at? Detecting visual patterns!
+What do we excel at? Detecting visual patterns!
+
+::: {.content-visible when-format="revealjs"}
+
+## Because {.slide-fragment}
+
+:::
 
 It is immediately clear to us
 how the four datasets differ
@@ -235,12 +224,43 @@ and set D has a constant X-value for all numbers except one big outlier.
 We could only detect these patterns
 after visualizing the data.
 Importantly,
-if we only had looked at the raw data or the summary statistics,
-we would have come to the wrong conclusions
-about how the datasets differ,
-and any research or business level decision
-based on solely a numerical analysis
-would have been misinformed.
+[if we only had looked at the raw data or the summary statistics,
+**we would have come to the wrong conclusions
+about how the datasets differ**]{.slide-bullet},
+and [any research or business level decision
+based on solely on our numerical analysis of this dataset
+**would have been misinformed**]{.slide-bullet}.
+
+:::::
+
+::::
+
+:::
+
+## Why are visuals easier to interpret than numbers?
+
+To understand why visualizations are so powerful,
+it is helpful to remember that to answer a question,
+we often have to put the data in a format
+that is easy for us humans to interpret.
+Because [our number systems have only been around for about 5,000 years]{.slide-bullet},
+[we need to assert effort and train ourselves
+to recognize structure in numerical data]{.slide-bullet}.
+
+On the other hand,
+[visual systems
+have undergone refinement during 500,000,000 years of evolution]{.slide-bullet},
+so [we can instinctively recognize visual patterns
+and accurately estimate visual properties]{.slide-bullet}
+such as colors and distances
+without much conscious cognitive effort.
+
+In practice,
+this means that [we can arrive at
+correct conclusions faster
+by studying graphical
+rather than numerical representations]{.slide-bullet}
+of the same data.
 
 ### A modern take on Anscombe's quartet
 
