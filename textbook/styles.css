@@ -305,6 +305,17 @@ div.callout.callout-style-default > .callout-header {
   margin-top: 0;
 }
 
+/* Filled information circle, using the same icon family as hints/solutions. */
+.callout.callout-note:not(.no-icon) .callout-icon:not(.no-icon)::before {
+  content: "\f05a";
+  background-image: none;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 1;
+}
+
 .callout-ex-prompt {
   border-left-color: #2780e3 !important;
 }
