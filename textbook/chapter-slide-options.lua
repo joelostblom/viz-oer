@@ -8,6 +8,17 @@ function Div(div)
     -- including nested slide annotations and material destined for notes.
     return pandoc.List()
   end
+  if quarto.doc.is_format("revealjs") and div.classes:includes("slide-outcomes") then
+    -- The slide supplies its own heading. Unpack the book's note before
+    -- Quarto converts its title and border into a second, nested callout.
+    return div:walk({Div = function(note)
+      if note.classes:includes("callout-note") then
+        local content = note.content
+        if content[1] and content[1].t == "Header" then content:remove(1) end
+        return content
+      end
+    end})
+  end
   if quarto.doc.is_format("revealjs") and div.classes:includes("callout-warning") then
     -- Callout parsing consumes a leading Header as the box title. Preserve it
     -- as a normal heading for slide selection, without changing book callouts.

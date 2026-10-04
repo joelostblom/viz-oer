@@ -131,6 +131,27 @@
   margin-bottom: 0.7em;
 }
 
+/* Borderless outcomes with regular numbering and extra space between items. */
+.reveal .slides .slide-outcomes-content > ol {
+  list-style: decimal;
+  display: block;
+  margin: 0 0 0 1.2em;
+  padding: 0;
+}
+
+.reveal .slides .slide-outcomes-content > ol > li {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.reveal .slides .slide-outcomes-content > ol > li + li {
+  margin-top: 0.8em;
+}
+
+.reveal .slides .slide-outcomes-content > ol > li > p {
+  margin: 0;
+}
+
 .reveal .slide-media,
 .reveal .slide-media .quarto-figure,
 .reveal .slide-media figure,

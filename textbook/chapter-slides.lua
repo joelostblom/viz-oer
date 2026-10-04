@@ -351,6 +351,15 @@ function Pandoc(doc)
         else
           show_text(block.content)
         end
+        local outcomes = output[#output]
+        outcomes.classes:insert("slide-outcomes-content")
+        -- Give concise selections the same numbered agenda as full outcomes;
+        -- retain any nested lists and the source wording in speaker notes.
+        for index, content in ipairs(outcomes.content) do
+          if content.t == "BulletList" then
+            outcomes.content[index] = pandoc.OrderedList(content.content)
+          end
+        end
       elseif block.t == "Div" and text_style(block) then
         if not current_title then
           start_slide("Introduction", "introduction", "")
