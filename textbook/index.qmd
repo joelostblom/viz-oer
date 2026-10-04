@@ -48,6 +48,8 @@ what **could** work based on understanding the rules of the grammar.
 <!-- rather than being focused on what **does** work from remembering a full api catalogue --> 
 <!-- of chart templtaes and names. -->
 
+<!-- TODO add note about how having the slides in the same document helps organize content -->
+
 This books also hopes to introduce students to some interesting data sets along the way,
 although this will likely be a work in progress over a longer time.
 

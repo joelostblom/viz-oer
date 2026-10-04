@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/7_summaries.html
 fig-width: 5
 fig-height: 3.75
 ---
@@ -6,6 +7,8 @@ fig-height: 3.75
 # Summaries {#sec-summaries}
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+:::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
@@ -17,31 +20,36 @@ fig-height: 3.75
 
 :::
 
+::::
+
 ## Why bother?
 
 In @sec-order, we connected observations to make their sequence clear.
 Sometimes, however, our question concerns a collection of observations:
 How many are there? What is their total? What is a typical value?
-A summary helps answer these questions by reducing many values to a few.
+[A summary helps answer these questions by reducing many values to a few]{.slide-bullet}.
 In this chapter, we will explore how to reduce a collection
 of observations to useful quantities.
 
 That reduction is useful, but it also leaves information out.
 As we work through this chapter, keep asking:
-**What did we lose, and how much of it do we need to put back?**
+[What did we lose, and how much of it do we need to put back?]{.slide-bullet}
 We will explore these questions here and in the following chapters.
 
+<!-- TODO add summaries for line for lab 1? -->
 
 ::: {.callout-default .ex-prompt}
 
+<!-- TODO add long term benefit comment -->
 Suppose you are interested in whether meditation could help you feel less stressed
 before your next exam.
-The dataset below is a 500-observation sample from a randomized study by Sparacio and colleagues.^[Sparacio et al. (2024), [*Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study*](https://doi.org/10.1038/s41562-024-01907-7), *Nature Human Behaviour*, 8, 1716–1725.]
+The dataset below is a 500-observation sample from a randomized study.^[Sparacio et al. (2024), [*Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study*](https://doi.org/10.1038/s41562-024-01907-7), *Nature Human Behaviour*, 8, 1716–1725.]
 It contains stress scores from four meditation conditions
 and a control condition in which participants listened to a story excerpt.
-The score averages 20 items from the State-Trait Anxiety Inventory's state-anxiety questionnaire
-(STAI Form Y-1), after reverse-scoring the relevant items; it ranges from 1 to 4,
+The stress score averages 20 items from a questionnaire
+where each item ranges from 1 to 4,
 with higher scores indicating greater self-reported distress after the activity.
+
 How do the recorded stress scores differ between conditions?
 We start by applying the strategies we have learned so far:
 grouping observations by position and comparing their values on a shared scale.
@@ -49,10 +57,12 @@ grouping observations by position and comparing their values on a shared scale.
 :::: {.panel-tabset group="language"}
 
 <!-- TODO jitter here? -->
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: meditation-observations-alt
+#| slide-show: output
+#| slide-title: Compare stress scores between conditions
 import pandas as pd
 import altair as alt
 
@@ -64,10 +74,12 @@ alt.Chart(meditation).mark_point().encode(
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: meditation-observations-gg
+#| slide-show: output
+#| slide-title: Overlapping observations — ggplot
 #| message: false
 library(readr)
 library(ggplot2)
@@ -105,11 +117,11 @@ Read on to find out how we could make these comparisons easier.
 In @sec-why-visualize-data,
 we saw that statistical summaries can make some patterns easier to identify
 than they are in a raw table of numbers.
-We can use a similar strategy here by comparing the mean stress score in each condition.
+We can use a similar strategy here by [comparing the mean stress score in each condition]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 In Altair,
 we can write a [supported aggregation
@@ -122,13 +134,15 @@ for example, `'mean(stress)'`:
 
 ```{python}
 #| label: meditation-means-alt
+#| slide-show: both
+#| slide-title: Comparing group means — Altair
 alt.Chart(meditation).mark_point().encode(
     y='condition',
     x='mean(stress)'
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 In ggplot,
 we can tell `geom_point()` to use a summary statistic
@@ -140,6 +154,8 @@ other geoms can have different defaults.
 
 ```{r}
 #| label: meditation-means-gg
+#| slide-show: both
+#| slide-title: Comparing group means — ggplot
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_point(stat = 'summary', fun = mean)
 ```
@@ -149,6 +165,8 @@ we could call `stat_summary()` and set the `geom` parameter:
 
 ```{r}
 #| label: meditation-means-stat-summary-gg
+#| slide-show: code
+#| slide-title: Geoms and stats describe the same chart
 #| output: false
 ggplot(meditation, aes(y = condition, x = stress)) +
     stat_summary(geom = 'point', fun = mean)
@@ -190,8 +208,8 @@ whenever we show a measure of central tendency such as the mean or median,
 it is helpful to pair it with an indication of the underlying variability.
 
 Here, we need to distinguish two concepts:
-the spread of the underlying data (descriptive statistics)
-and the uncertainty in the estimate of central tendency (inferential statistics).
+[the spread of the underlying data (descriptive statistics)
+and the uncertainty in the estimate of central tendency (inferential statistics)]{.slide-bullet}.
 These answer two different questions,
 but graphically they are often depicted similarly.
 In this chapter,
@@ -210,7 +228,7 @@ in our charts:
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 The `errorbar` mark allows us to plot several common
 measures of variability,
@@ -224,6 +242,8 @@ from the individual stress scores.
 
 ```{python}
 #| label: meditation-mean-sd-alt
+#| slide-show: both
+#| slide-title: Mean and standard deviation — Altair
 base = alt.Chart(meditation).encode(
     y='condition',
     x='stress'
@@ -233,7 +253,7 @@ points = base.mark_circle(color='black').encode(x='mean(stress)')
 points + base.mark_errorbar(extent='stdev', color='black')
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 As the name implies,
 the `pointrange` geom creates both a point and a range.
@@ -250,6 +270,8 @@ which otherwise multiplies the standard deviation by 2 by default.
 
 ```{r}
 #| label: meditation-mean-sd-gg
+#| slide-show: both
+#| slide-title: Mean and standard deviation — ggplot
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_pointrange(stat = 'summary', fun.data = mean_sdl, fun.args = list(mult = 1))
 ```
@@ -285,6 +307,8 @@ do you think could produce the summary chart on the left?
 ```{python}
 #| echo: false
 #| label: fig-summary-sd-obs
+#| slide-show: output
+#| slide-title: What could these summaries be hiding?
 #| fig-cap: Underlying distributions for mean and standard deviation. Adapted from [Beyond bar and line graphs](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002128).
 
 SCENARIOS = ['Symmetric', 'Outlier', 'Bimodal', 'Unequal n']
@@ -320,7 +344,7 @@ It's more than just one of them...
 ::::: {.callout-default .ex-solution}
 
 In this case,
-**all four** scenarios produce the same means and standard deviations for groups A and B!
+[**all four** scenarios produce the same means and standard deviations for groups A and B!]{.slide-bullet}
 If you only look at the mean ± SD chart,
 you cannot tell which of these very different datasets it represents.
 This matters because depending on what your observations look like,
@@ -356,7 +380,7 @@ To avoid being misled by a lone summary statistic,
 we can show the underlying observations of each group
 together with the statistical summaries.
 Plotting every observation in a group along the same line can lead to overlap.
-**Jittering** adds small random offsets to the points to help separate them.
+[**Jittering** adds small random offsets to the points to help separate them]{.slide-bullet}.
 Here, we jitter only along the categorical y-axis,
 so each point's horizontal position still represents its recorded stress score.
 
@@ -372,7 +396,7 @@ Back in the 1930s, the jitterbug was a lively, often wild, dance style that matc
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 We calculate a random value for each observation and use `yOffset`
 to spread the points within each condition's row.
@@ -380,6 +404,8 @@ We then layer the mean and standard deviation interval over those points.
 
 ```{python}
 #| label: meditation-jitter-summary-alt
+#| slide-show: output
+#| slide-title: Put the underlying observations back — Altair
 base = alt.Chart(meditation, height=alt.Step(30)).encode(
     y=alt.Y('condition').scale(padding=0.4),
     x='stress'
@@ -398,10 +424,12 @@ points = (
 points + base.mark_errorbar(extent='stdev', thickness=1.5) + base.mark_circle(size=40, color='black').encode(x='mean(stress)')
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: meditation-jitter-summary-gg
+#| slide-show: both
+#| slide-title: Put the underlying observations back — ggplot
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_point(position = 'jitter', color = 'grey') +
     geom_pointrange(stat = 'summary', fun.data = mean_sdl, fun.args = list(mult = 1))
@@ -442,25 +470,33 @@ within 1.5 interquartile ranges of the box edges;
 observations beyond the whiskers are drawn separately.
 This illustration can help you interpret the different parts of the box:
 
+::: {.slide-visual}
+
 ![The elements of a boxplot.](img/boxplot-elements.svg){#fig-boxplot-anatomy}
+
+:::
 
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: meditation-boxplots-alt
+#| slide-show: both
+#| slide-title: Median and spread — Altair
 alt.Chart(meditation).mark_boxplot().encode(
     y='condition',
     x='stress'
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: meditation-boxplots-gg
+#| slide-show: both
+#| slide-title: Median and spread — ggplot
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_boxplot()
 ```
@@ -474,6 +510,8 @@ together with a plot of the underlying observations
 or as a concise summary of the data
 after having inspected the underlying observations ourselves.
 
+:::: {.slide-visual slide-title="Different distributions, identical boxplots"}
+
 ::: {#fig-boxplot-drawbacks}
 
 ![](img/hist-point-box.gif)
@@ -484,6 +522,8 @@ shows how boxplots can look the same even when the distribution of the underlyin
 
 :::
 
+::::
+
 ::: {.callout-warning}
 
 ### Avoid drawing conclusions from summary charts alone
@@ -492,8 +532,8 @@ Summary charts such as mean ± SD plots and boxplots are useful
 since aggregation reduces the complexity of the chart.
 But even if you are interested
 in comparing group summaries such as means or medians,
-you should always also inspect the underlying observations
-to understand how they are distributed and whether there are any outliers,
+you should [always also inspect the underlying observations
+to understand how they are distributed and whether there are any outliers]{.slide-bullet},
 since this affects the conclusions you can draw from the chart.
 
 :::
@@ -502,10 +542,10 @@ since this affects the conclusions you can draw from the chart.
 
 The charts show differences in recorded stress scores between conditions in this sample.
 However, we have not assessed the statistical significance of those differences.
-Standard deviations and boxplots describe the spread of the observations,
-not the uncertainty in the group means or their differences.
-In particular, overlap between these descriptive intervals does not establish
-whether a difference is statistically significant.
+[Standard deviations and boxplots describe the spread of the observations,
+not the uncertainty in the group means or their differences]{.slide-bullet}.
+In particular, [overlap between these descriptive intervals does not establish
+whether a difference is statistically significant]{.slide-bullet}.
 That would require an appropriate inferential analysis,
 informed by the study design.
 

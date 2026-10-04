@@ -1,9 +1,12 @@
 ---
+chapter-slides: slides/8_counts.html
 fig-width: 5
 fig-height: 3.75
 ---
 
 # Counts & proportions {#sec-counts-proportions}
+
+:::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
@@ -16,6 +19,8 @@ fig-height: 3.75
 4. **Order** categorical bars and **choose** between bar and pie charts to make comparisons easier.
 
 :::
+
+::::
 
 In @sec-summaries, we explored central values and variability.
 Another useful summary is the number of observations in a group.
@@ -47,12 +52,12 @@ library(ggplot2)
 meditation <- read_csv('data/meditation-stress-sample.csv')
 ```
 
-We can summarize the number of observations in each group
-by computing a count.
+[We can summarize the number of observations in each group
+by computing a count]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 We can use the `'count()'` aggregation
 to count observations.
@@ -63,13 +68,15 @@ on the y-axis.
 
 ```{python}
 #| label: condition-count-points-alt
+#| slide-show: both
+#| slide-title: Counting observations — Altair
 alt.Chart(meditation).mark_point().encode(
     x='count()',
     y='condition'
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 We can use `stat = 'count'`
 to count observations.
@@ -82,6 +89,8 @@ on the y-axis.
 
 ```{r}
 #| label: condition-count-points-gg
+#| slide-show: both
+#| slide-title: Counting observations — ggplot
 ggplot(meditation, aes(y = condition)) +
     geom_point(stat = 'count')
 ```
@@ -101,17 +110,19 @@ stacked on top of each other).
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: condition-count-bars-alt
+#| slide-show: both
+#| slide-title: From points to bars — Altair
 alt.Chart(meditation).mark_bar().encode(
     x='count()',
     y='condition'
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 To discourage the use of bars for summaries,
 the default for `geom_bar` is `stat = 'count'`,
@@ -119,6 +130,8 @@ which means we can write just `geom_bar()`.
 
 ```{r}
 #| label: condition-count-bars-gg
+#| slide-show: both
+#| slide-title: From points to bars — ggplot
 #| fig-height: 2
 ggplot(meditation, aes(y = condition)) +
     geom_bar()
@@ -154,6 +167,7 @@ Adjusting the overall figure size can make the bars narrower.
 
 ```{r}
 #| label: oversized-count-bars-gg
+#| slide-show: output
 #| echo: false
 meditation |>
     dplyr::filter(condition %in% c('Mindful walking', 'Body scan')) |>
@@ -183,12 +197,12 @@ The within-the-bar bias](https://link.springer.com/article/10.3758/s13423-012-02
 
 In our chart above,
 the groups on the y-axis are sorted in alphabetical order.
-Sorting by count instead makes it easier to compare groups with similar counts
-and identify those with the most and fewest observations.
+[Sorting by count instead makes it easier to compare groups with similar counts
+and identify those with the most and fewest observations]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+#### Altair {.slide-skip}
 
 The `sort()` method takes the name of another
 visual channel to sort by,
@@ -196,6 +210,8 @@ such as `'x'`, `'color'`, etc.
 
 ```{python}
 #| label: condition-sorted-bars-alt
+#| slide-show: both
+#| slide-title: Sorting by count — Altair
 alt.Chart(meditation).mark_bar().encode(
     x='count()',
     y=alt.Y('condition').sort('x')
@@ -211,7 +227,7 @@ but generally it is more visually appealing
 to have the longest bar,
 the closest to the axis.
 
-#### ggplot
+#### ggplot {.slide-skip}
 
 The base R function `reorder()` sets the order of categorical levels
 based on another column in the dataframe,
@@ -226,6 +242,8 @@ then use it to order the categories on the y-axis.
 
 ```{r}
 #| label: condition-sorted-bars-gg
+#| slide-show: both
+#| slide-title: Sorting by count — ggplot
 #| fig-height: 2
 meditation |>
     dplyr::add_count(condition) |>
@@ -253,13 +271,15 @@ but we show an example of how we would define one.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 The custom order is passed to `sort`,
 just as when ordering by another visual channel.
 
 ```{python}
 #| label: condition-custom-sorted-bars-alt
+#| slide-show: both
+#| slide-title: Choosing a meaningful category order — Altair
 custom_order = ['Control (book chapter)', 'Mindful breathing', 'Body scan', 'Mindful walking', 'Loving kindness']
 alt.Chart(meditation).mark_bar().encode(
     x='count()',
@@ -267,7 +287,7 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 When ordering by another visual channel
 we used `reorder` to change the order of the dataframe column.
@@ -278,6 +298,8 @@ in this case the y scale.
 
 ```{r}
 #| label: condition-custom-sorted-bars-gg
+#| slide-show: both
+#| slide-title: Choosing a meaningful category order — ggplot
 #| fig-height: 2
 custom_order <- c('Control (book chapter)', 'Mindful breathing', 'Body scan', 'Mindful walking', 'Loving kindness')
 ggplot(meditation, aes(y = condition)) +
@@ -291,8 +313,8 @@ ggplot(meditation, aes(y = condition)) +
 ### Stacked bars
 
 Like area charts,
-bar charts can also show multiple groups
-as segments stacked on top of each other.
+[bar charts can also show multiple groups
+as segments stacked on top of each other]{.slide-bullet}.
 Let's explore this in the following exercise:
 
 ::: {.callout-default .ex-prompt}
@@ -304,10 +326,12 @@ is distributed across the study conditions.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+#### Altair {.slide-skip}
 
 ```{python}
 #| label: condition-gender-stacked-alt
+#| slide-show: both
+#| slide-title: What can you compare in stacked bars?
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x='count()',
@@ -315,10 +339,12 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-#### ggplot
+#### ggplot {.slide-skip}
 
 ```{r}
 #| label: condition-gender-stacked-gg
+#| slide-show: both
+#| slide-title: Stacked counts — ggplot
 #| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar()
@@ -355,7 +381,7 @@ we can put them next to each other within each condition.
 
 ::: {.panel-tabset group="language"}
 
-##### Altair
+##### Altair {.slide-skip}
 
 The `yOffset`/`xOffset` encodings
 that we used for jittering
@@ -364,6 +390,8 @@ to offset groups next to each other.
 
 ```{python}
 #| label: condition-gender-grouped-alt
+#| slide-show: both
+#| slide-title: Give the groups a shared baseline — Altair
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x='count()',
@@ -372,7 +400,7 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-##### ggplot
+##### ggplot {.slide-skip}
 
 The `position` parameter
 that we used for jittering
@@ -381,6 +409,8 @@ which places bars next to one another instead of stacking them.
 
 ```{r}
 #| label: condition-gender-grouped-gg
+#| slide-show: both
+#| slide-title: Give the groups a shared baseline — ggplot
 #| fig-height: 3
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'dodge')
@@ -417,7 +447,7 @@ are of secondary importance.
 
 ## Proportions
 
-A proportion expresses a part relative to a whole.
+[A proportion expresses a part relative to a whole]{.slide-bullet}.
 For categorical counts, we calculate it by dividing the count for a subgroup
 by the total count for the relevant group; multiplying by 100 gives a percentage.
 Here, each condition is the whole, and the gender categories are its parts.
@@ -426,10 +456,12 @@ even though the conditions have different numbers of participants.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: condition-gender-proportions-alt
+#| slide-show: both
+#| slide-title: Normalizing to proportions — Altair
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x=alt.X('count()').stack('normalize'),
@@ -444,6 +476,8 @@ Here, `labelExpr` formats each tick value directly, overriding the default perce
 
 ```{python}
 #| label: condition-gender-proportions-format-alt
+#| slide-show: output
+#| slide-title: Proportions versus percentages
 alt.Chart(meditation).mark_bar().encode(
     y='condition',
     x=alt.X('count()')
@@ -453,10 +487,12 @@ alt.Chart(meditation).mark_bar().encode(
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: condition-gender-proportions-gg
+#| slide-show: both
+#| slide-title: Normalizing to proportions — ggplot
 #| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'fill')
@@ -468,6 +504,8 @@ by specifying that the scale labels are percentages:
 
 ```{r}
 #| label: condition-gender-percentages-gg
+#| slide-show: both
+#| slide-title: Formatting percentages — ggplot
 #| fig-height: 2
 ggplot(meditation, aes(y = condition, fill = gender)) +
     geom_bar(position = 'fill') +
@@ -484,7 +522,7 @@ With three or more segments, those in the middle generally lack an aligned endpo
 making them harder to compare.
 Proportions can also be shown with side-by-side bars sharing a zero baseline.
 
-Always make the denominator clear.
+[Always make the denominator clear]{.slide-bullet}.
 These bars show proportions **within each condition**, not proportions of the whole sample.
 Normalizing also hides differences in sample size: the conditions contain between 84 and 113 participants,
 but all five normalized bars have the same total length.
@@ -492,7 +530,7 @@ Across the complete 500-observation sample, 344 participants reported female gen
 
 ### Pie charts
 
-Pie charts use angles and areas to indicate magnitude.
+[Pie charts use angles and areas to indicate magnitude]{.slide-bullet}.
 They should generally be avoided
 as bar charts with a shared baseline
 tend to communicate the same insights more effectively.
@@ -504,13 +542,15 @@ with just two or (maybe) three groups.
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+#### Altair {.slide-skip}
 
 `theta` is the visual channel that controls the angle
 of each slice in the pie.
 
 ```{python}
 #| label: gender-pie-alt
+#| slide-show: both
+#| slide-title: Parts of a whole — Altair
 alt.Chart(meditation).mark_arc().encode(
     theta=alt.Theta('count()').stack(True),
     color='gender'
@@ -520,7 +560,7 @@ alt.Chart(meditation).mark_arc().encode(
 We can also [adjust the inner and outer radii](https://altair-viz.github.io/gallery/radial_chart.html).
 Setting an inner radius greater than zero creates a donut chart.
 
-#### ggplot
+#### ggplot {.slide-skip}
 
 In ggplot, we can construct a pie chart by transforming
 a stacked bar into polar coordinates with `coord_polar()`;
@@ -528,6 +568,8 @@ a very grammatically coherent way to express a pie chart!
 
 ```{r}
 #| label: gender-pie-gg
+#| slide-show: both
+#| slide-title: Parts of a whole — ggplot
 ggplot(meditation, aes(x = factor(1), fill = gender)) +
     geom_bar() +
     coord_polar(theta = 'y')
@@ -557,6 +599,7 @@ the small difference between the two slices is difficult to judge.
 
 ```{python}
 #| label: election-bars-and-pies
+#| slide-show: output
 #| echo: false
 data = (
     ['V', 30, 'Bloc 1'],

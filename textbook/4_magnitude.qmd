@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/4_magnitude.html
 fig-width: 5
 fig-height: 3.75
 resources:
@@ -9,6 +10,8 @@ resources:
 
 <!-- TODO Talk about different data types here? Also consider chapter naming: is "magnitude" just "quantitative"/"continuous", and is "groups" just "nominal"/"ordinal"? Is it confusing to have a chapter called "order" when we also have "ordinal" variables, since order is more about connecting continuous variables like time? -->
 
+:::: {.slide-outcomes}
+
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
 1. **Choose** effective visual channels for comparing quantitative magnitudes.
@@ -18,6 +21,8 @@ resources:
 3. **Evaluate** how color and spatial representation affect the accuracy of visual interpretation.
 
 :::
+
+::::
 
 ## Why bother?
 
@@ -44,12 +49,16 @@ through a short exercise.
 ::: {.callout-default .ex-prompt}
 
 Take a few seconds to answer the following question.
-How many times as large is the bigger object
-as the smaller one in each of these two images?
+[How many times as large is the bigger object
+as the smaller one in each of these two images?]{.slide-bullet}
+
+:::::: {.slide-visual slide-layout="columns"}
 
 ![](img/circle-comparison.png)
 
 ![](img/bar-comparison.png)
+
+::::::
 
 *Remember that we learn more effectively
 when we actively try to answer questions like these
@@ -70,7 +79,11 @@ and the longer bar has seven times the length of the shorter bar.[^jeffrey-heer]
 Heer is a visualization researcher at the University of Washington
 and a coauthor of the research papers introducing D3 and Vega-Lite.
 
+:::::: {.slide-visual slide-title="Length versus area"}
+
 ![](https://viz-learn.mds.ubc.ca/module2/7x.png)
+
+::::::
 
 Most people find that it is much easier
 to compare the length and position of the bars
@@ -107,6 +120,8 @@ The main findings
 are summarized in the schematic below,
 from the most to the least effective visual channel.
 
+:::: {.slide-visual}
+
 ::: {#fig-mag width=633.6 fig-alt="Ten channels in classical magnitude order: common-scale position, unaligned-scale position, length, tilt or angle, area, depth, luminance, saturation, curvature, and volume."}
 
 ![](img/magnitude-channels.svg)
@@ -116,6 +131,8 @@ Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadb
 Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0).
 
 :::
+
+::::
 
 ::: {.column-margin}
 
@@ -131,8 +148,8 @@ affect which ways of depicting magnitude are most effective.^[[Revisiting Channe
 
 :::
 
-Position along a common scale is generally the most effective visual channel
-for precise magnitude comparisons,
+[Position along a common scale is generally the most effective visual channel
+for precise magnitude comparisons]{.slide-bullet},
 so we should use it for our most important comparisons when possible.
 In a scatterplot, for example, position along the x- and y-axes represents two variables,
 but we can also use size or color to represent additional variables.
@@ -151,10 +168,14 @@ where the reader cannot rotate the plot to inspect it from different angles.
 
 :::: {.callout-default .ex-prompt}
 
-Which values do you think are represented by the bars A, B, C, and D
-in the 3D bar chart below?
+[Which values do you think are represented by the bars A, B, C, and D
+in the 3D bar chart below?]{.slide-bullet}
+
+::::: {.slide-visual}
 
 ![](https://viz-learn.mds.ubc.ca/module2/bad-3d-barchart.png)
+
+:::::
 
 ::: {.callout-default .ex-solution}
 
@@ -175,7 +196,11 @@ that use 3D representations and camera rotation to help us interpret spatial rel
 The example on the right visualizes the curvature of spacetime via 3D position (depth),
 eliminating the need for the additional 2D plot shown in the example on the left.
 
+::: {.slide-visual}
+
 ![](https://media.github.ubc.ca/user/1751/files/da4e1b00-0fd3-11eb-940d-0b06a28a0186)
+
+:::
 
 But be cautious:
 we will see in the next section that even for systems such as blood vessels,
@@ -216,7 +241,11 @@ they correctly identified an average of 39% of these regions.
 The illustrations below label the results with rounded percentages;
 the text reports the percentages shown in the paper's Figure 7.
 
+::: {.slide-visual}
+
 ![](https://viz-learn.mds.ubc.ca/module2/blood-vessels-40.png)
+
+:::
 
 ### Changing the color scale almost doubled the accuracy
 
@@ -226,11 +255,15 @@ by highlighting them in bright red
 and showing the remaining areas in shades of gray.
 With this seemingly small modification,
 the percentage of low-shear-stress regions correctly identified almost doubled,
-from 39% to 71% for the 3D representations.
+[from 39% to 71% for the 3D representations]{.slide-bullet}.
 
 We will talk more about choosing appropriate color scales in later chapters.
 
+::: {.slide-visual}
+
 ![](https://viz-learn.mds.ubc.ca/module2/blood-vessels-70.png)
+
+:::
 
 ### Changing from 3D to 2D improved accuracy further
 
@@ -244,7 +277,7 @@ In the 2D visualization,
 the blood vessels and their branching points
 are shown in a schematic that is less cognitively demanding to interpret.
 This representation was also shown to be more effective,
-as 91% of the low-shear-stress regions were correctly identified on average.
+as [91% of the low-shear-stress regions were correctly identified on average]{.slide-bullet}.
 
 Overall,
 these two changes more than doubled the percentage of regions correctly identified,
@@ -257,7 +290,11 @@ and ask them what kind of visualization
 they want their doctor to look at
 when analyzing their arteries.
 
+::: {.slide-visual}
+
 ![](https://viz-learn.mds.ubc.ca/module2/blood-vessels-90.png)
+
+:::
 
 As with many things,
 there are situations where you can depart from these guidelines
@@ -267,9 +304,13 @@ But most of the time,
 it is best to adhere to the principles discussed above
 and we will dive deeper into some of them later in the book.
 
-## Original lecture slides
+## Original lecture slides {.slide-skip}
+
+::: {.slide-skip}
 
 <iframe src="slides-lec2.pdf#zoom=80&navpanes=0&statusbar=0&messages=0&pagemode=none" title="Original lecture slides on visual channels" width="100%" height="475px"></iframe>
+
+:::
 
 ::: {.callout-note title="Further reading"}
 

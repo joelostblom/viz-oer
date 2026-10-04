@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/6_order.html
 fig-width: 5
 fig-height: 3.75
 resources:
@@ -10,6 +11,8 @@ resources:
 # Order {#sec-order}
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+:::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
@@ -23,6 +26,8 @@ resources:
 
 :::
 
+::::
+
 <!-- TODO Discuss missing values and interruptions in lines somewhere? Or is that a technical detail better left to the documentation? -->
 <!-- https://stackoverflow.com/questions/66348548/altair-missing-value-in-graph -->
 <!-- https://ggplot2.tidyverse.org/reference/geom_path.html -->
@@ -30,7 +35,7 @@ resources:
 ## Why order matters
 
 In @sec-groups, we learned how to distinguish groups of observations.
-Now we will look at observations that also have a meaningful order,
+Now we will look at [observations that also have a meaningful order]{.slide-bullet},
 such as time of day or an increasing dose of a treatment.
 In the following exercise,
 we will see how the grouping strategies we learned previously
@@ -63,6 +68,8 @@ from utils import show_df
 ```
 
 ```{python bad-points}
+#| slide-show: output
+#| slide-title: How would you make these trends clearer?
 #| echo: false
 years = range(1850, 2030, 8)
 co2_per_capita = pd.read_csv('data/co-emissions-per-capita.csv').query('Year.isin(@years)')
@@ -92,6 +99,8 @@ As such,
 a line is a graphical tool that assists with both ordering and grouping.
 
 ```{python line-overlay}
+#| slide-show: output
+#| slide-title: Connect observations in time order
 points.mark_line() + points.mark_point(filled=True, strokeOpacity=1)
 ```
 
@@ -105,13 +114,13 @@ points.mark_line() + points.mark_point(filled=True, strokeOpacity=1)
 ## Using lines to order and group data
 
 To explore how to create line charts,
-we will visualize population and fertility estimates at eight-year intervals from 1850 to 2018.
+we will visualize [population and fertility estimates at eight-year intervals from 1850 to 2018]{.slide-bullet}.
 The data comes from the [Gapminder country-level dataset](https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv),
 and has been adapted for this textbook.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: order-data-preparation-notes
@@ -133,11 +142,13 @@ world
 
 ```{python}
 #| label: show-regions-python
+#| slide-show: output
+#| slide-title: Population & fertility data
 #| echo: false
 show_df(world)
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: order-table-setup
@@ -208,7 +219,7 @@ tend to occupy the y-axis.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 In Altair,
 we use `mark_line()`
@@ -216,6 +227,8 @@ to connect observations with a line.
 
 ```{python}
 #| label: population-line-alt
+#| slide-show: both
+#| slide-title: Drawing a line — Altair
 alt.Chart(world).mark_line().encode(
     x='year',
     y='population'
@@ -245,6 +258,8 @@ where the `d` is short for "decimal integer"
 
 ```{python}
 #| label: population-line-alt-format
+#| slide-show: both
+#| slide-title: Formatting the year axis
 alt.Chart(world).mark_line().encode(
     x=alt.X('year').axis(format='d'),
     y='population'
@@ -253,7 +268,7 @@ alt.Chart(world).mark_line().encode(
 
 Now the years are formatted as we are used to seeing them!
 
-### ggplot
+### ggplot {.slide-skip}
 
 In ggplot,
 we use `geom_line()`
@@ -261,6 +276,8 @@ to connect observations with a line.
 
 ```{r}
 #| label: population-line-gg
+#| slide-show: both
+#| slide-title: Drawing a line — ggplot
 ggplot(world, aes(x = year, y = population)) +
     geom_line()
 ```
@@ -301,20 +318,24 @@ in our country-average fertility measure.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: children_per_woman-line-alt
+#| slide-show: both
+#| slide-title: Exploring fertility over time — Altair
 alt.Chart(world).mark_line().encode(
     x=alt.X('year').axis(format='d'),
     y='children_per_woman'
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: children_per_woman-line-gg
+#| slide-show: both
+#| slide-title: Exploring fertility over time — ggplot
 ggplot(world, aes(x = year, y = children_per_woman)) +
     geom_line()
 ```
@@ -368,12 +389,12 @@ even before World War II.
 
 Generally,
 it is helpful
-to add points on top of a line
-to indicate exactly where each observation from the data lies.
+to [add points on top of a line
+to indicate exactly where each observation from the data lies]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 In Altair,
 we combine lines and points
@@ -386,6 +407,8 @@ a chart on top of another chart.
 
 ```{python}
 #| label: population-line-points-alt
+#| slide-show: both
+#| slide-title: Layering points and lines — Altair
 line = alt.Chart(world).mark_line().encode(
     x=alt.X('year').axis(format='d'),
     y='children_per_woman'
@@ -398,7 +421,7 @@ so `line.mark_point()` *replaces* the line mark with a point mark
 in the chart that we are layering on top of our original.
 <!-- TODO consider base.line + base.point? -->
 
-### ggplot
+### ggplot {.slide-skip}
 
 In ggplot,
 we combine lines and points
@@ -409,6 +432,8 @@ a geom on top of another geom.
 
 ```{r}
 #| label: population-line-points-gg
+#| slide-show: both
+#| slide-title: Layering points and lines — ggplot
 ggplot(world, aes(x = year, y = children_per_woman)) +
     geom_line() +
     geom_point()
@@ -439,6 +464,8 @@ about the fertility estimate for this year?
 
 ```{python}
 #| label: population-line-points-zoom
+#| slide-show: output
+#| slide-title: What does the line between points mean?
 #| echo: false
 line = alt.Chart(world.query('year > 1920')).mark_line().encode(
     x=alt.X('year').axis(format='d'),
@@ -470,6 +497,8 @@ as in the chart below.
 
 ```{python}
 #| label: population-line-points-zoom2
+#| slide-show: output
+#| slide-title: Sampling frequency changes the story
 #| echo: false
 years = range(1926, 2010, 2)
 world2 = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)')
@@ -524,6 +553,7 @@ Here are two representations of the same population values:
 
 ```{python}
 #| label: population-line-categorical
+#| slide-show: output
 #| echo: false
 regions = pd.read_csv('data/gapminder_regions_from_1850.csv')
 
@@ -565,7 +595,7 @@ then connecting the points in chronological order.
 
 :::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 The `order` encoding controls
 the order in which observations will be connected by a line.
@@ -578,6 +608,8 @@ when hovering over it with the mouse pointer.
 
 ```{python}
 #| label: line-order-2d-alt
+#| slide-show: output
+#| slide-title: Order without a time axis — Altair
 line = alt.Chart(world).mark_line().encode(
     x='children_per_woman',
     y='population',
@@ -588,7 +620,7 @@ line = alt.Chart(world).mark_line().encode(
 line + line.mark_point(filled=True)
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 By default, `geom_line()` connects points
 in the order of the variable on the x-axis.
@@ -607,6 +639,8 @@ and most recent observations.
 
 ```{r}
 #| label: line-order-2d-gg
+#| slide-show: output
+#| slide-title: Order without a time axis — ggplot
 endpoints <- world |>
   filter(year %in% range(year, na.rm = TRUE))
 ggplot(world |> arrange(year), aes(x = children_per_woman, y = population, label = year)) +
@@ -639,24 +673,28 @@ points farther apart indicate larger changes on those scales.
 ## Areas and multiple ordered groups
 
 Another way of representing ordered data
-is to fill the area between a line and a baseline.
+is to [fill the area between a line and a baseline]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 ```{python}
 #| label: population-area-alt
+#| slide-show: both
+#| slide-title: From a line to an area — Altair
 alt.Chart(world).mark_area().encode(
     x=alt.X('year').axis(format='d'),
     y='population'
 )
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: population-area-gg
+#| slide-show: both
+#| slide-title: From a line to an area — ggplot
 ggplot(world, aes(x = year, y = population)) +
     geom_area()
 ```
@@ -681,7 +719,7 @@ and year determines their order within that group.
 
 ::: {.panel-tabset group="language"}
 
-### Altair
+### Altair {.slide-skip}
 
 Setting `color` applies to both areas and lines;
 if we wanted to control them individually,
@@ -694,6 +732,8 @@ we will learn more about layouts in a later chapter).
 
 ```{python}
 #| label: population-stacked-alt
+#| slide-show: output
+#| slide-title: Comparing line and stacked-area charts
 regions = pd.read_csv('data/gapminder_regions_from_1850.csv')
 
 base = alt.Chart(regions, width=150, height=150).encode(
@@ -704,7 +744,7 @@ base = alt.Chart(regions, width=150, height=150).encode(
 base.mark_area() | base.mark_line()
 ```
 
-### ggplot
+### ggplot {.slide-skip}
 
 `geom_area()` stacks the regional areas by default.
 The population values are already in the dataset,
@@ -720,6 +760,8 @@ we will learn more about layouts in a later chapter).
 
 ```{r}
 #| label: population-stacked-gg
+#| slide-show: output
+#| slide-title: Comparing lines and stacked areas — ggplot
 #| fig-width: 8
 #| message: false
 library(patchwork)
@@ -789,6 +831,7 @@ which we will see in a later chapter).
 
 ```{python}
 #| label: fertility-overlapping
+#| slide-show: output
 #| echo: false
 alt.Chart(regions).mark_area(opacity=0.4).encode(
     x=alt.X('year').axis(format='d'),
@@ -823,6 +866,7 @@ the world average wasn't 30 children per woman in the 1800s...
 ```{python}
 #| echo: false
 #| label: fertility-stacked
+#| slide-show: output
 alt.Chart(regions).mark_area().encode(
     x=alt.X('year').axis(format='d'),
     y='children_per_woman',

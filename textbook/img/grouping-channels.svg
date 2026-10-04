@@ -1,48 +1,193 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="451.2" height="288" viewBox="0 0 564 360" font-family="sans-serif" fill="#444" role="img" aria-labelledby="title description"><title id="title">Classical static identity channels for grouping</title>
-<desc id="description">Classical, context-dependent channel guidance. Adapted from Munzner and Maguire, Visualization Analysis and Design (2014), CC BY 4.0.</desc>
-<rect width="564" height="360" fill="white"/>
-<rect x="0" y="120" width="564" height="120" fill="#ebebeb"/>
-<rect x="0" width="48" height="360" fill="#262626"/>
-<text x="22" y="67.5" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">1</tspan></text>
-<text x="22" y="187.5" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">2</tspan></text>
-<text x="22" y="307.5" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">3</tspan></text>
-<defs><circle id="dot" r="6.3246"/><rect id="square" x="-6.3246" y="-6.3246" width="12.6491" height="12.6491"/><path id="triangle" d="M0 -5.4772L-6.3246 5.4772H6.3246Z"/></defs>
-<text x="397" y="53" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Spatial region</tspan><tspan x="397" dy="24">(position)</tspan></text>
-<text x="397" y="185" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Color hue</tspan></text>
-<text x="397" y="305" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Shape</tspan></text>
-<use href="#dot" x="109" y="46"/>
-<use href="#dot" x="137" y="46"/>
-<use href="#dot" x="109" y="74"/>
-<use href="#dot" x="137" y="74"/>
-<use href="#dot" x="206" y="46"/>
-<use href="#dot" x="234" y="46"/>
-<use href="#dot" x="206" y="74"/>
-<use href="#dot" x="234" y="74"/>
-<use href="#dot" x="303" y="46"/>
-<use href="#dot" x="331" y="46"/>
-<use href="#dot" x="303" y="74"/>
-<use href="#dot" x="331" y="74"/>
-<use href="#dot" x="105" y="156" fill="#0072b2"/>
-<use href="#dot" x="105" y="276"/>
-<use href="#dot" x="175" y="156" fill="#d55e00"/>
-<use href="#square" x="175" y="276"/>
-<use href="#dot" x="245" y="156" fill="#009e73"/>
-<use href="#triangle" x="245" y="276"/>
-<use href="#dot" x="315" y="156" fill="#0072b2"/>
-<use href="#dot" x="315" y="276"/>
-<use href="#dot" x="105" y="180" fill="#d55e00"/>
-<use href="#square" x="105" y="300"/>
-<use href="#dot" x="175" y="180" fill="#009e73"/>
-<use href="#triangle" x="175" y="300"/>
-<use href="#dot" x="245" y="180" fill="#0072b2"/>
-<use href="#dot" x="245" y="300"/>
-<use href="#dot" x="315" y="180" fill="#d55e00"/>
-<use href="#square" x="315" y="300"/>
-<use href="#dot" x="105" y="204" fill="#009e73"/>
-<use href="#triangle" x="105" y="324"/>
-<use href="#dot" x="175" y="204" fill="#0072b2"/>
-<use href="#dot" x="175" y="324"/>
-<use href="#dot" x="245" y="204" fill="#d55e00"/>
-<use href="#square" x="245" y="324"/>
-<use href="#dot" x="315" y="204" fill="#009e73"/>
-<use href="#triangle" x="315" y="324"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="331.36276"
+   height="288"
+   viewBox="0 0 414.20344 360"
+   font-family="sans-serif"
+   fill="#444444"
+   role="img"
+   aria-labelledby="title description"
+   version="1.1"
+   id="svg44"
+   sodipodi:docname="grouping-channels.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview44"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="100.19975"
+     inkscape:cx="331.70743"
+     inkscape:cy="145.96843"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg44" />
+  <title
+     id="title">Classical static identity channels for grouping</title>
+  <desc
+     id="description">Classical, context-dependent channel guidance. Adapted from Munzner and Maguire, Visualization Analysis and Design (2014), CC BY 4.0.</desc>
+  <rect
+     width="414.20374"
+     height="360"
+     fill="#ffffff"
+     id="rect1"
+     x="0"
+     y="0"
+     style="stroke-width:0.856973" />
+  <rect
+     x="0"
+     y="120"
+     width="414.20343"
+     height="120"
+     fill="#ebebeb"
+     id="rect2"
+     style="stroke-width:0.856973" />
+  <rect
+     x="0"
+     width="48"
+     height="360"
+     fill="#262626"
+     id="rect3"
+     y="0" />
+  <text
+     x="22"
+     y="67.5"
+     font-size="26px"
+     fill="#ffffff"
+     text-anchor="middle"
+     id="text3"><tspan
+       x="22"
+       dy="0"
+       id="tspan3">1</tspan></text>
+  <text
+     x="22"
+     y="187.5"
+     font-size="26px"
+     fill="#ffffff"
+     text-anchor="middle"
+     id="text4"><tspan
+       x="22"
+       dy="0"
+       id="tspan4">2</tspan></text>
+  <text
+     x="22"
+     y="307.5"
+     font-size="26px"
+     fill="#ffffff"
+     text-anchor="middle"
+     id="text5"><tspan
+       x="22"
+       dy="0"
+       id="tspan5">3</tspan></text>
+  <defs
+     id="defs5">
+    <circle
+       id="dot"
+       r="6.3246002"
+       cx="0"
+       cy="0" />
+    <rect
+       id="square"
+       x="-6.3246002"
+       y="-6.3246002"
+       width="12.6491"
+       height="12.6491" />
+    <path
+       id="triangle"
+       d="M 0,-5.4772 -6.3246,5.4772 H 6.3246 Z" />
+  </defs>
+  <text
+     x="289.5"
+     y="68"
+     font-size="18px"
+     font-weight="bold"
+     fill="#222222"
+     id="text7"><tspan
+       x="289.5"
+       id="tspan7">Position</tspan></text>
+  <text
+     x="289.5"
+     y="185"
+     font-size="18px"
+     font-weight="bold"
+     fill="#222222"
+     id="text8"><tspan
+       x="289.5"
+       dy="0"
+       id="tspan8">Color</tspan></text>
+  <text
+     x="289.5"
+     y="305"
+     font-size="18px"
+     font-weight="bold"
+     fill="#222222"
+     id="text9"><tspan
+       x="289.5"
+       dy="0"
+       id="tspan9">Shape</tspan></text>
+  <use
+     href="#dot"
+     x="109"
+     y="74"
+     id="use11" />
+  <use
+     href="#dot"
+     x="234"
+     y="46"
+     id="use14"
+     transform="translate(-57.5,12.5)" />
+  <use
+     href="#dot"
+     x="331"
+     y="46"
+     id="use18"
+     transform="translate(-90)" />
+  <use
+     href="#dot"
+     x="105"
+     y="276"
+     id="use22"
+     transform="translate(0,20)" />
+  <use
+     href="#square"
+     x="175"
+     y="276"
+     id="use24"
+     transform="translate(0,20)" />
+  <use
+     href="#triangle"
+     x="245"
+     y="276"
+     id="use26"
+     transform="translate(0,20)" />
+  <use
+     href="#dot"
+     x="105"
+     y="180"
+     fill="#d55e00"
+     id="use29" />
+  <use
+     href="#dot"
+     x="175"
+     y="180"
+     fill="#009e73"
+     id="use31" />
+  <use
+     href="#dot"
+     x="245"
+     y="180"
+     fill="#0072b2"
+     id="use33" />
+</svg>
