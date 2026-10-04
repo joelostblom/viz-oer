@@ -78,9 +78,9 @@ would countries with a higher percentage of heavy drinkers
 tend to have higher or lower life expectancy?
 What makes you expect that?
 
-We will investigate a country-level dataset containing
+We will [investigate a country-level dataset containing
 the percentage of heavy drinkers
-and the average remaining life expectancy at age 65.^[Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; [World Bank country and lending groups](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups).]
+and the average remaining life expectancy at age 65]{.slide-text}.^[Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; [World Bank country and lending groups](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups).]
 In our scatterplot, each point represents a country.
 The x-axis shows the percentage of heavy drinkers,
 and the y-axis shows the average number of years
@@ -92,8 +92,8 @@ sketch your prediction (either on paper or in your mind).
 :::: {.callout-default .ex-hint}
 
 Think about what trend you would expect to see in this dataset.
-Do you think countries with a high percentage of heavy drinkers
-have high or low remaining life expectancy at age 65?
+[Do you think countries with a high percentage of heavy drinkers
+have high or low remaining life expectancy at age 65?]{.slide-text}
 
 ```{python}
 #| label: fig-polar
@@ -204,8 +204,8 @@ We would need individual-level data and an appropriate study design
 to investigate that relationship.
 
 The data hasn't changed, but our view of it has.
-Grouping turns a puzzling overall trend into a more useful question:
-[**does the relationship hold within comparable groups?**]{.slide-text}
+Grouping turns a puzzling overall trend into a more granular question:
+does the relationship hold within comparable groups?
 
 :::
 
@@ -233,6 +233,8 @@ the positive relationship in the pooled data was much less apparent within group
 Grouping also made it easier to compare
 observations between groups.
 
+### Simpson's paradox
+
 Differences between overall and within-group relationships are central to
 **Simpson's paradox** (named after the statistician Edward H. Simpson, rather than the TV series).
 In the classic form of this phenomenon,
@@ -249,7 +251,7 @@ understanding of a dataset; without it, we would have missed the within-group re
 
 ::: {.panel-tabset .slide-columns}
 
-### Overall
+### Overall {.slide-fragment .slide-with-content}
 
 ```{python}
 #| label: simpsons-ungrouped
@@ -338,7 +340,7 @@ to be conveniently defined via an easily interchangeable syntax:
 
 ::: {.panel-tabset group="language" .slide-columns}
 
-### Altair
+### Altair {.slide-fragment .slide-with-content}
 
 :::: {.slide-fragment}
 
@@ -537,7 +539,7 @@ making the shapes easier to distinguish:
 ```{python}
 #| label: income-filled-shape-alt
 #| slide-show: both
-#| slide-title: Combining shape and color — ggplot
+#| slide-title: Combining shape and color — altair
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -654,8 +656,8 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 [Grouping by position often creates the clearest separation between groups]{.slide-text}.
 Distributing the groups along the x- or y-axis gives each group its own visual lane,
 preventing observations from different groups from overlapping.
-However, the grouping column now occupies one positional visual channel,
-so there is only one positional channel left
+However, [the grouping column now occupies one positional visual channel]{.slide-text},
+so [there is only one positional channel left]{.slide-text}
 for encoding the values we want to compare between the groups.
 
 Below, we distribute the regions along the y-axis.
@@ -719,14 +721,16 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 
 Faceting takes the concept of grouping to the next level.
 Instead of using different visual channels within a single chart,
-[it generates multiple charts (or "facets"),
+[generates multiple charts (or "facets"),
 each dedicated to a grouped subset of the data]{.slide-text}.
-Faceting is particularly effective for highlighting distinct trends
-and patterns within each subset,
+Faceting is [particularly effective for highlighting distinct trends
+and patterns within each subset]{.slide-text},
 as well as identifying extreme values or outliers within groups.
 We could think of faceting as a type of position grouping,
-but its advantage is that it keeps both the x- and y-axes free
-for other variables.
+but its advantage is that it [keeps both the x- and y-axes free
+for other variables]{.slide-text}.
+
+[Previous grouping strategies can be used within each facet]{.content-visible when-format="revealjs" .slide-text}
 
 Let's create a separate facet for each income group,
 so that the relationship between `percentage_heavy_drinkers`
@@ -751,7 +755,7 @@ We create a 2 × 2 grid of facets by using the `columns` parameter.
 
 ```{python}
 #| label: income-facets-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Faceting by income — Altair
 alt.Chart(income_df, height=250, width=250).mark_point().encode(
     x='percentage_heavy_drinkers',
@@ -787,7 +791,7 @@ the number of columns in the facet grid.
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-facets-gg
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Faceting by income — ggplot
 ggplot(income_df) +
     aes(
@@ -884,9 +888,6 @@ ggplot(income_df) +
 
 ```{python}
 #| label: region-facets-alt
-#| slide-chart-columns: 5
-#| slide-show: output
-#| slide-title: Combining faceting and color — Altair
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -901,8 +902,6 @@ alt.Chart(income_df).mark_point().encode(
 
 ```{r fig.width=8, fig.height=6}
 #| label: region-facets-gg
-#| slide-show: output
-#| slide-title: Combining faceting and color — ggplot
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
@@ -917,6 +916,6 @@ ggplot(income_df) +
 
 :::
 
-
-
 :::::
+
+<!-- TODO it would be great with an exercise in the end where they pick whether they should use facetting or coloring for grouping similar to the lab exercise. Instead of this coding exercise maybe? -->
