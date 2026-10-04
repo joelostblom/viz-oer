@@ -8,7 +8,7 @@ chapter-slides: slides/0_chapter-key.html
 
 ## Presentation shortcuts
 
-Slides are currently available for the chapter key and chapters 1 and 2.
+Slides are currently available for the chapter key and chapters 1–10.
 You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24" width="1.1em" height="1.1em"
   style="vertical-align: -0.15em"

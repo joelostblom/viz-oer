@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/5_groups.html
 include-in-header:
   - text: |
       <style>
@@ -27,36 +28,34 @@ import pandas as pd
 from utils import show_df
 ```
 
+:::: {.slide-outcomes}
+
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Explain** the two main purposes of grouping:
+1. [**Explain** the two main purposes of grouping]{.slide-text}:
    - Making direct comparisons between groups,
-        e.g., observations in group A tend to have higher values
-       than those in group B.
-    - Avoiding incorrect generalizations,
-        e.g., there could be an overall positive trend
-        when all observations are viewed together,
-       while the data for individual groups displays negative trends
-       or no trend at all.
-
-2. **Evaluate** which grouping strategy is the most suitable in a specific
-   context:
-    - Color (optionally combined with shape) distinguishes groups while keeping
-      observations close together on shared positional scales for comparing values.
-    - Grouping by position gives each category its own lane
-      for comparing values of another variable.
-    - Faceting is often effective
+     e.g., observations in group A tend to have higher values
+     than those in group B.
+   - Avoiding incorrect generalizations,
+     e.g., there could be an overall positive trend
+     when all observations are viewed together,
+     while the data for individual groups displays negative trends
+     or no trend at all.
+2. [**Evaluate** which grouping strategy is the most suitable in a specific
+   context]{.slide-text}:
+   - Color (optionally combined with shape) distinguishes groups while keeping
+     observations close together on shared positional scales for comparing values.
+   - Grouping by position gives each category its own lane
+     for comparing values of another variable.
+   - Faceting is often effective
      when comparing the pattern or trend of a group
      to those of other groups
      since it shows the observations for each group separately.
-
-3. **Apply** grouping strategies using color, shape, and position
-   to visually distinguish between categories,
-    e.g., `encode(color='category')` and `aes(color = category)`.
-
-4. **Apply** faceting via Altair's `facet()` method and ggplot's `facet_wrap()` function
-   to split data into separate facets.
+3. [**Apply** grouping strategies using color, shape, and position (including facets)
+   to visually distinguish between categories]{.slide-text}
 :::
+
+::::
 
 <!--TODO Should there be more LOs? Such as good number of colors or is that later? -->
 
@@ -74,38 +73,60 @@ Let's see this in action in the following exercise.
 
 ::::: {.callout-default .ex-prompt}
 
-In Viridia, historians have been studying the remains from Earth to identify what went wrong and avoid repeating the mistakes of their ancestors. During their research, they uncovered records of a beverage known as "alcohol".
+Before making a chart, make a prediction:
+would countries with a higher percentage of heavy drinkers
+tend to have higher or lower life expectancy?
+What makes you expect that?
 
-Given the high prevalence of alcohol consumption in many of Earth's nations, the Viridians thought the drink must have had many positive effects and allowed humans to live long and healthy lives. Curious to explore whether this was indeed the case, Viridian historians were excited to uncover a dataset containing the percentage of heavy drinkers in each nation together with the average remaining life expectancy at age 65.^[Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; [World Bank country and lending groups](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups).]
+We will investigate a country-level dataset containing
+the percentage of heavy drinkers
+and the average remaining life expectancy at age 65.^[Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; [World Bank country and lending groups](https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups).]
+In our scatterplot, each point represents a country.
+The x-axis shows the percentage of heavy drinkers,
+and the y-axis shows the average number of years
+a person reaching age 65 can expect to live beyond that age.^[Retirement age differs between countries. We have used age 65 as it is close to the average in OECD countries. [OECD report](https://www.oecd-ilibrary.org/docserver/9bf0cb7f-en.pdf).]
 
-To assess whether countries with a high percentage of heavy drinkers also tended to have higher remaining life expectancy at age 65, the historians created a scatterplot where each point represented a country. The x-axis shows the percentage of heavy drinkers, and the y-axis shows the average number of years a person reaching age 65 can expect to live beyond that age.^[Retirement age differs between countries. We have used age 65 as it is close to the average in OECD countries. [OECD report](https://www.oecd-ilibrary.org/docserver/9bf0cb7f-en.pdf).]
-
-Before viewing the chart in the solution, sketch (either on paper or in your mind) what you think it would look like.
+Before viewing the chart in the solution,
+sketch your prediction (either on paper or in your mind).
 
 :::: {.callout-default .ex-hint}
 
-Think about what trend you would expect to see in this dataset. Do you think countries with a high percentage of heavy drinkers have high or low remaining life expectancy at age 65?
-
-::: {.callout-default .ex-solution}
-
-This is the chart that the historians created:
+Think about what trend you would expect to see in this dataset.
+Do you think countries with a high percentage of heavy drinkers
+have high or low remaining life expectancy at age 65?
 
 ```{python}
 #| label: fig-polar
+#| slide-show: output
 #| echo: false
 import altair as alt
 import pandas as pd
 
 income_df = pd.read_csv('data/income_lifeexp_alcohol.csv')
 
-alt.Chart(income_df).mark_point().encode(
+correct = alt.Chart(income_df, title='A').mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
     tooltip=['country', 'income_group', 'region']
 )
+
+flipped = (
+    correct
+    .transform_calculate(life_expectancy_at_65=6+alt.expr.abs(18-alt.datum['life_expectancy_at_65']))
+    .properties(title='B')
+)
+correct | flipped
 ```
 
-From this scatterplot, the Viridians observe that countries with a high percentage of heavy drinkers do indeed tend to have higher remaining life expectancy at age 65. Such great news! Excited about their findings, the historians hurry to find out how to produce this noble alcoholic beverage, hoping to introduce it into Viridian society as soon as possible.
+::: {.callout-default .ex-solution}
+
+
+That may not be the pattern you expected!
+In this dataset, countries with a higher percentage of heavy drinkers
+tend to have higher remaining life expectancy at age 65.
+The chart has shown us an association,
+but it hasn't explained why the two measures move together.
+What might be missing from the picture?
 
 :::
 
@@ -113,23 +134,18 @@ From this scatterplot, the Viridians observe that countries with a high percenta
 
 :::::
 
-Did the conclusions above match your expectations?
+Did the pattern above match your expectations?
 Proceed to the next exercise
 to find out if there is more to this dataset than meets the eye!
 
 ::::: {.callout-default .ex-prompt}
 
-"Not so fast," you caution the Viridian historians.
-Your memories of alcohol are dim,
-particularly from those nights when you ingested the substance,
-but you have a vague recollection that it is not the health solution
-that the Viridians are looking for.
-You ask to see the raw data,
-which you should inspect before making any hasty decisions.
-Confident in their findings,
-the historians show you the first few rows of the data in the table below,
-and inform you that you can hover over the points
-in the chart above to see additional information about each observation.
+An unexpected pattern is a good reason to look more closely,
+not a reason to jump to a conclusion.
+Could another variable be related to both measures?
+The table below gives us a few clues.
+You can also hover over the points in the previous chart
+to find out more about each country.
 
 ```{python}
 #| label: income-data-preview
@@ -147,14 +163,22 @@ could influence the relationship between alcohol consumption and life expectancy
 
 :::: {.callout-default .ex-hint}
 
-Could other variables in the dataset be related to both alcohol consumption and life expectancy? For example, consider the country's income group or world region. Could you group the points by one of these variables using shape or color?
+Could other variables in the dataset be related to both alcohol consumption and life expectancy?
+For example, consider the country's income group or world region.
+Could you group the points by one of these variables using shape or color?
 
 ::: {.callout-default .ex-solution}
 
-Both a country's income group and its region might help explain differences in alcohol consumption and life expectancy. Here, we will explore income group only; you can explore region on your own. To add this information to the chart, we could use different colors to group the points visually by income group:
+Both a country's income group and its region
+might help explain differences in alcohol consumption and life expectancy.
+Here, we will explore income group only; you can explore region on your own.
+To add this information to the chart,
+we could use different colors to group the points visually by income group:
 
 ```{python}
 #| label: income-groups-revealed
+#| slide-show: output
+#| slide-title: What changes when we group by income?
 #| echo: false
 alt.Chart(income_df).mark_point().encode(
     color='income_group',
@@ -163,12 +187,25 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-Notice how the data points form clusters by income group. Coloring reveals that both the percentage of heavy drinkers and remaining life expectancy at age 65 are associated with income group. **High-income countries** tend to have higher values for both measures. We see the opposite picture for most **low-income countries**, where both measures are lower.
+Notice how the data points form clusters by income group.
+Coloring reveals that both the percentage of heavy drinkers
+and remaining life expectancy at age 65 are associated with income group.
+**High-income countries** tend to have higher values for both measures.
+We see the opposite picture for most **low-income countries**, where both measures are lower.
 
-This could help explain the mysterious relationship the historians found! Income level could be a [confounding variable](https://en.wikipedia.org/wiki/Confounding), influencing both alcohol consumption and life expectancy. The chart suggests this possibility but does not establish those causal effects. Crucially, the points represent countries, not people: we cannot conclude that the people who drink heavily are the same people who live longer. We would need individual-level data and an appropriate study design to investigate that relationship.
+This gives us a possible explanation for the surprising overall trend.
+[Income level could be a [confounding variable](https://en.wikipedia.org/wiki/Confounding)]{.slide-text},
+influencing both alcohol consumption and life expectancy.
+The chart suggests this possibility but does not establish those causal effects.
+Crucially, the points represent **countries, not people**:
+we cannot conclude that the people who drink heavily
+are the same people who live longer.
+We would need individual-level data and an appropriate study design
+to investigate that relationship.
 
-The insights you have revealed are sobering news for the Viridian historians,
-who are sure to proceed more cautiously in future projects!
+The data hasn't changed, but our view of it has.
+Grouping turns a puzzling overall trend into a more useful question:
+[**does the relationship hold within comparable groups?**]{.slide-text}
 
 :::
 
@@ -182,9 +219,13 @@ As we have seen in the exercises above, grouping can have major benefits.
 We can divide these benefits into two main categories,
 both of which help us arrive at more accurate conclusions about our data:
 
+::: {.slide-text}
+
 1. **Directly compare** observations between groups.
 2. **Reveal patterns** within individual groups that are obscured
    when viewing the data from all groups together.
+
+:::
 
 These benefits are often connected and can be explored simultaneously.
 When we grouped the alcohol consumption data by income level,
@@ -206,13 +247,13 @@ larger values of X tend to be associated with smaller values of Y, and vice vers
 This is a prime example of the utility of grouping in deepening our
 understanding of a dataset; without it, we would have missed the within-group relationships.
 
-::: {.panel-tabset}
+::: {.panel-tabset .slide-columns}
 
 ### Overall
 
-
 ```{python}
 #| label: simpsons-ungrouped
+#| slide-show: output
 #| echo: false
 simpsons_df = pd.read_csv("data/simpsons_paradox_data_l.csv")
 alt.Chart(simpsons_df).mark_point().encode(
@@ -221,10 +262,11 @@ alt.Chart(simpsons_df).mark_point().encode(
 )
 ```
 
-### By group
+### By group {.slide-fragment .slide-with-content}
 
 ```{python}
 #| label: simpsons-grouped
+#| slide-show: output
 #| echo: false
 alt.Chart(simpsons_df).mark_point().encode(
   color='Group',
@@ -237,7 +279,7 @@ alt.Chart(simpsons_df).mark_point().encode(
 
 ## What type of column can we use for grouping?
 
-In general, we are interested in grouping data by "categorical" columns.
+In general, we are interested in [grouping data by "categorical" columns]{.slide-text}.
 If there is a natural order to the categories (e.g., education levels
 or letter grades), we can be more precise and call the column "ordinal".
 If there is no such order,
@@ -247,7 +289,7 @@ that hold continuous data (e.g., height or age), but there are exceptions.
 For example, we might turn ages recorded in whole years into categories
 that we can group by, such as 18–24, 25–34, and 35–44.
 
-## Strategies for grouping
+## Channels for grouping
 
 Generally speaking, position
 and color are the two most effective visual channels to use for grouping.
@@ -255,14 +297,51 @@ Shape can also be used,
 but often either in combination with one of the other two or
 for a specific purpose.
 
+:::: {.slide-visual .slide-columns slide-widths="40,60"}
+
 ![Classical ordering of static identity channels for grouping; effectiveness depends on the task and design. Adapted from [Visualization Analysis and Design](https://www.cs.ubc.ca/~tmm/vadbook/figures.html), Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0); motion omitted.](img/grouping-channels.svg){#fig-grouping-channels width=451.2 fig-alt="Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles."}
 
-The grammar of graphics allows
-for these to be conveniently defined via an easily interchangeable syntax:
+::::
 
-::: {.panel-tabset group="language"}
+Let's take a look at a familiar example: the traffic light.
+Do you think that traffic lights are well designed?
+At first glance,
+their use of red and green presents a challenge for people with red–green color vision deficiency.
+Thankfully,
+signals can communicate their meaning through position and shape as well as color,
+as in the pedestrian signals below.
+
+::: {.slide-fragment slide-title='Which are used in a traffic light?'}
+
+![Traffic lights often use color, shape, and position to communicate meaning. <a href="https://www.vecteezy.com/vector-art/80397127-pedestrian-traffic-light-signals-with-green-walk-and-red-stop-hand-flat-icons">Pedestrian Vectors by Achmad Saroju via Vecteezy</a>](img/traffic-light.svg){#fig-traffic-light width=451.2 fig-alt="Illustration of pedestrian traffic light with a green and red person and different positions."}
+
+:::
+
+::: {.column-margin}
+**Shape up**
+
+Some regions also use shape to distinguish traffic signals for cars, as in this example from Nova Scotia in eastern Canada.
+
+![](https://upload.wikimedia.org/wikipedia/commons/1/11/Colourblind_traffic_signal.JPG)
+
+:::
+
+Using several visual channels for the same distinction gives viewers more than one cue to interpret.
+Even traffic signals for cars that lack distinct shapes typically use a consistent arrangement,
+so drivers can use position as well as color to distinguish the signals.
+
+### Applying grouping strategies
+
+The grammar of graphics allows
+for the grouping strategies
+to be conveniently defined via an easily interchangeable syntax:
+
+::: {.panel-tabset group="language" .slide-columns}
 
 ### Altair
+
+:::: {.slide-fragment}
+
 ::: {.panel-tabset}
 
 #### Color
@@ -286,9 +365,15 @@ encode(x='category_column')
 ```{.python}
 encode(y='category_column')
 ```
+
 :::
 
-### ggplot
+::::
+
+
+### ggplot {.slide-fragment .slide-with-content}
+
+:::: {.slide-fragment}
 ::: {.panel-tabset}
 
 #### Color
@@ -313,13 +398,14 @@ aes(x = category_column)
 aes(y = category_column)
 ```
 :::
-:::
+::::
 
+:::
 
 ### Color
 
-The human brain can detect color differences with little cognitive effort.
-Color is a **preattentive feature**^[Wolfe JM, Utochkin IS.
+[The human brain can detect color differences with little cognitive effort]{.slide-text}.
+[Color is a **preattentive feature**]{.slide-text}^[Wolfe JM, Utochkin IS.
 What is a preattentive feature?
 Curr Opin Psychol. 2019 Oct;29:19-26. doi: 10.1016/j.copsyc.2018.11.005.
 Epub 2018 Nov 13.
@@ -331,23 +417,37 @@ such as between the complementary colors blue and orange.
 This is great news for grouping!
 By encoding our categorical variable as color,
 we can leverage the brain's ability to infer groups.
-Conveniently, color doesn't alter the layout
-or structure of the data visualization,
-so it's an efficient way to compare the exact values of data points between
-groups.
+Conveniently, [color doesn't alter the layout
+or structure]{.slide-text} of the data visualization,
+so [it's an efficient way to compare the exact values of data points between
+groups]{.slide-text}.
 
 In the second exercise of this chapter, we already saw how color could be used to
 group our life expectancy data by income group.
 Let's now see what the code to create this chart looks like:
 
+[Avoid using more than 4-6 colors]{.content-visible when-format="revealjs" .slide-text}
+
+::: {.content-visible when-format="revealjs"}
+
+:::: {.slide-text}
+
+What explanation would you suggest for this pattern?
+
+::::
+
+:::
+
 ::: {.panel-tabset group="language"}
 
-#### Altair
+#### Altair {.slide-skip}
 
 Here we use `color='income_group'`:
 
 ```{python}
 #| label: income-color-alt
+#| slide-show: both
+#| slide-title: Color — Altair
 import altair as alt
 import pandas as pd
 
@@ -361,7 +461,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-#### ggplot
+#### ggplot {.slide-skip}
 
 Here we use `color = income_group`:
 
@@ -376,6 +476,8 @@ options(readr.show_col_types = FALSE)
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-color-gg
+#| slide-show: both
+#| slide-title: Color — ggplot
 library(tidyverse)
 
 
@@ -410,30 +512,14 @@ color.
 
 ### Shape
 
-Shape is a less effective grouping strategy on its own, but it can be combined with color to provide an additional visual cue. Let's take a look at a familiar example: the traffic light.
-
-Do you think that traffic lights are well designed? At first glance, their use of red and green presents a challenge for people with red–green color vision deficiency. Thankfully, signals can communicate their meaning through position and shape as well as color, as in the pedestrian signals below.
-
-![](/img/traffic.png)
-
-Using several visual channels for the same distinction gives viewers more than one cue to interpret.
-Even traffic signals for cars that lack distinct shapes typically use a consistent arrangement,
-so drivers can use position as well as color to distinguish the signals.
-
-::: {.column-margin}
-**Shape up**
-
-Some regions also use shape to distinguish traffic signals for cars, as in this example from Nova Scotia in eastern Canada.
-
-![](https://upload.wikimedia.org/wikipedia/commons/1/11/Colourblind_traffic_signal.JPG)
-
-:::
+[Shape is a less effective grouping strategy on its own]{.slide-text},
+but [it can be combined with color to provide an additional visual cue]{.slide-text}.
 
 The syntax for mapping a variable to the shape channel is similar to that for color:
 
 ::: {.panel-tabset group="language"}
 
-#### Altair
+#### Altair {.slide-skip}
 
 ```{python}
 #| label: income-shape-alt
@@ -450,6 +536,8 @@ making the shapes easier to distinguish:
 
 ```{python}
 #| label: income-filled-shape-alt
+#| slide-show: both
+#| slide-title: Combining shape and color — ggplot
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -458,10 +546,12 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 )
 ```
 
-#### ggplot
+#### ggplot {.slide-skip}
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-shape-gg
+#| slide-show: both
+#| slide-title: Combining shape and color — ggplot
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
@@ -494,10 +584,12 @@ which makes this chart ineffective:
 
 :::: {.panel-tabset group="language"}
 
-##### Altair
+##### Altair {.slide-skip}
 
 ```{python}
 #| label: income-region-alt
+#| slide-show: output
+#| slide-title: Too many visual combinations
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -506,7 +598,7 @@ alt.Chart(income_df).mark_point(filled=True).encode(
 )
 ```
 
-##### ggplot
+##### ggplot {.slide-skip}
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-region-gg
@@ -543,6 +635,8 @@ sizes apart, as you can see in the chart below.
 
 ```{python}
 #| label: income-size-alt
+#| slide-show: output
+#| slide-title: Avoid using size gor groups
 #| echo: false
 alt.Chart(income_df).mark_point(color='#FF0039').encode(
     x='percentage_heavy_drinkers',
@@ -553,11 +647,11 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 
 :::
 
-### Position
+### Position {.slide-skip}
 
 #### X and Y position
 
-Grouping by position often creates the clearest separation between groups.
+[Grouping by position often creates the clearest separation between groups]{.slide-text}.
 Distributing the groups along the x- or y-axis gives each group its own visual lane,
 preventing observations from different groups from overlapping.
 However, the grouping column now occupies one positional visual channel,
@@ -571,21 +665,25 @@ We cannot represent both quantitative variables with position in this chart.
 
 ::: {.panel-tabset group="language"}
 
-##### Altair
+##### Altair {.slide-skip}
 
 
 ```{python}
 #| label: region-position-alt
+#| slide-show: both
+#| slide-title: Giving each group its own lane — Altair
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='region',
 )
 ```
 
-##### ggplot
+##### ggplot {.slide-skip}
 
 ```{r fig.width=8, fig.height=6}
 #| label: region-position-gg
+#| slide-show: both
+#| slide-title: Giving each group its own lane — ggplot
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
@@ -607,6 +705,7 @@ For longer labels, placing the categories on the y-axis usually makes the text e
 
 ```{python}
 #| label: region-position-alt-xy-swap
+#| slide-show: output
 #| echo: false
 alt.Chart(income_df).mark_point(color='#FF0039').encode(
     x='region',
@@ -620,8 +719,8 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 
 Faceting takes the concept of grouping to the next level.
 Instead of using different visual channels within a single chart,
-it generates multiple charts (or "facets"),
-each dedicated to a grouped subset of the data.
+[it generates multiple charts (or "facets"),
+each dedicated to a grouped subset of the data]{.slide-text}.
 Faceting is particularly effective for highlighting distinct trends
 and patterns within each subset,
 as well as identifying extreme values or outliers within groups.
@@ -645,13 +744,15 @@ so we will lay out the facets in a compact grid to save space.
 
 ::: {.panel-tabset group="language"}
 
-##### Altair
+##### Altair {.slide-skip}
 
 To facet by income group, we can append `.facet('income_group')` to our chart.
 We create a 2 × 2 grid of facets by using the `columns` parameter.
 
 ```{python}
 #| label: income-facets-alt
+#| slide-show: output
+#| slide-title: Faceting by income — Altair
 alt.Chart(income_df, height=250, width=250).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -672,7 +773,7 @@ This can be effective when we need to group our data further,
 but it can make the chart difficult to take in at a glance,
 so it is best used when there are fewer categories in the faceting variables.
 
-##### ggplot
+##### ggplot {.slide-skip}
 
 To facet by income group,
 we can add `+ facet_wrap(vars(income_group))` to our chart.
@@ -686,6 +787,8 @@ the number of columns in the facet grid.
 
 ```{r fig.width=8, fig.height=6}
 #| label: income-facets-gg
+#| slide-show: output
+#| slide-title: Faceting by income — ggplot
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
@@ -721,7 +824,7 @@ Ensure that only two facets are shown per row.
 
 ::: {.panel-tabset group="language"}
 
-##### Altair
+##### Altair {.slide-skip}
 
 ```{pyodide}
 #| label: facet-exercise-python-setup
@@ -746,7 +849,7 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-##### ggplot
+##### ggplot {.slide-skip}
 
 ```{webr fig.width=8, fig.height=6}
 #| label: facet-exercise-r-setup
@@ -777,10 +880,13 @@ ggplot(income_df) +
 
 ::: {.panel-tabset group="language"}
 
-##### Altair
+##### Altair {.slide-skip}
 
 ```{python}
 #| label: region-facets-alt
+#| slide-chart-columns: 5
+#| slide-show: output
+#| slide-title: Combining faceting and color — Altair
 alt.Chart(income_df).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -791,10 +897,12 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-##### ggplot
+##### ggplot {.slide-skip}
 
 ```{r fig.width=8, fig.height=6}
 #| label: region-facets-gg
+#| slide-show: output
+#| slide-title: Combining faceting and color — ggplot
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
