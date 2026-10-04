@@ -130,8 +130,6 @@ placeholder chapters (11–17) have no decks yet.
 
 Charts and static plots are constrained to the slide canvas, including tall
 faceted charts, without changing the chart specifications used in the book.
-`#| slide-chart-columns: 5` can reflow a faceted Altair chart into five columns
-only in slides; chapter 5 uses this to keep its regional comparison readable.
 Speaker-note chapter and figure references link back to the reading view.
 
 Nested tab headings follow the same slide-placement rules as other headings.
