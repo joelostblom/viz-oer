@@ -250,10 +250,34 @@ function Pandoc(doc)
     output:insert(fragment)
   end
 
-  local function selected_spans(block)
+  local function selected_spans(block, preserve_lists)
     local selections = pandoc.List()
-    block:walk({
+    local function select_list(list)
+      if not preserve_lists then return nil end
+      for index, item in ipairs(list.content) do
+        for _, selection in ipairs(selected_spans(pandoc.Div(item), true)) do
+          if selection.t == "Para" then
+            -- Keep a selected item's original marker while giving its number
+            -- and text one reveal step. Skipped items still count in numbering.
+            local items = {{selection}}
+            if list.t == "OrderedList" then
+              selections:insert(pandoc.OrderedList(items, pandoc.ListAttributes(
+                list.start + index - 1, list.style, list.delimiter)))
+            else
+              selections:insert(pandoc.BulletList(items))
+            end
+          else
+            selections:insert(selection)
+          end
+        end
+      end
+      return list, false
+    end
+    -- Include the root block so an OrderedList is handled before its spans.
+    pandoc.Div({block}):walk({
       traverse = "topdown",
+      OrderedList = select_list,
+      BulletList = select_list,
       Span = function(span)
         local style = text_style(span)
         if style == "text" or style == "subbullet" then
@@ -453,7 +477,7 @@ function Pandoc(doc)
           if not new_slide then columns_below_title(first_output, block) end
         end
       elseif current_title then
-        for _, selection in ipairs(selected_spans(block)) do
+        for _, selection in ipairs(selected_spans(block, true)) do
           if selection.t == "Div" then
             local style = text_style(selection)
             show_text(selection.content, style ~= "text", style == "subbullet")

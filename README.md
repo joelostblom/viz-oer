@@ -152,6 +152,9 @@ The chapter uses lightweight annotations:
 - `.slide-text` selects plain text without adding bullet points.
 - `.slide-bullet` selects bullet text: plain paragraphs become bullets, and
   existing lists retain their type, numbering, and nesting.
+  One `.slide-bullet` span per numbered item keeps the source numbers and
+  reveals the selected items one at a time. A `.slide-bullet` div around the
+  whole list reveals the list together as one fragment.
 - `.slide-subbullet` adds a nested bullet beneath the preceding selected bullet,
   with its own reveal step. It must follow a bullet on the same slide/column.
   All three classes support inline spans and block divs and share the same
