@@ -208,8 +208,17 @@
   margin-bottom: 0.6em;
 }
 
-.reveal section[data-slide-columns="true"] > .slide-media {
+.reveal section[data-slide-columns="true"] > .slide-media,
+.reveal section[data-slide-columns="true"] > .slide-column {
   grid-row: 2;
+}
+
+.reveal section[data-slide-columns="true"] > .slide-column-left {
+  grid-column: 1;
+}
+
+.reveal section[data-slide-columns="true"] > .slide-column-right {
+  grid-column: 2;
 }
 
 .reveal section[data-slide-columns] pre code {

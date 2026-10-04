@@ -478,6 +478,34 @@ then supply the right column as a titled `.slide-fragment` block:
 The second title and its content reveal together in the right column. Optional
 `slide-widths="40,60"` goes on the first block alongside `.slide-columns`.
 
+For a chart on the left and several independently revealed bullets on the
+right, close the chart's `.slide-visual` wrapper before the right-hand heading:
+
+```markdown
+::: {.slide-visual .slide-columns}
+
+<!-- Chart or other selected visual -->
+
+:::
+
+::: {.content-visible when-format="revealjs"}
+
+## Because {.slide-fragment}
+
+:::
+
+Explanatory book prose with [the first conclusion]{.slide-bullet}
+and [the second conclusion]{.slide-bullet}.
+```
+
+The current slide title remains above the left column. All selected content
+after `Because` stacks in the right column until the next slide heading;
+bullets reveal one at a time. Add `.slide-with-content` to `Because` to reveal
+it together with the first bullet. Put the format condition on the heading-only
+div, rather than on the heading itself, to hide it in the book while preserving
+the explanatory prose. Chapter 1 uses this layout for
+its Anscombe charts and conclusions.
+
 Local images referenced in the chapter's Markdown or raw HTML are discovered
 and staged automatically by `textbook/src/build_chapter_slides.py`. Adding or
 renaming an image in the `.qmd` needs no staging-list edit: rebuild the deck

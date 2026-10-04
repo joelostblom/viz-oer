@@ -116,6 +116,55 @@ function Pandoc(doc)
     output:insert(pandoc.Div(columns, pandoc.Attr("", {"slide-columns-content"})))
   end
 
+  local function columns_with_side_titles(blocks)
+    local result = pandoc.Blocks({})
+    local slide = pandoc.Blocks({})
+    local function flush_slide()
+      local title = slide[1]
+      local right_heading = nil
+      if title and title.t == "Header" and title.attributes["slide-columns"] == "true" then
+        for index = 2, #slide do
+          if slide[index].t == "Header" and slide[index].classes:includes("slide-heading") then
+            right_heading = index
+            break
+          end
+        end
+      end
+      if right_heading then
+        -- Keep both headings in the shared top row, but stack every selected
+        -- block in its own column rather than letting the grid alternate them.
+        -- The comment also prevents a leading nested heading becoming a slide.
+        local left = pandoc.List({pandoc.RawBlock("html", "<!-- column content -->")})
+        local right = pandoc.List({pandoc.RawBlock("html", "<!-- column content -->")})
+        local slide_notes = pandoc.List()
+        for index = 2, #slide do
+          local block = slide[index]
+          if block.t == "Div" and block.classes:includes("notes") then
+            slide_notes:insert(block)
+          elseif index < right_heading then
+            left:insert(block)
+          elseif index > right_heading then
+            right:insert(block)
+          end
+        end
+        result:insert(title)
+        result:insert(pandoc.Div(left, pandoc.Attr("", {"slide-column", "slide-column-left"})))
+        result:insert(slide[right_heading])
+        result:insert(pandoc.Div(right, pandoc.Attr("", {"slide-column", "slide-column-right"})))
+        result:extend(slide_notes)
+      else
+        result:extend(slide)
+      end
+      slide = pandoc.Blocks({})
+    end
+    for _, block in ipairs(blocks) do
+      if block.t == "Header" and block.level == 2 then flush_slide() end
+      slide:insert(block)
+    end
+    flush_slide()
+    return result
+  end
+
   local function capitalize_paragraph(block)
     local found = false
     return block:walk({
@@ -433,8 +482,8 @@ function Pandoc(doc)
   end})
   process_blocks(doc.blocks)
   flush_notes()
-  output:extend(supporting_blocks)
-  doc.blocks = output
+  doc.blocks = columns_with_side_titles(output)
+  doc.blocks:extend(supporting_blocks)
   -- Assign every fragment in reading order, sharing an index only for a
   -- heading/content pair. Multiple pairs on one slide must remain separate.
   local fragment_index = 0
