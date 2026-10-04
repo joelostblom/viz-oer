@@ -46,12 +46,12 @@ Why do we need to know anything about visualization libraries
 and their underlying theory, such as the grammar of graphics?
 While there is a lot we can learn about visualization
 without coding,
-the act of implementing visualizations in code
-can help us understand their underlying principles,
-which makes the learning experience more interactive and memorable.
+the act of [implementing visualizations in code
+can help us understand their underlying principles]{.slide-bullet},
+which [makes the learning experience more interactive and memorable]{slide-bullet}.
 The grammar of graphics
-also gives us a powerful theoretical framework
-to understand and reason about data visualizations.
+also gives us [a powerful theoretical framework
+to understand and reason about data visualizations]{.slide-bullet}.
 
 ## Which visualization library should we pick?
 
@@ -69,8 +69,6 @@ let's start with an example,
 using the following small toy dataset:
 
 
-::: {.slide-visual}
-
 ```{python}
 #| echo: false
 #| label: grammar-example-data
@@ -83,8 +81,6 @@ df = pd.DataFrame({
 show_df(df)
 ```
 
-:::
-
 A helpful way to illustrate the difference
 between the two approaches to syntax
 is to imagine that we want to create a chart
@@ -94,7 +90,7 @@ that illustrates this difference:
 
 ::: {.panel-tabset .slide-columns slide-widths="65,35"}
 
-### Imperative syntax
+### Imperative syntax {.slide-fragment .slide-with-content}
 
 :::: {.slide-visual}
 

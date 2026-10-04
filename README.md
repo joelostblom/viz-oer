@@ -143,6 +143,7 @@ The chapter uses lightweight annotations:
 
 - `chapter-slides: slides/1_why-visualize-data.html` enables its presentation link.
 - A `.slide-outcomes` div wraps the learning outcomes.
+  Slides use one heading and a borderless numbered list with extra space between items.
   Optionally mark shorter `.slide-bullet` spans within it to show just those
   excerpts; the complete outcomes remain in speaker notes and the textbook.
 - A `.slide-visual` div wraps each chart, image, or table selected for slides.
@@ -417,7 +418,9 @@ slide. An output-only cell already reveals as a fragment; `slide-output-fragment
 is useful when delaying a result after displayed code, and is unnecessary here.
 
 To put a **full-width title above both columns**, place a plain heading before
-the tabset and make both column headings fragments:
+the tabset and make both column headings fragments. Keep `.slide-columns` and
+`slide-widths` on the enclosing tabset/div; layout annotations on the main
+heading are not read by the slide filter:
 
 ```markdown
 ## Simpson's paradox
