@@ -161,6 +161,12 @@
   font-size: 0.65em;
 }
 
+/* Leave room for source above static R plots in combined code/output cells. */
+.reveal .slide-media[data-slide-show="both"] img {
+  max-height: 360px;
+  width: auto;
+}
+
 /* Separate displayed source from its result, including static pseudocode
    followed by a separately executed chart cell. */
 .reveal .slide-media .code-copy-outer-scaffold + .cell-output,
@@ -254,6 +260,21 @@
 .reveal .vega-embed {
   justify-content: flex-start;
   text-align: left;
+}
+
+/* Fit tall faceted charts without changing their book specifications. */
+.reveal .slide-media .vega-embed svg.marks,
+.reveal .slide-media .vega-embed canvas {
+  max-height: 520px;
+  max-width: 100%;
+  width: auto;
+}
+
+.reveal .slide-media[data-slide-layout="columns"] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1em;
+  align-items: start;
 }
 
 /* Output-only charts have no action-menu wrapper around plot and bindings. */

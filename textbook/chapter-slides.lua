@@ -243,7 +243,13 @@ function Pandoc(doc)
         end
       elseif block.t == "Div" and block.classes:includes("slide-outcomes") then
         start_slide("Learning outcomes", "learning-outcomes", "")
-        show_text(block.content)
+        local excerpts = selected_spans(block)
+        if #excerpts > 0 then
+          show_text(excerpts, true)
+          notes:insert(highlighted_notes(block))
+        else
+          show_text(block.content)
+        end
       elseif block.t == "Div" and block.classes:includes("slide-text") then
         if not current_title then
           start_slide("Introduction", "introduction", "")

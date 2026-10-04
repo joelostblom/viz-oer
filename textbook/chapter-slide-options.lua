@@ -2,8 +2,26 @@
 -- on tab headings. Preserve those headings (including .slide-fragment) for the
 -- later slide-selection filter. The textbook render does not use this filter.
 function Div(div)
+  if quarto.doc.is_format("revealjs") and div.attributes["slide-chart-columns"] then
+    local columns = tonumber(div.attributes["slide-chart-columns"])
+    if not columns or columns < 1 or columns % 1 ~= 0 then
+      error("slide-chart-columns must be a positive integer")
+    end
+    -- Reflow an explicitly selected faceted Altair chart for the slide canvas;
+    -- the source chart and reading-view specification retain their layout.
+    return div:walk({RawBlock = function(block)
+      if block.format ~= "html" then return nil end
+      block.text = block.text:gsub("(\n%s*var%s+spec%s*=%s*)([^\n]+);",
+        function(prefix, json)
+          local spec = quarto.json.decode(json)
+          if spec.facet then spec.columns = columns end
+          return prefix .. quarto.json.encode(spec) .. ";"
+        end)
+      return block
+    end})
+  end
   if quarto.doc.is_format("revealjs") and (div.classes:includes("deep-dive")
-      or div.classes:includes("column-margin")) then
+      or div.classes:includes("column-margin") or div.classes:includes("slide-skip")) then
     -- Drop the entire optional section before callout processing or selection,
     -- including nested slide annotations and material destined for notes.
     return pandoc.List()
@@ -12,5 +30,19 @@ function Div(div)
     div.classes = div.classes:filter(function(class) return class ~= "panel-tabset" end)
     div.classes:insert("slide-tabs")
     return div
+  end
+end
+
+local references = nil
+function Cite(cite)
+  if not quarto.doc.is_format("revealjs") or #cite.citations ~= 1 then return nil end
+  if references == nil then
+    local file = io.open("slide-references.json", "r")
+    references = file and quarto.json.decode(file:read("*a")) or {}
+    if file then file:close() end
+  end
+  local reference = references[cite.citations[1].id]
+  if reference then
+    return pandoc.Link({pandoc.Str(reference.text)}, reference.url)
   end
 end

@@ -14,7 +14,7 @@ From the repository root:
 ```sh
 make preview  # Start the live preview
 make book     # Render the textbook
-make slides   # Render the chapter-key, chapter 1, and chapter 2 presentations
+make slides   # Render the chapter key and all developed chapters (1–10)
 ```
 
 Preview and book builds use the shared `activate-uvr` recipe fragment to activate the
@@ -84,7 +84,7 @@ Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
 The slide decks retain their separate dark presentation theme.
 
-The chapter key and chapters 1 and 2 open as ordinary textbook pages. Their small **Present slides**
+The chapter key and all developed chapters (1–10) open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
@@ -119,8 +119,20 @@ and solutions in speaker notes.
 Chapter 1 includes the title, learning outcomes, all section/subsection headings,
 both Anscombe tables, the Altair chart, and the Datasaurus animation. Chapter 2
 also includes the exercise dataset, declarative/imperative charts and pseudocode,
-arithmetic code examples, grammar implementations, margin images, and both
-visualization-ecosystem diagrams.
+arithmetic code examples and grammar implementations.
+
+Chapters 3–10 have first-draft decks covering their key principles, selected
+exercise visuals, diagrams/animations, and Altair/ggplot examples. Short examples
+show source and output together; longer examples show the chart with explanations
+in speaker notes. Language-tab headings are skipped where examples have their
+own descriptive slide titles. Deep dives and margin notes are excluded. The
+placeholder chapters (11–17) have no decks yet.
+
+Charts and static plots are constrained to the slide canvas, including tall
+faceted charts, without changing the chart specifications used in the book.
+`#| slide-chart-columns: 5` can reflow a faceted Altair chart into five columns
+only in slides; chapter 5 uses this to keep its regional comparison readable.
+Speaker-note chapter and figure references link back to the reading view.
 
 Nested tab headings follow the same slide-placement rules as other headings.
 Exercise callout boxes are unpacked:
@@ -133,6 +145,8 @@ The chapter uses lightweight annotations:
 
 - `chapter-slides: slides/1_why-visualize-data.html` enables its presentation link.
 - A `.slide-outcomes` div wraps the learning outcomes.
+  Optionally mark shorter `.slide-text` spans within it to show just those
+  excerpts; the complete outcomes remain in speaker notes and the textbook.
 - A `.slide-visual` div wraps each chart, image, or table selected for slides.
   It can be nested inside an exercise or tabset. It can also contain
   code with its chart so they appear together as one fragment.
@@ -156,6 +170,7 @@ The chapter uses lightweight annotations:
   only that heading and its slide break. Following content uses the preceding
   slide and the normal selection rules (including automatic visual continuation
   slides). The heading remains visible in the textbook.
+  On a div, `.slide-skip` excludes the entire block from slides and notes.
 
 #### Headings: placement and animation
 
@@ -230,6 +245,9 @@ in slides; the example above still hides source in the textbook. Execution and
 dependencies are retained, and `eval: false` is respected. Cells without
 `slide-show` retain their existing behavior. Static code can still be selected
 with a `.slide-visual` wrapper.
+Use `#| slide-title: A descriptive title` on a cell with `slide-show` to give
+its selected code/output a dedicated slide. This is useful when the chapter's
+language-tab headings have `.slide-skip`.
 
 Add `#| slide-output-fragment: true` alongside `#| slide-show: both` to reveal
 the source first and all of that cell's output together on the next advance.
@@ -283,7 +301,7 @@ Quarto selection syntax. Place inline selections after their section heading.
 
 These wrappers do not hide or duplicate material in the reading view. Code
 executes normally before slide selection, so data-loading cells remain available
-to later chart cells. To add another visual to this pilot deck, wrap it in:
+to later chart cells. To add another visual to a chapter deck, wrap it in:
 
 ```markdown
 ::: {.slide-visual}
@@ -292,6 +310,10 @@ to later chart cells. To add another visual to this pilot deck, wrap it in:
 
 :::
 ```
+
+For two items inside one visual block, `slide-layout="columns"` places the items
+side by side in slides. Chapter 4 uses this for its circle/bar comparison. The
+book keeps the items' original layout.
 
 Add `slide-title="A classroom question"` to a `.slide-visual` div to give that
 visual a dedicated, presentation-only slide title. Use this when there is no
@@ -339,6 +361,28 @@ and the second in the right column. Each chart stays below its code, with long
 code lines wrapping as needed. The book retains its normal tabs and stacked
 code/output layout.
 
+Both examples must belong to the same slide: a second plain heading starts
+another slide, so mark it `.slide-fragment`. Add `.slide-with-content` to reveal
+that heading together with its chart, as in chapter 5's comparison:
+
+```markdown
+::: {.panel-tabset .slide-columns}
+
+### Overall
+
+<!-- Selected visual or cell with slide-show: output -->
+
+### By group {.slide-fragment .slide-with-content}
+
+<!-- Selected visual or cell with slide-show: output -->
+
+:::
+```
+
+Cells inside this comparison should omit `slide-title`, which starts a dedicated
+slide. An output-only cell already reveals as a fragment; `slide-output-fragment`
+is useful when delaying a result after displayed code, and is unnecessary here.
+
 This layout currently supports two columns. The former `.slide-comparison`
 name remains supported as a compatibility alias; use `.slide-columns` for new
 content.
@@ -377,11 +421,26 @@ then supply the right column as a titled `.slide-fragment` block:
 The second title and its content reveal together in the right column. Optional
 `slide-widths="40,60"` goes on the first block alongside `.slide-columns`.
 
-For a new local image or data file, also add its path to the staging list in
-`CHAPTER_ASSETS` in `textbook/src/build_chapter_slides.py`. Chapter 1 stages the
-Datasaurus image; chapter 2 stages `utils.py`. The knitr include and slide assets
-are shared. Remote images retain their source URLs, and Mermaid diagrams are
-rendered through Quarto as in the textbook.
+Local images referenced in the chapter's Markdown or raw HTML are discovered
+and staged automatically by `textbook/src/build_chapter_slides.py`. Adding or
+renaming an image in the `.qmd` needs no staging-list edit: rebuild the deck
+(`make slides` or the normal book/preview render) and reload it. The discovery
+supports reference-style Markdown images, project-root-relative paths such as
+`/img/example.svg`, and URL-encoded paths. Commented-out images and code examples
+are ignored. A missing referenced file produces an error identifying its path.
+
+Data files and other runtime dependencies still go in `CHAPTER_ASSETS`, since
+they can be loaded dynamically by Python/R code. That list accepts individual
+files or directories; chapter 3 stages its declared `data` directory. The knitr
+include, slide assets, `utils.py`, and `utils.R` are shared. Remote images retain
+their source URLs, and Mermaid diagrams are rendered through Quarto as in the
+textbook. New image files must still be committed for CI to access them.
+
+Image-discovery regression checks can be run with:
+
+```sh
+uv run --locked python -m unittest discover -s textbook/tests
+```
 
 `chapter-slides.lua` handles the two views. `_chapter-slides.yml` selects the
 Reveal format and output location; `chapter-slides.css` controls slide layout.
@@ -410,7 +469,10 @@ Generated files:
 - Reading view: `textbook/_book/2_grammar-of-graphics.html`
 - Slide view: `textbook/_book/slides/2_grammar-of-graphics.html`
 
-Both are part of the published `_book` directory. The deck has its own generated
+Chapters 3–10 follow the same pattern, for example
+`textbook/_book/slides/9_binned-distributions.html`.
+
+All decks are part of the published `_book` directory. Each deck has its own generated
 assets, so the reading pages are not overwritten. To render only the slide decks:
 
 ```sh
