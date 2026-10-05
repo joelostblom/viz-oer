@@ -37,6 +37,16 @@ import pandas as pd
 pd.set_option('display.max_rows', 6)
 ```
 
+::: {.content-visible when-format="revealjs" .slide-visual slide-title="Have you used any of these visualization tools before?"}
+
+A.  Altair
+B.  ggplot
+C.  Something else in Py/R
+D.  Excel/PowerBI/Tableau etc
+E.  None of them
+
+:::
+
 ## What is data visualization?
 
 At its core,
@@ -61,7 +71,7 @@ in either case, the goal is to support human understanding.
 By supporting both exploration and communication,
 [visualization is often where a data analysis begins and ends]{.slide-bullet}.
 
-## A few examples {.content-visible when-format="revealjs"}
+::: {.content-visible when-format="revealjs" .slide-visual slide-title="A few examples"}
 
 ```{python}
 #| label: ex1
@@ -78,8 +88,9 @@ alt.Chart(source).mark_circle(size=60).encode(
     tooltip=['Name', 'Origin', 'Horsepower', 'Miles_per_Gallon']
 ).interactive()
 ```
+:::
 
-## A few examples {.content-visible when-format="revealjs"}
+::: {.content-visible when-format="revealjs" .slide-visual}
 
 ```{python}
 #| label: ex2
@@ -105,7 +116,9 @@ bars = alt.Chart(source).mark_bar().encode(
 points & bars
 ```
 
-## A few examples {.content-visible when-format="revealjs"}
+:::
+
+::: {.content-visible when-format="revealjs" .slide-visual}
 
 ```{python}
 #| label: ex3
@@ -145,7 +158,7 @@ source = pd.DataFrame(
     ]
 )
 
-alt.Chart(source, width=200, height=alt.Step(8)).mark_bar().encode(
+alt.Chart(source, width=150, height=alt.Step(20)).mark_bar().encode(
     alt.Y("c:N").axis(None),
     alt.X("p:Q").title(None).axis(format="%"),
     alt.Color("c:N").title("settings").legend(orient="bottom", titleOrient="left"),
@@ -154,20 +167,30 @@ alt.Chart(source, width=200, height=alt.Step(8)).mark_bar().encode(
 )
 ```
 
-## A few examples {.content-visible when-format="revealjs"}
+:::
+
+::: {.content-visible when-format="revealjs" .slide-visual}
 
 ![](img/data-art.png)
 
-## A few examples {.content-visible when-format="revealjs"}
+:::
+
+
+::: {.content-visible when-format="revealjs" .slide-visual}
 
 ![](img/rayshader-3d.png)
 
-## A few examples {.content-visible when-format="revealjs"}
+:::
 
-![](https://socviz.co/assets/fig-ch-01-chartjunk-life-expectancy.png){.slide-fragment}
+::: {.content-visible when-format="revealjs" .slide-visual}
 
-[What could be improved here?]{.slide-bullet}
-[Enter some suggestions in the iClicker]{.slide-subbullet}
+![](https://socviz.co/assets/fig-ch-01-chartjunk-life-expectancy.png)
+
+:::
+
+[What could be improved here?]{.content-visible when-format="revealjs" .slide-bullet}
+[Enter some suggestions in the iClicker]{.content-visible when-format="revealjs" .slide-subbullet}
+
 
 ## Why bother?
 
