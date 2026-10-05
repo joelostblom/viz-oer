@@ -419,14 +419,24 @@ and heading-only `.slide-skip` does not hide a tab label. Source headings and
 `slide-title` options inside tab contents still create slide steps: corresponding
 language steps are paired in source order. A final language suffix such as
 ` — Altair` is omitted from the shared title because the tab already names it.
-If only one language has an additional step, that step has just its available tab.
+If a slide has only one selected tab (including a language-only additional step),
+its content renders directly without a tab bar. The source tabset still appears
+normally in the book.
 
-Click a tab to switch implementations. Left/right arrows and Home/End switch
-tabs while a tab is focused; otherwise arrows advance the presentation. Hidden
-tabs consume no reveal steps. Switching preserves the current reveal stage,
-and `group="language"` remembers the selected implementation across slides in
-the current presentation. Revisiting a slide resets its reveals. Long tab panels
-scroll within the slide rather than extending off the canvas.
+Choose the teaching language before revealing its first fragment. That tab
+animates normally; the other tabs are fully rendered previews. Once teaching
+begins, switching to another tab shows its complete content immediately, and
+returning to the teaching tab restores its reveal position. Preview tabs add no
+animation clicks, so advancing from a full preview moves on to the next shared
+fragment or slide. `group="language"` remembers the teaching language across
+slides; briefly previewing another language does not change that preference.
+Revisiting a slide resets its reveals and allows a new teaching-tab choice.
+
+Click a tab to switch implementations. After a mouse/touch selection, arrow
+keys advance the presentation. Deliberately focusing tabs with the keyboard
+retains left/right and Home/End tab switching. Restoring the preferred teaching
+language when entering a slide does not steal keyboard focus. Tab panels use
+their natural height; keep selected content within the slide canvas.
 
 PDF export (`E`, then Print → Save as PDF) expands every tab variant into labeled
 pages, including nested tabs, instead of silently printing just the first tab.
