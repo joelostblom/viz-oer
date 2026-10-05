@@ -124,15 +124,19 @@ arithmetic code examples and grammar implementations.
 Chapters 3–10 have first-draft decks covering their key principles, selected
 exercise visuals, diagrams/animations, and Altair/ggplot examples. Short examples
 show source and output together; longer examples show the chart with explanations
-in speaker notes. Language-tab headings are skipped where examples have their
-own descriptive slide titles. Deep dives and margin notes are excluded. The
+in speaker notes. Language variants share interactive tabs, with their selected
+content paired step by step when examples have descriptive slide titles.
+Deep dives and margin notes are excluded. The
 placeholder chapters (11–17) have no decks yet.
 
 Charts and static plots are constrained to the slide canvas, including tall
 faceted charts, without changing the chart specifications used in the book.
 Speaker-note chapter and figure references link back to the reading view.
 
-Nested tab headings follow the same slide-placement rules as other headings.
+Tabsets stay interactive in slides by default; their headings become tab labels.
+Add `.slide-tabset-flat` to a tabset to use sequential headings instead, or
+`.slide-columns` for an explicit side-by-side comparison. Nested tabs are also
+supported, including tabs inside selected fragment groups.
 Exercise callout boxes are unpacked:
 their selected visuals appear directly on slides, while prompts, hints, and
 solutions remain in speaker notes. Notes label exercise, hint, and solution
@@ -167,7 +171,8 @@ The chapter uses lightweight annotations:
   animation step.
 - A heading with `.slide-fragment` stays on the current slide and reveals as a
   subheading. Subsequent selected content stays there until the next plain heading
-  or an explicit `slide-title` starts a new slide. This also works on tab headings.
+  or an explicit `slide-title` starts a new slide. This also works on tab headings
+  in flattened/column tabsets; interactive tabsets use them as labels instead.
 - Executable R/Python cells can select code, output, or both with `slide-show`.
 - Other content after a heading becomes speaker notes for that slide.
 - `.deep-dive` blocks are excluded entirely from presentations, including their
@@ -387,6 +392,76 @@ paragraphs to bullets and preserves existing lists. It shares the outer block's
 animation. Existing markup with a heading inside a `.slide-fragment` or
 `.slide-visual` wrapper remains supported for compatibility, but heading
 annotations are the recommended approach for new content.
+
+#### Interactive tabsets
+
+Ordinary book tabsets automatically become clickable tabs in Reveal.js:
+
+```markdown
+## A chart in two languages
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+<!-- Selected visual, text, or cell with slide-show -->
+
+### ggplot
+
+<!-- Selected visual, text, or cell with slide-show -->
+
+:::
+```
+
+Use the existing slide-selection annotations within each tab. Explanatory prose
+goes to speaker notes, labeled by tab. Tab headings do not create new slides,
+and heading-only `.slide-skip` does not hide a tab label. Source headings and
+`slide-title` options inside tab contents still create slide steps: corresponding
+language steps are paired in source order. A final language suffix such as
+` — Altair` is omitted from the shared title because the tab already names it.
+If only one language has an additional step, that step has just its available tab.
+
+Click a tab to switch implementations. Left/right arrows and Home/End switch
+tabs while a tab is focused; otherwise arrows advance the presentation. Hidden
+tabs consume no reveal steps. Switching preserves the current reveal stage,
+and `group="language"` remembers the selected implementation across slides in
+the current presentation. Revisiting a slide resets its reveals. Long tab panels
+scroll within the slide rather than extending off the canvas.
+
+PDF export (`E`, then Print → Save as PDF) expands every tab variant into labeled
+pages, including nested tabs, instead of silently printing just the first tab.
+Variants in tabsets with the same `group` use the same selected label. Plot
+canvases and SVG references are preserved in the expanded pages.
+
+To opt out on one tabset and use the earlier sequential-heading behavior:
+
+```markdown
+::: {.panel-tabset .slide-tabset-flat}
+
+### First example
+
+<!-- Selected content -->
+
+### Second example {.slide-fragment .slide-with-content}
+
+<!-- Selected content -->
+
+:::
+```
+
+`.slide-columns` (and its `.slide-comparison` alias) also opts out of interactive
+tabs, requesting the two-column layouts below. These flags affect the slides;
+the book continues to render its normal tabsets.
+
+Regression checks:
+
+```bash
+TMPDIR=/tmp/opencode uv run --locked python -m unittest discover -s textbook/tests -v
+TMPDIR=/tmp/opencode uv run --with playwright python -m unittest discover -s textbook/tests -p test_slide_tabset_browser.py -v
+```
+
+The browser checks require an installed Playwright Chromium. Set
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE` to use another Chromium executable.
 
 #### Two-column comparisons
 

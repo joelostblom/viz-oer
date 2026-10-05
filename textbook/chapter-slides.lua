@@ -43,6 +43,7 @@ function Pandoc(doc)
   local continuation = 0
   local current_slide_index = nil
   local inside_columns = false
+  local tabset_count = 0
 
   local function flush_notes()
     if #notes > 0 then
@@ -335,7 +336,154 @@ function Pandoc(doc)
     })
   end
 
-  local function process_blocks(blocks, parent_anchor)
+  local function tab_buckets(block)
+    local first = block.content:find_if(function(child) return child.t == "Header" end)
+    if not first then return pandoc.List(), 3 end
+    local buckets, bucket = pandoc.List(), nil
+    for _, child in ipairs(block.content) do
+      if child.t == "Header" and child.level == first.level then
+        bucket = {title = child.content, active = child.classes:includes("active"), content = pandoc.List()}
+        buckets:insert(bucket)
+      elseif bucket then
+        bucket.content:insert(child)
+      end
+    end
+    return buckets, first.level
+  end
+
+  local function native_tabset(block, tabs, level)
+    local attr = block.attr:clone()
+    attr.identifier = "" -- One source tabset can produce several slide widgets.
+    attr.classes = attr.classes:filter(function(class)
+      return class ~= "slide-tabs" and class ~= "slide-fragment" and class ~= "slide-with-content"
+    end)
+    attr.classes:insert("panel-tabset")
+    return quarto.Tabset({level = level, tabs = tabs, attr = attr})
+  end
+
+  local function tab_title(title, label)
+    local text = pandoc.utils.stringify(title)
+    -- Cell titles commonly end in the language name; the tab supplies that label.
+    for _, separator in ipairs({" — ", " – ", " - "}) do
+      local suffix = separator .. pandoc.utils.stringify(label)
+      if pandoc.text.lower(text:sub(-#suffix)) == pandoc.text.lower(suffix) then
+        return text:sub(1, -#suffix - 1)
+      end
+    end
+    return text
+  end
+
+  local process_blocks
+  local function process_tabset(block, parent_anchor)
+    if not current_title then start_slide("Visualization", "visualization", parent_anchor) end
+    tabset_count = tabset_count + 1
+    local tabset_id = tabset_count
+    local buckets, level = tab_buckets(block)
+    local saved = {
+      output = output, notes = notes, title = current_title, anchor = current_anchor,
+      index = current_slide_index, visuals = visual_count, together = keep_content_together,
+      reveal = reveal_with_heading, columns = inside_columns
+    }
+    local rows = 0
+    for _, bucket in ipairs(buckets) do
+      -- Select each language independently using the normal slide-break rules.
+      output, notes = pandoc.List(), pandoc.List()
+      current_title, current_anchor, current_slide_index = nil, saved.anchor, nil
+      inside_columns = false
+      start_slide(saved.title, "", parent_anchor or saved.anchor)
+      output[1].attributes["tabset-initial"] = "true"
+      process_blocks(bucket.content, parent_anchor or saved.anchor)
+      flush_notes()
+      bucket.frames = pandoc.List()
+      local frame = nil
+      local pending_notes = pandoc.List()
+      local function flush_frame()
+        if not frame then return end
+        if #frame.content > 0 then
+          pending_notes:extend(frame.notes)
+          frame.notes = pending_notes
+          pending_notes = pandoc.List()
+          bucket.frames:insert(frame)
+        else
+          pending_notes:extend(frame.notes)
+        end
+      end
+      for _, child in ipairs(output) do
+        if child.t == "Header" and child.level == 2 then
+          flush_frame()
+          frame = {heading = child, content = pandoc.List(), notes = pandoc.List()}
+        elseif child.t == "Div" and child.classes:includes("notes") then
+          frame.notes:extend(child.content)
+        elseif frame then
+          frame.content:insert(child)
+        end
+      end
+      flush_frame()
+      if #bucket.frames > 0 then
+        bucket.frames[#bucket.frames].notes:extend(pending_notes)
+      else
+        bucket.notes = pending_notes
+      end
+      rows = math.max(rows, #bucket.frames)
+    end
+    output, notes = saved.output, saved.notes
+    current_title, current_anchor, current_slide_index = saved.title, saved.anchor, saved.index
+    visual_count, keep_content_together = saved.visuals, saved.together
+    reveal_with_heading, inside_columns = saved.reveal, saved.columns
+    for row = 1, rows do
+      local tabs, frame = pandoc.List(), nil
+      for _, bucket in ipairs(buckets) do
+        local entry = bucket.frames[row]
+        if entry then
+          frame = frame or {entry = entry, label = bucket.title}
+        end
+      end
+      local title = tab_title(frame.entry.heading.content, frame.label)
+      local initial = frame.entry.heading.attributes["tabset-initial"] == "true"
+      if row > 1 or not initial or visual_count > 0 then
+        local empty_heading = row == 1 and #output == current_slide_index
+        if empty_heading then
+          output[current_slide_index].content = pandoc.Inlines({pandoc.Str(title)})
+          current_title = title
+        else
+          start_slide(title, "tabset-" .. tabset_id .. "-step-" .. row, parent_anchor or saved.anchor)
+        end
+      end
+      if reveal_with_heading then
+        for _, bucket in ipairs(buckets) do
+          local entry = bucket.frames[row]
+          if entry and entry.content[1] and entry.content[1].t == "Div" then
+            entry.content[1].attributes["slide-reveal-group"] = tostring(reveal_with_heading)
+          end
+        end
+        reveal_with_heading = false
+      end
+      for _, bucket in ipairs(buckets) do
+        local entry = bucket.frames[row]
+        if entry then
+          tabs:insert(quarto.Tab({title = bucket.title, content = entry.content, active = bucket.active}))
+        end
+      end
+      local widget = native_tabset(block, tabs, level)
+      output:insert(widget)
+      visual_count = visual_count + 1
+      for _, bucket in ipairs(buckets) do
+        local entry = bucket.frames[row]
+        if entry then
+          notes:insert(pandoc.Para({pandoc.Strong(bucket.title)}))
+          notes:extend(entry.notes)
+        end
+      end
+    end
+    for _, bucket in ipairs(buckets) do
+      if bucket.notes then
+        notes:insert(pandoc.Para({pandoc.Strong(bucket.title)}))
+        notes:extend(bucket.notes)
+      end
+    end
+  end
+
+  process_blocks = function(blocks, parent_anchor)
     for _, block in ipairs(blocks) do
       if block.t == "Div" and (block.classes:includes("hidden")
           or block.classes:includes("quarto-auto-generated-content")) then
@@ -385,6 +533,8 @@ function Pandoc(doc)
             outcomes.content[index] = pandoc.OrderedList(content.content)
           end
         end
+      elseif block.t == "Div" and block.classes:includes("slide-tabset") then
+        process_tabset(block, parent_anchor)
       elseif block.t == "Div" and text_style(block) then
         if not current_title then
           start_slide("Introduction", "introduction", "")
@@ -522,6 +672,22 @@ function Pandoc(doc)
   flush_notes()
   doc.blocks = columns_with_side_titles(output)
   doc.blocks:extend(supporting_blocks)
+  -- A selected visual/fragment owns all its content. Preserve native tabsets
+  -- nested inside such groups without extracting their content a second time.
+  doc = doc:walk({
+    traverse = "topdown",
+    Div = function(div)
+      if div.classes:includes("notes") then return div, false end
+      if div.classes:includes("slide-tabset") and div.classes:includes("slide-tabs") then
+        local buckets, level = tab_buckets(div)
+        local tabs = pandoc.List()
+        for _, bucket in ipairs(buckets) do
+          tabs:insert(quarto.Tab({title = bucket.title, content = bucket.content, active = bucket.active}))
+        end
+        return native_tabset(div, tabs, level)
+      end
+    end
+  })
   -- Assign every fragment in reading order, sharing an index only for a
   -- heading/content pair. Multiple pairs on one slide must remain separate.
   local fragment_index = 0

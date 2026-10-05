@@ -43,6 +43,7 @@ CHAPTER_ASSETS = {
 SHARED_ASSETS = (
     "illustrative-chart-actions.lua",
     "chapter-slides.lua", "chapter-slides.css", "chapter-slides.js",
+    "chapter-slide-tabs.js",
     "chapter-slide-options.lua", "tokyo-night.theme",
     "_extensions/r-wasm/live/_knitr.qmd",
     "utils.py", "utils.R",

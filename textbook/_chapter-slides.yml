@@ -11,6 +11,7 @@ filters:
 
 resources:
   - chapter-slides.js
+  - chapter-slide-tabs.js
 
 format:
   revealjs:
@@ -36,6 +37,7 @@ format:
     include-in-header:
       - text: |
           <script src="chapter-slides.js" defer></script>
+          <script src="chapter-slide-tabs.js" defer></script>
     toc: false
     number-sections: false
 

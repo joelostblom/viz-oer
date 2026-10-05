@@ -1,6 +1,7 @@
 -- Run before Quarto turns tabsets into custom nodes, which discard attributes
 -- on tab headings. Preserve those headings (including .slide-fragment) for the
--- later slide-selection filter. The textbook render does not use this filter.
+-- later slide-selection filter, which rebuilds interactive tabs after selection.
+-- The textbook render does not use this filter.
 function Div(div)
   if quarto.doc.is_format("revealjs") and (div.classes:includes("deep-dive")
       or div.classes:includes("column-margin") or div.classes:includes("slide-skip")) then
@@ -35,8 +36,15 @@ function Div(div)
     return div
   end
   if quarto.doc.is_format("revealjs") and div.classes:includes("panel-tabset") then
-    div.classes = div.classes:filter(function(class) return class ~= "panel-tabset" end)
+    div.classes = div.classes:filter(function(class)
+      return class ~= "panel-tabset" and class ~= "slide-tabset"
+    end)
     div.classes:insert("slide-tabs")
+    if not div.classes:includes("slide-tabset-flat")
+        and not div.classes:includes("slide-columns")
+        and not div.classes:includes("slide-comparison") then
+      div.classes:insert("slide-tabset")
+    end
     return div
   end
 end
