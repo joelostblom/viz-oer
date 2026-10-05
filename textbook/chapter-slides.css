@@ -153,10 +153,6 @@
   border-color: #414868;
 }
 
-.reveal .panel-tabset > .tab-content > [role="tabpanel"] {
-  overflow: auto;
-}
-
 .reveal .slide-tab-print-label {
   color: var(--r-heading-color);
   font-size: 0.85em;
