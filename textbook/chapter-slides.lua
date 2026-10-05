@@ -603,7 +603,9 @@ function Pandoc(doc)
             return text
           end
         end})
-        block.classes = pandoc.List({"slide-media", "fragment", "fade-in"})
+        local reveal = block.attributes["slide-reveal"] or block.attributes["data-slide-reveal"]
+        block.classes = reveal == "false" and pandoc.List({"slide-media"})
+          or pandoc.List({"slide-media", "fragment", "fade-in"})
         if reveal_with_heading then
           block.attributes["slide-reveal-group"] = tostring(reveal_with_heading)
           reveal_with_heading = false

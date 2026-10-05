@@ -87,7 +87,7 @@ cars
 ```{python}
 #| label: show-cars-python
 #| slide-show: output
-#| slide-output-fragment: true
+#| slide-reveal: false
 #| echo: false
 show_df(cars)
 ```
@@ -143,7 +143,7 @@ Here, it is suitable to show the data as points using `mark_point()`:
 #| label: cars-scatter-alt
 #| slide-show: both
 #| slide-output-fragment: true
-#| slide-title: Scatterplot — Altair
+#| slide-title: Horsepower vs Miles_per_Gallon
 alt.Chart(cars).mark_point().encode(
     x='Miles_per_Gallon',
     y='Horsepower'
@@ -164,7 +164,6 @@ Here, it is suitable to show the data as points using `geom_point()`:
 #| label: cars-scatter-gg
 #| slide-show: both
 #| slide-output-fragment: true
-#| slide-title: Scatterplot — ggplot
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower)) +
     geom_point()
 ```
@@ -225,6 +224,8 @@ and compare the two.
 
 ::: {.callout-default .ex-solution}
 
+### Horsepower vs Miles_per_Gallon {.content-visible when-format="revealjs"}
+
 From the chart,
 we can see that `Horsepower` and `Miles_per_Gallon`
 are "negatively correlated".
@@ -264,7 +265,7 @@ we can [use another visual channel in this chart,
 for example, by coloring the points]{.slide-bullet} according to this column.
 When using the `color` encoding channel,
 high-level visualization libraries
-will [automatically figure out an appropriate color scale to use]{.slide-bullet}.
+will [automatically figure out an appropriate color scale to use]{.slide-subbullet}.
 Since the `Weight_in_lbs` column contains continuous numerical data,
 a continuous gradient will be used here.
 
@@ -284,7 +285,7 @@ which contrasts strongly with the light background of the chart.
 #| label: cars-weight-alt
 #| slide-show: both
 #| slide-output-fragment: true
-#| slide-title: Adding a quantitative color encoding — Altair
+#| slide-title: Adding a quantitative color encoding
 alt.Chart(cars).mark_point().encode(
     x='Miles_per_Gallon',
     y='Horsepower',
@@ -307,7 +308,7 @@ to the chart's dark background.
 #| label: cars-weight-gg
 #| slide-show: both
 #| slide-output-fragment: true
-#| slide-title: Adding a quantitative color encoding — ggplot
+#| fig-width: 8
 ggplot(cars, aes(x = Miles_per_Gallon, y = Horsepower, color = Weight_in_lbs)) +
     geom_point()
 ```

@@ -174,6 +174,9 @@ The chapter uses lightweight annotations:
   or an explicit `slide-title` starts a new slide. This also works on tab headings
   in flattened/column tabsets; interactive tabsets use them as labels instead.
 - Executable R/Python cells can select code, output, or both with `slide-show`.
+  Set `slide-reveal: false` to show a selected cell immediately on slide entry,
+  rather than revealing it on another advance. A visual div can use the same
+  `slide-reveal="false"` attribute.
 - Other content after a heading becomes speaker notes for that slide.
 - `.deep-dive` blocks are excluded entirely from presentations, including their
   headings, selected content, and speaker notes. They remain in the textbook.
