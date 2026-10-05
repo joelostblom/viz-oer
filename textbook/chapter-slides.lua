@@ -352,6 +352,13 @@ function Pandoc(doc)
   end
 
   local function native_tabset(block, tabs, level)
+    if #tabs == 1 then
+      -- A single selected variant needs no switcher. Keep its reveal structure
+      -- and prevent a leading subheading becoming a nested Reveal section.
+      local content = pandoc.List({pandoc.RawBlock("html", "<!-- single tab content -->")})
+      content:extend(tabs[1].content)
+      return pandoc.Div(content, pandoc.Attr("", {"slide-tabset-single"}))
+    end
     local attr = block.attr:clone()
     attr.identifier = "" -- One source tabset can produce several slide widgets.
     attr.classes = attr.classes:filter(function(class)
