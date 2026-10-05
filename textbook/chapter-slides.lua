@@ -42,6 +42,7 @@ function Pandoc(doc)
   local reveal_group = 0
   local continuation = 0
   local current_slide_index = nil
+  local inside_columns = false
 
   local function flush_notes()
     if #notes > 0 then
@@ -402,9 +403,9 @@ function Pandoc(doc)
           if title then
             local heading = pandoc.Header(3, {pandoc.Str(title)},
               pandoc.Attr("", {"slide-heading"}))
-            if output[current_slide_index].attributes["slide-columns"] == "true" then
-              -- Align the second title with the first column's heading while
-              -- retaining a single reveal step for this title and its content.
+            if inside_columns or output[current_slide_index].attributes["slide-columns"] == "true" then
+              -- Expose generated titles to column grouping, retaining a single
+              -- reveal step for each heading and its content.
               reveal_group = reveal_group + 1
               heading.classes:extend({"fragment", "fade-in"})
               heading.attributes["slide-reveal-group"] = tostring(reveal_group)
@@ -463,9 +464,13 @@ function Pandoc(doc)
         -- Return from nested slides to a visible outer section in the chapter,
         -- rather than an anchor inside a collapsed solution or inactive tab.
         local first_output = #output + 1
+        local is_columns = block.classes:includes("slide-columns")
+          or block.classes:includes("slide-comparison")
+        local previous_columns = inside_columns
+        inside_columns = inside_columns or is_columns
         process_blocks(block.content, parent_anchor or current_anchor)
-        if block.classes:includes("slide-columns")
-            or block.classes:includes("slide-comparison") then
+        inside_columns = previous_columns
+        if is_columns then
           local new_slide = false
           for index = first_output, #output do
             if output[index].t == "Header" and output[index].level == 2 then

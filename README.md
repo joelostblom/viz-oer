@@ -446,6 +446,38 @@ then reveal together, left column followed by right column. `slide-widths` works
 with this layout too. The book retains its normal headings and tabs. Chapter 5
 uses this full-width-title layout for its aggregation comparison.
 
+For presentation-only column headings, you can use `slide-title` on two
+`.slide-fragment` blocks inside a `.slide-columns` div:
+
+````markdown
+### What does the "grammar" part mean?
+
+:::: {.slide-columns}
+
+::: {.slide-fragment slide-title="Adding numbers"}
+
+```python
+1 + 2
+```
+
+:::
+
+::: {.slide-fragment slide-title="Adding strings"}
+
+```javascript
+'one' + 'two'
+```
+
+:::
+
+::::
+````
+
+The generated subheadings sit beneath the main title, left and right, and each
+reveals together with its block. Explanatory prose between the blocks stays in
+speaker notes. This wrapper can also sit inside an exercise callout. Chapter 2
+uses this layout for its numbers/strings example.
+
 This layout currently supports two columns. The former `.slide-comparison`
 name remains supported as a compatibility alias; use `.slide-columns` for new
 content.

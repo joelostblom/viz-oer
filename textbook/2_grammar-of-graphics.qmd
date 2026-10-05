@@ -275,7 +275,11 @@ so let's see an example in the following exercise:
     Cantonese, Zulu, Swedish, etc.
 
 
-### What does the "grammar" part mean?{.content-visible when-format="revealjs" .slide-columns}
+::: {.content-visible when-format="revealjs"}
+
+### What does the "grammar" part mean?
+
+:::
 
 ::: {.column-margin}
 
@@ -292,13 +296,15 @@ The idea of a grammar of graphics originates from
 
 What do you think the output of the following Python code would be?
 
-::: {.slide-fragment slide-title="Adding numbers" .slide-with-content}
+:::::: {.slide-columns}
+
+::::::: {.slide-fragment slide-title="Adding numbers" .slide-with-content}
 
 ```{.python}
 1 + 2
 ```
 
-:::
+:::::::
 
 As you might have expected,
 the output is `3`
@@ -312,13 +318,27 @@ Do you think it differs between programming languages?
 
 <!-- For some reason, syntax highlighting is messed up if this is a python block -->
 
-::: {.slide-fragment slide-title="Adding strings" .slide-with-content}
+::::::: {.slide-fragment slide-title="Adding strings" .slide-with-content}
 
 ```{.js}
 'one' + 'two'
 ```
 
-:::
+:::::::
+
+
+[<br>**What should the output be?**]{.content-visible when-format="revealjs" .slide-text}
+
+::::::: {.content-visible when-format="revealjs" .slide-bullet}
+
+A.  `Error` - strings can't be added
+B.  `'onetwo'`
+C.  `'three'`
+D.  Something else
+
+:::::::
+
+::::::
 
 :::: {.callout-default .ex-hint}
 
