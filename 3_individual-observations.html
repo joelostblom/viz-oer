@@ -573,7 +573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>cars <span class="op">=</span> pd.read_csv(url)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>cars</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="cell" data-slide-show="output" data-slide-output-fragment="true">
+<div class="cell" data-slide-show="output" data-slide-reveal="false">
 <div class="cell-output-display">
 <table class="dataframe dataframe-preview table table-sm table-striped small" data-border="1">
 <thead>
@@ -832,7 +832,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>First, we create a canvas linked to the cars dataframe via <code>alt.Chart(cars)</code>. Then, we indicate what kind of geometric <em>mark</em> we want to use to represent the data. Here, it is suitable to show the data as points using <code>mark_point()</code>:</p>
-<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Scatterplot — Altair">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Horsepower vs Miles_per_Gallon">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(cars).mark_point().encode(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Miles_per_Gallon'</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Horsepower'</span></span>
@@ -885,7 +885,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>First, we create a canvas linked to the cars dataframe via <code>ggplot(cars)</code>. Then, we indicate what kind of geometric <em>mark</em> we want to use to represent the data. Here, it is suitable to show the data as points using <code>geom_point()</code>:</p>
-<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Scatterplot — ggplot">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(<span class="at">x =</span> Miles_per_Gallon, <span class="at">y =</span> Horsepower)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -952,9 +952,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="callout-default ex-solution">
+<section id="horsepower-vs-miles_per_gallon" class="level3 content-visible callout-default ex-solution" data-when-format="revealjs">
+<h3 class="content-visible anchored" data-when-format="revealjs" data-anchor-id="horsepower-vs-miles_per_gallon">Horsepower vs Miles_per_Gallon</h3>
 <p>From the chart, we can see that <code>Horsepower</code> and <code>Miles_per_Gallon</code> are “negatively correlated”. In plain English, this means that <span class="slide-bullet">cars with more powerful engines (higher <code>Horsepower</code>) tend to have lower fuel efficiency (lower <code>Miles_per_Gallon</code>)</span>. This makes sense, as more powerful engines often consume more fuel than less powerful ones. Note that <span class="slide-subbullet">we can’t make claims about a causal relationship from the chart alone</span>, but in this case, the observed relationship in the chart supports our mechanistic understanding of the world.</p>
-</div>
+</section>
 </div>
 </div>
 </div>
@@ -1087,13 +1088,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>399 rows × 9 columns</p>
 </div>
 </div>
-<p><span class="slide-subbullet">What if one of the other variables also influences a car’s fuel efficiency?</span> For example, it seems reasonable that the weight of the car could impact fuel efficiency, since more energy is needed to accelerate a heavier car to the same speed. To explore <code>Weight_in_lbs</code> together with the other two variables, we can <span class="slide-bullet">use another visual channel in this chart, for example, by coloring the points</span> according to this column. When using the <code>color</code> encoding channel, high-level visualization libraries will <span class="slide-bullet">automatically figure out an appropriate color scale to use</span>. Since the <code>Weight_in_lbs</code> column contains continuous numerical data, a continuous gradient will be used here.</p>
+<p><span class="slide-subbullet">What if one of the other variables also influences a car’s fuel efficiency?</span> For example, it seems reasonable that the weight of the car could impact fuel efficiency, since more energy is needed to accelerate a heavier car to the same speed. To explore <code>Weight_in_lbs</code> together with the other two variables, we can <span class="slide-bullet">use another visual channel in this chart, for example, by coloring the points</span> according to this column. When using the <code>color</code> encoding channel, high-level visualization libraries will <span class="slide-subbullet">automatically figure out an appropriate color scale to use</span>. Since the <code>Weight_in_lbs</code> column contains continuous numerical data, a continuous gradient will be used here.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. Note that the largest value in the <code>Weight_in_lbs</code> column is represented with a dark color, which contrasts strongly with the light background of the chart.</p>
-<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding — Altair">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(cars).mark_point().encode(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Miles_per_Gallon'</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Horsepower'</span>,</span>
@@ -1147,7 +1148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower weights to light blue for higher weights, since light colors have the highest contrast to the chart’s dark background.</p>
-<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding — ggplot">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(<span class="at">x =</span> Miles_per_Gallon, <span class="at">y =</span> Horsepower, <span class="at">color =</span> Weight_in_lbs)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -1157,7 +1158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="3_individual-observations_files/figure-html/cars-weight-gg-1.png" class="img-fluid figure-img" width="384"></p>
+<p><img src="3_individual-observations_files/figure-html/cars-weight-gg-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>

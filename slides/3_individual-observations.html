@@ -305,8 +305,7 @@
 <h2>Creating our first chart</h2>
 <div class="slide-tabset-single">
 <!-- single tab content -->
-<div class="slide-media fragment fade-in" data-slide-show="output" data-slide-output-fragment="true" data-fragment-index="0">
-<div class="fragment fade-in slide-answer" data-fragment-index="1">
+<div class="slide-media" data-slide-show="output" data-slide-reveal="false">
 <div class="cell-output-display">
 <table class="dataframe dataframe-preview caption-top" data-border="1">
 <thead>
@@ -424,7 +423,6 @@
 </table>
 
 <p>399 rows × 9 columns</p>
-</div>
 </div>
 </div>
 </div>
@@ -561,12 +559,12 @@
       }</style></aside>
 </section>
 <section id="tabset-2-step-1" class="slide level2" data-footer="false" data-chapter-anchor="creating-our-first-chart">
-<h2>Scatterplot</h2>
+<h2>Horsepower vs Miles_per_Gallon</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Altair</a></li><li><a href="#tabset-1-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-1-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Scatterplot — Altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Horsepower vs Miles_per_Gallon" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(cars).mark_point().encode(</span>
 <span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Miles_per_Gallon'</span>,</span>
 <span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Horsepower'</span></span>
@@ -620,7 +618,7 @@
 </div>
 </div>
 <div id="tabset-1-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Scatterplot — ggplot" data-fragment-index="2">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-fragment-index="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(<span class="at">x =</span> Miles_per_Gallon, <span class="at">y =</span> Horsepower)) <span class="sc">+</span></span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment fade-in slide-answer" data-fragment-index="3">
@@ -641,31 +639,6 @@
 <li><p>What can you say about the relationship between <code>Horsepower</code> and <code>Miles_per_Gallon</code>?</p></li>
 </ul>
 </div>
-<div class="slide-content fragment fade-in" data-fragment-index="5">
-<ul>
-<li><p>Cars with more powerful engines (higher <code>Horsepower</code>) tend to have lower fuel efficiency (lower <code>Miles_per_Gallon</code>)</p>
-<div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="6" data-subbullet-attached="true">
-<ul>
-<li><p>We can’t make claims about a causal relationship from the chart alone</p></li>
-</ul>
-</div>
-<div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="7" data-subbullet-attached="true">
-<ul>
-<li><p>What if one of the other variables also influences a car’s fuel efficiency?</p></li>
-</ul>
-</div></li>
-</ul>
-</div>
-<div class="slide-content fragment fade-in" data-fragment-index="8">
-<ul>
-<li><p>Use another visual channel in this chart, for example, by coloring the points</p></li>
-</ul>
-</div>
-<div class="slide-content fragment fade-in" data-fragment-index="9">
-<ul>
-<li><p>Automatically figure out an appropriate color scale to use</p></li>
-</ul>
-</div>
 <aside class="notes">
 <p><strong>Altair</strong></p>
 <p>First, we create a canvas linked to the cars dataframe via <code>alt.Chart(cars)</code>. Then, we indicate what kind of geometric <em>mark</em> we want to use to represent the data. Here, it is suitable to show the data as points using <code>mark_point()</code>:</p>
@@ -678,6 +651,46 @@
 <p><strong>Hint</strong></p>
 <p>It can be helpful to start with a particular area of the chart. For example, look at the cars with the most powerful engines (highest horsepower). What is their fuel efficiency? Now do the same for the cars with the least powerful engines and compare the two.</p>
 <p><strong>Solution</strong></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="horsepower-vs-miles_per_gallon" class="slide level2" data-footer="false" data-chapter-anchor="creating-our-first-chart">
+<h2>Horsepower vs Miles_per_Gallon</h2>
+<div class="slide-content fragment fade-in" data-fragment-index="0">
+<ul>
+<li><p>Cars with more powerful engines (higher <code>Horsepower</code>) tend to have lower fuel efficiency (lower <code>Miles_per_Gallon</code>)</p>
+<div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="1" data-subbullet-attached="true">
+<ul>
+<li><p>We can’t make claims about a causal relationship from the chart alone</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="2" data-subbullet-attached="true">
+<ul>
+<li><p>What if one of the other variables also influences a car’s fuel efficiency?</p></li>
+</ul>
+</div></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="3">
+<ul>
+<li><p>Use another visual channel in this chart, for example, by coloring the points</p>
+<div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="4" data-subbullet-attached="true">
+<ul>
+<li><p>Automatically figure out an appropriate color scale to use</p></li>
+</ul>
+</div></li>
+</ul>
+</div>
+<aside class="notes">
 <p>From the chart, we can see that <code>Horsepower</code> and <code>Miles_per_Gallon</code> are “negatively correlated”. In plain English, this means that <span class="slide-bullet"><strong>cars with more powerful engines (higher <code>Horsepower</code>) tend to have lower fuel efficiency (lower <code>Miles_per_Gallon</code>)</strong></span>. This makes sense, as more powerful engines often consume more fuel than less powerful ones. Note that <span class="slide-subbullet"><strong>we can’t make claims about a causal relationship from the chart alone</strong></span>, but in this case, the observed relationship in the chart supports our mechanistic understanding of the world.</p>
 <p>Our conclusion above makes sense for the data we showed in the chart. But remember that there are other variables in our dataframe; let’s show it again as a reminder.</p>
 <table class="dataframe dataframe-preview caption-top" data-border="1">
@@ -796,7 +809,7 @@
 </table>
 
 <p>399 rows × 9 columns</p>
-<p><span class="slide-subbullet"><strong>What if one of the other variables also influences a car’s fuel efficiency?</strong></span> For example, it seems reasonable that the weight of the car could impact fuel efficiency, since more energy is needed to accelerate a heavier car to the same speed. To explore <code>Weight_in_lbs</code> together with the other two variables, we can <span class="slide-bullet"><strong>use another visual channel in this chart, for example, by coloring the points</strong></span> according to this column. When using the <code>color</code> encoding channel, high-level visualization libraries will <span class="slide-bullet"><strong>automatically figure out an appropriate color scale to use</strong></span>. Since the <code>Weight_in_lbs</code> column contains continuous numerical data, a continuous gradient will be used here.</p>
+<p><span class="slide-subbullet"><strong>What if one of the other variables also influences a car’s fuel efficiency?</strong></span> For example, it seems reasonable that the weight of the car could impact fuel efficiency, since more energy is needed to accelerate a heavier car to the same speed. To explore <code>Weight_in_lbs</code> together with the other two variables, we can <span class="slide-bullet"><strong>use another visual channel in this chart, for example, by coloring the points</strong></span> according to this column. When using the <code>color</code> encoding channel, high-level visualization libraries will <span class="slide-subbullet"><strong>automatically figure out an appropriate color scale to use</strong></span>. Since the <code>Weight_in_lbs</code> column contains continuous numerical data, a continuous gradient will be used here.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -815,7 +828,7 @@
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Altair</a></li><li><a href="#tabset-2-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-2-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding — Altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(cars).mark_point().encode(</span>
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Miles_per_Gallon'</span>,</span>
 <span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Horsepower'</span>,</span>
@@ -870,14 +883,14 @@
 </div>
 </div>
 <div id="tabset-2-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding — ggplot" data-fragment-index="2">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-fragment-index="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(<span class="at">x =</span> Miles_per_Gallon, <span class="at">y =</span> Horsepower, <span class="at">color =</span> Weight_in_lbs)) <span class="sc">+</span></span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment fade-in slide-answer" data-fragment-index="3">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="3_individual-observations_files/figure-revealjs/cars-weight-gg-1.png" width="384"></p>
+<p><img data-src="3_individual-observations_files/figure-revealjs/cars-weight-gg-1.png" width="768"></p>
 </figure>
 </div>
 </div>
