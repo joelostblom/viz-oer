@@ -465,11 +465,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-is-the-purpose-of-visualizing-data" id="toc-what-is-the-purpose-of-visualizing-data" class="nav-link active" data-scroll-target="#what-is-the-purpose-of-visualizing-data"><span class="header-section-number">1.1</span> What is the purpose of visualizing data?</a></li>
-  <li><a href="#why-bother-visualizing-data-instead-of-showing-raw-numbers" id="toc-why-bother-visualizing-data-instead-of-showing-raw-numbers" class="nav-link" data-scroll-target="#why-bother-visualizing-data-instead-of-showing-raw-numbers"><span class="header-section-number">1.2</span> Why bother visualizing data instead of showing raw numbers?</a>
+  <li><a href="#what-is-data-visualization" id="toc-what-is-data-visualization" class="nav-link active" data-scroll-target="#what-is-data-visualization"><span class="header-section-number">1.1</span> What is data visualization?</a></li>
+  <li><a href="#why-bother" id="toc-why-bother" class="nav-link" data-scroll-target="#why-bother"><span class="header-section-number">1.2</span> Why bother?</a></li>
+  <li><a href="#why-are-visuals-easier-to-interpret-than-numbers" id="toc-why-are-visuals-easier-to-interpret-than-numbers" class="nav-link" data-scroll-target="#why-are-visuals-easier-to-interpret-than-numbers"><span class="header-section-number">1.3</span> Why are visuals easier to interpret than numbers?</a>
   <ul class="collapse">
-  <li><a href="#summary-statistics-dont-tell-the-whole-story-either" id="toc-summary-statistics-dont-tell-the-whole-story-either" class="nav-link" data-scroll-target="#summary-statistics-dont-tell-the-whole-story-either">Summary statistics don’t tell the whole story either</a></li>
-  <li><a href="#plotting-immediately-reveals-patterns-in-the-data" id="toc-plotting-immediately-reveals-patterns-in-the-data" class="nav-link" data-scroll-target="#plotting-immediately-reveals-patterns-in-the-data">Plotting immediately reveals patterns in the data</a></li>
   <li><a href="#a-modern-take-on-anscombes-quartet" id="toc-a-modern-take-on-anscombes-quartet" class="nav-link" data-scroll-target="#a-modern-take-on-anscombes-quartet">A modern take on Anscombe’s quartet</a></li>
   </ul></li>
   </ul>
@@ -499,7 +498,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="chapter-slide-link">
-<a href="slides/1_why-visualize-data.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<a href="slides/1_why-visualize-data.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <rect x="3" y="3" width="18" height="13" rx="1"></rect>
         <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
         </svg></a>
@@ -523,79 +522,91 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<section id="what-is-the-purpose-of-visualizing-data" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="what-is-the-purpose-of-visualizing-data"><span class="header-section-number">1.1</span> What is the purpose of visualizing data?</h2>
-<p>At its core, data visualization is about representing data with graphical elements such as the position of a point, the length of a bar, or the color of a line. We usually visualize data for two main purposes: <span class="slide-text">to improve own understanding of a dataset</span> or <span class="slide-text">to improve someone’s else’s understanding</span> by communicating what we have learned. While we often use visualization to answer a specific question about a dataset, it can also be more exploratory and help us generate new questions.</p>
-<p>In this sense, we can <span class="slide-text">think of data visualization as a human “data language”</span> that helps us gain and communicate data insights effectively. This role is equally relevant when an analysis comes from another person or from a machine, such as a generative AI agent: in either case, the goal is to support human understanding. By supporting both exploration and communication, <span class="slide-text">visualization is often where a data analysis begins and ends</span>.</p>
+<section id="what-is-data-visualization" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="what-is-data-visualization"><span class="header-section-number">1.1</span> What is data visualization?</h2>
+<p>At its core, data visualization is about representing data with graphical elements such as the position of a point, the length of a bar, or the color of a line. We usually visualize data for two main purposes: <span class="slide-bullet">to improve own understanding of a dataset</span> or <span class="slide-bullet">to improve someone’s else’s understanding</span> by communicating what we have learned. While we often use visualization <span class="slide-bullet">to answer a specific question about a dataset</span>, it can also be more exploratory and <span class="slide-bullet">help us generate new questions</span>.</p>
+<p>In this sense, we can <span class="slide-bullet">think of data visualization as a human “data language”</span> that helps us gain and communicate data insights effectively. This role is equally relevant when an analysis comes from another person or from a machine, such as a generative AI agent: in either case, the goal is to support human understanding. By supporting both exploration and communication, <span class="slide-bullet">visualization is often where a data analysis begins and ends</span>.</p>
 </section>
-<section id="why-bother-visualizing-data-instead-of-showing-raw-numbers" class="level2 page-columns page-full" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="why-bother-visualizing-data-instead-of-showing-raw-numbers"><span class="header-section-number">1.2</span> Why bother visualizing data instead of showing raw numbers?</h2>
-<p>To understand why visualizations are so powerful, it is helpful to remember that to answer a question, we often have to put the data in a format that is easy for us humans to interpret. Because our number systems have only been around for about 5,000 years, we need to assert effort and train ourselves to recognize structure in numerical data.</p>
-<p>Visual systems, on the other hand, have undergone refinement during 500,000,000 years of evolution, so we can instinctively recognize visual patterns and accurately estimate visual properties such as colors and distances without much conscious cognitive effort.</p>
-<p>In practice, this means that we can arrive at correct conclusions faster by studying graphical rather than numerical representations of the same data. For example, have a look at the four sets of data in the table below. Can you describe the datasets just from looking at the numbers? How are they different from one another?</p>
+<section id="why-bother" class="level2 page-columns page-full" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="why-bother"><span class="header-section-number">1.2</span> Why bother?</h2>
+<p>Why do we visualize data instead of just showing raw numbers in tables? Let’s find out in an exercise!</p>
+<div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Ex-prompt</span>Exercise 1
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div class="callout-default ex-prompt">
+<p>Have a look at the four sets of data in the table below. Can you describe the datasets just from looking at the numbers? How are they different from one another?</p>
 <div class="slide-visual">
 <div class="cell">
 <div id="tbl-anscombe" class="cell quarto-float quarto-figure quarto-figure-left anchored">
-<figure class="quarto-float quarto-float-tbl figure">
+<figure class="quarto-float quarto-float-tbl figure" aria-labelledby="tbl-anscombe-caption">
 <div aria-describedby="tbl-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="dataframe-grid"><style type="text/css">
 </style>
 
-<table id="T_2928f" class="cell table table-sm table-striped small">
+<table id="T_e59ef" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_2928f_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
+<th colspan="2" id="T_e59ef_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
 </tr>
 <tr class="even">
-<th id="T_2928f_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_2928f_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_e59ef_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_e59ef_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_2928f_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_2928f_row0_col1" class="data row0 col1">8.04</td>
+<td id="T_e59ef_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_e59ef_row0_col1" class="data row0 col1">8.04</td>
 </tr>
 <tr class="even">
-<td id="T_2928f_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_2928f_row1_col1" class="data row1 col1">6.95</td>
+<td id="T_e59ef_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_e59ef_row1_col1" class="data row1 col1">6.95</td>
 </tr>
 <tr class="odd">
-<td id="T_2928f_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_2928f_row2_col1" class="data row2 col1">7.58</td>
+<td id="T_e59ef_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_e59ef_row2_col1" class="data row2 col1">7.58</td>
 </tr>
 <tr class="even">
-<td id="T_2928f_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_2928f_row3_col1" class="data row3 col1">8.81</td>
+<td id="T_e59ef_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_e59ef_row3_col1" class="data row3 col1">8.81</td>
 </tr>
 <tr class="odd">
-<td id="T_2928f_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_2928f_row4_col1" class="data row4 col1">8.33</td>
+<td id="T_e59ef_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_e59ef_row4_col1" class="data row4 col1">8.33</td>
 </tr>
 <tr class="even">
-<td id="T_2928f_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_2928f_row5_col1" class="data row5 col1">9.96</td>
+<td id="T_e59ef_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_e59ef_row5_col1" class="data row5 col1">9.96</td>
 </tr>
 <tr class="odd">
-<td id="T_2928f_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_2928f_row6_col1" class="data row6 col1">7.24</td>
+<td id="T_e59ef_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_e59ef_row6_col1" class="data row6 col1">7.24</td>
 </tr>
 <tr class="even">
-<td id="T_2928f_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_2928f_row7_col1" class="data row7 col1">4.26</td>
+<td id="T_e59ef_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_e59ef_row7_col1" class="data row7 col1">4.26</td>
 </tr>
 <tr class="odd">
-<td id="T_2928f_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_2928f_row8_col1" class="data row8 col1">10.84</td>
+<td id="T_e59ef_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_e59ef_row8_col1" class="data row8 col1">10.84</td>
 </tr>
 <tr class="even">
-<td id="T_2928f_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_2928f_row9_col1" class="data row9 col1">4.81</td>
+<td id="T_e59ef_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_e59ef_row9_col1" class="data row9 col1">4.81</td>
 </tr>
 <tr class="odd">
-<td id="T_2928f_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_2928f_row10_col1" class="data row10 col1">5.68</td>
+<td id="T_e59ef_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_e59ef_row10_col1" class="data row10 col1">5.68</td>
 </tr>
 </tbody>
 </table>
@@ -603,60 +614,60 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_1426d" class="cell table table-sm table-striped small">
+<table id="T_bba97" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_1426d_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
+<th colspan="2" id="T_bba97_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
 </tr>
 <tr class="even">
-<th id="T_1426d_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_1426d_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_bba97_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_bba97_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_1426d_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_1426d_row0_col1" class="data row0 col1">9.14</td>
+<td id="T_bba97_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_bba97_row0_col1" class="data row0 col1">9.14</td>
 </tr>
 <tr class="even">
-<td id="T_1426d_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_1426d_row1_col1" class="data row1 col1">8.14</td>
+<td id="T_bba97_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_bba97_row1_col1" class="data row1 col1">8.14</td>
 </tr>
 <tr class="odd">
-<td id="T_1426d_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_1426d_row2_col1" class="data row2 col1">8.74</td>
+<td id="T_bba97_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_bba97_row2_col1" class="data row2 col1">8.74</td>
 </tr>
 <tr class="even">
-<td id="T_1426d_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_1426d_row3_col1" class="data row3 col1">8.77</td>
+<td id="T_bba97_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_bba97_row3_col1" class="data row3 col1">8.77</td>
 </tr>
 <tr class="odd">
-<td id="T_1426d_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_1426d_row4_col1" class="data row4 col1">9.26</td>
+<td id="T_bba97_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_bba97_row4_col1" class="data row4 col1">9.26</td>
 </tr>
 <tr class="even">
-<td id="T_1426d_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_1426d_row5_col1" class="data row5 col1">8.10</td>
+<td id="T_bba97_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_bba97_row5_col1" class="data row5 col1">8.10</td>
 </tr>
 <tr class="odd">
-<td id="T_1426d_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_1426d_row6_col1" class="data row6 col1">6.13</td>
+<td id="T_bba97_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_bba97_row6_col1" class="data row6 col1">6.13</td>
 </tr>
 <tr class="even">
-<td id="T_1426d_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_1426d_row7_col1" class="data row7 col1">3.10</td>
+<td id="T_bba97_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_bba97_row7_col1" class="data row7 col1">3.10</td>
 </tr>
 <tr class="odd">
-<td id="T_1426d_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_1426d_row8_col1" class="data row8 col1">9.13</td>
+<td id="T_bba97_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_bba97_row8_col1" class="data row8 col1">9.13</td>
 </tr>
 <tr class="even">
-<td id="T_1426d_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_1426d_row9_col1" class="data row9 col1">7.26</td>
+<td id="T_bba97_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_bba97_row9_col1" class="data row9 col1">7.26</td>
 </tr>
 <tr class="odd">
-<td id="T_1426d_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_1426d_row10_col1" class="data row10 col1">4.74</td>
+<td id="T_bba97_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_bba97_row10_col1" class="data row10 col1">4.74</td>
 </tr>
 </tbody>
 </table>
@@ -664,60 +675,60 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_cebbd" class="cell table table-sm table-striped small">
+<table id="T_ae598" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_cebbd_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
+<th colspan="2" id="T_ae598_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
 </tr>
 <tr class="even">
-<th id="T_cebbd_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_cebbd_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_ae598_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_ae598_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_cebbd_row0_col0" class="data row0 col0">10.00</td>
-<td id="T_cebbd_row0_col1" class="data row0 col1">7.46</td>
+<td id="T_ae598_row0_col0" class="data row0 col0">10.00</td>
+<td id="T_ae598_row0_col1" class="data row0 col1">7.46</td>
 </tr>
 <tr class="even">
-<td id="T_cebbd_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_cebbd_row1_col1" class="data row1 col1">6.77</td>
+<td id="T_ae598_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_ae598_row1_col1" class="data row1 col1">6.77</td>
 </tr>
 <tr class="odd">
-<td id="T_cebbd_row2_col0" class="data row2 col0">13.00</td>
-<td id="T_cebbd_row2_col1" class="data row2 col1">8.50</td>
+<td id="T_ae598_row2_col0" class="data row2 col0">13.00</td>
+<td id="T_ae598_row2_col1" class="data row2 col1">8.50</td>
 </tr>
 <tr class="even">
-<td id="T_cebbd_row3_col0" class="data row3 col0">9.00</td>
-<td id="T_cebbd_row3_col1" class="data row3 col1">7.11</td>
+<td id="T_ae598_row3_col0" class="data row3 col0">9.00</td>
+<td id="T_ae598_row3_col1" class="data row3 col1">7.11</td>
 </tr>
 <tr class="odd">
-<td id="T_cebbd_row4_col0" class="data row4 col0">11.00</td>
-<td id="T_cebbd_row4_col1" class="data row4 col1">7.81</td>
+<td id="T_ae598_row4_col0" class="data row4 col0">11.00</td>
+<td id="T_ae598_row4_col1" class="data row4 col1">7.81</td>
 </tr>
 <tr class="even">
-<td id="T_cebbd_row5_col0" class="data row5 col0">14.00</td>
-<td id="T_cebbd_row5_col1" class="data row5 col1">8.84</td>
+<td id="T_ae598_row5_col0" class="data row5 col0">14.00</td>
+<td id="T_ae598_row5_col1" class="data row5 col1">8.84</td>
 </tr>
 <tr class="odd">
-<td id="T_cebbd_row6_col0" class="data row6 col0">6.00</td>
-<td id="T_cebbd_row6_col1" class="data row6 col1">6.08</td>
+<td id="T_ae598_row6_col0" class="data row6 col0">6.00</td>
+<td id="T_ae598_row6_col1" class="data row6 col1">6.08</td>
 </tr>
 <tr class="even">
-<td id="T_cebbd_row7_col0" class="data row7 col0">4.00</td>
-<td id="T_cebbd_row7_col1" class="data row7 col1">5.39</td>
+<td id="T_ae598_row7_col0" class="data row7 col0">4.00</td>
+<td id="T_ae598_row7_col1" class="data row7 col1">5.39</td>
 </tr>
 <tr class="odd">
-<td id="T_cebbd_row8_col0" class="data row8 col0">12.00</td>
-<td id="T_cebbd_row8_col1" class="data row8 col1">8.15</td>
+<td id="T_ae598_row8_col0" class="data row8 col0">12.00</td>
+<td id="T_ae598_row8_col1" class="data row8 col1">8.15</td>
 </tr>
 <tr class="even">
-<td id="T_cebbd_row9_col0" class="data row9 col0">7.00</td>
-<td id="T_cebbd_row9_col1" class="data row9 col1">6.42</td>
+<td id="T_ae598_row9_col0" class="data row9 col0">7.00</td>
+<td id="T_ae598_row9_col1" class="data row9 col1">6.42</td>
 </tr>
 <tr class="odd">
-<td id="T_cebbd_row10_col0" class="data row10 col0">5.00</td>
-<td id="T_cebbd_row10_col1" class="data row10 col1">5.73</td>
+<td id="T_ae598_row10_col0" class="data row10 col0">5.00</td>
+<td id="T_ae598_row10_col1" class="data row10 col1">5.73</td>
 </tr>
 </tbody>
 </table>
@@ -725,60 +736,60 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_03d5d" class="cell table table-sm table-striped small">
+<table id="T_9f48b" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_03d5d_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
+<th colspan="2" id="T_9f48b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
 </tr>
 <tr class="even">
-<th id="T_03d5d_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_03d5d_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_9f48b_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_9f48b_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_03d5d_row0_col0" class="data row0 col0">8.00</td>
-<td id="T_03d5d_row0_col1" class="data row0 col1">6.58</td>
+<td id="T_9f48b_row0_col0" class="data row0 col0">8.00</td>
+<td id="T_9f48b_row0_col1" class="data row0 col1">6.58</td>
 </tr>
 <tr class="even">
-<td id="T_03d5d_row1_col0" class="data row1 col0">8.00</td>
-<td id="T_03d5d_row1_col1" class="data row1 col1">5.76</td>
+<td id="T_9f48b_row1_col0" class="data row1 col0">8.00</td>
+<td id="T_9f48b_row1_col1" class="data row1 col1">5.76</td>
 </tr>
 <tr class="odd">
-<td id="T_03d5d_row2_col0" class="data row2 col0">8.00</td>
-<td id="T_03d5d_row2_col1" class="data row2 col1">7.71</td>
+<td id="T_9f48b_row2_col0" class="data row2 col0">8.00</td>
+<td id="T_9f48b_row2_col1" class="data row2 col1">7.71</td>
 </tr>
 <tr class="even">
-<td id="T_03d5d_row3_col0" class="data row3 col0">8.00</td>
-<td id="T_03d5d_row3_col1" class="data row3 col1">8.84</td>
+<td id="T_9f48b_row3_col0" class="data row3 col0">8.00</td>
+<td id="T_9f48b_row3_col1" class="data row3 col1">8.84</td>
 </tr>
 <tr class="odd">
-<td id="T_03d5d_row4_col0" class="data row4 col0">8.00</td>
-<td id="T_03d5d_row4_col1" class="data row4 col1">8.47</td>
+<td id="T_9f48b_row4_col0" class="data row4 col0">8.00</td>
+<td id="T_9f48b_row4_col1" class="data row4 col1">8.47</td>
 </tr>
 <tr class="even">
-<td id="T_03d5d_row5_col0" class="data row5 col0">8.00</td>
-<td id="T_03d5d_row5_col1" class="data row5 col1">7.04</td>
+<td id="T_9f48b_row5_col0" class="data row5 col0">8.00</td>
+<td id="T_9f48b_row5_col1" class="data row5 col1">7.04</td>
 </tr>
 <tr class="odd">
-<td id="T_03d5d_row6_col0" class="data row6 col0">8.00</td>
-<td id="T_03d5d_row6_col1" class="data row6 col1">5.25</td>
+<td id="T_9f48b_row6_col0" class="data row6 col0">8.00</td>
+<td id="T_9f48b_row6_col1" class="data row6 col1">5.25</td>
 </tr>
 <tr class="even">
-<td id="T_03d5d_row7_col0" class="data row7 col0">19.00</td>
-<td id="T_03d5d_row7_col1" class="data row7 col1">12.50</td>
+<td id="T_9f48b_row7_col0" class="data row7 col0">19.00</td>
+<td id="T_9f48b_row7_col1" class="data row7 col1">12.50</td>
 </tr>
 <tr class="odd">
-<td id="T_03d5d_row8_col0" class="data row8 col0">8.00</td>
-<td id="T_03d5d_row8_col1" class="data row8 col1">5.56</td>
+<td id="T_9f48b_row8_col0" class="data row8 col0">8.00</td>
+<td id="T_9f48b_row8_col1" class="data row8 col1">5.56</td>
 </tr>
 <tr class="even">
-<td id="T_03d5d_row9_col0" class="data row9 col0">8.00</td>
-<td id="T_03d5d_row9_col1" class="data row9 col1">7.91</td>
+<td id="T_9f48b_row9_col0" class="data row9 col0">8.00</td>
+<td id="T_9f48b_row9_col1" class="data row9 col1">7.91</td>
 </tr>
 <tr class="odd">
-<td id="T_03d5d_row10_col0" class="data row10 col0">8.00</td>
-<td id="T_03d5d_row10_col1" class="data row10 col1">6.89</td>
+<td id="T_9f48b_row10_col0" class="data row10 col0">8.00</td>
+<td id="T_9f48b_row10_col1" class="data row10 col1">6.89</td>
 </tr>
 </tbody>
 </table>
@@ -786,41 +797,52 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-anscombe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca"><div class="figure-caption-content">Table&nbsp;1.1: This is a slightly modified version of <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="_blank">Anscombe’s quartet</a>, which was put together by statistician Francis Anscombe in the 70s.</div></figcaption>
+
 </figure>
 </div>
 </div>
 </div>
-<section id="summary-statistics-dont-tell-the-whole-story-either" class="level3">
-<h3 class="anchored" data-anchor-id="summary-statistics-dont-tell-the-whole-story-either">Summary statistics don’t tell the whole story either</h3>
+<div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Ex-hint</span>Hint
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="callout-default ex-hint">
 <p>You are likely not able to see much difference between the data sets in the table above. What about if we looked at a few commonly used statistical summaries of the data?</p>
 <div class="slide-visual">
 <div class="cell">
 <div id="tbl-anscombe-summary" class="cell quarto-float quarto-figure quarto-figure-left anchored">
-<figure class="quarto-float quarto-float-tbl figure">
+<figure class="quarto-float quarto-float-tbl figure" aria-labelledby="tbl-anscombe-summary-caption">
 <div aria-describedby="tbl-anscombe-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div class="dataframe-grid"><style type="text/css">
 </style>
 
-<table id="T_177a3" class="cell table table-sm table-striped small">
+<table id="T_d807b" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_177a3_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
+<th colspan="2" id="T_d807b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">A</th>
 </tr>
 <tr class="even">
-<th id="T_177a3_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_177a3_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_d807b_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_d807b_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_177a3_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_177a3_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_d807b_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_d807b_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_177a3_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_177a3_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_d807b_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_d807b_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -828,24 +850,24 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_518a7" class="cell table table-sm table-striped small">
+<table id="T_3198c" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_518a7_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
+<th colspan="2" id="T_3198c_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">B</th>
 </tr>
 <tr class="even">
-<th id="T_518a7_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_518a7_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_3198c_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_3198c_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_518a7_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_518a7_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_3198c_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_3198c_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_518a7_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_518a7_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_3198c_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_3198c_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -853,24 +875,24 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_a1da7" class="cell table table-sm table-striped small">
+<table id="T_4248e" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_a1da7_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
+<th colspan="2" id="T_4248e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">C</th>
 </tr>
 <tr class="even">
-<th id="T_a1da7_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_a1da7_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_4248e_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_4248e_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_a1da7_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_a1da7_row0_col1" class="data row0 col1" style="background-color: #4853a4; color: #ffffff"><strong>7.11</strong></td>
+<td id="T_4248e_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_4248e_row0_col1" class="data row0 col1" style="background-color: #4853a4; color: #ffffff"><strong>7.11</strong></td>
 </tr>
 <tr class="even">
-<td id="T_a1da7_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_a1da7_row1_col1" class="data row1 col1" style="background-color: #4853a4; color: #ffffff"><strong>1.15</strong></td>
+<td id="T_4248e_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_4248e_row1_col1" class="data row1 col1" style="background-color: #4853a4; color: #ffffff"><strong>1.15</strong></td>
 </tr>
 </tbody>
 </table>
@@ -878,24 +900,24 @@ ul.task-list li input[type="checkbox"] {
 <style type="text/css">
 </style>
 
-<table id="T_fa532" class="cell table table-sm table-striped small">
+<table id="T_53ed5" class="cell table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th colspan="2" id="T_fa532_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
+<th colspan="2" id="T_53ed5_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">D</th>
 </tr>
 <tr class="even">
-<th id="T_fa532_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
-<th id="T_fa532_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
+<th id="T_53ed5_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th">x</th>
+<th id="T_53ed5_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">y</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_fa532_row0_col0" class="data row0 col0">9.00</td>
-<td id="T_fa532_row0_col1" class="data row0 col1">7.50</td>
+<td id="T_53ed5_row0_col0" class="data row0 col0">9.00</td>
+<td id="T_53ed5_row0_col1" class="data row0 col1">7.50</td>
 </tr>
 <tr class="even">
-<td id="T_fa532_row1_col0" class="data row1 col0">3.32</td>
-<td id="T_fa532_row1_col1" class="data row1 col1">2.03</td>
+<td id="T_53ed5_row1_col0" class="data row1 col0">3.32</td>
+<td id="T_53ed5_row1_col1" class="data row1 col1">2.03</td>
 </tr>
 </tbody>
 </table>
@@ -903,21 +925,31 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-anscombe-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca"><div class="figure-caption-content">Table&nbsp;1.2: Summary statistics of the modified Anscombe datasets.</div></figcaption>
+
 </figure>
 </div>
 </div>
 </div>
 <p><br> Above, the mean and standard deviation indicate that set C is slightly different from the other three datasets in terms of the centre and spread of the sample distribution, while the remaining three sets of data have a similar centre and spread.</p>
 <p>Summaries, such as the mean and standard deviation, are helpful statistical tools that are often useful for summarizing and detecting the differences between datasets. However, since they collapse the data into just a few numbers, statistical summaries can’t tell the whole story about the data and there can be important differences between datasets that summaries fail to reveal.</p>
-</section>
-<section id="plotting-immediately-reveals-patterns-in-the-data" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="plotting-immediately-reveals-patterns-in-the-data">Plotting immediately reveals patterns in the data</h3>
+<div class="callout callout-style-default callout-ex-solution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Ex-solution</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="callout-default ex-solution">
 <p>So if you can’t really see any patterns in the table and the statistical summaries are nearly all the same, that must mean that the four sets are pretty similar, right? Sounds about right so let’s go ahead and plot them to have a quick look…</p>
-<div class="slide-visual page-columns page-full">
-<div class="cell page-columns page-full">
-<div id="fig-anscombe-charts" class="cell-output-display quarto-float quarto-figure quarto-figure-left anchored page-columns page-full">
-<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div class="slide-visual slide-columns">
+<div class="cell">
+<div id="fig-anscombe-charts" class="cell-output-display quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-fig figure" aria-labelledby="fig-anscombe-charts-caption">
 <div aria-describedby="fig-anscombe-charts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 
 
@@ -962,14 +994,31 @@ ul.task-list li input[type="checkbox"] {
 
 
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-anscombe-charts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca"><div class="figure-caption-content">Figure&nbsp;1.1: Visualization of the modified Anscombe datasets revealing the pattern in the underlying observations.</div></figcaption>
+
 </figure>
 </div>
 </div>
 </div>
-<p>… what… how can they be so different… there must be something wrong, right? Well what is wrong is that humans are not good at detecting patterns in raw numbers, and we don’t have good intuition about which combination of numbers can contribute to the same statistical summaries. But remember what we excel at? Detecting visual patterns!</p>
-<p>It is immediately clear to us how the four datasets differ once they are shown as graphical objects instead of textual objects. Sets A and C are roughly linearly increasing at similar rates, whereas set B reaches a plateau and starts to drop, and set D has a constant X-value for all numbers except one big outlier. We could only detect these patterns after visualizing the data. Importantly, if we only had looked at the raw data or the summary statistics, we would have come to the wrong conclusions about how the datasets differ, and any research or business level decision based on solely a numerical analysis would have been misinformed.</p>
-</section>
+<p>… what… how can they be so different… there must be something wrong, right? Well what is wrong is that humans are not good at detecting patterns in raw numbers, and we don’t have good intuition about which combination of numbers can contribute to the same statistical summaries. What do we excel at? Detecting visual patterns!</p>
+<p>It is immediately clear to us how the four datasets differ once they are shown as graphical objects instead of textual objects. Sets A and C are roughly linearly increasing at similar rates, whereas set B reaches a plateau and starts to drop, and set D has a constant X-value for all numbers except one big outlier. We could only detect these patterns after visualizing the data. Importantly, <span class="slide-bullet">if we only had looked at the raw data or the summary statistics, <strong>we would have come to the wrong conclusions about how the datasets differ</strong></span>, and <span class="slide-bullet">any research or business level decision based on solely on our numerical analysis of this dataset <strong>would have been misinformed</strong></span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tbl-anscombe-caption" class="margin-figure-caption column-margin callout-4-contents callout-collapse collapse show callout-margin-content"><div class="figure-caption-content">Table&nbsp;1.1: This is a slightly modified version of <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet" target="_blank">Anscombe’s quartet</a>, which was put together by statistician Francis Anscombe in the 70s.</div></div><div id="tbl-anscombe-summary-caption" class="margin-figure-caption column-margin callout-4-contents callout-collapse collapse show callout-margin-content"><div class="figure-caption-content">Table&nbsp;1.2: Summary statistics of the modified Anscombe datasets.</div></div><div id="fig-anscombe-charts-caption" class="margin-figure-caption column-margin callout-4-contents callout-collapse collapse show callout-margin-content"><div class="figure-caption-content">Figure&nbsp;1.1: Visualization of the modified Anscombe datasets revealing the pattern in the underlying observations.</div></div></section>
+<section id="why-are-visuals-easier-to-interpret-than-numbers" class="level2 page-columns page-full" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="why-are-visuals-easier-to-interpret-than-numbers"><span class="header-section-number">1.3</span> Why are visuals easier to interpret than numbers?</h2>
+<p>To understand why visualizations are so powerful, it is helpful to remember that to answer a question, we often have to put the data in a format that is easy for us humans to interpret. Because <span class="slide-bullet">our number systems have only been around for about 5,000 years</span>, <span class="slide-bullet">we need to assert effort and train ourselves to recognize structure in numerical data</span>.</p>
+<p>On the other hand, <span class="slide-bullet">visual systems have undergone refinement during 500,000,000 years of evolution</span>, so <span class="slide-bullet">we can instinctively recognize visual patterns and accurately estimate visual properties</span> such as colors and distances without much conscious cognitive effort.</p>
+<p>In practice, this means that <span class="slide-bullet">we can arrive at correct conclusions faster by studying graphical rather than numerical representations</span> of the same data.</p>
 <section id="a-modern-take-on-anscombes-quartet" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="a-modern-take-on-anscombes-quartet">A modern take on Anscombe’s quartet</h3>
 <p>For a more recent and dynamic illustration of how graphical representations are much easier for us to interpret, check out the <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">Datasaurus Dozen animation</a> below. It displays several different datasets, all with nearly the same mean, standard deviation and correlation between X and Y, but looking at the data graphically shows us how different these datasets actually are:</p>

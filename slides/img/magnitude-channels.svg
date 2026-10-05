@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="633.6" height="330" viewBox="0 0 1152 600" font-family="sans-serif" fill="#444" role="img" aria-labelledby="title description"><title id="title">Classical visual channels for quantitative magnitude judgments</title>
+<desc id="description">Classical, context-dependent channel guidance. Adapted from Munzner and Maguire, Visualization Analysis and Design (2014), CC BY 4.0.</desc>
+<rect width="1152" height="600" fill="white"/>
+<rect x="0" y="120" width="564" height="120" fill="#ebebeb"/>
+<rect x="0" y="360" width="564" height="120" fill="#ebebeb"/>
+<rect x="0" width="48" height="600" fill="#262626"/>
+<text x="22" y="67.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">1</tspan></text>
+<text x="22" y="187.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">2</tspan></text>
+<text x="22" y="307.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">3</tspan></text>
+<text x="22" y="427.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">4</tspan></text>
+<text x="22" y="547.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="22" dy="0">5</tspan></text>
+<rect x="588" y="0" width="564" height="120" fill="#ebebeb"/>
+<rect x="588" y="240" width="564" height="120" fill="#ebebeb"/>
+<rect x="588" y="480" width="564" height="120" fill="#ebebeb"/>
+<rect x="588" width="48" height="600" fill="#262626"/>
+<text x="610" y="67.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="610" dy="0">6</tspan></text>
+<text x="610" y="187.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="610" dy="0">7</tspan></text>
+<text x="610" y="307.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="610" dy="0">8</tspan></text>
+<text x="610" y="427.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="610" dy="0">9</tspan></text>
+<text x="610" y="547.2727" font-size="26" fill="white" text-anchor="middle"><tspan x="610" dy="0">10</tspan></text>
+<text x="397" y="53.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Position on</tspan><tspan x="397" dy="24">a common scale</tspan></text>
+<text x="397" y="161.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Position on</tspan><tspan x="397" dy="24">unaligned</tspan><tspan x="397" dy="24">scales</tspan></text>
+<text x="397" y="305.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Length</tspan></text>
+<text x="397" y="425.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Tilt or Angle</tspan></text>
+<text x="397" y="545.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="397" dy="0">Area (2D as size)</tspan></text>
+<text x="985" y="53.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="985" dy="0">Depth</tspan><tspan x="985" dy="24">(3D as position)</tspan></text>
+<text x="985" y="173.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="985" dy="0">Color luminance</tspan><tspan x="985" dy="24">or brightness</tspan></text>
+<text x="985" y="293.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="985" dy="0">Color saturation</tspan><tspan x="985" dy="24">or intensity</tspan></text>
+<text x="985" y="425.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="985" dy="0">Curvature</tspan></text>
+<text x="985" y="533.4545" font-size="18" font-weight="bold" fill="#222"><tspan x="985" dy="0">Volume</tspan><tspan x="985" dy="24">(3D as size)</tspan></text>
+<path d="M118 67L308 67" fill="none" stroke="#444" stroke-width="5"/>
+<path d="M118 59L118 75" fill="none" stroke="#444" stroke-width="5"/>
+<text x="118" y="90.6364" font-size="14" text-anchor="middle"><tspan x="118" dy="0">0</tspan></text>
+<path d="M213 59L213 75" fill="none" stroke="#444" stroke-width="5"/>
+<text x="213" y="90.6364" font-size="14" text-anchor="middle"><tspan x="213" dy="0">5</tspan></text>
+<path d="M308 59L308 75" fill="none" stroke="#444" stroke-width="5"/>
+<text x="308" y="90.6364" font-size="14" text-anchor="middle"><tspan x="308" dy="0">10</tspan></text>
+<path d="M92 150L282 150" fill="none" stroke="#444" stroke-width="5"/>
+<path d="M92 142L92 158" fill="none" stroke="#444" stroke-width="5"/>
+<text x="92" y="173.6364" font-size="14" text-anchor="middle"><tspan x="92" dy="0">0</tspan></text>
+<path d="M187 142L187 158" fill="none" stroke="#444" stroke-width="5"/>
+<text x="187" y="173.6364" font-size="14" text-anchor="middle"><tspan x="187" dy="0">5</tspan></text>
+<path d="M282 142L282 158" fill="none" stroke="#444" stroke-width="5"/>
+<text x="282" y="173.6364" font-size="14" text-anchor="middle"><tspan x="282" dy="0">10</tspan></text>
+<path d="M155 206L345 206" fill="none" stroke="#444" stroke-width="5"/>
+<path d="M155 198L155 214" fill="none" stroke="#444" stroke-width="5"/>
+<text x="155" y="229.6364" font-size="14" text-anchor="middle"><tspan x="155" dy="0">0</tspan></text>
+<path d="M250 198L250 214" fill="none" stroke="#444" stroke-width="5"/>
+<text x="250" y="229.6364" font-size="14" text-anchor="middle"><tspan x="250" dy="0">5</tspan></text>
+<path d="M345 198L345 214" fill="none" stroke="#444" stroke-width="5"/>
+<text x="345" y="229.6364" font-size="14" text-anchor="middle"><tspan x="345" dy="0">10</tspan></text>
+<circle cx="160" cy="27" r="15" stroke="#222" stroke-width="2"/>
+<circle cx="274" cy="27" r="15" stroke="#222" stroke-width="2"/>
+<circle cx="231" cy="150" r="15" stroke="#222" stroke-width="2"/>
+<circle cx="294" cy="206" r="15" stroke="#222" stroke-width="2"/>
+<path d="M125 280L330 280" fill="none" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+<path d="M87 315L240 315" fill="none" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+<path d="M118 462L118 379" fill="none" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+<path d="M138 462L184 379" fill="none" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+<path d="M168 462L239 392" fill="none" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+<path d="M213 466L284 417" fill="none" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+<path d="M264 468L354 451" fill="none" stroke="#444" stroke-width="5" stroke-linecap="round"/>
+<rect x="100" y="558" width="25" height="25" stroke="#222" stroke-width="2"/>
+<rect x="152" y="545" width="38" height="38" stroke="#222" stroke-width="2"/>
+<rect x="216" y="532" width="51" height="51" stroke="#222" stroke-width="2"/>
+<rect x="292" y="519" width="64" height="64" stroke="#222" stroke-width="2"/>
+<path d="M743 105L725.4485 66.3866" fill="none" stroke="#444" stroke-width="4"/>
+<path d="M748.4622 102.5172L737.5378 107.4828" fill="none" stroke="#444" stroke-width="4"/>
+<path d="M0 -6.7082L-7.7460 6.7082H7.7460Z" transform="translate(725.4485 66.3866) rotate(-24.4440)"/>
+<circle cx="718" cy="50" r="10.9545" stroke="#222" stroke-width="2"/>
+<path d="M813 105L862.6197 34.7054" fill="none" stroke="#444" stroke-width="4"/>
+<path d="M817.9018 108.4601L808.0982 101.5399" fill="none" stroke="#444" stroke-width="4"/>
+<path d="M0 -6.7082L-7.7460 6.7082H7.7460Z" transform="translate(862.6197 34.7054) rotate(35.2176)"/>
+<circle cx="873" cy="20" r="13.6931" stroke="#222" stroke-width="2"/>
+<rect x="676" y="157" width="46" height="46" fill="white" stroke="#555" stroke-width="1.5"/>
+<rect x="746" y="157" width="46" height="46" fill="#d0d0d0" stroke="#555" stroke-width="1.5"/>
+<rect x="816" y="157" width="46" height="46" fill="#929292" stroke="#555" stroke-width="1.5"/>
+<rect x="886" y="157" width="46" height="46" fill="#444" stroke="#555" stroke-width="1.5"/>
+<rect x="676" y="277" width="46" height="46" fill="#ffe0e0" stroke="#555" stroke-width="1.5"/>
+<rect x="746" y="277" width="46" height="46" fill="#faa" stroke="#555" stroke-width="1.5"/>
+<rect x="816" y="277" width="46" height="46" fill="#f55" stroke="#555" stroke-width="1.5"/>
+<rect x="886" y="277" width="46" height="46" fill="#ff2600" stroke="#555" stroke-width="1.5"/>
+<path d="M698 382Q698 420 698 458" fill="none" stroke="#444" stroke-width="4" stroke-linecap="round"/>
+<path d="M752 382Q778 420 752 458" fill="none" stroke="#444" stroke-width="4" stroke-linecap="round"/>
+<path d="M812 382Q864 420 812 458" fill="none" stroke="#444" stroke-width="4" stroke-linecap="round"/>
+<path d="M872 382Q984 420 872 458" fill="none" stroke="#444" stroke-width="4" stroke-linecap="round"/>
+<polygon points="675,552.5 698,564 698,579 675,567.5" fill="#fafafa" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="698,564 721,552.5 721,567.5 698,579" fill="#d4d4d4" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="698,541 721,552.5 698,564 675,552.5" fill="#eee" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="743,538.5 768,551 768,579 743,566.5" fill="#fafafa" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="768,551 793,538.5 793,566.5 768,579" fill="#d4d4d4" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="768,526 793,538.5 768,551 743,538.5" fill="#eee" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="817,523 843,536 843,579 817,566" fill="#fafafa" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="843,536 869,523 869,566 843,579" fill="#d4d4d4" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="843,510 869,523 843,536 817,523" fill="#eee" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="897,508 923,521 923,579 897,566" fill="#fafafa" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="923,521 949,508 949,566 923,579" fill="#d4d4d4" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/>
+<polygon points="923,495 949,508 923,521 897,508" fill="#eee" stroke="#888" stroke-width="1.5" stroke-linejoin="round"/></svg>

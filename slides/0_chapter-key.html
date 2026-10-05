@@ -196,6 +196,7 @@
     }
   </style>
   <script src="chapter-slides.js" defer=""></script>
+  <script src="chapter-slide-tabs.js" defer=""></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -208,7 +209,7 @@
 </div>
 
 </section>
-<section id="presentation-shortcuts" class="slide level2" data-footer="false" data-chapter-anchor="presentation-shortcuts">
+<section id="presentation-shortcuts" class="slide level2" data-chapter-anchor="presentation-shortcuts" data-footer="false">
 <h2>Presentation shortcuts</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ol type="1">
@@ -218,8 +219,8 @@
 </ol>
 </div>
 <aside class="notes">
-<p>Slides are currently available for the chapter key and chapters 1 and 2. You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="1.1em" height="1.1em" style="vertical-align: -0.15em" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"> <rect x="3" y="3" width="18" height="13" rx="1"></rect> <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path> </svg> beside a chapter title.</p>
-<div class="slide-text">
+<p>Slides are currently available for the chapter key and chapters 1–10. You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="1.1em" height="1.1em" style="vertical-align: -0.15em" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"> <rect x="3" y="3" width="18" height="13" rx="1"></rect> <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path> </svg> beside a chapter title.</p>
+<div class="slide-bullet">
 <ol type="1">
 <li><strong>Press <code>?</code> to explore the keyboard shortcuts.</strong></li>
 <li><strong>Close the shortcut help with <code>Esc</code> or <code>Q</code>, then press <code>E</code> to enter PDF-export mode.</strong></li>
@@ -238,7 +239,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="learning-outcomes-summaries" class="slide level2" data-footer="false" data-chapter-anchor="learning-outcomes-summaries">
+<section id="learning-outcomes-summaries" class="slide level2" data-chapter-anchor="learning-outcomes-summaries" data-footer="false">
 <h2>Learning outcomes &amp; summaries</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -252,9 +253,9 @@
 </div>
 <aside class="notes">
 Learning outcomes &amp; Chapter summary
-<p><span class="slide-text"><strong>Every chapter starts with the “Learning outcomes”</strong></span>, which describe what you will learn from this chapter. To make these learning outcomes more useful to you as a reader, we have expanded them to include a summary of the “solution” for each outcome, instead of just stating what you are to learn in the chapter.</p>
+<p><span class="slide-bullet"><strong>Every chapter starts with the “Learning outcomes”</strong></span>, which describe what you will learn from this chapter. To make these learning outcomes more useful to you as a reader, we have expanded them to include a summary of the “solution” for each outcome, instead of just stating what you are to learn in the chapter.</p>
 <p>For example, instead of simply stating: “Explain the main advantage of visualizing data” we would write: “Explain that the main advantage of visualizing data instead of presenting it with numbers is that they are easier to interpret for humans.</p>
-<p>As such, <span class="slide-text"><strong>the learning objectives also serve as the summary of each chapter</strong></span>.</p>
+<p>As such, <span class="slide-bullet"><strong>the learning objectives also serve as the summary of each chapter</strong></span>.</p>
 <p>The main text will go here. This can cover both practical and theoretical aspects of data visualization.</p>
 <p>These will be used to divide content further.</p>
 <style type="text/css">
@@ -269,7 +270,7 @@ Learning outcomes &amp; Chapter summary
           display:block!important;
       }</style></aside>
 </section>
-<section id="exercises" class="slide level2" data-footer="false" data-chapter-anchor="exercises">
+<section id="exercises" class="slide level2" data-chapter-anchor="exercises" data-footer="false">
 <h2>Exercises</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -283,7 +284,7 @@ Learning outcomes &amp; Chapter summary
 </div>
 <aside class="notes">
 <p><strong>Exercise</strong></p>
-<p><span class="slide-text"><strong>Exercises aim to engage you actively with the material</strong></span>, both to make it more fun to learn and to improve your learning. <span class="slide-text"><strong>Try to solve the exercise on your own first</strong></span>, before looking at the hint and the solution; this active engagement is what aids your learning. Click the hint below to expand it.</p>
+<p><span class="slide-bullet"><strong>Exercises aim to engage you actively with the material</strong></span>, both to make it more fun to learn and to improve your learning. <span class="slide-bullet"><strong>Try to solve the exercise on your own first</strong></span>, before looking at the hint and the solution; this active engagement is what aids your learning. Click the hint below to expand it.</p>
 <p><strong>Hint</strong></p>
 <p>Before looking at the solution, try to use the hint to figure out the answer.</p>
 <p><strong>Solution</strong></p>
@@ -300,14 +301,17 @@ Learning outcomes &amp; Chapter summary
           display:block!important;
       }</style></aside>
 </section>
-<section id="coding-content" class="slide level2" data-footer="false" data-chapter-anchor="coding-content">
+<section id="coding-content" class="slide level2" data-chapter-anchor="coding-content" data-footer="false">
 <h2>Coding content</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
 <li><p>Coding content will often include a panel with multiple tabs</p></li>
 </ul>
 </div>
-<h3 class="slide-fragment slide-with-content slide-heading fragment fade-in" data-fragment-index="1" id="package-one">Package One</h3>
+<div class="slide-tabset panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Package One</a></li><li><a href="#tabset-1-2">Package Two</a></li></ul>
+<div class="slide-tabset tab-content">
+<div id="tabset-1-1">
 <div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-fragment-index="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Code for the first package, e.g.:</span></span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">range</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -317,7 +321,8 @@ Learning outcomes &amp; Chapter summary
 </div>
 </div>
 </div>
-<h3 class="slide-fragment slide-with-content slide-heading fragment fade-in" data-fragment-index="3" id="package-two">Package Two</h3>
+</div>
+<div id="tabset-1-2">
 <div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-fragment-index="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Code for the second package, e.g.:</span></span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -327,8 +332,11 @@ Learning outcomes &amp; Chapter summary
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
 <aside class="notes">
-<p><span class="slide-text"><strong>Coding content will often include a panel with multiple tabs</strong></span>, so that you can easily see what the same code looks like for different visualization packages. These sections also include explanations that are specific to the code of a certain package, rather than being about data visualization in general.</p>
+<p><span class="slide-bullet"><strong>Coding content will often include a panel with multiple tabs</strong></span>, so that you can easily see what the same code looks like for different visualization packages. These sections also include explanations that are specific to the code of a certain package, rather than being about data visualization in general.</p>
 <p><strong>Package One</strong></p>
 <p><strong>Package Two</strong></p>
 <style type="text/css">

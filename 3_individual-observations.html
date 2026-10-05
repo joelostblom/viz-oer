@@ -528,6 +528,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="chapter-slide-link">
+<a href="slides/3_individual-observations.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <rect x="3" y="3" width="18" height="13" rx="1"></rect>
+        <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
+        </svg></a>
+</div>
+<div class="slide-outcomes">
 <div class="callout callout-style-default callout-note callout-titled" title="Learning outcomes &amp; Chapter summary">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -539,24 +546,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p><strong>Apply</strong> the visualization grammars in Altair and ggplot to create a basic chart via <code>alt.Chart(data).mark_point().encode(x='...', y='...', color='...')</code> and <br> <code>ggplot(data, aes(x = ..., y = ..., color = ...)) + geom_point()</code>.</p></li>
-<li><p><strong>Interpret</strong> relationships between individual observations in a scatterplot without assuming causation.</p></li>
-<li><p><strong>Encode</strong> an additional quantitative variable with color and <strong>use</strong> tooltips to identify observations.</p></li>
+<li><p><span class="slide-bullet"><strong>Apply</strong> the visualization grammars in Altair and ggplot</span> to create a basic chart via <code>alt.Chart(data).mark_point().encode(x='...', y='...', color='...')</code> and <br> <code>ggplot(data, aes(x = ..., y = ..., color = ...)) + geom_point()</code>.</p></li>
+<li><p><span class="slide-bullet"><strong>Interpret</strong> relationships between individual observations in a scatterplot without assuming causation.</span></p></li>
+<li><p><span class="slide-bullet"><strong>Encode</strong> an additional quantitative variable with color and <strong>use</strong> tooltips to identify observations.</span></p></li>
 </ol>
+</div>
 </div>
 </div>
 <section id="why-bother" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="why-bother"><span class="header-section-number">3.1</span> Why bother?</h2>
-<p>Plotting each individual observation separately is one of the most direct ways to visualize data. Rather than summarizing groups of observations, we’re simply putting one graphical point in our chart for every record in our table. As we saw in the introductory chapter, even this simple form of visualization can reveal patterns that are difficult to spot in a table of numbers.</p>
+<p><span class="slide-bullet">Plotting each individual observation separately is one of the most direct ways to visualize data</span>. Rather than summarizing groups of observations, we’re simply <span class="slide-bullet">putting one graphical point in our chart for every record in our table</span>. As we saw in the introductory chapter, even this simple form of visualization can <span class="slide-bullet">reveal patterns that are difficult to spot in a table of numbers</span>.</p>
 </section>
 <section id="creating-our-first-chart" class="level2 page-columns page-full" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="creating-our-first-chart"><span class="header-section-number">3.2</span> Creating our first chart</h2>
-<p>It’s time to start coding! First, we need some example data to visualize. Libraries that implement a grammar of graphics generally work with <a href="https://vita.had.co.nz/papers/tidy-data.html">“tidy”</a> data. In tidy data, each column represents a <em>variable</em> (also called a <em>field</em>), and each row represents an <em>observation</em>. We will start by loading a small historical dataset with information about cars’ design, performance, and fuel efficiency.</p>
+<p>It’s time to start coding! First, we need some example data to visualize. Libraries that implement a grammar of graphics generally work with <a href="https://vita.had.co.nz/papers/tidy-data.html">“tidy”</a> data. In tidy data, each column represents a <strong>variable</strong> (also called a field), and each row represents an <strong>observation</strong>. We will start by loading a small historical dataset with information about cars’ design, performance, and fuel efficiency.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="code">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -565,7 +573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>cars <span class="op">=</span> pd.read_csv(url)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>cars</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-output-fragment="true">
 <div class="cell-output-display">
 <table class="dataframe dataframe-preview table table-sm table-striped small" data-border="1">
 <thead>
@@ -818,13 +826,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Looking at the table above, we might start to generate questions about our data. Perhaps the cars with the best fuel efficiency (the ones with the highest <code>Miles_per_Gallon</code>) are also the cars with the least powerful engines (lowest <code>Horsepower</code>)? This sounds reasonable since a more powerful engine generally uses more fuel. Let’s see if we can answer this question with a visualization. To see how these two variables relate to each other, we can map them to two visual channels in the chart, such as <code>x</code> and <code>y</code>.</p>
+<p>Looking at the table above, we might start to generate questions about our data. <a href=".slide-bullet">Perhaps the cars with the best fuel efficiency are also the cars with the least powerful engines</a> (i.e.&nbsp;do the cars with the highest <code>Miles_per_Gallon</code> also have the lowest <code>Horsepower</code>)? This sounds reasonable since a more powerful engine generally uses more fuel. Let’s see if we can answer this question with a visualization. To see how these two variables relate to each other, we can map them to two visual channels in the chart, such as <code>x</code> and <code>y</code>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>First, we create a canvas linked to the cars dataframe via <code>alt.Chart(cars)</code>. Then, we indicate what kind of geometric <em>mark</em> we want to use to represent the data. Here, it is suitable to show the data as points using <code>mark_point()</code>:</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Scatterplot — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(cars).mark_point().encode(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Miles_per_Gallon'</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Horsepower'</span></span>
@@ -877,7 +885,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>First, we create a canvas linked to the cars dataframe via <code>ggplot(cars)</code>. Then, we indicate what kind of geometric <em>mark</em> we want to use to represent the data. Here, it is suitable to show the data as points using <code>geom_point()</code>:</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Scatterplot — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(<span class="at">x =</span> Miles_per_Gallon, <span class="at">y =</span> Horsepower)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -892,13 +900,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<!-- TODO ask why not quotes in ggplot -->
 </div>
 </div>
 </div>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><br><br> <strong>Different defaults</strong></p>
-<p>You can see that there are some differences in the default choices made by each library.</p>
+<p>You can see that there are some <span class="slide-bullet">differences in the default choices</span> made by each library.</p>
 <p>Different styles have different advantages, and they are easy to customize to look however you want, which we will learn about later.</p>
 <p>Including the origin (x = 0, y = 0) or zooming in on the data can both be sensible defaults in different contexts, which we will also learn more about in later chapters.</p>
 <p>Observations with missing values in either <code>Miles_per_Gallon</code> or <code>Horsepower</code> are omitted because they cannot be positioned on both axes. Some libraries explicitly warn about this and others don’t.</p>
@@ -916,7 +925,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-4" class="callout-4-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
-<p>Study the chart above. What can you say about the relationship between <code>Horsepower</code> and <code>Miles_per_Gallon</code>? If you choose to use statistical terms such as correlation, also explain them in plain English, as if you were explaining what the chart means to someone unfamiliar with statistics. Finally, it’s always good to ask yourself if your interpretation of the chart makes sense, given your knowledge about how the world works.</p>
+<p>Study the chart above. <span class="slide-bullet">What can you say about the relationship between <code>Horsepower</code> and <code>Miles_per_Gallon</code>?</span> If you choose to use statistical terms such as correlation, also explain them in plain English, as if you were explaining what the chart means to someone unfamiliar with statistics. Finally, it’s always good to ask yourself if your interpretation of the chart makes sense, given your knowledge about how the world works.</p>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -944,7 +953,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
-<p>From the chart, we can see that <code>Horsepower</code> and <code>Miles_per_Gallon</code> are “negatively correlated”. In plain English, this means that cars with more powerful engines (higher <code>Horsepower</code>) tend to have lower fuel efficiency (lower <code>Miles_per_Gallon</code>). This makes sense, as more powerful engines often consume more fuel than less powerful ones. Note that we can’t make claims about a causal relationship from the chart alone, but in this case, the observed relationship in the chart supports our mechanistic understanding of the world.</p>
+<p>From the chart, we can see that <code>Horsepower</code> and <code>Miles_per_Gallon</code> are “negatively correlated”. In plain English, this means that <span class="slide-bullet">cars with more powerful engines (higher <code>Horsepower</code>) tend to have lower fuel efficiency (lower <code>Miles_per_Gallon</code>)</span>. This makes sense, as more powerful engines often consume more fuel than less powerful ones. Note that <span class="slide-subbullet">we can’t make claims about a causal relationship from the chart alone</span>, but in this case, the observed relationship in the chart supports our mechanistic understanding of the world.</p>
 </div>
 </div>
 </div>
@@ -1078,13 +1087,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>399 rows × 9 columns</p>
 </div>
 </div>
-<p>What if one of the other variables also influences a car’s fuel efficiency? For example, it seems reasonable that the weight of the car could impact fuel efficiency, since more energy is needed to accelerate a heavier car to the same speed. To explore <code>Weight_in_lbs</code> together with the other two variables, we can use another visual channel in this chart, for example, by coloring the points according to this column. When using the <code>color</code> encoding channel, high-level visualization libraries will automatically figure out an appropriate color scale to use. Since the <code>Weight_in_lbs</code> column contains continuous numerical data, a continuous gradient will be used here.</p>
+<p><span class="slide-subbullet">What if one of the other variables also influences a car’s fuel efficiency?</span> For example, it seems reasonable that the weight of the car could impact fuel efficiency, since more energy is needed to accelerate a heavier car to the same speed. To explore <code>Weight_in_lbs</code> together with the other two variables, we can <span class="slide-bullet">use another visual channel in this chart, for example, by coloring the points</span> according to this column. When using the <code>color</code> encoding channel, high-level visualization libraries will <span class="slide-bullet">automatically figure out an appropriate color scale to use</span>. Since the <code>Weight_in_lbs</code> column contains continuous numerical data, a continuous gradient will be used here.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. Note that the largest value in the <code>Weight_in_lbs</code> column is represented with a dark color, which contrasts strongly with the light background of the chart.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(cars).mark_point().encode(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'Miles_per_Gallon'</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'Horsepower'</span>,</span>
@@ -1138,7 +1147,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower weights to light blue for higher weights, since light colors have the highest contrast to the chart’s dark background.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-output-fragment="true" data-slide-title="Adding a quantitative color encoding — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cars, <span class="fu">aes</span>(<span class="at">x =</span> Miles_per_Gallon, <span class="at">y =</span> Horsepower, <span class="at">color =</span> Weight_in_lbs)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -1173,7 +1182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-7" class="callout-7-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
-<p>How does a car’s weight relate to its fuel efficiency?</p>
+<p><span class="slide-bullet">How does a car’s weight relate to its fuel efficiency?</span></p>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1214,7 +1223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>As a final note, you might have noticed that it was harder to read exact values from the color scale than from the x- and y-axes. This is an important consideration, and we will dive deeper into which visual channels are the most effective at presenting information in a future chapter.</p>
+<p>As a final note, you might have noticed that <span class="slide-bullet">it was harder to read exact values from the color scale than from the x- and y-axes</span>. This is an important consideration, and we will dive deeper into which visual channels are the most effective at presenting information in the next chapter.</p>
 <!-- TODO This section could combine theoretical knowledge with coding, but the exercises throughout the chapter remain conceptual exercises to discover and motivate the content. -->
 <!-- {{< include ./_extensions/r-wasm/live/_knitr.qmd >}} -->
 <!-- ## Exercise mission -->

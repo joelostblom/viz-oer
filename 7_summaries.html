@@ -529,6 +529,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="chapter-slide-link">
+<a href="slides/7_summaries.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <rect x="3" y="3" width="18" height="13" rx="1"></rect>
+        <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
+        </svg></a>
+</div>
+<div class="slide-outcomes">
 <div class="callout callout-style-default callout-note callout-titled" title="Learning outcomes &amp; Chapter summary">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -546,10 +553,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </div>
 </div>
+</div>
 <section id="why-bother" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="why-bother"><span class="header-section-number">7.1</span> Why bother?</h2>
-<p>In <a href="6_order.html" class="quarto-xref">Order</a>, we connected observations to make their sequence clear. Sometimes, however, our question concerns a collection of observations: How many are there? What is their total? What is a typical value? A summary helps answer these questions by reducing many values to a few. In this chapter, we will explore how to reduce a collection of observations to useful quantities.</p>
-<p>That reduction is useful, but it also leaves information out. As we work through this chapter, keep asking: <strong>What did we lose, and how much of it do we need to put back?</strong> We will explore these questions here and in the following chapters.</p>
+<p>In <a href="6_order.html" class="quarto-xref">Order</a>, we connected observations to make their sequence clear. Sometimes, however, our question concerns a collection of observations: How many are there? What is their total? What is a typical value? <span class="slide-bullet">A summary helps answer these questions by reducing many values to a few</span>. In this chapter, we will explore how to reduce a collection of observations to useful quantities.</p>
+<p>That reduction is useful, but it also leaves information out. As we work through this chapter, keep asking: <span class="slide-bullet">What did we lose, and how much of it do we need to put back?</span> We will explore these questions here and in the following chapters.</p>
+<!-- TODO add summaries for line for lab 1? -->
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -563,12 +572,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-4" class="callout-4-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
-<p>Suppose you are interested in whether meditation could help you feel less stressed before your next exam. The dataset below is a 500-observation sample from a randomized study by Sparacio and colleagues.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> It contains stress scores from four meditation conditions and a control condition in which participants listened to a story excerpt. The score averages 20 items from the State-Trait Anxiety Inventory’s state-anxiety questionnaire (STAI Form Y-1), after reverse-scoring the relevant items; it ranges from 1 to 4, with higher scores indicating greater self-reported distress after the activity. How do the recorded stress scores differ between conditions? We start by applying the strategies we have learned so far: grouping observations by position and comparing their values on a shared scale.</p>
+<!-- TODO add long term benefit comment -->
+<p>Suppose you are interested in whether meditation could help you feel less stressed before your next exam. The dataset below is a 500-observation sample from a randomized study.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> It contains stress scores from four meditation conditions and a control condition in which participants listened to a story excerpt. The stress score averages 20 items from a questionnaire where each item ranges from 1 to 4, with higher scores indicating greater self-reported distress after the activity.</p>
+<p>How do the recorded stress scores differ between conditions? We start by applying the strategies we have learned so far: grouping observations by position and comparing their values on a shared scale.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Compare stress scores between conditions">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -625,7 +636,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Overlapping observations — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -687,13 +698,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="visualizing-statistical-summaries" class="level2 page-columns page-full" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="visualizing-statistical-summaries"><span class="header-section-number">7.2</span> Visualizing statistical summaries</h2>
-<p>In <a href="1_why-visualize-data.html" class="quarto-xref">Why visualize data?</a>, we saw that statistical summaries can make some patterns easier to identify than they are in a raw table of numbers. We can use a similar strategy here by comparing the mean stress score in each condition.</p>
+<p>In <a href="1_why-visualize-data.html" class="quarto-xref">Why visualize data?</a>, we saw that statistical summaries can make some patterns easier to identify than they are in a raw table of numbers. We can use a similar strategy here by <span class="slide-bullet">comparing the mean stress score in each condition</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>In Altair, we can write a <a href="https://altair-viz.github.io/user_guide/encodings/index.html#encoding-aggregates">supported aggregation function</a> such as mean, median, or sum directly as a string wrapping the column name, for example, <code>'mean(stress)'</code>:</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Comparing group means — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_point().encode(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'mean(stress)'</span></span>
@@ -746,7 +757,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>In ggplot, we can tell <code>geom_point()</code> to use a summary statistic instead of the individual observation values. We set <code>stat = 'summary'</code> and specify a function that returns a single value, such as <code>mean</code>, <code>median</code>, or <code>sum</code>. For <code>geom_point()</code>, the default stat is <code>'identity'</code>, which uses the supplied values directly; other geoms can have different defaults.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Comparing group means — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">x =</span> stress)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">stat =</span> <span class="st">'summary'</span>, <span class="at">fun =</span> mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -758,7 +769,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Instead of calling <code>geom_point()</code> and setting the <code>stat</code> parameter, we could call <code>stat_summary()</code> and set the <code>geom</code> parameter:</p>
-<div class="cell">
+<div class="cell" data-slide-show="code" data-slide-title="Geoms and stats describe the same chart">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">x =</span> stress)) <span class="sc">+</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">'point'</span>, <span class="at">fun =</span> mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -776,14 +787,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="7.3" class="anchored" data-anchor-id="visualizing-spread"><span class="header-section-number">7.3</span> Visualizing spread</h2>
 <p>But showing only the mean hides the variability in the observations. How the individual values are distributed also affects the conclusions we can draw from the data.</p>
 <p>So, whenever we show a measure of central tendency such as the mean or median, it is helpful to pair it with an indication of the underlying variability.</p>
-<p>Here, we need to distinguish two concepts: the spread of the underlying data (descriptive statistics) and the uncertainty in the estimate of central tendency (inferential statistics). These answer two different questions, but graphically they are often depicted similarly. In this chapter, we will focus on how spread out the underlying data distribution is, and return to confidence intervals and other measures of inferential uncertainty in a future chapter. <!-- TODO which chapter for ci, link to it and include more discussion around bootstrap there? and also talk about how more points changes the interval to become smaller --> <!-- TODO mention error bar --></p>
+<p>Here, we need to distinguish two concepts: <span class="slide-bullet">the spread of the underlying data (descriptive statistics) and the uncertainty in the estimate of central tendency (inferential statistics)</span>. These answer two different questions, but graphically they are often depicted similarly. In this chapter, we will focus on how spread out the underlying data distribution is, and return to confidence intervals and other measures of inferential uncertainty in a future chapter. <!-- TODO which chapter for ci, link to it and include more discussion around bootstrap there? and also talk about how more points changes the interval to become smaller --> <!-- TODO mention error bar --></p>
 <p>One measure of the spread in the underlying data is the <a href="https://en.wikipedia.org/wiki/Standard_deviation">standard deviation</a>, which measures how spread out observations are around the mean.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Let’s see how we can include the standard deviation together with the mean in our charts:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>The <code>errorbar</code> mark allows us to plot several common measures of variability, including an interval from one standard deviation below the mean to one above it. We’re changing the color of the point marks to match the error bar. We are using <code>mark_circle</code> as a shortcut for <code>mark_point(filled=True)</code>. The point layer calculates the mean, while the error-bar layer calculates its interval from the individual stress scores.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Mean and standard deviation — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> alt.Chart(meditation).encode(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'stress'</span></span>
@@ -840,7 +851,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>As the name implies, the <code>pointrange</code> geom creates both a point and a range. Previously, we passed a summary function to the <code>fun</code> parameter. Here, we use <code>fun.data</code> because we need a central value and the lower and upper endpoints of the interval. Whereas <code>fun</code> accepts functions that return a single value, such as <code>mean</code>, <code>fun.data</code> accepts functions that return a dataframe with the summary and interval endpoints. In this horizontal chart, those values determine positions along the x-axis.</p>
 <p>The <code>fun.args</code> parameter looks a bit cryptic. What it does is to pass <code>mult = 1</code> (multiplier) to the <code>mean_sdl</code> function, which otherwise multiplies the standard deviation by 2 by default.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Mean and standard deviation — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">x =</span> stress)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_pointrange</span>(<span class="at">stat =</span> <span class="st">'summary'</span>, <span class="at">fun.data =</span> mean_sdl, <span class="at">fun.args =</span> <span class="fu">list</span>(<span class="at">mult =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -870,7 +881,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
 <p>To the left, we can see the mean ± one standard deviation for two groups of observations. To the right, there are four different suggestions for what these underlying observations might look like. By studying this chart, which sets of possible underlying observations do you think could produce the summary chart on the left?</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="What could these summaries be hiding?">
 <div id="fig-summary-sd-obs" class="cell-output-display quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-fig figure" aria-labelledby="fig-summary-sd-obs-caption">
 <div aria-describedby="fig-summary-sd-obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -948,7 +959,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
-<p>In this case, <strong>all four</strong> scenarios produce the same means and standard deviations for groups A and B! If you only look at the mean ± SD chart, you cannot tell which of these very different datasets it represents. This matters because depending on what your observations look like, you will come to different conclusions. For example, an outlier might be a genuine observation or a measurement error. Seeing it lets us investigate its origin and its influence on the summary. Or what if group A follows a symmetric distribution whereas group B shows a bimodal spread?</p>
+<p>In this case, <span class="slide-bullet"><strong>all four</strong> scenarios produce the same means and standard deviations for groups A and B!</span> If you only look at the mean ± SD chart, you cannot tell which of these very different datasets it represents. This matters because depending on what your observations look like, you will come to different conclusions. For example, an outlier might be a genuine observation or a measurement error. Seeing it lets us investigate its origin and its influence on the summary. Or what if group A follows a symmetric distribution whereas group B shows a bimodal spread?</p>
 <p>Note that in the case of the bimodal distribution of observations we should ask ourselves whether it is at all useful to include a mean. Maybe we should omit it here, since few of the observations are actually close to the mean and the mean therefore does not tell us much about the underlying observations. In this case, it may be more helpful to talk about the two clusters instead of trying to represent all the observations with a single average value. <!-- TODO Consider an example using Old Faithful's geyser eruptions to reinforce this point. --></p>
 </div>
 </div>
@@ -965,7 +976,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="fig-summary-sd-obs-caption" class="margin-figure-caption column-margin callout-7-contents callout-collapse collapse show callout-margin-content"><div class="figure-caption-content">Figure&nbsp;7.1: Underlying distributions for mean and standard deviation. Adapted from <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002128">Beyond bar and line graphs</a>.</div></div></section>
 <section id="including-the-underlying-observations" class="level2 page-columns page-full" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="including-the-underlying-observations"><span class="header-section-number">7.4</span> Including the underlying observations</h2>
-<p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap. <strong>Jittering</strong> adds small random offsets to the points to help separate them. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
+<p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap. <span class="slide-bullet"><strong>Jittering</strong> adds small random offsets to the points to help separate them</span>. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><strong>Jitterbug</strong></p>
@@ -976,7 +987,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <p>We calculate a random value for each observation and use <code>yOffset</code> to spread the points within each condition’s row. We then layer the mean and standard deviation interval over those points.</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Put the underlying observations back — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> alt.Chart(meditation, height<span class="op">=</span>alt.Step(<span class="dv">30</span>)).encode(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>alt.Y(<span class="st">'condition'</span>).scale(padding<span class="op">=</span><span class="fl">0.4</span>),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'stress'</span></span>
@@ -1040,7 +1051,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Put the underlying observations back — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">x =</span> stress)) <span class="sc">+</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="st">'jitter'</span>, <span class="at">color =</span> <span class="st">'grey'</span>) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_pointrange</span>(<span class="at">stat =</span> <span class="st">'summary'</span>, <span class="at">fun.data =</span> mean_sdl, <span class="at">fun.args =</span> <span class="fu">list</span>(<span class="at">mult =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1062,6 +1073,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>What if we visualize the median instead of the mean? Showing the median can be especially useful when there are a few extreme values in the data since these impact the mean more than the median, and the median thus becomes a more helpful indication of a typical value. But this decision is context-dependent: if we are interested in these extreme values, the mean may capture their influence in a way that is relevant to our question. Therefore, it is often a good idea to show means and medians together, since they tell us different things about the data.</p>
 <p>A common measure of spread used together with medians is a percentile interval, which marks the range between two chosen percentiles. For comparison, the interval from one standard deviation below the mean to one above it contains about 68% of a normal distribution.</p>
 <p>A common way to show the median and a percentile interval is a <strong>boxplot</strong>. The box spans the 25th to the 75th percentile, enclosing the middle 50% of the data, with a line marking the median. In the default boxplots below, the whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box edges; observations beyond the whiskers are drawn separately. This illustration can help you interpret the different parts of the box:</p>
+<div class="slide-visual page-columns page-full">
 <div id="fig-boxplot-anatomy" class="quarto-float quarto-figure quarto-figure-left anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-boxplot-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1070,11 +1082,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-boxplot-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca"><div class="figure-caption-content">Figure&nbsp;7.2: The elements of a boxplot.</div></figcaption>
 </figure>
 </div>
+</div>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Median and spread — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_boxplot().encode(</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'stress'</span></span>
@@ -1126,7 +1139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Median and spread — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">x =</span> stress)) <span class="sc">+</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1141,6 +1154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Although boxplots show multiple percentiles, they still hide important information about the underlying observations and should therefore also ideally be used together with a plot of the underlying observations or as a concise summary of the data after having inspected the underlying observations ourselves.</p>
+<div class="slide-visual page-columns page-full" data-slide-title="Different distributions, identical boxplots">
 <div id="fig-boxplot-drawbacks" class="quarto-float quarto-figure quarto-figure-left anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-boxplot-drawbacks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1148,6 +1162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-boxplot-drawbacks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca"><div class="figure-caption-content">Figure&nbsp;7.3: This illustration from <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">Autodesk Research</a> shows how boxplots can look the same even when the distribution of the underlying observations changes drastically.</div></figcaption>
 </figure>
+</div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1159,13 +1174,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Summary charts such as mean ± SD plots and boxplots are useful since aggregation reduces the complexity of the chart. But even if you are interested in comparing group summaries such as means or medians, you should always also inspect the underlying observations to understand how they are distributed and whether there are any outliers, since this affects the conclusions you can draw from the chart.</p>
+<p>Summary charts such as mean ± SD plots and boxplots are useful since aggregation reduces the complexity of the chart. But even if you are interested in comparing group summaries such as means or medians, you should <span class="slide-bullet">always also inspect the underlying observations to understand how they are distributed and whether there are any outliers</span>, since this affects the conclusions you can draw from the chart.</p>
 </div>
 </div>
 </section>
 <section id="what-conclusions-can-we-draw-from-the-data" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="what-conclusions-can-we-draw-from-the-data"><span class="header-section-number">7.6</span> What conclusions <em>can</em> we draw from the data?</h2>
-<p>The charts show differences in recorded stress scores between conditions in this sample. However, we have not assessed the statistical significance of those differences. Standard deviations and boxplots describe the spread of the observations, not the uncertainty in the group means or their differences. In particular, overlap between these descriptive intervals does not establish whether a difference is statistically significant. That would require an appropriate inferential analysis, informed by the study design.</p>
+<p>The charts show differences in recorded stress scores between conditions in this sample. However, we have not assessed the statistical significance of those differences. <span class="slide-bullet">Standard deviations and boxplots describe the spread of the observations, not the uncertainty in the group means or their differences</span>. In particular, <span class="slide-bullet">overlap between these descriptive intervals does not establish whether a difference is statistically significant</span>. That would require an appropriate inferential analysis, informed by the study design.</p>
 <p>What about the magnitude of the differences? In this dataset, the meditation conditions have mean stress scores about 0.14–0.28 units below the story-listening control condition. Is that a lot or a little? These are differences on the 1–4 questionnaire scale described above; judging their practical importance also requires considering what difference would matter in this context. The charts help us describe the sample, but they do not by themselves establish that meditation caused the differences or that the differences are large enough to matter in practice.</p>
 <p>The original study’s main analysis, using 2,239 participants across 37 sites, found evidence that all four 15-minute mindfulness exercises reduced self-reported stress relative to the active control. The largest mean difference was for body scan: 0.27 points lower than the control on the 1–4 scale. The authors concluded that even these brief exercises can offer modest, short-term benefits.</p>
 

@@ -196,6 +196,7 @@
     }
   </style>
   <script src="chapter-slides.js" defer=""></script>
+  <script src="chapter-slide-tabs.js" defer=""></script>
   <style>
     .table.dataframe { width: auto; text-align: right; }
   </style>
@@ -213,32 +214,33 @@
 </section>
 <section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
 <h2>Learning outcomes</h2>
-<div class="slide-content fragment fade-in" data-fragment-index="0">
-<div title="Learning outcomes &amp; Chapter summary">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Learning outcomes &amp; Chapter summary</strong></p>
-</div>
-<div class="callout-content">
+<div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
 <li><p><strong>Understand</strong> that the advantage of using a high-level visualization syntax is that it allows us to think in terms of the data, rather than focusing on graphical details.</p></li>
 <li><p><strong>Understand</strong> that a grammar of graphics defines grammatical rules that can be used to construct entire visualizations from smaller building blocks, such as geometric marks and aesthetic encodings.</p></li>
 <li><p><strong>Identify</strong> the data-linked canvas, aesthetic encodings, and geometric marks in Altair and ggplot.</p></li>
 </ol>
 </div>
-</div>
-</div>
-</div>
-</div>
 </section>
 <section id="why-bother" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
 <h2>Why bother?</h2>
+<div class="slide-content fragment fade-in" data-fragment-index="0">
+<ul>
+<li><p>Implementing visualizations in code can help us understand their underlying principles</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="1">
+<ul>
+<li><p>Makes the learning experience more interactive and memorable</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="2">
+<ul>
+<li><p>A powerful theoretical framework to understand and reason about data visualizations</p></li>
+</ul>
+</div>
 <aside class="notes">
-<p>Why do we need to know anything about visualization libraries and their underlying theory, such as the grammar of graphics? While there is a lot we can learn about visualization without coding, the act of implementing visualizations in code can help us understand their underlying principles, which makes the learning experience more interactive and memorable. The grammar of graphics also gives us a powerful theoretical framework to understand and reason about data visualizations.</p>
+<p>Why do we need to know anything about visualization libraries and their underlying theory, such as the grammar of graphics? While there is a lot we can learn about visualization without coding, the act of <span class="slide-bullet"><strong>implementing visualizations in code can help us understand their underlying principles</strong></span>, which <span class="slide-bullet"><strong>makes the learning experience more interactive and memorable</strong></span>. The grammar of graphics also gives us <span class="slide-bullet"><strong>a powerful theoretical framework to understand and reason about data visualizations</strong></span>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -251,75 +253,12 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="which-visualization-library-should-we-pick" class="slide level2" data-chapter-anchor="which-visualization-library-should-we-pick" data-footer="false">
+<section id="which-visualization-library-should-we-pick" class="slide level2" data-chapter-anchor="which-visualization-library-should-we-pick" data-footer="false" data-slide-columns="content" style="--slide-left-width: 65fr; --slide-right-width: 35fr;">
 <h2>Which visualization library should we pick?</h2>
-<div class="slide-media fragment fade-in" data-fragment-index="0">
-<div class="cell">
-<div class="cell-output-display">
-<table class="dataframe dataframe-preview caption-top" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">x</th>
-<th data-quarto-table-cell-role="th">y</th>
-<th data-quarto-table-cell-role="th">group</th>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">float64</th>
-<th data-quarto-table-cell-role="th">float64</th>
-<th data-quarto-table-cell-role="th">str</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>0.2</td>
-<td>0.6</td>
-<td>a</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>0.6</td>
-<td>0.9</td>
-<td>a</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>1.2</td>
-<td>1.8</td>
-<td>b</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>2.4</td>
-<td>2.7</td>
-<td>b</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<aside class="notes">
-<p>We will start by selecting which visualization library to use. To make an informed decision, it is helpful to understand that most visualization libraries can be classified as taking either a high-level declarative approach or a low-level imperative approach to creating visualizations.</p>
-<p><strong>Exercise</strong></p>
-<p>To understand the difference between these two approaches, let’s start with an example, using the following small toy dataset:</p>
-<p>A helpful way to illustrate the difference between the two approaches to syntax is to imagine that we want to create a chart where we color the points according to their group. Here is pseudocode<span>(Pseudocode is an informal way of writing code that is often used to explain a concept to the reader.)</span> that illustrates this difference:</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="imperative-syntax" class="slide level2" data-chapter-anchor="which-visualization-library-should-we-pick" data-footer="false" data-slide-columns="true" style="--slide-left-width: 65fr; --slide-right-width: 35fr;">
-<h2>Imperative syntax</h2>
+<div class="slide-columns-content">
+<div class="slide-column">
+<!-- column content -->
+<h3 class="slide-fragment slide-with-content slide-heading fragment fade-in" data-fragment-index="0" id="imperative-syntax">Imperative syntax</h3>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> create_figure()</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'blue'</span>, <span class="st">'orange'</span>]</span>
@@ -375,6 +314,9 @@
 </div>
 </div>
 </div>
+</div>
+<div class="slide-column">
+<!-- column content -->
 <h3 class="slide-fragment slide-with-content slide-heading fragment fade-in" data-fragment-index="2" id="declarative-syntax">Declarative syntax</h3>
 <div class="slide-media fragment fade-in" data-fragment-index="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>chart(</span>
@@ -429,7 +371,56 @@
 </div>
 </div>
 </div>
+</div>
+</div>
 <aside class="notes">
+<p>We will start by selecting which visualization library to use. To make an informed decision, it is helpful to understand that most visualization libraries can be classified as taking either a high-level declarative approach or a low-level imperative approach to creating visualizations.</p>
+<p><strong>Exercise</strong></p>
+<p>To understand the difference between these two approaches, let’s start with an example, using the following small toy dataset:</p>
+<table class="dataframe dataframe-preview caption-top" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">group</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">float64</th>
+<th data-quarto-table-cell-role="th">float64</th>
+<th data-quarto-table-cell-role="th">str</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>0.2</td>
+<td>0.6</td>
+<td>a</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>0.6</td>
+<td>0.9</td>
+<td>a</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>1.2</td>
+<td>1.8</td>
+<td>b</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2.4</td>
+<td>2.7</td>
+<td>b</td>
+</tr>
+</tbody>
+</table>
+<p>A helpful way to illustrate the difference between the two approaches to syntax is to imagine that we want to create a chart where we color the points according to their group. Here is pseudocode<span>(Pseudocode is an informal way of writing code that is often used to explain a concept to the reader.)</span> that illustrates this difference:</p>
+<p><strong>Imperative syntax</strong></p>
 <p><strong>Declarative syntax</strong></p>
 <p>Although the same chart is created from both of these pseudocode examples, the syntax looks wildly different. Pause here and try to describe the differences between the two in your own words. Then, click on the hint and solution below to read our explanation of the two approaches.</p>
 <p><em>Actively engaging with exercises like this one can help you remember and understand the information. The key is to activate your brain and try to come up with an answer yourself rather than skipping straight to passively reading the solution.</em></p>
@@ -450,32 +441,41 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="declarative-instruction" class="slide level2" data-chapter-anchor="which-visualization-library-should-we-pick" data-footer="false">
-<h2><span class="fragment fade-in" data-fragment-index="0">Declarative instruction</span></h2>
+<section id="tabset-1-step-1" class="slide level2" data-chapter-anchor="which-visualization-library-should-we-pick" data-footer="false">
+<h2>Which visualization library should we pick?</h2>
+<div class="slide-tabset panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Declarative instruction</a></li><li><a href="#tabset-1-2">Imperative instruction</a></li></ul>
+<div class="slide-tabset tab-content">
+<div id="tabset-1-1">
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
 <li><p><strong>“Color by the column <code>group</code> in the dataframe.”</strong></p></li>
 <li><p><strong>Focus</strong>: Declaring links between data variables (e.g., <code>group</code>) and graphical properties (e.g., <code>color</code>). The rest of the plot details (such as which colors to use) are handled automatically.</p></li>
 </ul>
 </div>
-<h3 class="slide-fragment slide-with-content slide-heading fragment fade-in" data-fragment-index="1" id="imperative-instruction">Imperative instruction</h3>
+</div>
+<div id="tabset-1-2">
 <div class="slide-content fragment fade-in" data-fragment-index="1">
 <ul>
 <li><p><strong>“Loop over the dataframe and plot observations in group <code>a</code> in blue and observations in group <code>b</code> in orange.”</strong></p></li>
 <li><p><strong>Focus</strong>: Being explicit with all the details for creating the chart via loops and low-level drawing commands.</p></li>
 </ul>
 </div>
+</div>
+</div>
+</div>
 <aside class="notes">
-<div class="slide-text">
+<p><strong>Declarative instruction</strong></p>
+<div class="slide-bullet">
 <p><strong>“Color by the column <code>group</code> in the dataframe.”</strong></p>
 <p><strong>Focus: Declaring links between data variables (e.g., <code>group</code>) and graphical properties (e.g., <code>color</code>). The rest of the plot details (such as which colors to use) are handled automatically.</strong></p>
 </div>
 <p><strong>Imperative instruction</strong></p>
-<div class="slide-text">
+<div class="slide-bullet">
 <p><strong>“Loop over the dataframe and plot observations in group <code>a</code> in blue and observations in group <code>b</code> in orange.”</strong></p>
 <p><strong>Focus: Being explicit with all the details for creating the chart via loops and low-level drawing commands.</strong></p>
 </div>
-<p>In this book, we will learn about declarative visualization tools, since these allow us to code a high-level specification of <em>what</em> we want the visualization to include, rather than coding out the details of <em>how</em> to implement the visualization. Another way to state this would be that high-level libraries let our minds focus on <strong>data and relationships</strong>, which is the right level of abstraction for a data scientist. Low-level libraries focus more on <strong>plot construction details</strong>, which is often more appropriate when making a highly customized visualization, data art, or an application with complex plotting logic.</p>
+<p>In this book, we will learn about declarative visualization tools, since these allow us to code a high-level specification of <strong>what</strong> we want the visualization to include, rather than coding out the details of <strong>how</strong> to implement the visualization. Another way to state this would be that high-level libraries let our minds focus on <strong>data and relationships</strong>, which is the right level of abstraction for a data scientist. Low-level libraries focus more on <strong>plot construction details</strong>, which is often more appropriate when making a highly customized visualization, data art, or an application with complex plotting logic.</p>
 <p>Among declarative visualization libraries, there are still a few different subcategories. In this book, we are going to learn about libraries that implement a so-called “grammar of graphics”, since this framework makes visualizations easy both to create and to reason about.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -491,11 +491,29 @@
 </section>
 <section id="what-is-the-grammar-of-graphics" class="slide level2" data-chapter-anchor="what-is-the-grammar-of-graphics" data-footer="false">
 <h2>What is the grammar of graphics?</h2>
+<div class="slide-content fragment fade-in" data-fragment-index="0">
+<ul>
+<li><p>While referring to charts by name can be convenient in some contexts, it is often confusing</p>
+<div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="1" data-subbullet-attached="true">
+<ul>
+<li><p>A scatterplot, a dot plot, a strip plot, a bubble plot, and a forest plot</p></li>
+</ul>
+</div></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="2">
+<ul>
+<li><p>Developing an understanding of the principles that form the foundations for building visualizations</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="3">
+<ul>
+<li><p>The grammar of graphics lets us focus on understanding the common building blocks of all charts and how to combine them according to predictable rules to create bespoke visualizations</p></li>
+</ul>
+</div>
 <aside class="notes">
-<p>There is a plethora of names used to refer to specific types of chart. While referring to charts by name can be convenient in some contexts, it is often confusing. For example, a scatterplot, a dot plot, a strip plot, a bubble plot, and a forest plot all use points to represent data, but what’s the difference between them? Memorizing exactly which chart corresponds to which name is not as important as developing an understanding of the principles that form the foundations for building visualizations. Such an understanding can move us away from just creating charts from known templates to reflecting on what it is we’re trying to communicate and which graphical elements are the most suitable for this task.</p>
-<p>A grammar of graphics lets us focus on understanding the common building blocks of all charts and how to combine them according to predictable rules to create bespoke visualizations. It parallels the grammars of natural<span>(A “natural” language is what you typically think of as just “a language”: Cantonese, Zulu, Swedish, etc.)</span> and programming languages, but applies to visual components. While we’re all familiar with how the grammatical rules of natural languages describe how to compose meaningful sentences from words, it might not be as clear what grammatical structures look like in programming languages, so let’s see an example in the following exercise:</p>
-<p><strong>Exercise</strong></p>
-<p>What do you think the output of the following Python code would be?</p>
+<p>There is a plethora of names used to refer to specific types of chart. <span class="slide-bullet"><strong>While referring to charts by name can be convenient in some contexts, it is often confusing</strong></span>. For example, <span class="slide-subbullet"><strong>a scatterplot, a dot plot, a strip plot, a bubble plot, and a forest plot</strong></span> all use points to represent data, but what’s the difference between them? Memorizing exactly which chart corresponds to which name is not as important as <span class="slide-bullet"><strong>developing an understanding of the principles that form the foundations for building visualizations</strong></span>. Such an understanding can move us away from just creating charts from known templates to reflecting on what it is we’re trying to communicate and which graphical elements are the most suitable for this task.</p>
+<p><span class="slide-bullet"><strong>The grammar of graphics lets us focus on understanding the common building blocks of all charts and how to combine them according to predictable rules to create bespoke visualizations</strong></span>. It parallels the grammars of natural<span>(A “natural” language is what you typically think of as just “a language”: Cantonese, Zulu, Swedish, etc.)</span> and programming languages, but applies to visual components. While we’re all familiar with how the grammatical rules of natural languages describe how to compose meaningful sentences from words, it might not be as clear what grammatical structures look like in programming languages, so let’s see an example in the following exercise:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -508,18 +526,49 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-1" class="slide level2" data-chapter-anchor="what-is-the-grammar-of-graphics" data-footer="false" data-slide-columns="true">
-<h2><span class="fragment fade-in" data-fragment-index="0">Adding numbers</span></h2>
+<section id="what-does-the-grammar-part-mean" class="slide level2" data-chapter-anchor="what-is-the-grammar-of-graphics" data-footer="false" data-slide-columns="content">
+<h2>What does the “grammar” part mean?</h2>
+<div class="slide-columns-content">
+<div class="slide-column">
+<!-- column content -->
+<h3 class="slide-heading fragment fade-in" data-fragment-index="0">Adding numbers</h3>
 <div class="slide-media fragment fade-in" data-slide-title="Adding numbers" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</div>
+<div class="slide-column">
+<!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="1">Adding strings</h3>
 <div class="slide-media fragment fade-in" data-slide-title="Adding strings" data-fragment-index="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">'one'</span> <span class="op">+</span> <span class="st">'two'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div class="slide-content fragment fade-in" data-fragment-index="2">
+<p><br><strong>What should the output be?</strong></p>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="3">
+<ol type="A">
+<li><code>Error</code> - strings can’t be added</li>
+<li><code>'onetwo'</code></li>
+<li><code>'three'</code></li>
+<li>Something else</li>
+</ol>
+</div>
+</div>
+</div>
 <aside class="notes">
+<p><strong>Exercise</strong></p>
+<p>What do you think the output of the following Python code would be?</p>
 <p>As you might have expected, the output is <code>3</code> because Python uses the conventional rules of mathematics to add the two numbers together. Almost all programming languages follow this rule. But what does the <code>+</code> operator do if we are trying to add something other than numbers? What do you think the output of the following code would be? Do you think it differs between programming languages?</p>
 <!-- For some reason, syntax highlighting is messed up if this is a python block -->
+<p><span class="slide-text"><strong><br>What should the output be?</strong></span></p>
+<div class="slide-bullet">
+<ol type="A">
+<li><strong><code>Error</code> - strings can’t be added</strong></li>
+<li><strong><code>'onetwo'</code></strong></li>
+<li><strong><code>'three'</code></strong></li>
+<li><strong>Something else</strong></li>
+</ol>
+</div>
 <p><strong>Hint</strong></p>
 <p>Adding two numbers gives their sum. Could adding two strings similarly combine their contents, producing a string with all the characters from both?</p>
 <p><strong>Solution</strong></p>
@@ -541,21 +590,28 @@
 <h2>Learning the grammar of graphics</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ol type="1">
-<li><strong>Create a data-linked canvas</strong>: This step creates a background canvas that other graphical components are drawn upon and links it to the relevant dataset.</li>
-<li><strong>Encode visual aesthetics</strong>: This step defines how data will be mapped to graphical channels (e.g., the column <code>'group'</code> might be mapped to the <code>color</code> of each mark).</li>
-<li><strong>Add geometric marks</strong>: This step selects the graphical elements used to represent the data (e.g., points or bars).</li>
+<li><p><strong>Create a data-linked canvas</strong>: This step creates a background canvas that other graphical components are drawn upon and links it to the relevant dataset.</p></li>
+</ol>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="1">
+<ol start="2" type="1">
+<li><p><strong>Encode visual aesthetics</strong>: This step defines how data will be mapped to graphical channels (e.g., the column <code>'group'</code> might be mapped to the <code>color</code> of each mark).</p></li>
+</ol>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="2">
+<ol start="3" type="1">
+<li><p><strong>Add geometric marks</strong>: This step selects the graphical elements used to represent the data (e.g., points or bars).</p></li>
 </ol>
 </div>
 <aside class="notes">
 <p>So what does the grammar of graphics look like? Well, “it depends”. Just like linguistic grammars vary between languages, visualization grammars are implemented differently in different packages. However, there are some core steps which are present in most grammars of graphics:</p>
-<div class="slide-text">
 <ol type="1">
-<li><strong>Create a data-linked canvas: This step creates a background canvas that other graphical components are drawn upon and links it to the relevant dataset.</strong></li>
-<li><strong>Encode visual aesthetics: This step defines how data will be mapped to graphical channels (e.g., the column <code>'group'</code> might be mapped to the <code>color</code> of each mark).</strong></li>
-<li><strong>Add geometric marks: This step selects the graphical elements used to represent the data (e.g., points or bars).</strong></li>
+<li><span class="slide-bullet"><strong>Create a data-linked canvas: This step creates a background canvas that other graphical components are drawn upon and links it to the relevant dataset.</strong></span></li>
+<li><span class="slide-bullet"><strong>Encode visual aesthetics: This step defines how data will be mapped to graphical channels (e.g., the column <code>'group'</code> might be mapped to the <code>color</code> of each mark).</strong></span></li>
+<li><span class="slide-bullet"><strong>Add geometric marks: This step selects the graphical elements used to represent the data (e.g., points or bars).</strong></span></li>
 </ol>
-</div>
 <p>As a result of the predictable structure, a grammar of graphics allows you to create an impressive range of visualizations in an intuitive manner and aids in reasoning about these visualizations. It also makes it notably easier to change between different types of plots, as the code syntax follows a predictable structure and only parts of the specification change between charts. In fact, libraries that implement a grammar of graphics often require fewer changes in the code to create different types of visualizations.<span>(https://arxiv.org/abs/2308.16353)</span></p>
+<!-- TODO insert slide with image of different libraries? -->
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -570,7 +626,10 @@
 </section>
 <section id="implementations-of-the-grammar-of-graphics" class="slide level2" data-chapter-anchor="implementations-of-the-grammar-of-graphics" data-footer="false">
 <h2>Implementations of the grammar of graphics</h2>
-<h3 class="slide-fragment slide-with-content slide-heading fragment fade-in" data-fragment-index="0" id="altair">Altair</h3>
+<div class="slide-tabset panel-tabset" data-group="language">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Altair</a></li><li><a href="#tabset-2-2">ggplot</a></li></ul>
+<div class="slide-tabset tab-content" data-group="language">
+<div id="tabset-2-1">
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(data).encode().mark()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol type="1">
@@ -579,8 +638,12 @@
 <li><code>mark_*(...)</code> adds geometric marks, such as points or bars.</li>
 </ol>
 </div>
-<h3 class="slide-fragment slide-with-content slide-heading fragment fade-in" data-fragment-index="1" id="ggplot">ggplot</h3>
-<div class="slide-media fragment fade-in" data-fragment-index="1">
+<div class="slide-content fragment fade-in" data-fragment-index="1">
+<p><code>alt.Chart(data).mark().encode()</code></p>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="slide-media fragment fade-in" data-fragment-index="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data) <span class="sc">+</span> <span class="fu">aes</span>() <span class="sc">+</span> <span class="fu">geom</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ol type="1">
 <li><code>ggplot(data)</code> creates the data-linked canvas.</li>
@@ -588,14 +651,20 @@
 <li><code>geom_*(...)</code> A geom function adds geometric marks, such as points or bars.</li>
 </ol>
 </div>
+<div class="slide-content fragment fade-in" data-fragment-index="3">
+<p><code>ggplot(data, aes()) + geom()</code></p>
+</div>
+</div>
+</div>
+</div>
 <aside class="notes">
 <p>You can think of the grammar of graphics as an underlying theory of how to make visualizations. But to actually create a visualization, we need to use a package that <em>implements</em> this theory in code. This book shows several programmatic implementations and lets you choose which package you prefer to learn, while also allowing for quick comparisons between libraries. Before creating a visualization, let’s see how the structure of these implementations is similar to the general structure we described above.</p>
 <p><strong>Altair</strong></p>
 <p>In the Python package Altair, a general representation of the core chart components would look like this:</p>
-<p>Note that we wrote the Altair syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write Altair chart specifications is in the form <code>alt.Chart(data).mark().encode()</code>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
+<p>Note that we wrote the Altair syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write Altair chart specifications is in the form <span class="slide-text"><strong><code>alt.Chart(data).mark().encode()</code></strong></span>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
 <p><strong>ggplot</strong></p>
 <p>In the R library ggplot2, a general representation of the core chart components would look like this:</p>
-<p>Note that we wrote the ggplot syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write ggplot chart specifications is in the form <code>ggplot(data, aes()) + geom()</code>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
+<p>Note that we wrote the ggplot syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write ggplot chart specifications is in the form <span class="slide-text"><strong><code>ggplot(data, aes()) + geom()</code></strong></span>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

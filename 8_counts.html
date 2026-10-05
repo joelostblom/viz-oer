@@ -532,6 +532,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="chapter-slide-link">
+<a href="slides/8_counts.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <rect x="3" y="3" width="18" height="13" rx="1"></rect>
+        <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
+        </svg></a>
+</div>
+<div class="slide-outcomes">
 <div class="callout callout-style-default callout-note callout-titled" title="Learning outcomes &amp; Chapter summary">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -550,16 +557,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </div>
 </div>
+</div>
 <p>In <a href="7_summaries.html" class="quarto-xref">Summaries</a>, we explored central values and variability. Another useful summary is the number of observations in a group. We will return to the meditation dataset to compare counts across conditions, then explore proportions and different ways to show parts of a whole.</p>
 <section id="counts" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="counts"><span class="header-section-number">8.1</span> Counts</h2>
-<p>We can summarize the number of observations in each group by computing a count.</p>
+<p><span class="slide-bullet">We can summarize the number of observations in each group by computing a count</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>We can use the <code>'count()'</code> aggregation to count observations. By default, the categories are sorted alphabetically from top to bottom on the y-axis.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Counting observations — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_point().encode(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span></span>
@@ -612,7 +620,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>We can use <code>stat = 'count'</code> to count observations. This stat computes the counts itself, so we don’t need to supply a summary function such as <code>mean</code> or <code>median</code>. By default, the categories are sorted alphabetically from bottom to top on the y-axis.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Counting observations — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition)) <span class="sc">+</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">stat =</span> <span class="st">'count'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -631,7 +639,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="From points to bars — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span></span>
@@ -684,7 +692,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>To discourage the use of bars for summaries, the default for <code>geom_bar</code> is <code>stat = 'count'</code>, which means we can write just <code>geom_bar()</code>.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="From points to bars — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -710,7 +718,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>Some libraries have a fixed chart size and expand the space allocated to categories to fill the entire chart instead of allocating a fixed space per category. This can lead to giant bars (and other marks), particularly when there are few categories, as in the figure below. Excessively thick bars can make a chart feel crowded. Adjusting the overall figure size can make the bars narrower.</p>
-<div class="cell">
+<div class="cell" data-slide-show="output">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -737,13 +745,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sorting-groups" class="level3">
 <h3 class="anchored" data-anchor-id="sorting-groups">Sorting groups</h3>
 <!-- TODO also mentions that we should sort points of mean, medians etc -->
-<p>In our chart above, the groups on the y-axis are sorted in alphabetical order. Sorting by count instead makes it easier to compare groups with similar counts and identify those with the most and fewest observations.</p>
+<p>In our chart above, the groups on the y-axis are sorted in alphabetical order. <span class="slide-bullet">Sorting by count instead makes it easier to compare groups with similar counts and identify those with the most and fewest observations</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>The <code>sort()</code> method takes the name of another visual channel to sort by, such as <code>'x'</code>, <code>'color'</code>, etc.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Sorting by count — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>alt.Y(<span class="st">'condition'</span>).sort(<span class="st">'x'</span>)</span>
@@ -797,7 +805,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>The base R function <code>reorder()</code> sets the order of categorical levels based on another column in the dataframe, for example, <code>reorder(column_to_sort, column_to_use_as_sorting_order)</code>. To order the categories by their counts, we first need to calculate those counts and add them to the dataframe. Here, we use <code>dplyr::add_count()</code> to create a column automatically named <code>n</code>, then use it to order the categories on the y-axis.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Sorting by count — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>meditation <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">add_count</span>(condition) <span class="sc">|&gt;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(condition, <span class="sc">-</span>n))) <span class="sc">+</span></span>
@@ -820,7 +828,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <p>The custom order is passed to <code>sort</code>, just as when ordering by another visual channel.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Choosing a meaningful category order — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>custom_order <span class="op">=</span> [<span class="st">'Control (book chapter)'</span>, <span class="st">'Mindful breathing'</span>, <span class="st">'Body scan'</span>, <span class="st">'Mindful walking'</span>, <span class="st">'Loving kindness'</span>]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
@@ -874,7 +882,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
 <p>When ordering by another visual channel we used <code>reorder</code> to change the order of the dataframe column. To define a custom order, we need to directly manipulate order of the scale that the categorical variable is plotting on, in this case the y scale.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Choosing a meaningful category order — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>custom_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Control (book chapter)'</span>, <span class="st">'Mindful breathing'</span>, <span class="st">'Body scan'</span>, <span class="st">'Mindful walking'</span>, <span class="st">'Loving kindness'</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition)) <span class="sc">+</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
@@ -894,7 +902,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="stacked-bars" class="level3">
 <h3 class="anchored" data-anchor-id="stacked-bars">Stacked bars</h3>
-<p>Like area charts, bar charts can also show multiple groups as segments stacked on top of each other. Let’s explore this in the following exercise:</p>
+<p>Like area charts, <span class="slide-bullet">bar charts can also show multiple groups as segments stacked on top of each other</span>. Let’s explore this in the following exercise:</p>
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -913,7 +921,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="What can you compare in stacked bars?">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
@@ -966,7 +974,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Stacked counts — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1015,7 +1023,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <p>The <code>yOffset</code>/<code>xOffset</code> encodings that we used for jittering can also take a categorical variable to offset groups next to each other.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Give the groups a shared baseline — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
@@ -1070,7 +1078,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
 <p>The <code>position</code> parameter that we used for jittering can also take the <code>'dodge'</code> value, which places bars next to one another instead of stacking them.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Give the groups a shared baseline — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">'dodge'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1115,12 +1123,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="proportions" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="proportions"><span class="header-section-number">8.2</span> Proportions</h2>
-<p>A proportion expresses a part relative to a whole. For categorical counts, we calculate it by dividing the count for a subgroup by the total count for the relevant group; multiplying by 100 gives a percentage. Here, each condition is the whole, and the gender categories are its parts. Normalizing each bar to the same length lets us compare gender proportions even though the conditions have different numbers of participants.</p>
+<p><span class="slide-bullet">A proportion expresses a part relative to a whole</span>. For categorical counts, we calculate it by dividing the count for a subgroup by the total count for the relevant group; multiplying by 100 gives a percentage. Here, each condition is the whole, and the gender categories are its parts. Normalizing each bar to the same length lets us compare gender proportions even though the conditions have different numbers of participants.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Normalizing to proportions — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'count()'</span>).stack(<span class="st">'normalize'</span>),</span>
@@ -1172,7 +1180,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We could change the displayed axis values from percentages to proportions by formatting the axis labels as decimals with one digit after the decimal point (<code>.1f</code>). Here, <code>labelExpr</code> formats each tick value directly, overriding the default percentage labels:</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Proportions versus percentages">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'count()'</span>)</span>
@@ -1227,7 +1235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Normalizing to proportions — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">'fill'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1239,7 +1247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We could change the displayed axis values from proportions to percentages by specifying that the scale labels are percentages:</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Formatting percentages — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">'fill'</span>) <span class="sc">+</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_percent</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1255,16 +1263,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>With two segments in each normalized bar, both proportions can be compared against a shared reference: one segment starts at zero, and the other ends at one (100%). With three or more segments, those in the middle generally lack an aligned endpoint, making them harder to compare. Proportions can also be shown with side-by-side bars sharing a zero baseline.</p>
-<p>Always make the denominator clear. These bars show proportions <strong>within each condition</strong>, not proportions of the whole sample. Normalizing also hides differences in sample size: the conditions contain between 84 and 113 participants, but all five normalized bars have the same total length. Across the complete 500-observation sample, 344 participants reported female gender (68.8%).</p>
+<p><span class="slide-bullet">Always make the denominator clear</span>. These bars show proportions <strong>within each condition</strong>, not proportions of the whole sample. Normalizing also hides differences in sample size: the conditions contain between 84 and 113 participants, but all five normalized bars have the same total length. Across the complete 500-observation sample, 344 participants reported female gender (68.8%).</p>
 <section id="pie-charts" class="level3">
 <h3 class="anchored" data-anchor-id="pie-charts">Pie charts</h3>
-<p>Pie charts use angles and areas to indicate magnitude. They should generally be avoided as bar charts with a shared baseline tend to communicate the same insights more effectively. A minor point in favor of pie charts is that familiar fractions, such as one-quarter and one-half, can be easy to recognize. They can therefore be useful for illustration and simple comparisons with just two or (maybe) three groups.</p>
+<p><span class="slide-bullet">Pie charts use angles and areas to indicate magnitude</span>. They should generally be avoided as bar charts with a shared baseline tend to communicate the same insights more effectively. A minor point in favor of pie charts is that familiar fractions, such as one-quarter and one-half, can be easy to recognize. They can therefore be useful for illustration and simple comparisons with just two or (maybe) three groups.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
 <p><code>theta</code> is the visual channel that controls the angle of each slice in the pie.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Parts of a whole — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_arc().encode(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    theta<span class="op">=</span>alt.Theta(<span class="st">'count()'</span>).stack(<span class="va">True</span>),</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'gender'</span></span>
@@ -1318,7 +1326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
 <p>In ggplot, we can construct a pie chart by transforming a stacked bar into polar coordinates with <code>coord_polar()</code>; a very grammatically coherent way to express a pie chart!</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Parts of a whole — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(<span class="dv">1</span>), <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">'y'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1344,7 +1352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>It is almost always better to use some form of a bar chart. When there are many groups in the data, pie charts can be disorienting. The charts below show parliamentary seats from the 2026 Swedish election.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, with parties grouped into their blocs from last election. In the bar chart to the left, it is easier to see that Bloc 1 has slightly more seats: 176 compared with 173, and we could make this even clearer by adding a line/rule at the majority cutoff or by making the figure larger. In the middle pie chart, comparing the bloc totals is much harder because each bloc is split across several party slices. Even in the simplified rightmost pie chart which shows only the seats per bloc, the small difference between the two slices is difficult to judge.</p>
-<div class="cell">
+<div class="cell" data-slide-show="output">
 <div class="cell-output-display">
 
 

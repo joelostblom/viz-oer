@@ -560,7 +560,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="why-bother" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="why-bother"><span class="header-section-number">2.1</span> Why bother?</h2>
-<p>Why do we need to know anything about visualization libraries and their underlying theory, such as the grammar of graphics? While there is a lot we can learn about visualization without coding, the act of implementing visualizations in code can help us understand their underlying principles, which makes the learning experience more interactive and memorable. The grammar of graphics also gives us a powerful theoretical framework to understand and reason about data visualizations.</p>
+<p>Why do we need to know anything about visualization libraries and their underlying theory, such as the grammar of graphics? While there is a lot we can learn about visualization without coding, the act of <span class="slide-bullet">implementing visualizations in code can help us understand their underlying principles</span>, which <span class="slide-bullet">makes the learning experience more interactive and memorable</span>. The grammar of graphics also gives us <span class="slide-bullet">a powerful theoretical framework to understand and reason about data visualizations</span>.</p>
 </section>
 <section id="which-visualization-library-should-we-pick" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="which-visualization-library-should-we-pick"><span class="header-section-number">2.2</span> Which visualization library should we pick?</h2>
@@ -579,7 +579,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
 <p>To understand the difference between these two approaches, let’s start with an example, using the following small toy dataset:</p>
-<div class="slide-visual">
 <div class="cell">
 <div class="cell-output-display">
 <table class="dataframe dataframe-preview table table-sm table-striped small" data-border="1">
@@ -624,7 +623,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 <p>A helpful way to illustrate the difference between the two approaches to syntax is to imagine that we want to create a chart where we color the points according to their group. Here is pseudocode<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> that illustrates this difference:</p>
@@ -790,33 +788,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Declarative instruction</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Imperative instruction</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="slide-text">
+<div class="slide-bullet">
 <p><strong>“Color by the column <code>group</code> in the dataframe.”</strong></p>
 <p><strong>Focus</strong>: Declaring links between data variables (e.g., <code>group</code>) and graphical properties (e.g., <code>color</code>). The rest of the plot details (such as which colors to use) are handled automatically.</p>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="slide-text">
+<div class="slide-bullet">
 <p><strong>“Loop over the dataframe and plot observations in group <code>a</code> in blue and observations in group <code>b</code> in orange.”</strong></p>
 <p><strong>Focus</strong>: Being explicit with all the details for creating the chart via loops and low-level drawing commands.</p>
 </div>
 </div>
 </div>
 </div>
-<p>In this book, we will learn about declarative visualization tools, since these allow us to code a high-level specification of <em>what</em> we want the visualization to include, rather than coding out the details of <em>how</em> to implement the visualization. Another way to state this would be that high-level libraries let our minds focus on <strong>data and relationships</strong>, which is the right level of abstraction for a data scientist. Low-level libraries focus more on <strong>plot construction details</strong>, which is often more appropriate when making a highly customized visualization, data art, or an application with complex plotting logic.</p>
+<p>In this book, we will learn about declarative visualization tools, since these allow us to code a high-level specification of <strong>what</strong> we want the visualization to include, rather than coding out the details of <strong>how</strong> to implement the visualization. Another way to state this would be that high-level libraries let our minds focus on <strong>data and relationships</strong>, which is the right level of abstraction for a data scientist. Low-level libraries focus more on <strong>plot construction details</strong>, which is often more appropriate when making a highly customized visualization, data art, or an application with complex plotting logic.</p>
 <p>Among declarative visualization libraries, there are still a few different subcategories. In this book, we are going to learn about libraries that implement a so-called “grammar of graphics”, since this framework makes visualizations easy both to create and to reason about.</p>
 </section>
 <section id="what-is-the-grammar-of-graphics" class="level2 page-columns page-full" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="what-is-the-grammar-of-graphics"><span class="header-section-number">2.3</span> What is the grammar of graphics?</h2>
-<p>There is a plethora of names used to refer to specific types of chart. While referring to charts by name can be convenient in some contexts, it is often confusing. For example, a scatterplot, a dot plot, a strip plot, a bubble plot, and a forest plot all use points to represent data, but what’s the difference between them? Memorizing exactly which chart corresponds to which name is not as important as developing an understanding of the principles that form the foundations for building visualizations. Such an understanding can move us away from just creating charts from known templates to reflecting on what it is we’re trying to communicate and which graphical elements are the most suitable for this task.</p>
-<p>A grammar of graphics lets us focus on understanding the common building blocks of all charts and how to combine them according to predictable rules to create bespoke visualizations. It parallels the grammars of natural<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and programming languages, but applies to visual components. While we’re all familiar with how the grammatical rules of natural languages describe how to compose meaningful sentences from words, it might not be as clear what grammatical structures look like in programming languages, so let’s see an example in the following exercise:</p>
+<p>There is a plethora of names used to refer to specific types of chart. <span class="slide-bullet">While referring to charts by name can be convenient in some contexts, it is often confusing</span>. For example, <span class="slide-subbullet">a scatterplot, a dot plot, a strip plot, a bubble plot, and a forest plot</span> all use points to represent data, but what’s the difference between them? Memorizing exactly which chart corresponds to which name is not as important as <span class="slide-bullet">developing an understanding of the principles that form the foundations for building visualizations</span>. Such an understanding can move us away from just creating charts from known templates to reflecting on what it is we’re trying to communicate and which graphical elements are the most suitable for this task.</p>
+<p><span class="slide-bullet">The grammar of graphics lets us focus on understanding the common building blocks of all charts and how to combine them according to predictable rules to create bespoke visualizations</span>. It parallels the grammars of natural<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and programming languages, but applies to visual components. While we’re all familiar with how the grammatical rules of natural languages describe how to compose meaningful sentences from words, it might not be as clear what grammatical structures look like in programming languages, so let’s see an example in the following exercise:</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><strong>Grammatical origins</strong></p>
 <p>The idea of a grammar of graphics originates from <a href="https://en.wikipedia.org/wiki/Wilkinson%27s_Grammar_of_Graphics">Leland Wilkinson’s book <em>The Grammar of Graphics</em></a>.</p>
-<div class="slide-visual" data-slide-title="Grammatical origins">
 <p><img src="https://pictures.abebooks.com/isbn/9780387987743-us.jpg" class="img-fluid"></p>
-</div>
 </div></div><div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -831,13 +827,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
 <p>What do you think the output of the following Python code would be?</p>
-<div class="slide-visual slide-columns slide-with-content" data-slide-title="Adding numbers">
+<div class="slide-columns">
+<div class="slide-fragment slide-with-content" data-slide-title="Adding numbers">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>As you might have expected, the output is <code>3</code> because Python uses the conventional rules of mathematics to add the two numbers together. Almost all programming languages follow this rule. But what does the <code>+</code> operator do if we are trying to add something other than numbers? What do you think the output of the following code would be? Do you think it differs between programming languages?</p>
 <!-- For some reason, syntax highlighting is messed up if this is a python block -->
-<div class="slide-fragment" data-slide-title="Adding strings">
+<div class="slide-fragment slide-with-content" data-slide-title="Adding strings">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="st">'one'</span> <span class="op">+</span> <span class="st">'two'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </div>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
@@ -884,14 +882,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sec-learning-to-speak" class="level2 page-columns page-full" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="sec-learning-to-speak"><span class="header-section-number">2.4</span> Learning the grammar of graphics</h2>
 <p>So what does the grammar of graphics look like? Well, “it depends”. Just like linguistic grammars vary between languages, visualization grammars are implemented differently in different packages. However, there are some core steps which are present in most grammars of graphics:</p>
-<div class="slide-text">
 <ol type="1">
-<li><strong>Create a data-linked canvas</strong>: This step creates a background canvas that other graphical components are drawn upon and links it to the relevant dataset.</li>
-<li><strong>Encode visual aesthetics</strong>: This step defines how data will be mapped to graphical channels (e.g., the column <code>'group'</code> might be mapped to the <code>color</code> of each mark).</li>
-<li><strong>Add geometric marks</strong>: This step selects the graphical elements used to represent the data (e.g., points or bars).</li>
+<li><span class="slide-bullet"><strong>Create a data-linked canvas</strong>: This step creates a background canvas that other graphical components are drawn upon and links it to the relevant dataset.</span></li>
+<li><span class="slide-bullet"><strong>Encode visual aesthetics</strong>: This step defines how data will be mapped to graphical channels (e.g., the column <code>'group'</code> might be mapped to the <code>color</code> of each mark).</span></li>
+<li><span class="slide-bullet"><strong>Add geometric marks</strong>: This step selects the graphical elements used to represent the data (e.g., points or bars).</span></li>
 </ol>
-</div>
 <p>As a result of the predictable structure, a grammar of graphics allows you to create an impressive range of visualizations in an intuitive manner and aids in reasoning about these visualizations. It also makes it notably easier to change between different types of plots, as the code syntax follows a predictable structure and only parts of the specification change between charts. In fact, libraries that implement a grammar of graphics often require fewer changes in the code to create different types of visualizations.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<!-- TODO insert slide with image of different libraries? -->
 <section id="implementations-of-the-grammar-of-graphics" class="level3 page-columns page-full">
 <h3 class="anchored">Implementations of the grammar of graphics</h3>
 <p>You can think of the grammar of graphics as an underlying theory of how to make visualizations. But to actually create a visualization, we need to use a package that <em>implements</em> this theory in code. This book shows several programmatic implementations and lets you choose which package you prefer to learn, while also allowing for quick comparisons between libraries. Before creating a visualization, let’s see how the structure of these implementations is similar to the general structure we described above.</p>
@@ -917,7 +914,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>mark_*(...)</code> adds geometric marks, such as points or bars.</li>
 </ol>
 </div>
-<p>Note that we wrote the Altair syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write Altair chart specifications is in the form <code>alt.Chart(data).mark().encode()</code>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
+<p>Note that we wrote the Altair syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write Altair chart specifications is in the form <span class="slide-text"><code>alt.Chart(data).mark().encode()</code></span>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
 
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
@@ -930,7 +927,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>geom_*(...)</code> A geom function adds geometric marks, such as points or bars.</li>
 </ol>
 </div>
-<p>Note that we wrote the ggplot syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write ggplot chart specifications is in the form <code>ggplot(data, aes()) + geom()</code>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
+<p>Note that we wrote the ggplot syntax in the same form as in our general grammar of graphics example above to help you see how it maps onto that structure. It is perfectly fine to keep writing this way if you prefer it, but the canonical way to write ggplot chart specifications is in the form <span class="slide-text"><code>ggplot(data, aes()) + geom()</code></span>. We will follow that order from now on since most examples you will see elsewhere follow this syntax.</p>
 
 </div>
 </div>

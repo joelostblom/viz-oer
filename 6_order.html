@@ -527,6 +527,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="chapter-slide-link">
+<a href="slides/6_order.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <rect x="3" y="3" width="18" height="13" rx="1"></rect>
+        <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
+        </svg></a>
+</div>
+<div class="slide-outcomes">
 <div class="callout callout-style-default callout-note callout-titled" title="Learning outcomes &amp; Chapter summary">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -545,12 +552,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </div>
 </div>
+</div>
 <!-- TODO Discuss missing values and interruptions in lines somewhere? Or is that a technical detail better left to the documentation? -->
 <!-- https://stackoverflow.com/questions/66348548/altair-missing-value-in-graph -->
 <!-- https://ggplot2.tidyverse.org/reference/geom_path.html -->
 <section id="why-order-matters" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="why-order-matters"><span class="header-section-number">6.1</span> Why order matters</h2>
-<p>In <a href="5_groups.html" class="quarto-xref">Groups</a>, we learned how to distinguish groups of observations. Now we will look at observations that also have a meaningful order, such as time of day or an increasing dose of a treatment. In the following exercise, we will see how the grouping strategies we learned previously can be effectively complemented when working with ordered data.</p>
+<p>In <a href="5_groups.html" class="quarto-xref">Groups</a>, we learned how to distinguish groups of observations. Now we will look at <span class="slide-bullet">observations that also have a meaningful order</span>, such as time of day or an increasing dose of a treatment. In the following exercise, we will see how the grouping strategies we learned previously can be effectively complemented when working with ordered data.</p>
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -565,7 +573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
 <p>In the chart below, we can see how CO₂ emissions per capita have changed over time for the world’s continents. As you can see, the chart applies the strategies we have learned so far and uses color to group observations from different continents. But the overlap between the different groups makes it difficult to follow changes over time for any particular continent, and the chart is a bit confusing even after studying it for a while. How do you think you could change this chart to make it easier to see how CO₂ emissions per capita for each continent have changed over time?</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="How would you make these trends clearer?">
 <div class="cell-output-display">
 
 
@@ -639,7 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
 <p>We can use the natural order of the observations to connect the points that belong to the same continent with a line. Drawing a line from the earliest to the most recent year helps us with two things: it makes it easier to see changes over time for any single continent, and it makes it easier to see which points belong to which continent. As such, a line is a graphical tool that assists with both ordering and grouping.</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Connect observations in time order">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>points.mark_line() <span class="op">+</span> points.mark_point(filled<span class="op">=</span><span class="va">True</span>, strokeOpacity<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 
@@ -701,7 +709,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="using-lines-to-order-and-group-data" class="level2 page-columns page-full" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="using-lines-to-order-and-group-data"><span class="header-section-number">6.2</span> Using lines to order and group data</h2>
-<p>To explore how to create line charts, we will visualize population and fertility estimates at eight-year intervals from 1850 to 2018. The data comes from the <a href="https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv">Gapminder country-level dataset</a>, and has been adapted for this textbook.</p>
+<p>To explore how to create line charts, we will visualize <span class="slide-bullet">population and fertility estimates at eight-year intervals from 1850 to 2018</span>. The data comes from the <a href="https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv">Gapminder country-level dataset</a>, and has been adapted for this textbook.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
@@ -713,7 +721,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>world <span class="op">=</span> pd.read_csv(<span class="st">'data/gapminder_world_from_1850.csv'</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>world</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Population &amp; fertility data">
 <div class="cell-output-display">
 <table class="dataframe dataframe-preview table table-sm table-striped small" data-border="1">
 <thead>
@@ -907,7 +915,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>In Altair, we use <code>mark_line()</code> to connect observations with a line.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Drawing a line — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(world).mark_line().encode(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'year'</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span></span>
@@ -960,7 +968,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You can see that the formatting on the x-axis includes a comma as a thousands separator. While this is desirable for regular quantitative variables, it is not how we are used to seeing years displayed. To deal with this, we can either change the underlying data type or the number formatting of the axis.</p>
 <p>To change the axis formatting, we need to leverage the helper class <code>alt.X</code> (similar helpers exist for other channels, such as <code>alt.Y</code> and <code>alt.Color</code>). These classes help us customize many aspects of our charts. When using just <code>x='year'</code>, we’re using shorthand for <code>alt.X('year')</code>; we just save ourselves some typing.</p>
 <p>Here we are going to set <code>alt.X('year').axis(format='d')</code>, where the <code>d</code> is short for “decimal integer” (i.e., a base-10 integer).</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Formatting the year axis">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(world).mark_line().encode(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span></span>
@@ -1014,7 +1022,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>In ggplot, we use <code>geom_line()</code> to connect observations with a line.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Drawing a line — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> population)) <span class="sc">+</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1038,7 +1046,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Exploring fertility over time — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(world).mark_line().encode(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'children_per_woman'</span></span>
@@ -1090,7 +1098,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Exploring fertility over time — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> children_per_woman)) <span class="sc">+</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1139,13 +1147,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="combining-lines-and-points" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="combining-lines-and-points"><span class="header-section-number">6.3</span> Combining lines and points</h2>
-<p>Generally, it is helpful to add points on top of a line to indicate exactly where each observation from the data lies.</p>
+<p>Generally, it is helpful to <span class="slide-bullet">add points on top of a line to indicate exactly where each observation from the data lies</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <p>In Altair, we combine lines and points through a concept called layering, where charts are superimposed on each other. The <code>+</code> operator means to “layer” a chart on top of another chart. <!-- TODO (it's also possible to use `alt.layer(...)` --> <!-- with a list of charts). --></p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Layering points and lines — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>line <span class="op">=</span> alt.Chart(world).mark_line().encode(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'children_per_woman'</span></span>
@@ -1200,7 +1208,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
 <p>In ggplot, we combine lines and points through a concept called layering, where charts (or “graphical layers”) are superimposed on each other. The <code>+</code> operator means to “layer” a geom on top of another geom.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="Layering points and lines — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> children_per_woman)) <span class="sc">+</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1230,7 +1238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
 <p>In our data, there are only observations from every eighth year, but the line we have drawn is continuous and has a defined value for <code>children_per_woman</code> even between the points in the chart. For example, in this zoomed-in view we can see that the line at the year 1950 suggests a country-average fertility estimate of approximately 5.4 children per woman. But as we can see from the points in the chart, our data does not contain any observation from exactly the year 1950. What conclusions can we draw about the fertility estimate for this year?</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="What does the line between points mean?">
 <div class="cell-output-display">
 
 
@@ -1304,7 +1312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
 <p>The line segments between two observations are there to guide the eye; they do not establish what the values are at every unobserved moment between two points. Although the line is a simple linear interpolation between observations, which might seem harmless, it is important to consider whether the distance between two points represents a long enough period that important changes could be hidden by a straight line. To understand this more deeply, we can look at what would happen if the observations were closer or farther apart in time, as in the chart below.</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Sampling frequency changes the story">
 <div class="cell-output-display">
 
 
@@ -1375,7 +1383,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>As we just saw, we need to be careful when interpreting a line between two observations along a quantitative axis. For the same reason, we should generally avoid using a line to connect observations along an axis of unordered categories. Here are two representations of the same population values:</p>
-<div class="cell">
+<div class="cell" data-slide-show="output">
 <div class="cell-output-display">
 
 
@@ -1443,7 +1451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <p>The <code>order</code> encoding controls the order in which observations will be connected by a line. Since there is no visible axis for the year, it would be difficult to know in which direction to read the chart; is the most recent year represented by the point in the top-left or bottom-right corner? To avoid this confusion, we add a tooltip so that you can see which year each point corresponds to when hovering over it with the mouse pointer.</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Order without a time axis — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>line <span class="op">=</span> alt.Chart(world).mark_line().encode(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'children_per_woman'</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span>,</span>
@@ -1501,7 +1509,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
 <p>By default, <code>geom_line()</code> connects points in the order of the variable on the x-axis. To connect points in another order, we can use <code>geom_path()</code> instead. This geom connects observations in dataframe row order, so we need to make sure our data is sorted by the variable we want the connection order to represent.</p>
 <p>Since there is no visible axis for the year, it would be difficult to know in which direction to read the chart; is the most recent year represented by the point in the top-left or bottom-right corner? To avoid this confusion, we add a text label so that you can identify the earliest and most recent observations.</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Order without a time axis — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>endpoints <span class="ot">&lt;-</span> world <span class="sc">|&gt;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">range</span>(year, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world <span class="sc">|&gt;</span> <span class="fu">arrange</span>(year), <span class="fu">aes</span>(<span class="at">x =</span> children_per_woman, <span class="at">y =</span> population, <span class="at">label =</span> year)) <span class="sc">+</span></span>
@@ -1530,12 +1538,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="areas-and-multiple-ordered-groups" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="areas-and-multiple-ordered-groups"><span class="header-section-number">6.4</span> Areas and multiple ordered groups</h2>
-<p>Another way of representing ordered data is to fill the area between a line and a baseline.</p>
+<p>Another way of representing ordered data is to <span class="slide-bullet">fill the area between a line and a baseline</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="From a line to an area — Altair">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(world).mark_area().encode(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span></span>
@@ -1587,7 +1595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
-<div class="cell">
+<div class="cell" data-slide-show="both" data-slide-title="From a line to an area — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> population)) <span class="sc">+</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_area</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1621,7 +1629,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <p>Setting <code>color</code> applies to both areas and lines; if we wanted to control them individually, we could instead use <code>stroke</code> (for lines) and <code>fill</code> (for areas). Here we also use the <code>|</code> layout operator to position the plots next to each other horizontally (<code>&amp;</code> lays them out vertically instead; we will learn more about layouts in a later chapter).</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Comparing line and stacked-area charts">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>regions <span class="op">=</span> pd.read_csv(<span class="st">'data/gapminder_regions_from_1850.csv'</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> alt.Chart(regions, width<span class="op">=</span><span class="dv">150</span>, height<span class="op">=</span><span class="dv">150</span>).encode(</span>
@@ -1678,7 +1686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
 <p><code>geom_area()</code> stacks the regional areas by default. The population values are already in the dataset, so we can map them directly to the y-axis. To set the area color, we use the <code>fill</code> aesthetic, whereas the line color is controlled by the <code>color</code> aesthetic. We map both to <code>region</code>. <!-- TODO Should we set these in the geoms? That introduces several new concepts, but avoids creating an outline for each area. --> Here we also use the <code>|</code> layout operator from the <code>patchwork</code> library to position the plots next to each other horizontally (<code>/</code> lays them out vertically instead; we will learn more about layouts in a later chapter).</p>
-<div class="cell">
+<div class="cell" data-slide-show="output" data-slide-title="Comparing lines and stacked areas — ggplot">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>regions <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/gapminder_regions_from_1850.csv'</span>)</span>
@@ -1757,7 +1765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>While it might initially seem that overlapping areas instead of stacking them could remedy some of the issues mentioned above, the filled regions can obscure one another, as you can see below (there are a few exceptions such as density plots which we will see in a later chapter).</p>
-<div class="cell">
+<div class="cell" data-slide-show="output">
 <div class="cell-output-display">
 
 
@@ -1817,7 +1825,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>Avoid stacked area charts when the sum of the different groups in the chart is not meaningful, since stacking effectively sums the area heights together. For example, if we wanted to know the average number of children per woman around the world, stacking areas does not make sense since this adds the regional averages rather than calculating an overall average. Reading the y-axis of the stacked areas thus becomes misleading and confusing; the world average wasn’t 30 children per woman in the 1800s…</p>
-<div class="cell">
+<div class="cell" data-slide-show="output">
 <div class="cell-output-display">
 
 
