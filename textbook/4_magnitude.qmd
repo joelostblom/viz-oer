@@ -237,7 +237,7 @@ compared to alternatives using 2D representations and a diverging color scale.^[
 The experiment involved 21 Harvard medical students,
 who were asked to identify regions of low shear stress.
 When using the visualization you see below,
-they correctly identified an average of 39% of these regions.
+they correctly identified an average of ~40% of these regions.
 The illustrations below label the results with rounded percentages;
 the text reports the percentages shown in the paper's Figure 7.
 
@@ -255,7 +255,7 @@ by highlighting them in bright red
 and showing the remaining areas in shades of gray.
 With this seemingly small modification,
 the percentage of low-shear-stress regions correctly identified almost doubled,
-[from 39% to 71% for the 3D representations]{.slide-bullet}.
+[from 40% to 70% for the 3D representations]{.slide-bullet}.
 
 We will talk more about choosing appropriate color scales in later chapters.
 
@@ -277,11 +277,11 @@ In the 2D visualization,
 the blood vessels and their branching points
 are shown in a schematic that is less cognitively demanding to interpret.
 This representation was also shown to be more effective,
-as [91% of the low-shear-stress regions were correctly identified on average]{.slide-bullet}.
+as [90% of the low-shear-stress regions were correctly identified on average]{.slide-bullet}.
 
 Overall,
 these two changes more than doubled the percentage of regions correctly identified,
-from 39% to 91%.
+from 40% to 90%.
 That is a huge increase from modifications
 that might have seemed to be merely a matter of taste without knowledge of visualization theory!
 So, if anyone tells you that visualization of data is not as important as other components,
@@ -304,11 +304,169 @@ But most of the time,
 it is best to adhere to the principles discussed above
 and we will dive deeper into some of them later in the book.
 
-## Original lecture slides {.slide-skip}
+## Choose the most effective channel for the most important comparison
 
-::: {.slide-skip}
+Let's apply what we have learned
+in the context of the dataset from last chapter.
 
-<iframe src="slides-lec2.pdf#zoom=80&navpanes=0&statusbar=0&messages=0&pagemode=none" title="Original lecture slides on visual channels" width="100%" height="475px"></iframe>
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: load-cars-python
+#| output: false
+#| slide-show: code
+import altair as alt
+import pandas as pd
+
+
+url = 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
+cars = pd.read_csv(url)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: load-cars-r
+#| output: false
+library(ggplot2)
+
+
+url <- 'https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/cars.csv'
+cars <- readr::read_csv(url)
+```
+
+:::
+
+If we are interested in visualizing
+the relationship between
+`'Miles_per_Gallon'`,
+`'Horsepower'`,
+and `'Weight_in_lbs'`.
+If all pairwise relationships were of high importance,
+we could created three separate plots
+where each variable get to be on the x and y axis two times each,
+so that they can make use of the most effective channel,
+position on a shared scale.
+
+However,
+if we would like to include all three variables
+in the same chart,
+then we would need to decide what the most important comparison is.
+If it is to compare fuel efficiency to weight,
+then we would make the following chart:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: cars-weight-alt
+#| slide-show: both
+#| slide-output-fragment: true
+alt.Chart(cars).mark_point().encode(
+    x='Miles_per_Gallon',
+    y='Weight_in_lbs',
+    color='Horsepower'
+)
+```
+
+### ggplot
+
+Here,
+we add the `color` encoding to the chart
+so that we can see how all three variables
+relate to each other.
+The default color gradient runs from dark blue for lower weights
+to light blue for higher weights,
+since light colors have the highest contrast
+to the chart's dark background.
+
+```{r}
+#| label: cars-weight-gg
+#| slide-show: both
+#| slide-output-fragment: true
+ggplot(cars, aes(x = Miles_per_Gallon, y = Weight_in_lbs, color = Horsepower)) +
+    geom_point()
+```
+
+:::
+
+If we instead are mainly interested in comparing,
+engine power vs weight,
+then we would make the following chart:
+
+::: {.panel-tabset group="language"}
+
+### Altair
+
+```{python}
+#| label: cars-weight-2-alt
+#| slide-show: both
+#| slide-output-fragment: true
+alt.Chart(cars).mark_point().encode(
+    x='Horsepower',
+    y='Weight_in_lbs',
+    color='Miles_per_Gallon'
+)
+```
+
+### ggplot
+
+Here,
+we add the `color` encoding to the chart
+so that we can see how all three variables
+relate to each other.
+The default color gradient runs from dark blue for lower weights
+to light blue for higher weights,
+since light colors have the highest contrast
+to the chart's dark background.
+
+```{r}
+#| label: cars-weight-2-gg
+#| slide-show: both
+#| slide-output-fragment: true
+ggplot(cars, aes(x = Horsepower, y = Weight_in_lbs, color = Miles_per_Gallon)) +
+    geom_point()
+```
+
+:::
+
+::: {.callout-warning}
+
+### Avoid blindly following a ranking
+
+As with much of the other advice in this book,
+(and in life)
+context matters.
+If we think there is good reason to pick a lower ranking
+visual channel,
+then do that.
+For example,
+using `size` instead of `color`
+seems reasonable since area is more highly ranked
+than color brightness.
+However,
+if we try this,
+we immediately see that this is not an effective visualization
+since the additional size of the points
+leads to significant overlap in the chart
+and it is difficult to tell
+what is going on in the saturated area in the bottom left.
+
+```{python}
+#| label: cars-weight-blind
+#| echo: false
+#| slide-show: both
+#| slide-output-fragment: true
+alt.Chart(cars).mark_point(color='#FF0039').encode(
+    x='Horsepower',
+    y='Weight_in_lbs',
+    size='Miles_per_Gallon'
+)
+```
+
 
 :::
 
