@@ -49,8 +49,8 @@ through a short exercise.
 ::: {.callout-default .ex-prompt}
 
 Take a few seconds to answer the following question.
-[How many times as large is the bigger object
-as the smaller one in each of these two images?]{.slide-bullet}
+How many times larger is the bigger object
+as the smaller one in each of these two images?
 
 :::::: {.slide-visual slide-layout="columns"}
 
@@ -79,7 +79,7 @@ and the longer bar has seven times the length of the shorter bar.[^jeffrey-heer]
 Heer is a visualization researcher at the University of Washington
 and a coauthor of the research papers introducing D3 and Vega-Lite.
 
-:::::: {.slide-visual slide-title="Length versus area"}
+:::::: {.slide-visual slide-title="Area versus length"}
 
 ![](https://viz-learn.mds.ubc.ca/module2/7x.png)
 
@@ -148,8 +148,8 @@ affect which ways of depicting magnitude are most effective.^[[Revisiting Channe
 
 :::
 
-[Position along a common scale is generally the most effective visual channel
-for precise magnitude comparisons]{.slide-bullet},
+Position along a common scale is generally the most effective visual channel
+for precise magnitude comparisons,
 so we should use it for our most important comparisons when possible.
 In a scatterplot, for example, position along the x- and y-axes represents two variables,
 but we can also use size or color to represent additional variables.
@@ -168,7 +168,7 @@ where the reader cannot rotate the plot to inspect it from different angles.
 
 :::: {.callout-default .ex-prompt}
 
-[Which values do you think are represented by the bars A, B, C, and D
+[Which value do you think is represented by the bar labelled "B"
 in the 3D bar chart below?]{.slide-bullet}
 
 ::::: {.slide-visual}
@@ -180,7 +180,8 @@ in the 3D bar chart below?]{.slide-bullet}
 ::: {.callout-default .ex-solution}
 
 The bars appear to have values of approximately A = 0.7, B = 1.7, C = 2.7, and D = 3.7,
-but this is an illusion caused by the viewing angle.
+but this is an illusion caused by
+the viewing angle of the "camera" in this 3D scene.
 The actual values of A, B, C, and D are 1, 2, 3, and 4, respectively.
 This plot would have been much easier to read without the unnecessary 3D effect.
 
@@ -198,7 +199,7 @@ eliminating the need for the additional 2D plot shown in the example on the left
 
 ::: {.slide-visual}
 
-![](https://www.tylermw.com/wp-content/uploads/2019/06/spacetimevid.mp4)
+![A useful application of 3D.](https://www.tylermw.com/wp-content/uploads/2019/06/spacetimevid.mp4){#fig-3d-movie width=70%}
 
 :::
 
@@ -220,7 +221,6 @@ Heart disease is the most common cause of death,
 killing almost 9 million people each year,
 or as many as diabetes, dementia, neonatal conditions, and respiratory infections
 combined.
-<!-- TODO Verify the source, reference year, and disease categories for these mortality figures. -->
 Low wall shear stress—the frictional force per unit area exerted by blood on an artery wall—
 is associated with the development of atherosclerosis.
 Identifying these regions can therefore help clinicians assess areas at risk.
@@ -238,16 +238,14 @@ The experiment involved 21 Harvard medical students,
 who were asked to identify regions of low shear stress.
 When using the visualization you see below,
 they correctly identified an average of ~40% of these regions.
-The illustrations below label the results with rounded percentages;
-the text reports the percentages shown in the paper's Figure 7.
 
-::: {.slide-visual}
+::: {.slide-fragment .slide-columns}
 
 ![](https://viz-learn.mds.ubc.ca/module2/blood-vessels-40.png)
 
 :::
 
-### Changing the color scale almost doubled the accuracy
+### Changing the color scale almost doubled the accuracy {.slide-skip}
 
 One comparison tested the effect of changing the color scale to one that is easier to interpret
 and makes the important areas of low shear stress stand out more,
@@ -255,17 +253,17 @@ by highlighting them in bright red
 and showing the remaining areas in shades of gray.
 With this seemingly small modification,
 the percentage of low-shear-stress regions correctly identified almost doubled,
-[from 40% to 70% for the 3D representations]{.slide-bullet}.
+from 40% to 70% for the 3D representations.
 
 We will talk more about choosing appropriate color scales in later chapters.
 
-::: {.slide-visual}
+::: {.slide-fragment}
 
 ![](https://viz-learn.mds.ubc.ca/module2/blood-vessels-70.png)
 
 :::
 
-### Changing from 3D to 2D improved accuracy further
+### Changing from 3D to 2D improved accuracy further {.slide-skip}
 
 Another comparison tested changing from a 3D representation of the blood vessels
 to a 2D representation while using the diverging color scale.
@@ -277,7 +275,7 @@ In the 2D visualization,
 the blood vessels and their branching points
 are shown in a schematic that is less cognitively demanding to interpret.
 This representation was also shown to be more effective,
-as [90% of the low-shear-stress regions were correctly identified on average]{.slide-bullet}.
+as 90% of the low-shear-stress regions were correctly identified on average.
 
 Overall,
 these two changes more than doubled the percentage of regions correctly identified,
@@ -290,7 +288,7 @@ and ask them what kind of visualization
 they want their doctor to look at
 when analyzing their arteries.
 
-::: {.slide-visual}
+::: {.slide-fragment}
 
 ![](https://viz-learn.mds.ubc.ca/module2/blood-vessels-90.png)
 
