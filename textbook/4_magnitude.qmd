@@ -198,7 +198,7 @@ eliminating the need for the additional 2D plot shown in the example on the left
 
 ::: {.slide-visual}
 
-![](https://media.github.ubc.ca/user/1751/files/da4e1b00-0fd3-11eb-940d-0b06a28a0186)
+![](https://www.tylermw.com/wp-content/uploads/2019/06/spacetimevid.mp4)
 
 :::
 
