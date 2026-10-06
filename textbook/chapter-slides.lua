@@ -154,6 +154,32 @@ function Pandoc(doc)
         result:insert(slide[right_heading])
         result:insert(pandoc.Div(right, pandoc.Attr("", {"slide-column", "slide-column-right"})))
         result:extend(slide_notes)
+      elseif title and title.t == "Header" and title.attributes["slide-columns"] == "true" then
+        -- Without peer column titles, the slide heading belongs above the
+        -- entire comparison. Each selected block supplies one content column.
+        local columns, slide_notes = pandoc.List(), pandoc.List()
+        for index = 2, #slide do
+          local block = slide[index]
+          if block.t == "Div" and block.classes:includes("notes") then
+            slide_notes:insert(block)
+          else
+            columns:insert(pandoc.Div({pandoc.RawBlock("html", "<!-- column content -->"), block},
+              pandoc.Attr("", {"slide-column"})))
+          end
+        end
+        if #columns > 1 then
+          title.attributes["slide-columns"] = "content"
+          local attr = pandoc.Attr("", {"slide-columns-content"})
+          if #columns ~= 2 then
+            attr.attributes["style"] = "--slide-column-count: " .. #columns .. ";"
+            attr.classes:insert("slide-columns-counted")
+          end
+          result:insert(title)
+          result:insert(pandoc.Div(columns, attr))
+          result:extend(slide_notes)
+        else
+          result:extend(slide)
+        end
       else
         result:extend(slide)
       end

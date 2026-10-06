@@ -290,6 +290,10 @@
   align-items: start;
 }
 
+.reveal .slide-columns-content.slide-columns-counted {
+  grid-template-columns: repeat(var(--slide-column-count), minmax(0, 1fr));
+}
+
 .reveal .slide-column {
   min-width: 0;
 }

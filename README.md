@@ -478,6 +478,13 @@ The browser checks require an installed Playwright Chromium. Set
 
 #### Two-column comparisons
 
+For a visual-only comparison without column subheadings, put `.slide-columns`
+on the first selected visual/fragment and use `.slide-fragment` for subsequent
+items. The main slide heading spans the full width above a content-only grid.
+Each selected block becomes a column; three or more items use equal widths.
+With two items, `slide-widths` can set the relative widths as described below.
+Chapter 4 uses three columns for the artery-visualization comparison.
+
 For a two-example comparison like chapter 2's syntax examples, add
 `.slide-columns` to the enclosing tabset. Use a plain heading for the first
 example, a `.slide-fragment` heading for the second, and one `.slide-visual`
