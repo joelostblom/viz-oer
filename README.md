@@ -776,5 +776,5 @@ For a one-off render that bypasses caching explicitly:
 
 ```sh
 . .uvr/activate
-uv run quarto render textbook/6_order.qmd --no-cache
+uv run quarto render textbook/6_connections.qmd --no-cache
 ```

@@ -25,9 +25,10 @@ CHAPTER_ASSETS = {
     "5_groups": (
         "data/income_lifeexp_alcohol.csv", "data/simpsons_paradox_data_l.csv",
     ),
-    "6_order": (
+    "6_connections": (
         "data/co-emissions-per-capita.csv", "data/gapminder_world_from_1850.csv",
         "data/gapminder_regions_from_1850.csv", "data/gapminder_world_trends.csv",
+        "data/movie_scores.csv",
     ),
     "7_summaries": (
         "data/meditation-stress-sample.csv", "data/same_mean_sd.csv",

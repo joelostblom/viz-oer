@@ -24,7 +24,8 @@ fig-height: 3.75
 
 ## Why bother?
 
-In @sec-order, we connected observations to make their sequence clear.
+In @sec-connections, we connected related observations to reveal changes over time
+and differences between conditions.
 Sometimes, however, our question concerns a collection of observations:
 How many are there? What is their total? What is a typical value?
 [A summary helps answer these questions by reducing many values to a few]{.slide-bullet}.

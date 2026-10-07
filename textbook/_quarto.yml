@@ -20,7 +20,7 @@ book:
         - 3_individual-observations.qmd
         - 4_magnitude.qmd
         - 5_groups.qmd
-        - 6_order.qmd
+        - 6_connections.qmd
     - part: "Summaries & distributions"
       chapters:
         - 7_summaries.qmd

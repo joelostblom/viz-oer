@@ -1,5 +1,5 @@
 ---
-chapter-slides: slides/6_order.html
+chapter-slides: slides/6_connections.html
 fig-width: 5
 fig-height: 3.75
 resources:
@@ -8,7 +8,7 @@ resources:
   - utils.R
 ---
 
-# Order {#sec-order}
+# Connections {#sec-connections}
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
@@ -16,13 +16,15 @@ resources:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Explain** how connecting observations makes their grouping and order easier to see.
+1. **Explain** how connections identify related observations and make their differences easier to see.
 
-2. **Distinguish** grouping observations into a series from ordering the observations within that series.
+2. **Distinguish** connections that follow a meaningful sequence from connections that link corresponding observations across conditions.
 
-3. **Use** lines to display change over time, and **compare** line and area charts for ordered data.
+3. **Use** lines and connected point plots to show change over time and differences between groups or conditions.
 
-4. **Explain** how stacking changes the interpretation of a chart and when a shared baseline is more useful.
+4. **Interpret** connecting segments in relation to axis spacing and **explain** what they do and do not establish about intermediate values.
+
+5. **Compare** line and area charts for ordered data, and **explain** when stacking or a shared baseline is useful.
 
 :::
 
@@ -32,15 +34,17 @@ resources:
 <!-- https://stackoverflow.com/questions/66348548/altair-missing-value-in-graph -->
 <!-- https://ggplot2.tidyverse.org/reference/geom_path.html -->
 
-## Why order matters
+## Why bother?
 
 In @sec-groups, we learned how to distinguish groups of observations.
-Now we will look at [observations that also have a meaningful order]{.slide-bullet},
+Now we will explore how [connecting related observations makes their correspondence and differences easier to see]{.slide-bullet}.
+Sometimes the connections follow a meaningful order,
 such as time of day or an increasing dose of a treatment.
-In the following exercise,
-we will see how the grouping strategies we learned previously
-can be effectively complemented
-when working with ordered data.
+Other times they link measurements of the same unit across unordered conditions,
+such as critics' and audiences' scores for the same movie.
+In either case, we need to decide which observations to connect
+and what those connections help us compare.
+We will begin with change over time.
 
 ::: {.callout-default .ex-prompt}
 
@@ -96,7 +100,8 @@ helps us with two things:
 it makes it easier to see changes over time for any single continent,
 and it makes it easier to see which points belong to which continent.
 As such,
-a line is a graphical tool that assists with both ordering and grouping.
+a line makes group membership explicit
+while helping us follow changes through an ordered sequence.
 
 ```{python line-overlay}
 #| slide-show: output
@@ -111,7 +116,7 @@ points.mark_line() + points.mark_point(filled=True, strokeOpacity=1)
 :::
 
 
-## Using lines to order and group data
+## Connecting ordered observations
 
 To explore how to create line charts,
 we will visualize [population and fertility estimates at eight-year intervals from 1850 to 2018]{.slide-bullet}.
@@ -123,7 +128,7 @@ and has been adapted for this textbook.
 ### Altair {.slide-skip}
 
 ```{python}
-#| label: order-data-preparation-notes
+#| label: connections-data-preparation-notes
 #| echo: false
 # years = range(1850, 2030, 8)
 # world = pd.read_csv('data/gapminder_world_trends.csv').query('year.isin(@years)').to_csv('data/gapminder_world_from_1850.csv', index=False)
@@ -151,7 +156,7 @@ show_df(world)
 ### ggplot {.slide-skip}
 
 ```{r}
-#| label: order-table-setup
+#| label: connections-table-setup
 #| include: false
 source("utils.R")
 ```
@@ -539,11 +544,10 @@ such as monthly values.
 ::::
 :::
 
-### Connecting categorical data points
+### Connecting observations across categories
 
-In some occasions,
-it can be advantageous to also connect
-categorical data with a line.
+Connections can also be useful
+when the positions on one axis represent categories.
 For ordinal categories,
 this might be intuitive,
 since there is often a natural progression throughout the categories.
@@ -566,7 +570,6 @@ In addition to connecting categories
 when they have a natural order,
 it can also be helpful to connect categories
 when the same observational unit is present in all of them.
-We say that such observations are paired,
 For example,
 we might measure the same patient before and after treatment,
 or compare evaluations of the same film by different reviewer groups.
