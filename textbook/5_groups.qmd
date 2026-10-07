@@ -467,10 +467,9 @@ Here we use `color='income_group'`:
 ```{python}
 #| label: income-color-alt
 #| slide-show: both
-#| slide-title: Color — Altair
+#| slide-title: Color
 import altair as alt
 import pandas as pd
-
 
 income_df = pd.read_csv('data/income_lifeexp_alcohol.csv')
 
@@ -485,19 +484,11 @@ alt.Chart(income_df).mark_point().encode(
 
 Here we use `color = income_group`:
 
-```{r}
-#| label: grouping-tidyverse-setup
-#| echo: false
-#| output: false
-# Tidyverse is so noisy when imported the first time, so let's do it here in silence
-library(tidyverse)
-options(readr.show_col_types = FALSE)
-```
-
 ```{r fig.width=8, fig.height=6}
 #| label: income-color-gg
+#| message: false
 #| slide-show: both
-#| slide-title: Color — ggplot
+#| slide-title: Color
 library(tidyverse)
 
 income_df <- read_csv('data/income_lifeexp_alcohol.csv')
@@ -514,7 +505,7 @@ ggplot(income_df, aes(
 
 ::: {.callout-warning}
 
-#### Avoid using color for more than 5–7 groups {.slide-skip}
+#### Avoid using color for more than 4-6 groups {.slide-skip}
 
 <!-- TODO add an example with too many colors and then include this insteadof note on first color page -->
 
@@ -525,9 +516,11 @@ such as how to ensure accessibility,
 particularly for people with color vision deficiencies.
 We will learn more about these topics in a later chapter,
 but for now it's enough to remember that
-when there are more than about 5–7 groups in the data,
+when there are more than about 4–6 groups in the data,
 it might be better to break it down into separate charts instead of grouping by
 color.
+The more overlap,
+the fewer content
 
 :::
 
@@ -591,17 +584,19 @@ Additionally, smaller shapes are difficult to distinguish, so when plotting a de
 
 ::: {.callout-warning}
 
-#### Avoid using color and shape for different variables
+#### Avoid using color and shape for different variables {.slide-skip}
 
 It is often difficult to interpret charts that map one variable to `color`
 and another to `shape`.
 This tends to lead to too much visual information
 and it is difficult to distinguish the many different combinations visually.
+The exception is if the chart is relatively simple
+with few observations and few combinations of the shape and color variable;
+then this combination *might* work.
 
 The many combinations of income group
 and region in this chart are hard to separate visually,
 which makes this chart ineffective:
-<!-- TODO Include background coloring to clearly identify ineffective examples? Too similar to Fundamentals of Data Visualization? -->
 
 :::: {.panel-tabset group="language"}
 
@@ -610,6 +605,7 @@ which makes this chart ineffective:
 ```{python}
 #| label: income-region-alt
 #| slide-show: output
+#| slide-title: Using shape and color for different variables
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -617,6 +613,11 @@ alt.Chart(income_df).mark_point(filled=True).encode(
     shape='region'
 )
 ```
+
+<!-- Question to illustrate how difficult it is to make this comparison -->
+[How do lower middle income countries compare between Asia and Africa?]{.slide-bullet}
+
+[**Avoid** using color and shape for different variables]{.content-visible when-format="revealjs" .slide-bullet}
 
 ##### ggplot {.slide-skip}
 
@@ -673,6 +674,9 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 [Grouping by position often creates the clearest separation between groups]{.slide-bullet}.
 Distributing the groups along the x- or y-axis gives each group its own visual lane,
 preventing observations from different groups from overlapping.
+This means that there is [no risk for overlap between groups]{.slide-bullet}
+and [we can generally visualize many more groups]{.slide-bullet}
+when we separate them by position rather than color or shape.
 However, [the grouping column now occupies one positional visual channel]{.slide-bullet},
 so [there is only one positional channel left]{.slide-bullet}
 for encoding the values we want to compare between the groups.
@@ -746,6 +750,8 @@ as well as identifying extreme values or outliers within groups.
 We could think of faceting as a type of position grouping,
 but its advantage is that it [keeps both the x- and y-axes free
 for other variables]{.slide-bullet}.
+Facetting [generally supports comparison of many groups]{.slide-bullet},
+just like grouping by x or y position.
 
 [Previous grouping strategies can be used within each facet]{.content-visible when-format="revealjs" .slide-bullet}
 
@@ -774,7 +780,7 @@ We create a 2 × 2 grid of facets by using the `columns` parameter.
 #| label: income-facets-alt
 #| slide-show: both
 #| slide-title: Faceting by income — Altair
-alt.Chart(income_df, height=250, width=250).mark_point().encode(
+alt.Chart(income_df, height=200, width=200).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
 ).facet(
@@ -833,79 +839,49 @@ so it is best used when there are fewer categories in the faceting variables.
 
 As you can see above, faceting makes it easier to observe the overall pattern for each income group and how tightly clustered the values are. It also reveals potential outliers in the upper-middle-income facet: we can easily spot two countries with a higher percentage of heavy drinkers than the others in that group. On the other hand, it is now harder to compare individual values between groups because the points are spread across different charts instead of being close together in a single chart.
 
+## Grouping within facets
+
 All the previous grouping strategies can be used within each facet as additional layers of grouping. This nested grouping can be useful for dividing our data according to multiple categorical variables, but it can become confusing if we try to fit too much into a single visualization. How many grouping variables you can use depends on how well separated the groups are and how many observations you have. More observations and less separation between groups mean that you need to be more careful and may need fewer layers of grouping to keep the visualization easy to interpret.
 
 Let's try out an example of how we can use faceting together with other grouping strategies.
 
-::::: {.callout-default .ex-prompt}
 
-Edit this chart to use both faceting and color for grouping.
-Facet by world region (`region`) and color the points by World Bank income group (`income_group`).
-Ensure that only two facets are shown per row.
+::: {.callout-default .ex-prompt}
 
-::: {.panel-tabset group="language"}
+Let's say [you are primarily interested in the relationship
+between life expectancy and heavy drinking
+across different regions]{.slide-bullet}.
+As a secondary comparison,
+[you would also like to see how different income groups vary within the same region]{.slide-bullet}.
+[Which visual channels would you use to group the chart?]{.slide-bullet}
 
-##### Altair {.slide-skip}
+:::: {.callout-default .ex-hint}
 
-```{pyodide}
-#| label: facet-exercise-python-setup
-#| setup: true
-#| exercise:
-#|   - facet_alt
-import altair as alt
-import pandas as pd
-from utils import assert_chart_equal
+You could e.g. use faceting and coloring,
+but which one should you use for which grouping variable?
 
-url = 'data/income_lifeexp_alcohol.csv'
-```
+::::: {.callout-default .ex-solution}
 
-```{pyodide}
-#| label: facet-python-exercise
-#| exercise: facet_alt
-income_df = pd.read_csv(url)
-
-alt.Chart(income_df).mark_point().encode(
-    x='percentage_heavy_drinkers',
-    y='life_expectancy_at_65',
-)
-```
-
-##### ggplot {.slide-skip}
-
-```{webr fig.width=8, fig.height=6}
-#| label: facet-exercise-r-setup
-#| setup: true
-#| exercise:
-#|   - facet_ggplot
-library(ggplot2)
-
-url <- 'data/income_lifeexp_alcohol.csv'
-```
-
-```{webr fig.width=8, fig.height=6}
-#| label: facet-r-exercise
-#| exercise: facet_ggplot
-income_df <- readr::read_csv(url, show_col_types = FALSE)
-
-ggplot(income_df) +
-    aes(
-        x = percentage_heavy_drinkers,
-        y = life_expectancy_at_65,
-    ) +
-    geom_point()
-```
-
-:::
-
-::: {.callout-default .ex-solution}
+Since we are interesting in comparing the relationship between two variables,
+faceting is a suitable choice 
+as it gives two free positional channels (x and y)
+to map the two variables to for each group.
+Since we are primarily interested in
+how this relationship changes between regions,
+we will create one facet per region.
+Then we use another visual channel,
+such as color (or color and shape)
+to highlight the income groups within each region.
 
 ::: {.panel-tabset group="language"}
 
-##### Altair {.slide-skip}
+##### Altair
 
 ```{python}
 #| label: region-facets-alt
-alt.Chart(income_df).mark_point().encode(
+#| slide-title: Grouping within facets
+#| slide-show: output
+alt.Chart(income_df, height=200, width=200).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
     color='income_group'
@@ -915,10 +891,12 @@ alt.Chart(income_df).mark_point().encode(
 )
 ```
 
-##### ggplot {.slide-skip}
+##### ggplot
 
 ```{r fig.width=8, fig.height=6}
 #| label: region-facets-gg
+#| slide-title: Grouping within facets
+#| slide-show: output
 ggplot(income_df) +
     aes(
         x = percentage_heavy_drinkers,
@@ -931,8 +909,109 @@ ggplot(income_df) +
 
 :::
 
+:::::
+
+::::
+
 :::
 
-:::::
+
+<!-- ::::: {.callout-default .ex-prompt} -->
+
+<!-- Edit this chart to use both faceting and color for grouping. -->
+<!-- Facet by world region (`region`) and color the points by World Bank income group (`income_group`). -->
+<!-- Ensure that only two facets are shown per row. -->
+
+<!-- ::: {.panel-tabset group="language"} -->
+
+<!-- ##### Altair {.slide-skip} -->
+
+<!-- ```{pyodide} -->
+<!-- #| label: facet-exercise-python-setup -->
+<!-- #| setup: true -->
+<!-- #| exercise: -->
+<!-- #|   - facet_alt -->
+<!-- import altair as alt -->
+<!-- import pandas as pd -->
+<!-- from utils import assert_chart_equal -->
+
+<!-- url = 'data/income_lifeexp_alcohol.csv' -->
+<!-- ``` -->
+
+<!-- ```{pyodide} -->
+<!-- #| label: facet-python-exercise -->
+<!-- #| exercise: facet_alt -->
+<!-- income_df = pd.read_csv(url) -->
+
+<!-- alt.Chart(income_df).mark_point().encode( -->
+<!--     x='percentage_heavy_drinkers', -->
+<!--     y='life_expectancy_at_65', -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ##### ggplot {.slide-skip} -->
+
+<!-- ```{webr fig.width=8, fig.height=6} -->
+<!-- #| label: facet-exercise-r-setup -->
+<!-- #| setup: true -->
+<!-- #| exercise: -->
+<!-- #|   - facet_ggplot -->
+<!-- library(ggplot2) -->
+
+<!-- url <- 'data/income_lifeexp_alcohol.csv' -->
+<!-- ``` -->
+
+<!-- ```{webr fig.width=8, fig.height=6} -->
+<!-- #| label: facet-r-exercise -->
+<!-- #| exercise: facet_ggplot -->
+<!-- income_df <- readr::read_csv(url, show_col_types = FALSE) -->
+
+<!-- ggplot(income_df) + -->
+<!--     aes( -->
+<!--         x = percentage_heavy_drinkers, -->
+<!--         y = life_expectancy_at_65, -->
+<!--     ) + -->
+<!--     geom_point() -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- ::: {.callout-default .ex-solution} -->
+
+<!-- ::: {.panel-tabset group="language"} -->
+
+<!-- ##### Altair {.slide-skip} -->
+
+<!-- ```{python} -->
+<!-- #| label: region-facets-alt -->
+<!-- alt.Chart(income_df).mark_point().encode( -->
+<!--     x='percentage_heavy_drinkers', -->
+<!--     y='life_expectancy_at_65', -->
+<!--     color='income_group' -->
+<!-- ).facet( -->
+<!--     'region', -->
+<!--     columns=2 -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ##### ggplot {.slide-skip} -->
+
+<!-- ```{r fig.width=8, fig.height=6} -->
+<!-- #| label: region-facets-gg -->
+<!-- ggplot(income_df) + -->
+<!--     aes( -->
+<!--         x = percentage_heavy_drinkers, -->
+<!--         y = life_expectancy_at_65, -->
+<!--         color = income_group -->
+<!--     ) + -->
+<!--     geom_point() + -->
+<!--     facet_wrap(vars(region), ncol = 2) -->
+<!-- ``` -->
+
+<!-- ::: -->
+
+<!-- ::: -->
+
+<!-- ::::: -->
 
 <!-- TODO it would be great with an exercise in the end where they pick whether they should use facetting or coloring for grouping similar to the lab exercise. Instead of this coding exercise maybe? -->
