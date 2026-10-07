@@ -408,8 +408,8 @@ even before World War II.
 
 Generally,
 it is helpful
-to [add points on top of a line
-to indicate exactly where each observation from the data lies]{.slide-bullet}.
+to add points on top of a line
+to indicate exactly where each observation from the data lies.
 
 ::: {.panel-tabset group="language"}
 
@@ -961,7 +961,6 @@ is to [fill the area between a line and a baseline]{.slide-bullet}.
 ```{python}
 #| label: population-area-alt
 #| slide-show: both
-#| slide-title: From a line to an area — Altair
 alt.Chart(world).mark_area().encode(
     x=alt.X('year').axis(format='d'),
     y='population'
@@ -973,7 +972,6 @@ alt.Chart(world).mark_area().encode(
 ```{r}
 #| label: population-area-gg
 #| slide-show: both
-#| slide-title: From a line to an area — ggplot
 ggplot(world, aes(x = year, y = population)) +
     geom_area()
 ```
@@ -1118,7 +1116,7 @@ the world average wasn't 30 children per woman in the 1800s...
 ```{python}
 #| echo: false
 #| label: fertility-stacked
-#| slide-title: What is the number of children per woman in the world in 1960?
+#| slide-title: How many children per woman is there in the world in 1960?
 #| slide-show: output
 alt.Chart(regions).mark_area().encode(
     x=alt.X('year').axis(format='d'),
@@ -1141,7 +1139,7 @@ as you can see below
 which we will see in a later chapter).
 
 ```{python}
-#| label: fertility-overlapping
+#| label: fertility-overlapping-area
 #| slide-show: output
 #| echo: false
 alt.Chart(regions).mark_area(opacity=0.4).encode(
@@ -1158,7 +1156,7 @@ If the sum is meaningful,
 use an area chart instead.
 
 ```{python}
-#| label: fertility-overlapping
+#| label: fertility-stacked-line
 #| slide-show: output
 #| echo: false
 alt.Chart(regions).mark_line().encode(
