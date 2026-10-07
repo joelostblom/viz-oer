@@ -59,23 +59,26 @@ from utils import show_df
 
 <!--TODO Should there be more LOs? Such as good number of colors or is that later? -->
 
-## Why grouping matters
+## Why bother?
 
 So far, you have created declarative visualizations by representing observations
-as point **marks** on a canvas, using position and color to represent quantitative variables.
+as point **marks** on a canvas,
+using position and color to represent quantitative variables.
 This is the foundation for all the visualizations we will make,
 but it is rarely sufficient on its own to give a complete picture of the data.
-In particular, real-world datasets might show overall trends
+In particular,
+real-world datasets might show overall trends
 that disappear or change when individual groups are explored more closely.
-The goal of grouping is to distinguish between groups by basing the visual
-appearance or placement of points in a chart on the value of a categorical variable.
+The goal of grouping is to distinguish between groups
+by basing the visual appearance or placement of points in a chart
+on the value of a categorical variable.
 Let's see this in action in the following exercise.
 
 ::::: {.callout-default .ex-prompt}
 
 Before making a chart, make a prediction:
-would countries with a higher percentage of heavy drinkers
-tend to have higher or lower life expectancy?
+[would countries with a higher percentage of heavy drinkers
+tend to have higher or lower life expectancy]?
 What makes you expect that?
 
 We will [investigate a country-level dataset containing
@@ -91,9 +94,9 @@ sketch your prediction (either on paper or in your mind).
 
 :::: {.callout-default .ex-hint}
 
-Think about what trend you would expect to see in this dataset.
-[Do you think countries with a high percentage of heavy drinkers
-have high or low remaining life expectancy at age 65?]{.slide-bullet}
+Let's make our prediction more precise.
+[One of these two charts holds the correct data,
+which one do you think it is?]{.slide-bullet}
 
 ```{python}
 #| label: fig-polar
@@ -120,13 +123,14 @@ correct | flipped
 
 ::: {.callout-default .ex-solution}
 
-
-That may not be the pattern you expected!
-In this dataset, countries with a higher percentage of heavy drinkers
+The correct answer is chart A,
+which may not be the pattern you expected!
+In this dataset,
+it seems like countries with a higher percentage of heavy drinkers
 tend to have higher remaining life expectancy at age 65.
-The chart has shown us an association,
-but it hasn't explained why the two measures move together.
-What might be missing from the picture?
+Remember,
+the chart is showing us an association;
+it hasn't explained why the two measures move together.
 
 :::
 
@@ -141,8 +145,9 @@ to find out if there is more to this dataset than meets the eye!
 ::::: {.callout-default .ex-prompt}
 
 An unexpected pattern is a good reason to look more closely,
-not a reason to jump to a conclusion.
-Could another variable be related to both measures?
+instead of jumping to a conclusion.
+Could another variable influence both measures
+we saw in the previous chart?
 The table below gives us a few clues.
 You can also hover over the points in the previous chart
 to find out more about each country.
@@ -152,6 +157,8 @@ to find out more about each country.
 #| echo: false
 show_df(income_df[['country', 'region', 'income_group', 'percentage_heavy_drinkers', 'life_expectancy_at_65']])
 ```
+
+<!-- TODO remove tooltip learning output from ch indivisula obseravations? -->
 
 Study the table and the tooltips in the previous chart.
 What do you think might be the reason
@@ -435,16 +442,6 @@ group our life expectancy data by income group.
 Let's now see what the code to create this chart looks like:
 
 [Avoid using more than 4-6 colors]{.content-visible when-format="revealjs" .slide-bullet}
-
-::: {.content-visible when-format="revealjs"}
-
-:::: {.slide-bullet}
-
-What explanation would you suggest for this pattern?
-
-::::
-
-:::
 
 ::: {.panel-tabset group="language"}
 
