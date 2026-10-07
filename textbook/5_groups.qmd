@@ -77,8 +77,8 @@ Let's see this in action in the following exercise.
 ::::: {.callout-default .ex-prompt}
 
 Before making a chart, make a prediction:
-[would countries with a higher percentage of heavy drinkers
-tend to have higher or lower life expectancy]?
+[do you think that countries with a higher percentage of heavy drinkers
+tend to have higher or lower life expectancy?]{.slide-bullet}
 What makes you expect that?
 
 We will [investigate a country-level dataset containing
@@ -144,10 +144,12 @@ to find out if there is more to this dataset than meets the eye!
 
 ::::: {.callout-default .ex-prompt}
 
-An unexpected pattern is a good reason to look more closely,
-instead of jumping to a conclusion.
-Could another variable influence both measures
-we saw in the previous chart?
+## Why bother? {.content-visible when-format="revealjs" .slide-visual}
+
+[An unexpected pattern is a good reason to look more closely,
+instead of jumping to a conclusion]{.slide-bullet}.
+[Could another variable influence both measures
+we saw in the previous chart?]{.slide-bullet}
 The table below gives us a few clues.
 You can also hover over the points in the previous chart
 to find out more about each country.
@@ -155,8 +157,10 @@ to find out more about each country.
 ```{python}
 #| label: income-data-preview
 #| echo: false
+#| slide-show: output
 show_df(income_df[['country', 'region', 'income_group', 'percentage_heavy_drinkers', 'life_expectancy_at_65']])
 ```
+
 
 <!-- TODO remove tooltip learning output from ch indivisula obseravations? -->
 
@@ -164,9 +168,9 @@ Study the table and the tooltips in the previous chart.
 What do you think might be the reason
 that countries with a higher percentage of heavy drinkers
 also have higher remaining life expectancy at age 65?
-Suggest one visual change to the chart
+[Suggest one visual change to the chart
 that would help you explore whether your suggested reason
-could influence the relationship between alcohol consumption and life expectancy.
+could influence the relationship]{.slide-bullet} between alcohol consumption and life expectancy.
 
 :::: {.callout-default .ex-hint}
 
@@ -288,21 +292,32 @@ alt.Chart(simpsons_df).mark_point().encode(
 
 ## What type of column can we use for grouping?
 
-In general, we are interested in [grouping data by "categorical" columns]{.slide-bullet}.
-If there is a natural order to the categories (e.g., education levels
-or letter grades), we can be more precise and call the column "ordinal".
-If there is no such order,
-we say that the column is "nominal" (e.g., types of fruit or color names).
-As a general rule, we will not group data by quantitative columns
-that hold continuous data (e.g., height or age), but there are exceptions.
-For example, we might turn ages recorded in whole years into categories
-that we can group by, such as 18–24, 25–34, and 35–44.
+::: {.content-visible when-format="revealjs" .slide-visual}
 
-[**Ordinal**: a natural order to the categories (e.g., education levels
-or letter grades)]{.content-visible when-format="revealjs" .slide-subbullet}
-[**Nominal**: no order (e.g., types of fruit or color names)]{.content-visible when-format="revealjs" .slide-subbullet}
-[Don't group data by quantitative columns
-that hold continuous data (e.g., height or age)]{.slide-bullet}
+A.  **Temporal** (Time-related, e.g. dates, timestamps)
+C.  **Continuous** (Any value within a range, e.g. height)
+B.  **Discrete** (Distinct values, e.g. number of pets)
+D.  **Ordinal** (Labels with order, e.g. weekdays)
+E.  **Nominal** (Labels without order: e.g. fruits)
+
+:::
+
+In general,
+we [group data by "categorical" columns]{.slide-bullet}.
+If there is a natural order to the categories
+(e.g., education levels or letter grades),
+we can be more precise and call the column "ordinal".
+If there is no such order,
+we say that the column is "nominal"
+(e.g., types of fruit or color names).
+As a general rule,
+we [don't group data by continuous variables or discrete variable with many values]{.slide-bullet},
+but we could if we first turn them into interval categories
+e.g. converting age in years into the intervals 18–24, 25–34, and 35–44.
+In general, [we want relatively few unique values when we group by a variable]{.slide-bullet}
+so that the visualization is easy to digest,
+but there are exceptions,
+particularly when creating faceted plots as we will see later.
 
 ## Channels for grouping
 
