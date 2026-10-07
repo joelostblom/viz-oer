@@ -1116,7 +1116,7 @@ the world average wasn't 30 children per woman in the 1800s...
 ```{python}
 #| echo: false
 #| label: fertility-stacked
-#| slide-title: How many children per woman is there in the world in 1960?
+#| slide-title: How many children per woman was there in the world in 1960?
 #| slide-show: output
 alt.Chart(regions).mark_area().encode(
     x=alt.X('year').axis(format='d'),

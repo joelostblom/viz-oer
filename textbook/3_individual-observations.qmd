@@ -30,7 +30,7 @@ include-in-header:
 
 2. [**Interpret** relationships between individual observations in a scatterplot without assuming causation.]{.slide-bullet}
 
-3. [**Encode** an additional quantitative variable with color and **use** tooltips to identify observations.]{.slide-bullet}
+3. [**Encode** an additional quantitative variable with color.]{.slide-bullet}
 
 :::
 
