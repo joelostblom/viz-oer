@@ -37,31 +37,24 @@ resources:
 ## Why bother?
 
 In @sec-groups, we learned how to distinguish groups of observations.
-Now we will explore how [connecting related observations makes their correspondence and differences easier to see]{.slide-bullet}.
-Sometimes the connections follow a meaningful order,
-such as time of day or an increasing dose of a treatment.
-Other times they link measurements of the same unit across unordered conditions,
-such as critics' and audiences' scores for the same movie.
+In this chapter, we will explore how to connect observations,
+which is beneficial to [highlight group membership
+and differences between conditions]{.slide-bullet}.
+Connections can [follow a meaningful order]{.slide-bullet},
+such as [time of day or an increasing dose of a treatment]{.slide-subbullet}.
+They can also [link measurements of the same observational unit across unordered conditions]{.slide-bullet},
+such as [critics' and audiences' scores for the same movie]{.slide-subbullet}.
 In either case, we need to decide which observations to connect
 and what those connections help us compare.
 We will begin with change over time.
 
 ::: {.callout-default .ex-prompt}
 
-In the chart below,
-we can see how CO₂ emissions per capita have changed over time
-for the world's continents.
-As you can see,
-the chart applies the strategies we have learned so far
-and uses color to group observations from different continents.
-But the overlap between the different groups
-makes it difficult to follow changes over time
-for any particular continent, and the chart is a bit confusing
-even after studying it for a while.
-How do you think you could change this chart
-to make it easier to see how CO₂ emissions per capita
-for each continent have changed over time?
+## How would you make these trends clearer? {.content-visible when-format="revealjs" .slide-visual}
 
+In the chart below,
+we can see [how CO₂ emissions per capita have changed over time]{.slide-bullet}
+for the world's continents.
 
 ```{python setup}
 #| echo: false
@@ -73,7 +66,6 @@ from utils import show_df
 
 ```{python bad-points}
 #| slide-show: output
-#| slide-title: How would you make these trends clearer?
 #| echo: false
 years = range(1850, 2030, 8)
 co2_per_capita = pd.read_csv('data/co-emissions-per-capita.csv').query('Year.isin(@years)')
@@ -86,6 +78,17 @@ points = alt.Chart(co2_per_capita, width=400).mark_point().encode(
 points
 ```
 
+As you can see,
+[the chart applies the strategies we have learned so far]{.slide-bullet}
+and uses color to group observations from different continents.
+But [the overlap between groups
+makes it difficult to follow changes over time]{.slide-bullet}
+for any particular continent, and the chart is a bit confusing
+even after studying it for a while.
+[How could you change this chart
+to make it easier to see how CO₂ emissions per capita
+for each continent have changed over time?]{.slide-bullet}
+
 :::: {.callout-default .ex-hint}
 
 Do you think connecting the points belonging to the same continent
@@ -93,21 +96,23 @@ would make it easier or harder to spot trends?
 
 ::::: {.callout-default .ex-solution}
 
+Let's see how it looks if we connect the points with a line:
+
+```{python line-overlay}
+#| slide-show: output
+#| slide-title: Connect observations in temporal order
+points.mark_line() + points.mark_point(filled=True, strokeOpacity=1)
+```
+
 We can use the natural order of the observations
 to connect the points that belong to the same continent with a line.
 Drawing a line from the earliest to the most recent year
 helps us with two things:
-it makes it easier to see changes over time for any single continent,
-and it makes it easier to see which points belong to which continent.
+it [makes it easier to see changes over time for any single continent]{.slide-bullet},
+and it [makes it easier to see which points belong to which continent]{.slide-bullet}.
 As such,
 a line makes group membership explicit
 while helping us follow changes through an ordered sequence.
-
-```{python line-overlay}
-#| slide-show: output
-#| slide-title: Connect observations in time order
-points.mark_line() + points.mark_point(filled=True, strokeOpacity=1)
-```
 
 :::::
 
@@ -148,7 +153,6 @@ world
 ```{python}
 #| label: show-regions-python
 #| slide-show: output
-#| slide-title: Population & fertility data
 #| echo: false
 show_df(world)
 ```
@@ -198,10 +202,11 @@ We can use a line plot to show this change over time.
 
 ::: {.callout-default .ex-prompt}
 
-Sketch the visualization
-(by hand is better than in your mind, which is better than nothing...)
-so that it is clear what you expect the plot to look like
-before continuing.
+[Sketch a visualization for how you think the world population changed over time]{.slide-bullet}
+(by hand is better than in your mind, which is better than nothing...).
+[Thinking about the data up front
+makes you more prepared to investigate the chart]{.slide-subbullet}
+and notice if the output looks unexpected in some manner.
 
 :::: {.callout-default .ex-solution}
 
@@ -233,7 +238,7 @@ to connect observations with a line.
 ```{python}
 #| label: population-line-alt
 #| slide-show: both
-#| slide-title: Drawing a line — Altair
+#| slide-title: Drawing a line
 alt.Chart(world).mark_line().encode(
     x='year',
     y='population'
@@ -264,7 +269,7 @@ where the `d` is short for "decimal integer"
 ```{python}
 #| label: population-line-alt-format
 #| slide-show: both
-#| slide-title: Formatting the year axis
+#| slide-title: Drawing a line
 alt.Chart(world).mark_line().encode(
     x=alt.X('year').axis(format='d'),
     y='population'
@@ -282,7 +287,7 @@ to connect observations with a line.
 ```{r}
 #| label: population-line-gg
 #| slide-show: both
-#| slide-title: Drawing a line — ggplot
+#| slide-title: Drawing a line
 ggplot(world, aes(x = year, y = population)) +
     geom_line()
 ```
@@ -304,13 +309,13 @@ before the end of the century, followed by a gradual decline.
 Interestingly,
 the line in this example helps us notice a change in the slope.
 The world population increased
-more slowly in absolute numbers before around 1950,
+more slowly numbers before around 1950,
 and more rapidly afterwards.
 
 After making any chart,
 it's beneficial to ask yourself:
-"Is this what I expected to see from the data?"
-and "Does what I'm seeing make sense with what I know about this topic?"
+"[Is this what I expected to see from the data?]{.slide-bullet}"
+and "[Does it align with what I know about this topic?]{.slide-bullet}"
 If we think about what happened in the world
 around the time of the change in the population growth dynamics,
 a major event that stands out was the end of World War II in 1945.
@@ -318,8 +323,8 @@ It seems reasonable that transitioning from a war
 involving many countries around the world
 to a time of peace and increased safety
 could lead to an increase in the number of babies born.
-Let's explore whether the timing of the change coincides with an increase
-in our country-average fertility measure.
+[Let's explore whether the timing of the change coincides with an increase
+in the country-average fertility rate]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
 
@@ -328,7 +333,7 @@ in our country-average fertility measure.
 ```{python}
 #| label: children_per_woman-line-alt
 #| slide-show: both
-#| slide-title: Exploring fertility over time — Altair
+#| slide-title: Exploring fertility over time
 alt.Chart(world).mark_line().encode(
     x=alt.X('year').axis(format='d'),
     y='children_per_woman'
@@ -340,7 +345,7 @@ alt.Chart(world).mark_line().encode(
 ```{r}
 #| label: children_per_woman-line-gg
 #| slide-show: both
-#| slide-title: Exploring fertility over time — ggplot
+#| slide-title: Exploring fertility over time
 ggplot(world, aes(x = year, y = children_per_woman)) +
     geom_line()
 ```
@@ -353,6 +358,11 @@ This "explosion" is what is commonly referred to as the "baby boom".
 However, remember that this chart averages country-level fertility estimates
 rather than taking the population in each country into account,
 so it does not directly show the total number of babies born in the world.
+
+[Based on these charts, how would you explain the reason for the increase
+in the world population around the 1950?]{.slide-bullet}
+
+<!-- TODO fix the data set to weight by population when I do the agggregation so that we don't need to make the reservations aroun the coutry aerage -->
 
 ::: {.callout-default .deep-dive}
 
@@ -369,8 +379,12 @@ but you can [explore available estimates at Our World in Data
 
 ::: {.callout-warning}
 
-### Avoid claiming causation from visualizations alone
+### Avoid claiming causation from visualizations alone {.slide-skip}
 
+When commenting on a visualization,
+[stick to non-causal language:
+variables are correlated, associated, or related]{.slide-bullet}.
+<!-- TODO covariation -->
 You might have heard that "correlation is not causation",
 and that applies here too.
 Although the end of World War II
@@ -390,7 +404,7 @@ even before World War II.
 
 :::
 
-## Combining lines and points
+## Indicating where the observations lie
 
 Generally,
 it is helpful
@@ -413,7 +427,6 @@ a chart on top of another chart.
 ```{python}
 #| label: population-line-points-alt
 #| slide-show: both
-#| slide-title: Layering points and lines — Altair
 line = alt.Chart(world).mark_line().encode(
     x=alt.X('year').axis(format='d'),
     y='children_per_woman'
@@ -438,7 +451,6 @@ a geom on top of another geom.
 ```{r}
 #| label: population-line-points-gg
 #| slide-show: both
-#| slide-title: Layering points and lines — ggplot
 ggplot(world, aes(x = year, y = children_per_woman)) +
     geom_line() +
     geom_point()
@@ -454,8 +466,8 @@ Let's find out in the next exercise.
 ::: {.callout-default .ex-prompt}
 
 In our data,
-there are only observations from every eighth year,
-but the line we have drawn is continuous
+[there are only observations from every eighth year,
+but the line we have drawn is continuous]{.slide-bullet}
 and has a defined value for `children_per_woman`
 even between the points in the chart.
 For example,
@@ -463,9 +475,9 @@ in this zoomed-in view
 we can see that the line at the year 1950
 suggests a country-average fertility estimate of approximately 5.4 children per woman.
 But as we can see from the points in the chart,
-our data does not contain any observation from exactly the year 1950.
-What conclusions can we draw
-about the fertility estimate for this year?
+our data does not contain any observation from exactly this year.
+[What conclusions can we draw
+about the fertility estimate for year 1950]?
 
 ```{python}
 #| label: population-line-points-zoom
@@ -473,10 +485,17 @@ about the fertility estimate for this year?
 #| slide-title: What does the line between points mean?
 #| echo: false
 line = alt.Chart(world.query('year > 1920')).mark_line().encode(
-    x=alt.X('year').axis(format='d'),
+    x=alt.X('year').axis(format='d').scale(zero=False),
     y=alt.Y('children_per_woman').scale(domain=(2.5, 6))
 )
-line + line.mark_point(filled=True)
+
+rule = alt.Chart().mark_rule(
+    color='grey',
+    strokeDash=[5, 5]
+).encode(
+    x=alt.datum(1950)
+)
+rule + line + line.mark_point(filled=True)
 ```
 
 :::: {.callout-default .ex-hint}
@@ -490,11 +509,10 @@ or does it represent any feature of the underlying data?
 The line segments between two observations are there to guide the eye;
 they do not establish what the values are
 at every unobserved moment between two points.
-Although the line is a simple linear interpolation between observations,
-which might seem harmless,
-it is important to consider whether the distance between two points
+Although [a simple linear interpolation between observations might seem harmless]{.slide-bullet},
+it is important to [consider whether the distance between two points
 represents a long enough period
-that important changes could be hidden by a straight line.
+that important changes could be hidden by a straight line]{.slide-bullet}.
 To understand this more deeply,
 we can look at what would happen if the observations were closer
 or farther apart in time,
@@ -525,8 +543,8 @@ alt.concat(every_2nd_year, every_20th_year)
 ```
 
 As you can see,
-drawing a line between the observations sampled 20 years apart
-misses the rise in the average fertility estimate:
+[drawing a line between the observations sampled 20 years apart
+misses the rise in the average fertility estimate]{.slide-bullet}:
 it decreased until around 1940,
 then increased until around 1960,
 after which it started to decrease again.
@@ -632,6 +650,7 @@ We adjust the size of the chart,
 and rotate the labels so that they are easy to read.
 
 ```{python}
+#| slide-show: both
 points = (
     alt.Chart(movie_scores, height=250, width=150)
     .mark_circle(opacity=1)
@@ -644,19 +663,20 @@ points = (
 points
 ```
 
+[How many movies have a higher scores from critics than from the audience?]{.slide-bullet}
+
 ### ggplot
 
 ```{r}
+#| slide-show: both
 movie_plot <- ggplot(
     movie_scores,
     aes(
         x = `Reviewer group`,
         y = Score,
         color = Movie,
-        group = Movie
     )
 )
-
 movie_plot + geom_point()
 ```
 
@@ -678,32 +698,39 @@ or points belonging to the same movie?
 
 ::::: {.callout-default .ex-solution}
 
-One of the reasons this comparison is difficult to make,
-is that it takes some cognitive effort to find the same movie in both column.
-We could make this task easier
-by connecting the points that are from the same movie with a line.
-In addition to showing which points belong to the same movie,
-the slope of this line also gives
-an indication of how the scores differ
-between the two reviewer groups.
+Connecting the observations with a line
+makes it immediately obvious
+how the scores differ
+for each movie:
 
 ::: {.panel-tabset group="language"}
 
 ### Altair
 
 ```{python}
+#| slide-show: both
 points.mark_line() + points
 ```
 
 ### ggplot
 
 ```{r}
+#| slide-show: both
 movie_plot +
-    geom_line() +
+    geom_line(aes(group = Movie)) +
     geom_point()
 ```
 
 :::
+
+One of the reasons this comparison is difficult to make,
+is that [it takes some cognitive effort to find the same movie in both column]{.slide-bullet}.
+We could [make this task easier
+by connecting the points that are from the same movie with a line]{.slide-subbullet}.
+In addition to showing which points belong to the same movie,
+[the slope of this line also gives
+an indication of how the scores differ]{.slide-bullet}
+between the two reviewer groups.
 
 <!-- TODO mention this is a slope plot -->
 
@@ -722,6 +749,7 @@ such as `color` or `size`.
 ### Altair
 
 ```{python}
+#| slide-show: both
 base = alt.Chart(movie_scores).mark_circle().encode(
     y=alt.Y('Movie').sort('x'),
     x=alt.X('Score').scale(zero=False),
@@ -742,6 +770,7 @@ such as `color` or `size`.
 
 
 ```{r}
+#| slide-show: both
 ggplot(movie_scores, aes(x = Score, y = reorder(Movie, Score))) +
     geom_line(aes(group = Movie), color = 'grey') +
     geom_point(aes(color = `Reviewer group`), size = 2) +
@@ -781,7 +810,7 @@ their ranges are often normalized
 
 ::: {.callout-warning}
 
-### Avoid arbitrarily connecting unordered categories with a line
+### Avoid arbitrarily connecting unordered categories
 
 As we just saw,
 we need to be careful when interpreting a line between two observations
@@ -790,7 +819,6 @@ For the same reason,
 we should generally avoid using a line
 to connect observations along an axis of unordered categories.
 Here are two representations of the same population values:
-
 
 The points show each continent’s population clearly.
 Connecting them also emphasizes comparisons
@@ -984,10 +1012,9 @@ we will learn more about layouts in a later chapter).
 ```{python}
 #| label: population-stacked-alt
 #| slide-show: output
-#| slide-title: Comparing line and stacked-area charts
 regions = pd.read_csv('data/gapminder_regions_from_1850.csv')
 
-base = alt.Chart(regions, width=150, height=150).encode(
+base = alt.Chart(regions).encode(
     x=alt.X('year').axis(format='d'),
     y='population',
     color='region'
@@ -1025,12 +1052,16 @@ base + geom_area(show.legend = FALSE) | base + geom_line()
 
 :::
 
+::: {.slide-fragment}
+
 For each of these three questions,
 which chart is most appropriate?
 
 1. How has the world population changed over time?
 2. How has the population of the Americas changed over time?
 3. Which region had the second-highest population in 2018?
+
+:::
 
 :::: {.callout-default .ex-hint}
 
@@ -1071,6 +1102,35 @@ Which lets you compare regional values against a shared baseline?
 
 ::: {.callout-warning}
 
+### Avoid stacking areas when summing groups is nonsensical {.slide-skip}
+
+Avoid stacked area charts when
+the sum of the different groups in the chart is not meaningful,
+since stacking effectively sums the area heights together.
+For example,
+if we wanted to know the average number of children per woman around the world,
+stacking areas does not make sense
+since this adds the regional averages rather than calculating an overall average.
+Reading the y-axis of the stacked areas thus becomes
+misleading and confusing;
+the world average wasn't 30 children per woman in the 1800s...
+
+```{python}
+#| echo: false
+#| label: fertility-stacked
+#| slide-title: What is the number of children per woman in the world in 1960?
+#| slide-show: output
+alt.Chart(regions).mark_area().encode(
+    x=alt.X('year').axis(format='d'),
+    y='children_per_woman',
+    color='region'
+)
+```
+
+:::
+
+::: {.callout-warning}
+
 ### Avoid layering areas and stacking lines
 
 While it might initially seem that overlapping areas instead of stacking them
@@ -1097,32 +1157,17 @@ each line's height represents a cumulative sum rather than its own group's value
 If the sum is meaningful,
 use an area chart instead.
 
-:::
-
-::: {.callout-warning}
-
-### Avoid stacking areas when summing groups is nonsensical
-
-Avoid stacked area charts when
-the sum of the different groups in the chart is not meaningful,
-since stacking effectively sums the area heights together.
-For example,
-if we wanted to know the average number of children per woman around the world,
-stacking areas does not make sense
-since this adds the regional averages rather than calculating an overall average.
-Reading the y-axis of the stacked areas thus becomes
-misleading and confusing;
-the world average wasn't 30 children per woman in the 1800s...
-
 ```{python}
-#| echo: false
-#| label: fertility-stacked
+#| label: fertility-overlapping
 #| slide-show: output
-alt.Chart(regions).mark_area().encode(
+#| echo: false
+alt.Chart(regions).mark_line().encode(
     x=alt.X('year').axis(format='d'),
-    y='children_per_woman',
+    y=alt.Y('children_per_woman').stack(True),
     color='region'
 )
 ```
+
+<!-- Todo make backgruond of chart redish instead so it is easeir to see for marks that are colored? --> 
 
 :::

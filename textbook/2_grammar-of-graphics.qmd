@@ -11,6 +11,8 @@ include-in-header:
 
 # The grammar of graphics {#sec-grammar-of-graphics}
 
+<!-- TODO I think one slide here representing the "layers" of the chart would be helpful in the sense that it could explain some of the names of the methods. Either here or the first time I use something like .scale or labels() -->
+
 :::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
