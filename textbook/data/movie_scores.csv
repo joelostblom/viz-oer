@@ -1,13 +1,13 @@
-,Score,Reviewer group,Movie
-0,98,Critics,Inside Out
-1,89,Audience,Inside Out
-2,97,Critics,Mad Max: Fury Road
-3,86,Audience,Mad Max: Fury Road
-4,72,Critics,Jurassic World
-5,78,Audience,Jurassic World
-6,63,Critics,Mortal Combat 2
-7,86,Audience,Mortal Combat 2
-8,83,Critics,Dune
-9,90,Audience,Dune
-10,71,Critics,The Beekeeper
-11,92,Audience,The Beekeeper
+Score,Reviewer group,Movie
+98,Critics,Inside Out
+89,Audience,Inside Out
+97,Critics,Mad Max: Fury Road
+86,Audience,Mad Max: Fury Road
+72,Critics,Jurassic World
+78,Audience,Jurassic World
+63,Critics,Mortal Combat 2
+86,Audience,Mortal Combat 2
+83,Critics,Dune
+90,Audience,Dune
+71,Critics,The Beekeeper
+92,Audience,The Beekeeper

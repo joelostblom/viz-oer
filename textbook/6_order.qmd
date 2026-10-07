@@ -539,9 +539,141 @@ such as monthly values.
 ::::
 :::
 
+### Connecting categorical data points
+
+In some occasions,
+it can be advantageous to also connect
+categorical data with a line.
+For ordinal categories,
+this might be intuitive,
+since there is often a natural progression throughout the categories.
+For example,
+drawing a line for a measurement over
+the days of the week
+would be natural and easy to understand.
+
+We need to be careful when drawing a line
+between ordinal categories of unequal spacing.
+For example,
+if observations from January, February, and August of the same year
+are displayed at equally spaced categorical positions,
+the line’s slope reflects the difference between observations rather than change per month.
+Even a constant nonzero monthly rate
+would produce a steeper segment between February and August, 
+because that interval covers more months.
+
+In addition to connecting categories
+when they have a natural order,
+it can also be helpful to connect categories
+when the same observational unit is present in all of them.
+We say that such observations are paired,
+For example,
+we might measure the same patient before and after treatment,
+or compare evaluations of the same film by different reviewer groups.
+We say that such measurements are paired;
+a concept that extends to more than just two categories
+e.g. before, during, and after a treatment.
+Let's explore this more closely with an exercise:
+
+::: {.callout-default .ex-prompt}
+
+This data set that contains the names of a few movies
+together with their critic and general audience rating
+from [Rotten Tomatoes](https://www.rottentomatoes.com/):
+
+```{python}
+#| echo: false
+pd.DataFrame({
+    'Score': [98, 89, 97, 86, 72, 78, 63, 86, 83, 90, 71, 92],
+    'Reviewer group': ['Critics', 'Audience']*6,
+    'Movie': [
+        'Inside Out', 'Inside Out',
+        'Mad Max: Fury Road', 'Mad Max: Fury Road',
+        'Jurassic World', 'Jurassic World',
+        'Mortal Combat 2', 'Mortal Combat 2',
+        'Dune', 'Dune',
+        'The Beekeeper', 'The Beekeeper',
+    ]
+}).to_csv('data/movie_scores.csv', index=False)
+```
+
+```{python}
+movie_scores = pd.read_csv('data/movie_scores.csv')
+movie_scores
+```
+
+Say we're interested in comparing which movies are more popular
+among critics and which are more popular among the general audience.
+We could plot the scores from the critics in one column
+and the scores from the general audience in another:
+
+```{python}
+points = alt.Chart(movie_scores, height=200, width=alt.Step(50)).mark_circle(opacity=1).encode(
+    x=alt.X('Reviewer group').axis(labelAngle=0),
+    y=alt.Y('Score').scale(zero=False),
+    color='Movie',
+)
+points
+```
+
+From this plot,
+are you able to quickly tell
+which movies were more highly rated
+by each reviewer group?
+What do you think we could do to make this visual inference quicker?
+
+:::: {.callout-default .ex-hint}
+
+Could connecting the points with a line help?
+What would we connect:
+points in the same reviewer group
+or points belonging to the same movie?
+
+::::: {.callout-default .ex-solution}
+
+One of the reasons this comparison is difficult to make,
+is that it takes some cognitive effort to find the same movie in both column.
+We could make this task easier
+by connecting the points that are from the same movie with a line.
+In addition to showing which points belong to the same movie,
+the slope of this line also gives
+an indication of how the scores differ
+between the two reviewer groups.
+
+```{python}
+points.mark_line(color='lightgrey').encode(detail='Movie') + points
+```
+
+:::::
+
+::::
+
+:::
+
+::: {.deep-dive}
+
+<!-- TODO add charts for this deep dive for paralell coordinates -->
+<!-- TODO figure out what is wrong in the altair example -->
+
+A related concept to what we just did is a [parallel coordinates chart](https://en.wikipedia.org/wiki/Parallel_coordinates),
+Where several variables are plotted in the same plot,
+but on different axes next to each other.
+This is often used as an exploratory technique to detect clusters in the data.
+Like in the paired comparison,
+it is the same observation that is connected with the line across the variables.
+A difference between the two is that a paired comparison
+plots the same measurement (e.g. Movie score),
+between different groups (e.g. Reviewers group),
+whereas a parallel coordinate plot
+visualized different variables that all use different units or ranges.
+To be able to show these variables on a common scale,
+their ranges are often normalized
+
+:::
+
 ::: {.callout-warning}
 
-### Avoid connecting unordered categories with a line
+### Avoid arbitrarily connecting unordered categories with a line
 
 As we just saw,
 we need to be careful when interpreting a line between two observations
@@ -550,6 +682,20 @@ For the same reason,
 we should generally avoid using a line
 to connect observations along an axis of unordered categories.
 Here are two representations of the same population values:
+
+
+The points show each continent’s population clearly.
+Connecting them also emphasizes comparisons
+between neighboring continents and creates a falling-and-rising pattern.
+However, the chosen ordering (Africa, Europe, Americas)
+does not represent a sequence we are interested in following.
+Rearranging the continents would change the line’s shape without changing the populations.
+
+In the movie example,
+each connection helps us compare two evaluations of the same film.
+Here, the connections add an arbitrary sequence to a task
+that only requires comparing population values.
+
 
 ```{python}
 #| label: population-line-categorical
@@ -564,25 +710,22 @@ points = alt.Chart(
 ).mark_point(size=60, filled=True, color='#FF0039').encode(
     x=alt.X('region').title(None).sort(['Africa', 'Europe', 'Americas']),
     y=alt.Y('sum(population)')
-        .scale(domain=(00_000_000, 1_350_000_000))
+        .scale(domain=(100_000_000, 1_350_000_000))
         .axis(labelExpr="format(datum.value / 1e6, ',.0f')")
         .title('Population in 2018 (millions)')
 )
 points | points.mark_line(color='#FF0039') + points
 ```
 
-The chart to the left is easy to interpret;
-it shows how many people lived on each continent in 2018,
-with a point for each continent's value.
-But what about the line chart to the right?
-What does it mean that the line is at 1,000 million as it goes from Africa to Europe?
-That 1,000 million people lived somewhere between Europe and Africa?
-No,
+It is also worth noting that a line between categorical values
+can be confusing because
 in contrast to how a line connecting two quantitative values
 can hint at what the value between them *might* have been,
-there is no meaningful numerical interval between these unordered categories,
-and therefore lines should generally not be used
-to connect observations across them.
+there is no meaningful numerical interval between unordered categories.
+For example,
+what does it mean that the line is at 1,000 million
+as it goes from Africa to Europe?
+That 1,000 million people lived somewhere between Europe and Africa?
 
 :::
 
