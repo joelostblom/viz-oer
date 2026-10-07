@@ -780,7 +780,7 @@ We create a 2 × 2 grid of facets by using the `columns` parameter.
 #| label: income-facets-alt
 #| slide-show: both
 #| slide-title: Faceting by income — Altair
-alt.Chart(income_df, height=200, width=200).mark_point().encode(
+alt.Chart(income_df, height=150, width=150).mark_point().encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
 ).facet(
