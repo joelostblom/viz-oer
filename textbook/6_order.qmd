@@ -597,30 +597,74 @@ pd.DataFrame({
 }).to_csv('data/movie_scores.csv', index=False)
 ```
 
+::: {.panel-tabset group="language"}
+
+### Altair
+
 ```{python}
 movie_scores = pd.read_csv('data/movie_scores.csv')
 movie_scores
 ```
+
+### ggplot
+
+```{r}
+#| message: false
+movie_scores <- readr::read_csv('data/movie_scores.csv')
+movie_scores
+```
+
+:::
 
 Say we're interested in comparing which movies are more popular
 among critics and which are more popular among the general audience.
 We could plot the scores from the critics in one column
 and the scores from the general audience in another:
 
+::: {.panel-tabset group="language"}
+
+### Altair
+
+We adjust the size of the chart,
+and rotate the labels so that they are easy to read.
+
 ```{python}
-points = alt.Chart(movie_scores, height=200, width=alt.Step(50)).mark_circle(opacity=1).encode(
-    x=alt.X('Reviewer group').axis(labelAngle=0),
-    y=alt.Y('Score').scale(zero=False),
-    color='Movie',
+points = (
+    alt.Chart(movie_scores, height=250, width=150)
+    .mark_circle(opacity=1)
+    .encode(
+        x=alt.X('Reviewer group').axis(labelAngle=0),
+        y=alt.Y('Score').scale(zero=False),
+        color='Movie',
+    )
 )
 points
 ```
 
+### ggplot
+
+```{r}
+movie_plot <- ggplot(
+    movie_scores,
+    aes(
+        x = `Reviewer group`,
+        y = Score,
+        color = Movie,
+        group = Movie
+    )
+)
+
+movie_plot + geom_point()
+```
+
+:::
+
 From this plot,
 are you able to quickly tell
-which movies were more highly rated
-by each reviewer group?
-What do you think we could do to make this visual inference quicker?
+for which films the critics score is higher
+than the audience score?
+For which is it lower?
+Which films have the largest differences?
 
 :::: {.callout-default .ex-hint}
 
@@ -640,9 +684,70 @@ the slope of this line also gives
 an indication of how the scores differ
 between the two reviewer groups.
 
+::: {.panel-tabset group="language"}
+
+### Altair
+
 ```{python}
-points.mark_line(color='lightgrey').encode(detail='Movie') + points
+points.mark_line() + points
 ```
+
+### ggplot
+
+```{r}
+movie_plot +
+    geom_line() +
+    geom_point()
+```
+
+:::
+
+<!-- TODO mention this is a slope plot -->
+
+If there are many observations,
+or we want to know more exactly how big the difference is between groups,
+it can be advantageous to spread out the movies
+along one of the positional axes:
+
+::: {.panel-tabset group="language"}
+
+Here we use the `detail` encoding
+to group lines by `Movie`,
+without using a visual channel
+such as `color` or `size`.
+
+### Altair
+
+```{python}
+base = alt.Chart(movie_scores).mark_circle().encode(
+    y=alt.Y('Movie').sort('x'),
+    x=alt.X('Score').scale(zero=False),
+)
+
+(
+    base.mark_line(color='lightgrey').encode(detail='Movie')
+    + base.mark_circle(size=60, opacity=1).encode(color='Reviewer group') 
+)
+```
+
+### ggplot
+
+Here we use the `group` aesthetic
+to group lines by `Movie`,
+without using a visual channel
+such as `color` or `size`.
+
+
+```{r}
+ggplot(movie_scores, aes(x = Score, y = reorder(Movie, Score))) +
+    geom_line(aes(group = Movie), color = 'grey') +
+    geom_point(aes(color = `Reviewer group`), size = 2) +
+    labs(y = 'Movie', color = 'Reviewer group')
+```
+
+:::
+
+<!-- TODO mention this is a dumbbell plot -->
 
 :::::
 
