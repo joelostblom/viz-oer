@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./6_order.html" rel="next">
+<link href="./6_connections.html" rel="next">
 <link href="./4_magnitude.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -388,8 +388,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./6_order.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Order</span></span></a>
+  <a href="./6_connections.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Connections</span></span></a>
   </div>
 </li>
       </ul>
@@ -503,7 +503,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-grouping-matters" id="toc-why-grouping-matters" class="nav-link active" data-scroll-target="#why-grouping-matters"><span class="header-section-number">5.1</span> Why grouping matters</a></li>
+  <li><a href="#why-bother" id="toc-why-bother" class="nav-link active" data-scroll-target="#why-bother"><span class="header-section-number">5.1</span> Why bother?</a></li>
   <li><a href="#the-two-main-purposes-of-grouping" id="toc-the-two-main-purposes-of-grouping" class="nav-link" data-scroll-target="#the-two-main-purposes-of-grouping"><span class="header-section-number">5.2</span> The two main purposes of grouping</a>
   <ul class="collapse">
   <li><a href="#simpsons-paradox" id="toc-simpsons-paradox" class="nav-link" data-scroll-target="#simpsons-paradox">Simpson’s paradox</a></li>
@@ -543,7 +543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="chapter-slide-link">
-<a href="slides/5_groups.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<a href="slides/5_groups.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <rect x="3" y="3" width="18" height="13" rx="1"></rect>
         <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
         </svg></a>
@@ -578,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <!--TODO Should there be more LOs? Such as good number of colors or is that later? -->
-<section id="why-grouping-matters" class="level2 page-columns page-full" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="why-grouping-matters"><span class="header-section-number">5.1</span> Why grouping matters</h2>
+<section id="why-bother" class="level2 page-columns page-full" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="why-bother"><span class="header-section-number">5.1</span> Why bother?</h2>
 <p>So far, you have created declarative visualizations by representing observations as point <strong>marks</strong> on a canvas, using position and color to represent quantitative variables. This is the foundation for all the visualizations we will make, but it is rarely sufficient on its own to give a complete picture of the data. In particular, real-world datasets might show overall trends that disappear or change when individual groups are explored more closely. The goal of grouping is to distinguish between groups by basing the visual appearance or placement of points in a chart on the value of a categorical variable. Let’s see this in action in the following exercise.</p>
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
@@ -594,7 +594,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-4" class="callout-4-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
-<p>Before making a chart, make a prediction: would countries with a higher percentage of heavy drinkers tend to have higher or lower life expectancy? What makes you expect that?</p>
+<p>Before making a chart, make a prediction: [would countries with a higher percentage of heavy drinkers tend to have higher or lower life expectancy]? What makes you expect that?</p>
 <p>We will <span class="slide-bullet">investigate a country-level dataset containing the percentage of heavy drinkers and the average remaining life expectancy at age 65</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In our scatterplot, each point represents a country. The x-axis shows the percentage of heavy drinkers, and the y-axis shows the average number of years a person reaching age 65 can expect to live beyond that age.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>Before viewing the chart in the solution, sketch your prediction (either on paper or in your mind).</p>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
@@ -610,7 +610,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-hint">
-<p>Think about what trend you would expect to see in this dataset. <span class="slide-bullet">Do you think countries with a high percentage of heavy drinkers have high or low remaining life expectancy at age 65?</span></p>
+<p>Let’s make our prediction more precise. <span class="slide-bullet">One of these two charts holds the correct data, which one do you think it is?</span></p>
 <div class="cell" data-slide-show="output">
 <div id="fig-polar" class="cell-output-display quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-fig figure" aria-labelledby="fig-polar-caption">
@@ -675,7 +675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
-<p>That may not be the pattern you expected! In this dataset, countries with a higher percentage of heavy drinkers tend to have higher remaining life expectancy at age 65. The chart has shown us an association, but it hasn’t explained why the two measures move together. What might be missing from the picture?</p>
+<p>The correct answer is chart A, which may not be the pattern you expected! In this dataset, it seems like countries with a higher percentage of heavy drinkers tend to have higher remaining life expectancy at age 65. Remember, the chart is showing us an association; it hasn’t explained why the two measures move together.</p>
 </div>
 </div>
 </div>
@@ -702,7 +702,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-7" class="callout-7-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
-<p>An unexpected pattern is a good reason to look more closely, not a reason to jump to a conclusion. Could another variable be related to both measures? The table below gives us a few clues. You can also hover over the points in the previous chart to find out more about each country.</p>
+<p>An unexpected pattern is a good reason to look more closely, instead of jumping to a conclusion. Could another variable influence both measures we saw in the previous chart? The table below gives us a few clues. You can also hover over the points in the previous chart to find out more about each country.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="dataframe dataframe-preview table table-sm table-striped small" data-border="1">
@@ -787,6 +787,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>192 rows × 5 columns</p>
 </div>
 </div>
+<!-- TODO remove tooltip learning output from ch indivisula obseravations? -->
 <p>Study the table and the tooltips in the previous chart. What do you think might be the reason that countries with a higher percentage of heavy drinkers also have higher remaining life expectancy at age 65? Suggest one visual change to the chart that would help you explore whether your suggested reason could influence the relationship between alcohol consumption and life expectancy.</p>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
@@ -1878,7 +1879,7 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC00IiwiaW5saW5lIjpmYWxzZSwibWV0
 </div>
 </div>
 <script type="vfs-file">
-WyJkYXRhL0ZBT1NUQVRfZGF0YV9lbl84LTItMjAyNC5jc3YiLCJkYXRhL2NvLWVtaXNzaW9ucy1wZXItY2FwaXRhLmNzdiIsImRhdGEvbWVudGFsX2hlYWx0aF9sb25nLmNzdiIsImRhdGEvd29ybGRfYmFua19pbmNvbWUueGxzeCIsImRhdGEvbWVkaXRhdGlvbi1zdHJlc3Mtc2FtcGxlLmNzdiIsImRhdGEvZ2FwbWluZGVyX3JlZ2lvbnNfZnJvbV8xODUwLmNzdiIsImRhdGEvbG9uZG9uX21hcmF0aG9uX2ZpbmlzaF90aW1lcy5jc3YiLCJkYXRhL2xpZmVfZXhwZWN0YW5jeV9hbGNvaG9sLmNzdiIsImRhdGEvSUhNRS1HQkRfMjAyMV9EQVRBLTQ0NmRlNTE0LTEuY3N2IiwiZGF0YS9pbmNvbWVfbGlmZWV4cF9hbGNvaG9sLmNzdiIsImRhdGEvYWdncmVnYXRlZF9fZm9vZF9kYXRhLmNzdiIsImRhdGEvTUhfZGF0YV9wcm9jZXNzZWRfMy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF90cmVuZHMuY3N2IiwiZGF0YS9zaW1wc29uc19wYXJhZG94X2RhdGFfbC5jc3YiLCJkYXRhL2NvbnRpbmVudHMuY3N2IiwiZGF0YS9Gb29kX1Byb2R1Y3Rpb24uY3N2IiwiZGF0YS9nYXBtaW5kZXJfcmVnaW9uX3RyZW5kcy5jc3YiLCJkYXRhL21vdmllcy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF9mcm9tXzE4NTAuY3N2IiwiZGF0YS9zYW1lX21lYW5fc2QuY3N2IiwiZGF0YS9JSE1FLUdCRF8yMDIxX0RBVEEtZGZiZDdiOGItMS5jc3YiLCJkYXRhL2xpZmUtZXhwZWN0YW5jeS1obWQtdW53cHAuY3N2IiwiZGF0YS9NU1dfMjAyM19EYXRhX1RhYmxlcy54bHN4IiwidXRpbHMucHkiXQ==
+WyJkYXRhL0ZBT1NUQVRfZGF0YV9lbl84LTItMjAyNC5jc3YiLCJkYXRhL2NvLWVtaXNzaW9ucy1wZXItY2FwaXRhLmNzdiIsImRhdGEvbWVudGFsX2hlYWx0aF9sb25nLmNzdiIsImRhdGEvd29ybGRfYmFua19pbmNvbWUueGxzeCIsImRhdGEvbWVkaXRhdGlvbi1zdHJlc3Mtc2FtcGxlLmNzdiIsImRhdGEvZ2FwbWluZGVyX3JlZ2lvbnNfZnJvbV8xODUwLmNzdiIsImRhdGEvbG9uZG9uX21hcmF0aG9uX2ZpbmlzaF90aW1lcy5jc3YiLCJkYXRhL2xpZmVfZXhwZWN0YW5jeV9hbGNvaG9sLmNzdiIsImRhdGEvSUhNRS1HQkRfMjAyMV9EQVRBLTQ0NmRlNTE0LTEuY3N2IiwiZGF0YS9pbmNvbWVfbGlmZWV4cF9hbGNvaG9sLmNzdiIsImRhdGEvYWdncmVnYXRlZF9fZm9vZF9kYXRhLmNzdiIsImRhdGEvTUhfZGF0YV9wcm9jZXNzZWRfMy5jc3YiLCJkYXRhL21vdmllX3Njb3Jlcy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF90cmVuZHMuY3N2IiwiZGF0YS9zaW1wc29uc19wYXJhZG94X2RhdGFfbC5jc3YiLCJkYXRhL2NvbnRpbmVudHMuY3N2IiwiZGF0YS9Gb29kX1Byb2R1Y3Rpb24uY3N2IiwiZGF0YS9nYXBtaW5kZXJfcmVnaW9uX3RyZW5kcy5jc3YiLCJkYXRhL21vdmllcy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF9mcm9tXzE4NTAuY3N2IiwiZGF0YS9zYW1lX21lYW5fc2QuY3N2IiwiZGF0YS9JSE1FLUdCRF8yMDIxX0RBVEEtZGZiZDdiOGItMS5jc3YiLCJkYXRhL2xpZmUtZXhwZWN0YW5jeS1obWQtdW53cHAuY3N2IiwiZGF0YS9NU1dfMjAyM19EYXRhX1RhYmxlcy54bHN4IiwidXRpbHMucHkiXQ==
 </script>
 </section>
 </section>
@@ -2324,8 +2325,8 @@ window._ojs.runtime.interpretFromScriptTags();
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./6_order.html" class="pagination-link" aria-label="Order">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Order</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./6_connections.html" class="pagination-link" aria-label="Connections">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Connections</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

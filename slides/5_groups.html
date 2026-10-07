@@ -254,8 +254,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-grouping-matters" class="slide level2" data-footer="false" data-chapter-anchor="why-grouping-matters">
-<h2>Why grouping matters</h2>
+<section id="why-bother" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
+<h2>Why bother?</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
 <li><p>Investigate a country-level dataset containing the percentage of heavy drinkers and the average remaining life expectancy at age 65</p></li>
@@ -263,7 +263,7 @@
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="1">
 <ul>
-<li><p>Do you think countries with a high percentage of heavy drinkers have high or low remaining life expectancy at age 65?</p></li>
+<li><p>One of these two charts holds the correct data, which one do you think it is?</p></li>
 </ul>
 </div>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="2">
@@ -322,16 +322,16 @@ Figure&nbsp;1
 <aside class="notes">
 <p>So far, you have created declarative visualizations by representing observations as point <strong>marks</strong> on a canvas, using position and color to represent quantitative variables. This is the foundation for all the visualizations we will make, but it is rarely sufficient on its own to give a complete picture of the data. In particular, real-world datasets might show overall trends that disappear or change when individual groups are explored more closely. The goal of grouping is to distinguish between groups by basing the visual appearance or placement of points in a chart on the value of a categorical variable. Let’s see this in action in the following exercise.</p>
 <p><strong>Exercise</strong></p>
-<p>Before making a chart, make a prediction: would countries with a higher percentage of heavy drinkers tend to have higher or lower life expectancy? What makes you expect that?</p>
+<p>Before making a chart, make a prediction: [would countries with a higher percentage of heavy drinkers tend to have higher or lower life expectancy]? What makes you expect that?</p>
 <p>We will <span class="slide-bullet"><strong>investigate a country-level dataset containing the percentage of heavy drinkers and the average remaining life expectancy at age 65</strong></span>.<span>(Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; <a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups">World Bank country and lending groups</a>.)</span> In our scatterplot, each point represents a country. The x-axis shows the percentage of heavy drinkers, and the y-axis shows the average number of years a person reaching age 65 can expect to live beyond that age.<span>(Retirement age differs between countries. We have used age 65 as it is close to the average in OECD countries. <a href="https://www.oecd-ilibrary.org/docserver/9bf0cb7f-en.pdf">OECD report</a>.)</span></p>
 <p>Before viewing the chart in the solution, sketch your prediction (either on paper or in your mind).</p>
 <p><strong>Hint</strong></p>
-<p>Think about what trend you would expect to see in this dataset. <span class="slide-bullet"><strong>Do you think countries with a high percentage of heavy drinkers have high or low remaining life expectancy at age 65?</strong></span></p>
+<p>Let’s make our prediction more precise. <span class="slide-bullet"><strong>One of these two charts holds the correct data, which one do you think it is?</strong></span></p>
 <p><strong>Solution</strong></p>
-<p>That may not be the pattern you expected! In this dataset, countries with a higher percentage of heavy drinkers tend to have higher remaining life expectancy at age 65. The chart has shown us an association, but it hasn’t explained why the two measures move together. What might be missing from the picture?</p>
+<p>The correct answer is chart A, which may not be the pattern you expected! In this dataset, it seems like countries with a higher percentage of heavy drinkers tend to have higher remaining life expectancy at age 65. Remember, the chart is showing us an association; it hasn’t explained why the two measures move together.</p>
 <p>Did the pattern above match your expectations? Proceed to the next exercise to find out if there is more to this dataset than meets the eye!</p>
 <p><strong>Exercise</strong></p>
-<p>An unexpected pattern is a good reason to look more closely, not a reason to jump to a conclusion. Could another variable be related to both measures? The table below gives us a few clues. You can also hover over the points in the previous chart to find out more about each country.</p>
+<p>An unexpected pattern is a good reason to look more closely, instead of jumping to a conclusion. Could another variable influence both measures we saw in the previous chart? The table below gives us a few clues. You can also hover over the points in the previous chart to find out more about each country.</p>
 <table class="dataframe dataframe-preview caption-top" data-border="1">
 <thead>
 <tr class="header">
@@ -412,6 +412,7 @@ Figure&nbsp;1
 </table>
 
 <p>192 rows × 5 columns</p>
+<!-- TODO remove tooltip learning output from ch indivisula obseravations? -->
 <p>Study the table and the tooltips in the previous chart. What do you think might be the reason that countries with a higher percentage of heavy drinkers also have higher remaining life expectancy at age 65? Suggest one visual change to the chart that would help you explore whether your suggested reason could influence the relationship between alcohol consumption and life expectancy.</p>
 <p><strong>Hint</strong></p>
 <p>Could other variables in the dataset be related to both alcohol consumption and life expectancy? For example, consider the country’s income group or world region. Could you group the points by one of these variables using shape or color?</p>
@@ -429,7 +430,7 @@ Figure&nbsp;1
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-1" class="slide level2" data-footer="false" data-chapter-anchor="why-grouping-matters">
+<section id="visualization-continued-1" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
 <h2>What changes when we group by income?</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-slide-title="What changes when we group by income?" data-fragment-index="0">
 <div class="cell-output-display">
@@ -823,19 +824,11 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 <li><p>Avoid using more than 4-6 colors</p></li>
 </ul>
 </div>
-<div class="slide-content fragment fade-in" data-fragment-index="5">
-<ul>
-<li><p>What explanation would you suggest for this pattern?</p></li>
-</ul>
-</div>
 <aside class="notes">
 <p><span class="slide-bullet"><strong>The human brain can detect color differences with little cognitive effort</strong></span>. <span class="slide-bullet"><strong>Color is a preattentive feature</strong></span><span>(Wolfe JM, Utochkin IS. What is a preattentive feature? Curr Opin Psychol. 2019 Oct;29:19-26. doi: 10.1016/j.copsyc.2018.11.005. Epub 2018 Nov 13. PMID: 30472539; PMCID: PMC6513732.)</span> which means that the brain can tell apart colors even without conscious attention. This is heightened when there is a high contrast, such as between the complementary colors blue and orange.</p>
 <p>This is great news for grouping! By encoding our categorical variable as color, we can leverage the brain’s ability to infer groups. Conveniently, <span class="slide-bullet"><strong>color doesn’t alter the layout or structure</strong></span> of the data visualization, so <span class="slide-bullet"><strong>it’s an efficient way to compare the exact values of data points between groups</strong></span>.</p>
 <p>In the second exercise of this chapter, we already saw how color could be used to group our life expectancy data by income group. Let’s now see what the code to create this chart looks like:</p>
 <p><span class="slide-bullet"><strong>Avoid using more than 4-6 colors</strong></span></p>
-<div class="slide-bullet">
-<p><strong>What explanation would you suggest for this pattern?</strong></p>
-</div>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

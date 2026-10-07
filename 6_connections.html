@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; Order – Data Visualization</title>
+<title>6&nbsp; Connections – Data Visualization</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -290,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./3_individual-observations.html">Foundations</a></li><li class="breadcrumb-item"><a href="./6_order.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Order</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./3_individual-observations.html">Foundations</a></li><li class="breadcrumb-item"><a href="./6_connections.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Connections</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -382,8 +382,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./6_order.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Order</span></span></a>
+  <a href="./6_connections.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Connections</span></span></a>
   </div>
 </li>
       </ul>
@@ -497,9 +497,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-order-matters" id="toc-why-order-matters" class="nav-link active" data-scroll-target="#why-order-matters"><span class="header-section-number">6.1</span> Why order matters</a></li>
-  <li><a href="#using-lines-to-order-and-group-data" id="toc-using-lines-to-order-and-group-data" class="nav-link" data-scroll-target="#using-lines-to-order-and-group-data"><span class="header-section-number">6.2</span> Using lines to order and group data</a></li>
-  <li><a href="#combining-lines-and-points" id="toc-combining-lines-and-points" class="nav-link" data-scroll-target="#combining-lines-and-points"><span class="header-section-number">6.3</span> Combining lines and points</a></li>
+  <li><a href="#why-bother" id="toc-why-bother" class="nav-link active" data-scroll-target="#why-bother"><span class="header-section-number">6.1</span> Why bother?</a></li>
+  <li><a href="#connecting-ordered-observations" id="toc-connecting-ordered-observations" class="nav-link" data-scroll-target="#connecting-ordered-observations"><span class="header-section-number">6.2</span> Connecting ordered observations</a></li>
+  <li><a href="#combining-lines-and-points" id="toc-combining-lines-and-points" class="nav-link" data-scroll-target="#combining-lines-and-points"><span class="header-section-number">6.3</span> Combining lines and points</a>
+  <ul class="collapse">
+  <li><a href="#connecting-observations-across-categories" id="toc-connecting-observations-across-categories" class="nav-link" data-scroll-target="#connecting-observations-across-categories">Connecting observations across categories</a></li>
+  </ul></li>
   <li><a href="#areas-and-multiple-ordered-groups" id="toc-areas-and-multiple-ordered-groups" class="nav-link" data-scroll-target="#areas-and-multiple-ordered-groups"><span class="header-section-number">6.4</span> Areas and multiple ordered groups</a></li>
   </ul>
 </nav>
@@ -508,9 +511,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content page-columns page-full" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./3_individual-observations.html">Foundations</a></li><li class="breadcrumb-item"><a href="./6_order.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Order</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./3_individual-observations.html">Foundations</a></li><li class="breadcrumb-item"><a href="./6_connections.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Connections</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-order" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Order</span></span></h1>
+<h1 class="title"><span id="sec-connections" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Connections</span></span></h1>
 </div>
 
 
@@ -528,7 +531,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="chapter-slide-link">
-<a href="slides/6_order.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<a href="slides/6_connections.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <rect x="3" y="3" width="18" height="13" rx="1"></rect>
         <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
         </svg></a>
@@ -545,10 +548,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p><strong>Explain</strong> how connecting observations makes their grouping and order easier to see.</p></li>
-<li><p><strong>Distinguish</strong> grouping observations into a series from ordering the observations within that series.</p></li>
-<li><p><strong>Use</strong> lines to display change over time, and <strong>compare</strong> line and area charts for ordered data.</p></li>
-<li><p><strong>Explain</strong> how stacking changes the interpretation of a chart and when a shared baseline is more useful.</p></li>
+<li><p><strong>Explain</strong> how connections identify related observations and make their differences easier to see.</p></li>
+<li><p><strong>Distinguish</strong> connections that follow a meaningful sequence from connections that link corresponding observations across conditions.</p></li>
+<li><p><strong>Use</strong> lines and connected point plots to show change over time and differences between groups or conditions.</p></li>
+<li><p><strong>Interpret</strong> connecting segments in relation to axis spacing and <strong>explain</strong> what they do and do not establish about intermediate values.</p></li>
+<li><p><strong>Compare</strong> line and area charts for ordered data, and <strong>explain</strong> when stacking or a shared baseline is useful.</p></li>
 </ol>
 </div>
 </div>
@@ -556,9 +560,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- TODO Discuss missing values and interruptions in lines somewhere? Or is that a technical detail better left to the documentation? -->
 <!-- https://stackoverflow.com/questions/66348548/altair-missing-value-in-graph -->
 <!-- https://ggplot2.tidyverse.org/reference/geom_path.html -->
-<section id="why-order-matters" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="why-order-matters"><span class="header-section-number">6.1</span> Why order matters</h2>
-<p>In <a href="5_groups.html" class="quarto-xref">Groups</a>, we learned how to distinguish groups of observations. Now we will look at <span class="slide-bullet">observations that also have a meaningful order</span>, such as time of day or an increasing dose of a treatment. In the following exercise, we will see how the grouping strategies we learned previously can be effectively complemented when working with ordered data.</p>
+<section id="why-bother" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="why-bother"><span class="header-section-number">6.1</span> Why bother?</h2>
+<p>In <a href="5_groups.html" class="quarto-xref">Groups</a>, we learned how to distinguish groups of observations. Now we will explore how <span class="slide-bullet">connecting related observations makes their correspondence and differences easier to see</span>. Sometimes the connections follow a meaningful order, such as time of day or an increasing dose of a treatment. Other times they link measurements of the same unit across unordered conditions, such as critics’ and audiences’ scores for the same movie. In either case, we need to decide which observations to connect and what those connections help us compare. We will begin with change over time.</p>
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -646,7 +650,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
-<p>We can use the natural order of the observations to connect the points that belong to the same continent with a line. Drawing a line from the earliest to the most recent year helps us with two things: it makes it easier to see changes over time for any single continent, and it makes it easier to see which points belong to which continent. As such, a line is a graphical tool that assists with both ordering and grouping.</p>
+<p>We can use the natural order of the observations to connect the points that belong to the same continent with a line. Drawing a line from the earliest to the most recent year helps us with two things: it makes it easier to see changes over time for any single continent, and it makes it easier to see which points belong to which continent. As such, a line makes group membership explicit while helping us follow changes through an ordered sequence.</p>
 <div class="cell" data-slide-show="output" data-slide-title="Connect observations in time order">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>points.mark_line() <span class="op">+</span> points.mark_point(filled<span class="op">=</span><span class="va">True</span>, strokeOpacity<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -707,8 +711,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="using-lines-to-order-and-group-data" class="level2 page-columns page-full" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="using-lines-to-order-and-group-data"><span class="header-section-number">6.2</span> Using lines to order and group data</h2>
+<section id="connecting-ordered-observations" class="level2 page-columns page-full" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="connecting-ordered-observations"><span class="header-section-number">6.2</span> Connecting ordered observations</h2>
 <p>To explore how to create line charts, we will visualize <span class="slide-bullet">population and fertility estimates at eight-year intervals from 1850 to 2018</span>. The data comes from the <a href="https://raw.githubusercontent.com/joelostblom/teaching-datasets/main/world-data-gapminder.csv">Gapminder country-level dataset</a>, and has been adapted for this textbook.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">ggplot</a></li></ul>
@@ -1028,7 +1032,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="6_order_files/figure-html/population-line-gg-1.png" class="img-fluid figure-img" width="480"></p>
+<p><img src="6_connections_files/figure-html/population-line-gg-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -1104,7 +1108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="6_order_files/figure-html/children_per_woman-line-gg-1.png" class="img-fluid figure-img" width="480"></p>
+<p><img src="6_connections_files/figure-html/children_per_woman-line-gg-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -1215,7 +1219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="6_order_files/figure-html/population-line-points-gg-1.png" class="img-fluid figure-img" width="480"></p>
+<p><img src="6_connections_files/figure-html/population-line-points-gg-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -1372,17 +1376,384 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<section id="connecting-observations-across-categories" class="level3">
+<h3 class="anchored" data-anchor-id="connecting-observations-across-categories">Connecting observations across categories</h3>
+<p>Connections can also be useful when the positions on one axis represent categories. For ordinal categories, this might be intuitive, since there is often a natural progression throughout the categories. For example, drawing a line for a measurement over the days of the week would be natural and easy to understand.</p>
+<p>We need to be careful when drawing a line between ordinal categories of unequal spacing. For example, if observations from January, February, and August of the same year are displayed at equally spaced categorical positions, the line’s slope reflects the difference between observations rather than change per month. Even a constant nonzero monthly rate would produce a steeper segment between February and August, because that interval covers more months.</p>
+<p>In addition to connecting categories when they have a natural order, it can also be helpful to connect categories when the same observational unit is present in all of them. For example, we might measure the same patient before and after treatment, or compare evaluations of the same film by different reviewer groups. We say that such measurements are paired; a concept that extends to more than just two categories e.g.&nbsp;before, during, and after a treatment. Let’s explore this more closely with an exercise:</p>
+<div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Ex-prompt</span>Exercise 4
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div class="callout-default ex-prompt">
+<p>This data set that contains the names of a few movies together with their critic and general audience rating from <a href="https://www.rottentomatoes.com/">Rotten Tomatoes</a>:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">ggplot</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>movie_scores <span class="op">=</span> pd.read_csv(<span class="st">'data/movie_scores.csv'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>movie_scores</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Score Reviewer group               Movie
+0      98        Critics          Inside Out
+1      89       Audience          Inside Out
+2      97        Critics  Mad Max: Fury Road
+3      86       Audience  Mad Max: Fury Road
+4      72        Critics      Jurassic World
+5      78       Audience      Jurassic World
+6      63        Critics     Mortal Combat 2
+7      86       Audience     Mortal Combat 2
+8      83        Critics                Dune
+9      90       Audience                Dune
+10     71        Critics       The Beekeeper
+11     92       Audience       The Beekeeper</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>movie_scores <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'data/movie_scores.csv'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>movie_scores</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 3
+   Score `Reviewer group` Movie             
+   &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;             
+ 1    98 Critics          Inside Out        
+ 2    89 Audience         Inside Out        
+ 3    97 Critics          Mad Max: Fury Road
+ 4    86 Audience         Mad Max: Fury Road
+ 5    72 Critics          Jurassic World    
+ 6    78 Audience         Jurassic World    
+ 7    63 Critics          Mortal Combat 2   
+ 8    86 Audience         Mortal Combat 2   
+ 9    83 Critics          Dune              
+10    90 Audience         Dune              
+11    71 Critics          The Beekeeper     
+12    92 Audience         The Beekeeper     </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Say we’re interested in comparing which movies are more popular among critics and which are more popular among the general audience. We could plot the scores from the critics in one column and the scores from the general audience in another:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">ggplot</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<p>We adjust the size of the chart, and rotate the labels so that they are easy to read.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> (</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    alt.Chart(movie_scores, height<span class="op">=</span><span class="dv">250</span>, width<span class="op">=</span><span class="dv">150</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    .mark_circle(opacity<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    .encode(</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>alt.X(<span class="st">'Reviewer group'</span>).axis(labelAngle<span class="op">=</span><span class="dv">0</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>alt.Y(<span class="st">'Score'</span>).scale(zero<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span><span class="st">'Movie'</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>points</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+
+
+
+  <meta charset="UTF-8">
+  <style>
+    #unnamed-chunk-4-altair-viz.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #unnamed-chunk-4-altair-viz.vega-embed details,
+    #unnamed-chunk-4-altair-viz.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+
+
+  <div id="unnamed-chunk-4-altair-viz"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-55c98845b44814f0599661db8f1121a9"}, "mark": {"type": "circle", "opacity": 1}, "encoding": {"color": {"field": "Movie", "type": "nominal"}, "x": {"axis": {"labelAngle": 0}, "field": "Reviewer group", "type": "nominal"}, "y": {"field": "Score", "scale": {"zero": false}, "type": "quantitative"}}, "height": 250, "width": 150, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-55c98845b44814f0599661db8f1121a9": [{"Score": 98, "Reviewer group": "Critics", "Movie": "Inside Out"}, {"Score": 89, "Reviewer group": "Audience", "Movie": "Inside Out"}, {"Score": 97, "Reviewer group": "Critics", "Movie": "Mad Max: Fury Road"}, {"Score": 86, "Reviewer group": "Audience", "Movie": "Mad Max: Fury Road"}, {"Score": 72, "Reviewer group": "Critics", "Movie": "Jurassic World"}, {"Score": 78, "Reviewer group": "Audience", "Movie": "Jurassic World"}, {"Score": 63, "Reviewer group": "Critics", "Movie": "Mortal Combat 2"}, {"Score": 86, "Reviewer group": "Audience", "Movie": "Mortal Combat 2"}, {"Score": 83, "Reviewer group": "Critics", "Movie": "Dune"}, {"Score": 90, "Reviewer group": "Audience", "Movie": "Dune"}, {"Score": 71, "Reviewer group": "Critics", "Movie": "The Beekeeper"}, {"Score": 92, "Reviewer group": "Audience", "Movie": "The Beekeeper"}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('unnamed-chunk-4-altair-viz');
+      vegaEmbed("#unnamed-chunk-4-altair-viz", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+
+
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>movie_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    movie_scores,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">`</span><span class="at">Reviewer group</span><span class="st">`</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> Score,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> Movie,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">group =</span> Movie</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>movie_plot <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="6_connections_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>From this plot, are you able to quickly tell for which films the critics score is higher than the audience score? For which is it lower? Which films have the largest differences?</p>
+<div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Ex-hint</span>Hint
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="callout-default ex-hint">
+<p>Could connecting the points with a line help? What would we connect: points in the same reviewer group or points belonging to the same movie?</p>
+<div class="callout callout-style-default callout-ex-solution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Ex-solution</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="callout-default ex-solution">
+<p>One of the reasons this comparison is difficult to make, is that it takes some cognitive effort to find the same movie in both column. We could make this task easier by connecting the points that are from the same movie with a line. In addition to showing which points belong to the same movie, the slope of this line also gives an indication of how the scores differ between the two reviewer groups.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">ggplot</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>points.mark_line() <span class="op">+</span> points</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+
+
+
+  <meta charset="UTF-8">
+  <style>
+    #unnamed-chunk-6-altair-viz.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #unnamed-chunk-6-altair-viz.vega-embed details,
+    #unnamed-chunk-6-altair-viz.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+
+
+  <div id="unnamed-chunk-6-altair-viz"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"mark": {"type": "line"}, "encoding": {"color": {"field": "Movie", "type": "nominal"}, "x": {"axis": {"labelAngle": 0}, "field": "Reviewer group", "type": "nominal"}, "y": {"field": "Score", "scale": {"zero": false}, "type": "quantitative"}}}, {"mark": {"type": "circle", "opacity": 1}, "encoding": {"color": {"field": "Movie", "type": "nominal"}, "x": {"axis": {"labelAngle": 0}, "field": "Reviewer group", "type": "nominal"}, "y": {"field": "Score", "scale": {"zero": false}, "type": "quantitative"}}}], "data": {"name": "data-55c98845b44814f0599661db8f1121a9"}, "height": 250, "width": 150, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-55c98845b44814f0599661db8f1121a9": [{"Score": 98, "Reviewer group": "Critics", "Movie": "Inside Out"}, {"Score": 89, "Reviewer group": "Audience", "Movie": "Inside Out"}, {"Score": 97, "Reviewer group": "Critics", "Movie": "Mad Max: Fury Road"}, {"Score": 86, "Reviewer group": "Audience", "Movie": "Mad Max: Fury Road"}, {"Score": 72, "Reviewer group": "Critics", "Movie": "Jurassic World"}, {"Score": 78, "Reviewer group": "Audience", "Movie": "Jurassic World"}, {"Score": 63, "Reviewer group": "Critics", "Movie": "Mortal Combat 2"}, {"Score": 86, "Reviewer group": "Audience", "Movie": "Mortal Combat 2"}, {"Score": 83, "Reviewer group": "Critics", "Movie": "Dune"}, {"Score": 90, "Reviewer group": "Audience", "Movie": "Dune"}, {"Score": 71, "Reviewer group": "Critics", "Movie": "The Beekeeper"}, {"Score": 92, "Reviewer group": "Audience", "Movie": "The Beekeeper"}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('unnamed-chunk-6-altair-viz');
+      vegaEmbed("#unnamed-chunk-6-altair-viz", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+
+
+</div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>movie_plot <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="6_connections_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TODO mention this is a slope plot -->
+<p>If there are many observations, or we want to know more exactly how big the difference is between groups, it can be advantageous to spread out the movies along one of the positional axes:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">ggplot</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> alt.Chart(movie_scores).mark_circle().encode(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>alt.Y(<span class="st">'Movie'</span>).sort(<span class="st">'x'</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'Score'</span>).scale(zero<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    base.mark_line(color<span class="op">=</span><span class="st">'lightgrey'</span>).encode(detail<span class="op">=</span><span class="st">'Movie'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> base.mark_circle(size<span class="op">=</span><span class="dv">60</span>, opacity<span class="op">=</span><span class="dv">1</span>).encode(color<span class="op">=</span><span class="st">'Reviewer group'</span>) </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+
+
+
+  <meta charset="UTF-8">
+  <style>
+    #unnamed-chunk-8-altair-viz.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #unnamed-chunk-8-altair-viz.vega-embed details,
+    #unnamed-chunk-8-altair-viz.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+
+
+  <div id="unnamed-chunk-8-altair-viz"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"mark": {"type": "line", "color": "lightgrey"}, "encoding": {"detail": {"field": "Movie", "type": "nominal"}, "x": {"field": "Score", "scale": {"zero": false}, "type": "quantitative"}, "y": {"field": "Movie", "sort": "x", "type": "nominal"}}}, {"mark": {"type": "circle", "opacity": 1, "size": 60}, "encoding": {"color": {"field": "Reviewer group", "type": "nominal"}, "x": {"field": "Score", "scale": {"zero": false}, "type": "quantitative"}, "y": {"field": "Movie", "sort": "x", "type": "nominal"}}}], "data": {"name": "data-55c98845b44814f0599661db8f1121a9"}, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-55c98845b44814f0599661db8f1121a9": [{"Score": 98, "Reviewer group": "Critics", "Movie": "Inside Out"}, {"Score": 89, "Reviewer group": "Audience", "Movie": "Inside Out"}, {"Score": 97, "Reviewer group": "Critics", "Movie": "Mad Max: Fury Road"}, {"Score": 86, "Reviewer group": "Audience", "Movie": "Mad Max: Fury Road"}, {"Score": 72, "Reviewer group": "Critics", "Movie": "Jurassic World"}, {"Score": 78, "Reviewer group": "Audience", "Movie": "Jurassic World"}, {"Score": 63, "Reviewer group": "Critics", "Movie": "Mortal Combat 2"}, {"Score": 86, "Reviewer group": "Audience", "Movie": "Mortal Combat 2"}, {"Score": 83, "Reviewer group": "Critics", "Movie": "Dune"}, {"Score": 90, "Reviewer group": "Audience", "Movie": "Dune"}, {"Score": 71, "Reviewer group": "Critics", "Movie": "The Beekeeper"}, {"Score": 92, "Reviewer group": "Audience", "Movie": "The Beekeeper"}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('unnamed-chunk-8-altair-viz');
+      vegaEmbed("#unnamed-chunk-8-altair-viz", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+
+
+</div>
+</div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<p>Here we use the <code>group</code> aesthetic to group lines by <code>Movie</code>, without using a visual channel such as <code>color</code> or <code>size</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movie_scores, <span class="fu">aes</span>(<span class="at">x =</span> Score, <span class="at">y =</span> <span class="fu">reorder</span>(Movie, Score))) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> Movie), <span class="at">color =</span> <span class="st">'grey'</span>) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="st">`</span><span class="at">Reviewer group</span><span class="st">`</span>), <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">'Movie'</span>, <span class="at">color =</span> <span class="st">'Reviewer group'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="6_connections_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TODO mention this is a dumbbell plot -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-deep-dive no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Deep-dive</span>Deep dive
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="deep-dive">
+<!-- TODO add charts for this deep dive for paralell coordinates -->
+<!-- TODO figure out what is wrong in the altair example -->
+<p>A related concept to what we just did is a <a href="https://en.wikipedia.org/wiki/Parallel_coordinates">parallel coordinates chart</a>, Where several variables are plotted in the same plot, but on different axes next to each other. This is often used as an exploratory technique to detect clusters in the data. Like in the paired comparison, it is the same observation that is connected with the line across the variables. A difference between the two is that a paired comparison plots the same measurement (e.g.&nbsp;Movie score), between different groups (e.g.&nbsp;Reviewers group), whereas a parallel coordinate plot visualized different variables that all use different units or ranges. To be able to show these variables on a common scale, their ranges are often normalized</p>
+</div>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Avoid connecting unordered categories with a line
+<span class="screen-reader-only">Warning</span>Avoid arbitrarily connecting unordered categories with a line
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>As we just saw, we need to be careful when interpreting a line between two observations along a quantitative axis. For the same reason, we should generally avoid using a line to connect observations along an axis of unordered categories. Here are two representations of the same population values:</p>
+<p>The points show each continent’s population clearly. Connecting them also emphasizes comparisons between neighboring continents and creates a falling-and-rising pattern. However, the chosen ordering (Africa, Europe, Americas) does not represent a sequence we are interested in following. Rearranging the continents would change the line’s shape without changing the populations.</p>
+<p>In the movie example, each connection helps us compare two evaluations of the same film. Here, the connections add an arbitrary sequence to a task that only requires comparing population values.</p>
 <div class="cell" data-slide-show="output">
 <div class="cell-output-display">
 
@@ -1408,7 +1779,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div id="population-line-categorical-altair-viz"></div>
   <script>
     (function(vegaEmbed) {
-      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "hconcat": [{"mark": {"type": "point", "color": "#FF0039", "filled": true, "size": 60}, "encoding": {"x": {"field": "region", "sort": ["Africa", "Europe", "Americas"], "title": null, "type": "nominal"}, "y": {"aggregate": "sum", "axis": {"labelExpr": "format(datum.value / 1e6, ',.0f')"}, "field": "population", "scale": {"domain": [0, 1350000000]}, "title": "Population in 2018 (millions)", "type": "quantitative"}}, "height": 250, "width": {"step": 60}}, {"layer": [{"mark": {"type": "line", "color": "#FF0039"}, "encoding": {"x": {"field": "region", "sort": ["Africa", "Europe", "Americas"], "title": null, "type": "nominal"}, "y": {"aggregate": "sum", "axis": {"labelExpr": "format(datum.value / 1e6, ',.0f')"}, "field": "population", "scale": {"domain": [0, 1350000000]}, "title": "Population in 2018 (millions)", "type": "quantitative"}}}, {"mark": {"type": "point", "color": "#FF0039", "filled": true, "size": 60}, "encoding": {"x": {"field": "region", "sort": ["Africa", "Europe", "Americas"], "title": null, "type": "nominal"}, "y": {"aggregate": "sum", "axis": {"labelExpr": "format(datum.value / 1e6, ',.0f')"}, "field": "population", "scale": {"domain": [0, 1350000000]}, "title": "Population in 2018 (millions)", "type": "quantitative"}}}], "height": 250, "width": {"step": 60}}], "data": {"name": "data-eb4d651e173ba58202013d757d00a132"}, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-eb4d651e173ba58202013d757d00a132": [{"year": 2018, "region": "Africa", "population": 1286388200, "children_per_woman": 4.212307692307692}, {"year": 2018, "region": "Americas", "population": 1010688000, "children_per_woman": 2.144516129032258}, {"year": 2018, "region": "Europe", "population": 742109000, "children_per_woman": 1.606666666666667}]}};
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "hconcat": [{"mark": {"type": "point", "color": "#FF0039", "filled": true, "size": 60}, "encoding": {"x": {"field": "region", "sort": ["Africa", "Europe", "Americas"], "title": null, "type": "nominal"}, "y": {"aggregate": "sum", "axis": {"labelExpr": "format(datum.value / 1e6, ',.0f')"}, "field": "population", "scale": {"domain": [100000000, 1350000000]}, "title": "Population in 2018 (millions)", "type": "quantitative"}}, "height": 250, "width": {"step": 60}}, {"layer": [{"mark": {"type": "line", "color": "#FF0039"}, "encoding": {"x": {"field": "region", "sort": ["Africa", "Europe", "Americas"], "title": null, "type": "nominal"}, "y": {"aggregate": "sum", "axis": {"labelExpr": "format(datum.value / 1e6, ',.0f')"}, "field": "population", "scale": {"domain": [100000000, 1350000000]}, "title": "Population in 2018 (millions)", "type": "quantitative"}}}, {"mark": {"type": "point", "color": "#FF0039", "filled": true, "size": 60}, "encoding": {"x": {"field": "region", "sort": ["Africa", "Europe", "Americas"], "title": null, "type": "nominal"}, "y": {"aggregate": "sum", "axis": {"labelExpr": "format(datum.value / 1e6, ',.0f')"}, "field": "population", "scale": {"domain": [100000000, 1350000000]}, "title": "Population in 2018 (millions)", "type": "quantitative"}}}], "height": 250, "width": {"step": 60}}], "data": {"name": "data-eb4d651e173ba58202013d757d00a132"}, "$schema": "https://vega.github.io/schema/vega-lite/v6.4.1.json", "datasets": {"data-eb4d651e173ba58202013d757d00a132": [{"year": 2018, "region": "Africa", "population": 1286388200, "children_per_woman": 4.212307692307692}, {"year": 2018, "region": "Americas", "population": 1010688000, "children_per_woman": 2.144516129032258}, {"year": 2018, "region": "Europe", "population": 742109000, "children_per_woman": 1.606666666666667}]}};
       var embedOpt = {"actions":false,"mode":"vega-lite"};
 
       function showError(el, error){
@@ -1429,11 +1800,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </div>
 </div>
-<p>The chart to the left is easy to interpret; it shows how many people lived on each continent in 2018, with a point for each continent’s value. But what about the line chart to the right? What does it mean that the line is at 1,000 million as it goes from Africa to Europe? That 1,000 million people lived somewhere between Europe and Africa? No, in contrast to how a line connecting two quantitative values can hint at what the value between them <em>might</em> have been, there is no meaningful numerical interval between these unordered categories, and therefore lines should generally not be used to connect observations across them.</p>
+<p>It is also worth noting that a line between categorical values can be confusing because in contrast to how a line connecting two quantitative values can hint at what the value between them <em>might</em> have been, there is no meaningful numerical interval between unordered categories. For example, what does it mean that the line is at 1,000 million as it goes from Africa to Europe? That 1,000 million people lived somewhere between Europe and Africa?</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-deep-dive no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -1442,24 +1813,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default deep-dive">
 <p>Sometimes we want to show how the relationship between two quantitative variables has changed over time. We can do this by plotting the two variables of interest on the x- and y-axes, then connecting the points in chronological order.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">ggplot</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
 <p>The <code>order</code> encoding controls the order in which observations will be connected by a line. Since there is no visible axis for the year, it would be difficult to know in which direction to read the chart; is the most recent year represented by the point in the top-left or bottom-right corner? To avoid this confusion, we add a tooltip so that you can see which year each point corresponds to when hovering over it with the mouse pointer.</p>
 <div class="cell" data-slide-show="output" data-slide-title="Order without a time axis — Altair">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>line <span class="op">=</span> alt.Chart(world).mark_line().encode(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'children_per_woman'</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    order<span class="op">=</span><span class="st">'year'</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display the numeric year as an integer without a thousands separator</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>alt.Tooltip(<span class="st">'year'</span>, <span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>line <span class="op">+</span> line.mark_point(filled<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>line <span class="op">=</span> alt.Chart(world).mark_line().encode(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'children_per_woman'</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    order<span class="op">=</span><span class="st">'year'</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Display the numeric year as an integer without a thousands separator</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>alt.Tooltip(<span class="st">'year'</span>, <span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>line <span class="op">+</span> line.mark_point(filled<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 
 
@@ -1506,23 +1877,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
 <p>By default, <code>geom_line()</code> connects points in the order of the variable on the x-axis. To connect points in another order, we can use <code>geom_path()</code> instead. This geom connects observations in dataframe row order, so we need to make sure our data is sorted by the variable we want the connection order to represent.</p>
 <p>Since there is no visible axis for the year, it would be difficult to know in which direction to read the chart; is the most recent year represented by the point in the top-left or bottom-right corner? To avoid this confusion, we add a text label so that you can identify the earliest and most recent observations.</p>
 <div class="cell" data-slide-show="output" data-slide-title="Order without a time axis — ggplot">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>endpoints <span class="ot">&lt;-</span> world <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">range</span>(year, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world <span class="sc">|&gt;</span> <span class="fu">arrange</span>(year), <span class="fu">aes</span>(<span class="at">x =</span> children_per_woman, <span class="at">y =</span> population, <span class="at">label =</span> year)) <span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_path</span>() <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> endpoints,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>  <span class="co"># Move the labels above the points to avoid overlap</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>endpoints <span class="ot">&lt;-</span> world <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">range</span>(year, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world <span class="sc">|&gt;</span> <span class="fu">arrange</span>(year), <span class="fu">aes</span>(<span class="at">x =</span> children_per_woman, <span class="at">y =</span> population, <span class="at">label =</span> year)) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_path</span>() <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> endpoints,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>  <span class="co"># Move the labels above the points to avoid overlap</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="6_order_files/figure-html/line-order-2d-gg-1.png" class="img-fluid figure-img" width="480"></p>
+<p><img src="6_connections_files/figure-html/line-order-2d-gg-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -1536,18 +1907,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+</section>
 <section id="areas-and-multiple-ordered-groups" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="areas-and-multiple-ordered-groups"><span class="header-section-number">6.4</span> Areas and multiple ordered groups</h2>
 <p>Another way of representing ordered data is to <span class="slide-bullet">fill the area between a line and a baseline</span>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">ggplot</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
 <div class="cell" data-slide-show="both" data-slide-title="From a line to an area — Altair">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(world).mark_area().encode(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(world).mark_area().encode(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 
 
@@ -1594,14 +1966,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
 <div class="cell" data-slide-show="both" data-slide-title="From a line to an area — ggplot">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> population)) <span class="sc">+</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_area</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> population)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_area</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="6_order_files/figure-html/population-area-gg-1.png" class="img-fluid figure-img" width="480"></p>
+<p><img src="6_connections_files/figure-html/population-area-gg-1.png" class="img-fluid figure-img" width="480"></p>
 </figure>
 </div>
 </div>
@@ -1611,33 +1983,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Both lines and areas preserve the sequence of values over time. Filling the area down to a zero baseline emphasizes the magnitude of those values, while a line emphasizes the path through them. When displaying multiple ordered groups, lines and areas have different advantages, which we will learn about in this exercise.</p>
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Ex-prompt</span>Exercise 4
+<span class="screen-reader-only">Ex-prompt</span>Exercise 5
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-16" class="callout-16-contents callout-collapse collapse show">
+<div id="callout-20" class="callout-20-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
 <p>We now use the <code>regions</code> dataframe, which contains a separate population value for each region in each year. Region determines which observations belong to the same group, and year determines their order within that group.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">ggplot</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
-<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
 <p>Setting <code>color</code> applies to both areas and lines; if we wanted to control them individually, we could instead use <code>stroke</code> (for lines) and <code>fill</code> (for areas). Here we also use the <code>|</code> layout operator to position the plots next to each other horizontally (<code>&amp;</code> lays them out vertically instead; we will learn more about layouts in a later chapter).</p>
 <div class="cell" data-slide-show="output" data-slide-title="Comparing line and stacked-area charts">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>regions <span class="op">=</span> pd.read_csv(<span class="st">'data/gapminder_regions_from_1850.csv'</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> alt.Chart(regions, width<span class="op">=</span><span class="dv">150</span>, height<span class="op">=</span><span class="dv">150</span>).encode(</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span>,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'region'</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>base.mark_area() <span class="op">|</span> base.mark_line()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>regions <span class="op">=</span> pd.read_csv(<span class="st">'data/gapminder_regions_from_1850.csv'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> alt.Chart(regions, width<span class="op">=</span><span class="dv">150</span>, height<span class="op">=</span><span class="dv">150</span>).encode(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'year'</span>).axis(<span class="bu">format</span><span class="op">=</span><span class="st">'d'</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'population'</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'region'</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>base.mark_area() <span class="op">|</span> base.mark_line()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 
 
@@ -1684,19 +2056,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
 <p><code>geom_area()</code> stacks the regional areas by default. The population values are already in the dataset, so we can map them directly to the y-axis. To set the area color, we use the <code>fill</code> aesthetic, whereas the line color is controlled by the <code>color</code> aesthetic. We map both to <code>region</code>. <!-- TODO Should we set these in the geoms? That introduces several new concepts, but avoids creating an outline for each area. --> Here we also use the <code>|</code> layout operator from the <code>patchwork</code> library to position the plots next to each other horizontally (<code>/</code> lays them out vertically instead; we will learn more about layouts in a later chapter).</p>
 <div class="cell" data-slide-show="output" data-slide-title="Comparing lines and stacked areas — ggplot">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>regions <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/gapminder_regions_from_1850.csv'</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>base <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(regions, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> population, <span class="at">fill =</span> region, <span class="at">color =</span> region))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>base <span class="sc">+</span> <span class="fu">geom_area</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">|</span> base <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>regions <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'data/gapminder_regions_from_1850.csv'</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>base <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(regions, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> population, <span class="at">fill =</span> region, <span class="at">color =</span> region))</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>base <span class="sc">+</span> <span class="fu">geom_area</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">|</span> base <span class="sc">+</span> <span class="fu">geom_line</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="6_order_files/figure-html/population-stacked-gg-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="6_connections_files/figure-html/population-stacked-gg-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1711,7 +2083,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Which region had the second-highest population in 2018?</li>
 </ol>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -1720,12 +2092,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-hint">
 <p>Note how the areas are stacked on top of each other, whereas the lines are not. Which chart makes the total easiest to read? Which lets you compare regional values against a shared baseline?</p>
 <div class="callout callout-style-default callout-ex-solution no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -1734,7 +2106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
 <ol type="1">
@@ -1887,7 +2259,7 @@ eyJjb250ZW50cyI6W119
 </div>
 </div>
 <script type="vfs-file">
-WyJkYXRhL0ZBT1NUQVRfZGF0YV9lbl84LTItMjAyNC5jc3YiLCJkYXRhL2NvLWVtaXNzaW9ucy1wZXItY2FwaXRhLmNzdiIsImRhdGEvbWVudGFsX2hlYWx0aF9sb25nLmNzdiIsImRhdGEvd29ybGRfYmFua19pbmNvbWUueGxzeCIsImRhdGEvbWVkaXRhdGlvbi1zdHJlc3Mtc2FtcGxlLmNzdiIsImRhdGEvZ2FwbWluZGVyX3JlZ2lvbnNfZnJvbV8xODUwLmNzdiIsImRhdGEvbG9uZG9uX21hcmF0aG9uX2ZpbmlzaF90aW1lcy5jc3YiLCJkYXRhL2xpZmVfZXhwZWN0YW5jeV9hbGNvaG9sLmNzdiIsImRhdGEvSUhNRS1HQkRfMjAyMV9EQVRBLTQ0NmRlNTE0LTEuY3N2IiwiZGF0YS9pbmNvbWVfbGlmZWV4cF9hbGNvaG9sLmNzdiIsImRhdGEvYWdncmVnYXRlZF9fZm9vZF9kYXRhLmNzdiIsImRhdGEvTUhfZGF0YV9wcm9jZXNzZWRfMy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF90cmVuZHMuY3N2IiwiZGF0YS9zaW1wc29uc19wYXJhZG94X2RhdGFfbC5jc3YiLCJkYXRhL2NvbnRpbmVudHMuY3N2IiwiZGF0YS9Gb29kX1Byb2R1Y3Rpb24uY3N2IiwiZGF0YS9nYXBtaW5kZXJfcmVnaW9uX3RyZW5kcy5jc3YiLCJkYXRhL21vdmllcy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF9mcm9tXzE4NTAuY3N2IiwiZGF0YS9zYW1lX21lYW5fc2QuY3N2IiwiZGF0YS9JSE1FLUdCRF8yMDIxX0RBVEEtZGZiZDdiOGItMS5jc3YiLCJkYXRhL2xpZmUtZXhwZWN0YW5jeS1obWQtdW53cHAuY3N2IiwiZGF0YS9NU1dfMjAyM19EYXRhX1RhYmxlcy54bHN4IiwidXRpbHMucHkiLCJ1dGlscy5SIl0=
+WyJkYXRhL0ZBT1NUQVRfZGF0YV9lbl84LTItMjAyNC5jc3YiLCJkYXRhL2NvLWVtaXNzaW9ucy1wZXItY2FwaXRhLmNzdiIsImRhdGEvbWVudGFsX2hlYWx0aF9sb25nLmNzdiIsImRhdGEvd29ybGRfYmFua19pbmNvbWUueGxzeCIsImRhdGEvbWVkaXRhdGlvbi1zdHJlc3Mtc2FtcGxlLmNzdiIsImRhdGEvZ2FwbWluZGVyX3JlZ2lvbnNfZnJvbV8xODUwLmNzdiIsImRhdGEvbG9uZG9uX21hcmF0aG9uX2ZpbmlzaF90aW1lcy5jc3YiLCJkYXRhL2xpZmVfZXhwZWN0YW5jeV9hbGNvaG9sLmNzdiIsImRhdGEvSUhNRS1HQkRfMjAyMV9EQVRBLTQ0NmRlNTE0LTEuY3N2IiwiZGF0YS9pbmNvbWVfbGlmZWV4cF9hbGNvaG9sLmNzdiIsImRhdGEvYWdncmVnYXRlZF9fZm9vZF9kYXRhLmNzdiIsImRhdGEvTUhfZGF0YV9wcm9jZXNzZWRfMy5jc3YiLCJkYXRhL21vdmllX3Njb3Jlcy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF90cmVuZHMuY3N2IiwiZGF0YS9zaW1wc29uc19wYXJhZG94X2RhdGFfbC5jc3YiLCJkYXRhL2NvbnRpbmVudHMuY3N2IiwiZGF0YS9Gb29kX1Byb2R1Y3Rpb24uY3N2IiwiZGF0YS9nYXBtaW5kZXJfcmVnaW9uX3RyZW5kcy5jc3YiLCJkYXRhL21vdmllcy5jc3YiLCJkYXRhL2dhcG1pbmRlcl93b3JsZF9mcm9tXzE4NTAuY3N2IiwiZGF0YS9zYW1lX21lYW5fc2QuY3N2IiwiZGF0YS9JSE1FLUdCRF8yMDIxX0RBVEEtZGZiZDdiOGItMS5jc3YiLCJkYXRhL2xpZmUtZXhwZWN0YW5jeS1obWQtdW53cHAuY3N2IiwiZGF0YS9NU1dfMjAyM19EYXRhX1RhYmxlcy54bHN4IiwidXRpbHMucHkiLCJ1dGlscy5SIl0=
 </script>
 </section>
 
