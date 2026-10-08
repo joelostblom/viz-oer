@@ -3,54 +3,73 @@
 <!-- This landing page will contain an image -->
 <!-- and a short text about the reasoning behind the book and what it is trying to achieve. -->
 
-This book takes a developmental approach to visualization
-motivating each new principle and chart element
-as a response to a limitation of what came before.
-The aim is to try to clearly visualize the underlying need
-rather than just learning rules of which charts are good for what.
-This is because I have noticed that learners
-can be apt at remembering that
+This educational resource aims to form a connected learning journey
+where each chapter introduces new principles and chart elements
+as a response to a limitation of what came before
+rather than simply presenting rules of which charts are good for what.
+The motivation for this is that
+learners can be apt at remembering *that*
 they should use one chart instead of another
-without understanding why that's the case.
-Or they might understand why for a specific example,
-but not be able to generalize that understanding further.
+without understanding *why* that's the case.
+Or they might remember why for a specific example,
+but fail to extend that into a general understanding
+that applies to previously unseen scenarios and charts.
 
-I consider that helping learners understand and generalize
-is a way to empower their agency
+Even more experienced visualized data workers
+might intuitively and implicitly make appropriate generalizations,
+without fully being able to articulate
+the reasoning behind their thought process.
+This resource strives to make such choices explicit
+through examples showing where previous techniques fall short
+so that students experience why a novel strategy is needed
+for a particular scenario.
+
+Helping learners generalize their understanding
+can empower their agency
 and improve their ability to predict
 what is an effective visualization choice
-for a visualization not previously encountered .
-At least it is my hope
-that this book can contribute to and encourage
-readers' critical thinking about any chart they might come across.
-In my experience, this angle also makes learning more fun.
+for a scenario not previously encountered.
+It is my hope
+that a deeper understanding for why and when
+certain visualization strategies are needed
+can contribute to and encourage
+learners' critical thinking about any chart they might come across.
+In my personal experience,
+developing such an understanding
+and revealing the implicit reasons behind visualization choices
+also makes learning more fun.
 
-This books interleaves exercises throughout the chapters
+This resource interleaves exercises throughout the chapters
 to encourage experiential learning
-and ignite readers intuition and make their learning more active.
+and to make learners more active
+instead of leaving them to passively consume information.
 The exercises are largely focused on visualization principles
 rather than coding,
 since memorization of library APIs
 is an increasingly replaceable skill;
-although understanding the guiding principles
-of how those APIs are designed
-can be informative
-(e.g. the rules of a grammar of graphics library).
+although understanding the guiding principles of the grammatical framework
+those APIs implement
+can be informative and helpful.
 
 To make the learning interactive,
 the book also include code in a few libraries
 that implements a version of the grammar of graphics.
-I focus on these
-because I think they empower student
-in a similar way as described above:
-the predictable grammar encourages learners to interpolate
-what **could** work based on understanding the rules of the grammar.
+These libraries where chosen
+because their predictable grammar
+encourages learners to interpolate from charts they have seen
+to charts they *could* potentially make
+based on understanding the rules of the grammar.
+The grammar of graphics also provides a data-centric framework
+for reasoning about visualization choices
+and more clearly seeing similarities and difference between charts,
+rather than just memorizing names of different charts types.
 <!-- rather than being focused on what **does** work from remembering a full api catalogue --> 
 <!-- of chart templtaes and names. -->
 
 <!-- TODO add note about how having the slides in the same document helps organize content -->
 
-This books also hopes to introduce students to some interesting data sets along the way,
+This resource also hopes to introduce students
+to some interesting data sets along the way,
 although this will likely be a work in progress over a longer time.
 
 <!-- I believe learning and exercises are tighyl coupled so therefore exercises --> 
