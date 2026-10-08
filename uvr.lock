@@ -287,11 +287,11 @@ checksum = "md5:b6c742457ff06f5f3a20d883afdd19a7"
 
 [[package]]
 name = "colorspace"
-version = "2.1.3"
+version = "2.1.4"
 source = "cran"
-raw_version = "2.1-3"
-url = "https://cran.r-project.org/src/contrib/colorspace_2.1-3.tar.gz"
-checksum = "md5:44beb9a1ff66bf35b44663b4fa7ef2ae"
+raw_version = "2.1-4"
+url = "https://cran.r-project.org/src/contrib/colorspace_2.1-4.tar.gz"
+checksum = "md5:2b2d367a454e47b574db3839fd550e36"
 
 [[package]]
 name = "conflicted"
