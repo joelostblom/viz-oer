@@ -52,13 +52,18 @@ those APIs implement
 can be informative and helpful.
 
 To make the learning interactive,
-the book also include code in a few libraries
-that implements a version of the grammar of graphics.
+code is included for the learner to experiment on their own.
+Rather than focusing on any one particular library,
+this resource allows learners to choose their library of interest
+from a set of libraries implementing a grammar of graphics.
 These libraries where chosen
 because their predictable grammar
 encourages learners to interpolate from charts they have seen
 to charts they *could* potentially make
 based on understanding the rules of the grammar.
+Having multiple such libraries also allows learners
+to distinguish underlying visualization principles
+from library-specific API design.
 The grammar of graphics also provides a data-centric framework
 for reasoning about visualization choices
 and more clearly seeing similarities and difference between charts,
