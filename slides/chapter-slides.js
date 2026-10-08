@@ -1,12 +1,63 @@
-// Escape dismisses Reveal's UI first, and exits only from a normal slide.
+// Presentation controls, heading-first reveals, and returning to the chapter.
 (() => {
   // Decks live in slides/ with the same filename as their reading-view chapter.
   const filename = window.location.pathname.split("/").pop();
   const chapter = new URL(`../${filename}`, window.location.href);
 
+  const installCodeToggles = (deck) => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("view") === "print" || query.has("print-pdf")) return;
+    let codeId = 0;
+    document.querySelectorAll(".reveal .slides .code-copy-outer-scaffold").forEach(scaffold => {
+      if (scaffold.closest("aside.notes, .cell-output")
+          || scaffold.classList.contains("slide-code-toggle-ready")) return;
+      const source = scaffold.querySelector(":scope > div.sourceCode, :scope > pre");
+      const copy = scaffold.querySelector(":scope > .code-copy-button");
+      if (!source || !copy) return;
+      if (!source.id) {
+        let id;
+        do { id = `slide-code-${++codeId}`; } while (document.getElementById(id));
+        source.id = id;
+      }
+      source.classList.add("slide-code-source");
+      const content = document.createElement("div");
+      content.className = "slide-code-content";
+      source.before(content);
+      content.append(source);
+      scaffold.classList.add("slide-code-toggle-ready");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "slide-code-toggle";
+      button.setAttribute("aria-controls", source.id);
+      button.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 15 6-6 6 6"/></svg>';
+      const setExpanded = (expanded) => {
+        scaffold.classList.toggle("slide-code-collapsed", !expanded);
+        content.inert = !expanded;
+        button.setAttribute("aria-expanded", String(expanded));
+        button.setAttribute("aria-label", expanded ? "Hide code" : "Show code");
+        button.title = expanded ? "Hide code" : "Show code";
+      };
+      setExpanded(true);
+      button.addEventListener("click", (event) => {
+        setExpanded(button.getAttribute("aria-expanded") !== "true");
+        deck.layout();
+        if (event.detail) button.blur();
+      });
+      content.addEventListener("transitionend", (event) => {
+        if (event.target === content && event.propertyName === "grid-template-rows") deck.layout();
+      });
+      // Keep native button activation from also advancing Reveal's fragments.
+      button.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") event.stopPropagation();
+      });
+      copy.before(button);
+    });
+  };
+
   const headingFirst = () => {
     const deck = window.Reveal;
     if (!deck) return;
+    installCodeToggles(deck);
     let footerTimer;
     const showTitleHint = () => {
       clearTimeout(footerTimer);
