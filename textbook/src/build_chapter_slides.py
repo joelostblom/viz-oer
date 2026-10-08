@@ -23,19 +23,24 @@ CHAPTER_ASSETS = {
     "3_individual-observations": ("data",),
     "4_magnitude": (),
     "5_groups": (
-        "data/income_lifeexp_alcohol.csv", "data/simpsons_paradox_data_l.csv",
+        "data/income_lifeexp_alcohol.csv",
+        "data/simpsons_paradox_data_l.csv",
     ),
     "6_connections": (
-        "data/co-emissions-per-capita.csv", "data/gapminder_world_from_1850.csv",
-        "data/gapminder_regions_from_1850.csv", "data/gapminder_world_trends.csv",
+        "data/co-emissions-per-capita.csv",
+        "data/gapminder_world_from_1850.csv",
+        "data/gapminder_regions_from_1850.csv",
+        "data/gapminder_world_trends.csv",
         "data/movie_scores.csv",
     ),
     "7_summaries": (
-        "data/meditation-stress-sample.csv", "data/same_mean_sd.csv",
+        "data/meditation-stress-sample.csv",
+        "data/same_mean_sd.csv",
     ),
     "8_counts": ("data/meditation-stress-sample.csv",),
     "9_binned-distributions": (
-        "data/movies.csv", "data/london_marathon_finish_times.csv",
+        "data/movies.csv",
+        "data/london_marathon_finish_times.csv",
     ),
     "10_smoothed-distributions": (
         "data/movies.csv",
@@ -48,11 +53,15 @@ CHAPTER_ASSETS = {
 }
 SHARED_ASSETS = (
     "illustrative-chart-actions.lua",
-    "chapter-slides.lua", "chapter-slides.css", "chapter-slides.js",
+    "chapter-slides.lua",
+    "chapter-slides.css",
+    "chapter-slides.js",
     "chapter-slide-tabs.js",
-    "chapter-slide-options.lua", "tokyo-night.theme",
+    "chapter-slide-options.lua",
+    "tokyo-night.theme",
     "_extensions/r-wasm/live/_knitr.qmd",
-    "utils.py", "utils.R",
+    "utils.py",
+    "utils.R",
 )
 
 
@@ -79,12 +88,17 @@ def discover_local_images(quarto, project, source):
     markdown = re.sub(
         r"^([ \t]*(?:`{3,}|~{3,}))\{([A-Za-z][\w.+-]*)(?:[ ,][^}\n]*)?\}[^\n]*$",
         lambda match: match[1] + "{." + match[2] + "}",
-        markdown, flags=re.MULTILINE,
+        markdown,
+        flags=re.MULTILINE,
     )
-    ast = json.loads(subprocess.check_output(
-        [quarto, "pandoc", "--from", "markdown", "--to", "json"],
-        input=markdown, text=True, cwd=project,
-    ))
+    ast = json.loads(
+        subprocess.check_output(
+            [quarto, "pandoc", "--from", "markdown", "--to", "json"],
+            input=markdown,
+            text=True,
+            cwd=project,
+        )
+    )
     references = []
 
     def collect(node):
@@ -113,22 +127,38 @@ def discover_local_images(quarto, project, source):
         if url.scheme or url.netloc or not url.path:
             continue
         path = Path(unquote(url.path))
-        image = (project / str(path).lstrip("/")) if path.is_absolute() else source.parent / path
+        image = (
+            (project / str(path).lstrip("/"))
+            if path.is_absolute()
+            else source.parent / path
+        )
         # Normalize .. while preserving a referenced symlink's filename in the
         # staged project; resolving it would copy the target under another name.
         image = Path(os.path.abspath(image))
-        if not image.is_relative_to(project) or not image.resolve().is_relative_to(project):
-            raise ValueError(f"Image path leaves the textbook project in {source.name}: {reference}")
+        if not image.is_relative_to(project) or not image.resolve().is_relative_to(
+            project
+        ):
+            raise ValueError(
+                f"Image path leaves the textbook project in {source.name}: {reference}"
+            )
         if not image.is_file():
-            raise FileNotFoundError(f"Missing image referenced in {source.name}: {reference} (expected {image})")
+            raise FileNotFoundError(
+                f"Missing image referenced in {source.name}: {reference} (expected {image})"
+            )
         images.add(image.relative_to(project).as_posix())
     return sorted(images)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--force", action="store_true", help="Build without waiting for a chapter render")
-    parser.add_argument("--chapter", choices=CHAPTER_ASSETS, help="Build only this chapter")
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Build without waiting for a chapter render",
+    )
+    parser.add_argument(
+        "--chapter", choices=CHAPTER_ASSETS, help="Build only this chapter"
+    )
     args = parser.parse_args()
     chapters = [args.chapter] if args.chapter else list(CHAPTER_ASSETS)
     outputs = os.environ.get("QUARTO_PROJECT_OUTPUT_FILES", "").splitlines()
@@ -157,7 +187,9 @@ def build_chapter(quarto, project, output_dir, chapter):
         staging = Path(directory)
         shutil.copy2(project / "_chapter-slides.yml", staging / "_quarto.yml")
         images = discover_local_images(quarto, project, project / f"{chapter}.qmd")
-        assets = dict.fromkeys((f"{chapter}.qmd", *SHARED_ASSETS, *CHAPTER_ASSETS[chapter], *images))
+        assets = dict.fromkeys(
+            (f"{chapter}.qmd", *SHARED_ASSETS, *CHAPTER_ASSETS[chapter], *images)
+        )
         for name in assets:
             destination = staging / name
             destination.parent.mkdir(parents=True, exist_ok=True)
@@ -169,7 +201,8 @@ def build_chapter(quarto, project, output_dir, chapter):
         # executes, without modifying the shared include used by the book.
         setup = staging / "_extensions/r-wasm/live/_knitr.qmd"
         setup.write_text(
-            setup.read_text(encoding="utf-8") + "\n"
+            setup.read_text(encoding="utf-8")
+            + "\n"
             + (project / "_slide-chunks.qmd").read_text(encoding="utf-8"),
             encoding="utf-8",
         )
@@ -182,21 +215,38 @@ def build_chapter(quarto, project, output_dir, chapter):
             heading = re.search(r"^# (.+?)(?:\s+\{[^}]*\})?\s*$", source, re.MULTILINE)
             title = heading.group(1) if heading else stem
             identifiers = re.findall(r"\{[^}]*#((?:sec|fig|tbl)-[\w-]+)", source)
-            identifiers += re.findall(r"^#\| label: ((?:fig|tbl)-[\w-]+)", source, re.MULTILINE)
+            identifiers += re.findall(
+                r"^#\| label: ((?:fig|tbl)-[\w-]+)", source, re.MULTILINE
+            )
             for identifier in identifiers:
                 prefix = identifier.split("-", 1)[0]
-                text = title if prefix == "sec" else f"{'Figure' if prefix == 'fig' else 'Table'} in {title}"
-                references[identifier] = {"text": text, "url": f"../{stem}.html#{identifier}"}
-        (staging / "slide-references.json").write_text(json.dumps(references), encoding="utf-8")
+                text = (
+                    title
+                    if prefix == "sec"
+                    else f"{'Figure' if prefix == 'fig' else 'Table'} in {title}"
+                )
+                references[identifier] = {
+                    "text": text,
+                    "url": f"../{stem}.html#{identifier}",
+                }
+        (staging / "slide-references.json").write_text(
+            json.dumps(references), encoding="utf-8"
+        )
         # Do not carry the outer project's profile or bookkeeping into the
         # standalone render. R/Python environment activation is retained.
-        env = {key: value for key, value in os.environ.items()
-               if key != "QUARTO_PROFILE" and not key.startswith(
-                   ("QUARTO_PROJECT_", "QUARTO_RENDER_", "QUARTO_PREVIEW_")
-               )}
+        env = {
+            key: value
+            for key, value in os.environ.items()
+            if key != "QUARTO_PROFILE"
+            and not key.startswith(
+                ("QUARTO_PROJECT_", "QUARTO_RENDER_", "QUARTO_PREVIEW_")
+            )
+        }
         subprocess.run(
             [quarto, "render", f"{chapter}.qmd", "--to", "revealjs"],
-            cwd=staging, env=env, check=True,
+            cwd=staging,
+            env=env,
+            check=True,
         )
         shutil.copytree(staging / "_output", output_dir / "slides", dirs_exist_ok=True)
 
