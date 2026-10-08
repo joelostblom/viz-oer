@@ -40,6 +40,10 @@ CHAPTER_ASSETS = {
     "10_smoothed-distributions": (
         "data/movies.csv", "data/london_marathon_finish_times.csv",
     ),
+    "12a_exploratory-data-analysis": (
+        "data/seattle-weather-sensor.csv", "data/seattle-weather-complete.csv",
+        "data/seattle-weather-eda.md",
+    ),
 }
 SHARED_ASSETS = (
     "illustrative-chart-actions.lua",

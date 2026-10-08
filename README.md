@@ -273,6 +273,17 @@ works for cells inside a `.slide-visual` wrapper and does not affect the book.
 Slide code uses the custom `textbook/tokyo-night.theme`: dark background, purple
 keywords, green strings, orange numbers, and blue functions. It is configured
 only in the presentation template.
+Each slide code block has a **Hide code** chevron beside its top-right copy
+button. It appears when hovering over the code area or focusing its controls,
+using the copy icon's muted blue-gray and blue hover colors. Click it to collapse
+the source to a small **Code hidden** bar and make
+room for the output; click **Show code** to restore it. Blocks toggle independently,
+including inside language tabs, and delayed output retains its normal reveal step.
+The chevron rotates over 200 ms, and the source slides closed/open over 350 ms,
+matching the book's hint/solution dropdowns. Reduced-motion preferences disable
+these animations; touch screens keep the toggle visible.
+The copy button still copies the complete source while it is hidden. Printing
+and PDF export include the expanded source.
 Slide text and headings use the OS interface font (`system-ui`); code uses
 `ui-monospace` with platform-appropriate fallbacks. No Ubuntu webfont download
 is needed. The font stacks are set in `_chapter-slides.yml` and

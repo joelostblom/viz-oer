@@ -18,6 +18,29 @@ url = "https://cran.r-project.org/src/contrib/Formula_1.2-6.tar.gz"
 checksum = "md5:230a93c95eaabdfc7a2e958efbbe25db"
 
 [[package]]
+name = "GGally"
+version = "2.4.0"
+source = "cran"
+raw_version = "2.4.0"
+url = "https://cran.r-project.org/src/contrib/GGally_2.4.0.tar.gz"
+checksum = "md5:10e743f036dd7a85cc00e5d726c35df5"
+requires = [
+    "ggplot2",
+    "cli",
+    "dplyr",
+    "ggstats",
+    "gtable",
+    "lifecycle",
+    "magrittr",
+    "progress",
+    "RColorBrewer",
+    "rlang",
+    "S7",
+    "scales",
+    "tidyr",
+]
+
+[[package]]
 name = "Hmisc"
 version = "5.3.0"
 source = "cran"
@@ -502,6 +525,27 @@ requires = [
     "scales",
     "vctrs",
     "withr",
+]
+
+[[package]]
+name = "ggstats"
+version = "0.14.0"
+source = "cran"
+raw_version = "0.14.0"
+url = "https://cran.r-project.org/src/contrib/ggstats_0.14.0.tar.gz"
+checksum = "md5:100b331e3f2c7b4a3d8bd4a490d0db5e"
+requires = [
+    "cli",
+    "dplyr",
+    "forcats",
+    "ggplot2",
+    "lifecycle",
+    "patchwork",
+    "purrr",
+    "rlang",
+    "scales",
+    "stringr",
+    "tidyr",
 ]
 
 [[package]]

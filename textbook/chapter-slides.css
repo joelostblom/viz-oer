@@ -129,7 +129,7 @@
 
 .reveal .panel-tabset [role="tablist"] {
   border-color: #414868;
-  margin-bottom: 0.65em;
+  margin-bottom: 0;
 }
 
 .reveal .panel-tabset [role="tablist"] li {
@@ -222,13 +222,16 @@
 
 /* Separate displayed source from its result, including static pseudocode
    followed by a separately executed chart cell. */
-.reveal .slide-media .code-copy-outer-scaffold + .cell-output,
-.reveal .slide-media .sourceCode + .cell-output,
-.reveal .slide-media .code-copy-outer-scaffold + .slide-answer,
-.reveal .slide-media .sourceCode + .slide-answer,
-.reveal .slide-media > .code-copy-outer-scaffold + .cell,
-.reveal .slide-media > .sourceCode + .cell {
+.reveal .slide-media :is(.code-copy-outer-scaffold, .sourceCode)
+    + :is(.cell-output, .cell-output-display, .cell-output-stdout, .cell-output-stderr, .slide-answer),
+.reveal .slide-media > :is(.code-copy-outer-scaffold, .sourceCode) + .cell {
   margin-top: 0.5em;
+}
+
+/* Static plots use this same gap rather than adding Reveal's image margin. */
+.reveal .slide-media :is(.code-copy-outer-scaffold, .sourceCode)
+    + :is(.cell-output, .cell-output-display, .slide-answer, .cell) img {
+  margin-top: 0;
 }
 
 /* Two complete examples side by side; code and output remain stacked within
@@ -314,6 +317,145 @@
 
 .reveal .code-copy-button {
   color: #c0caf5;
+}
+
+/* Collapse source independently of its cell output and fragment state. */
+.reveal .slide-code-toggle,
+.reveal .slide-code-toggle-ready > .code-copy-button {
+  position: absolute;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  margin: 5px;
+  padding: 4px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #787c99;
+  cursor: pointer;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reveal .slide-code-toggle {
+  right: 36px;
+  opacity: 0;
+  transition: color 200ms ease;
+}
+
+.reveal .slide-code-toggle-ready:is(:hover, :focus-within) > .slide-code-toggle {
+  opacity: 1;
+}
+
+.reveal .slide-code-toggle-ready > .code-copy-button > .bi {
+  display: flex;
+}
+
+.reveal .slide-code-toggle svg {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  transition: transform 200ms ease;
+}
+
+.reveal .slide-code-toggle[aria-expanded="false"] svg {
+  transform: rotate(180deg);
+}
+
+.reveal .slide-code-toggle:hover,
+.reveal .slide-code-toggle:focus-visible {
+  color: var(--r-heading-color);
+}
+
+.reveal .slide-code-toggle:focus-visible {
+  outline: 2px solid var(--r-heading-color);
+  outline-offset: 2px;
+}
+
+@media screen {
+  .reveal .slide-code-toggle-ready {
+    min-height: 38px;
+  }
+
+  .reveal .slide-code-toggle-ready pre.code-with-copy {
+    box-sizing: border-box;
+    padding-right: 76px;
+  }
+
+  .reveal .slide-code-collapsed {
+    background-color: #24283b;
+    border-radius: 4px;
+  }
+
+  .reveal .slide-code-content {
+    display: grid;
+    grid-template-rows: 1fr;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+    transition: grid-template-rows 350ms ease, opacity 160ms ease, visibility 0s;
+  }
+
+  .reveal .slide-code-content > .slide-code-source {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .reveal .slide-code-collapsed > .slide-code-content {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows 350ms ease, opacity 160ms ease, visibility 0s linear 350ms;
+  }
+
+  .reveal .slide-code-toggle-ready::before {
+    content: "Code hidden";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    padding: 8px 76px 8px 12px;
+    font-family: var(--r-main-font);
+    font-size: 16px;
+    line-height: 22px;
+    color: #a9b1d6;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 120ms ease, visibility 0s linear 120ms;
+  }
+
+  .reveal .slide-code-collapsed::before {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 160ms;
+  }
+}
+
+@media (hover: none) {
+  .reveal .slide-code-toggle {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal .slide-code-toggle,
+  .reveal .slide-code-toggle svg,
+  .reveal .slide-code-content,
+  .reveal .slide-code-collapsed > .slide-code-content,
+  .reveal .slide-code-toggle-ready::before {
+    transition: none;
+  }
+}
+
+/* Browser printing includes the source even if it was hidden on screen. */
+@media print {
+  .reveal .slide-code-toggle,
+  .reveal .slide-code-toggle-ready > .code-copy-button {
+    display: none;
+  }
 }
 
 .reveal :not(pre) > code {
