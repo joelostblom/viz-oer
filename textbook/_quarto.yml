@@ -29,16 +29,16 @@ book:
         - 10_smoothed-distributions.qmd
         - 11_cumulative-distributions.qmd
         - 12_joint-distributions.qmd
-        - 12a_exploratory-data-analysis.qmd
     - part: "Communication & design"
       chapters:
         - 13_communication.qmd
         - 14_color.qmd
     - part: "Extensions & applications"
       chapters:
-        - 15_uncertainty.qmd
-        - 16_interactivity.qmd
-        - 17_geospatial.qmd
+        - 15_exploratory-data-analysis.qmd
+        - 16_uncertainty.qmd
+        - 17_interactivity.qmd
+        - 18_geospatial.qmd
     # - 99_misc.qmd
 
 filters:
