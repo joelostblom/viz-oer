@@ -108,6 +108,12 @@ it makes the accumulated amount explicit through its length]{.slide-bullet}
 (you can think of the bar
 as representing all the individual observations
 stacked on top of each other).
+Because of this,
+we should generally
+[always start the axis at zero when showing bars]{.slide-bullet}
+and only zoom in if we have a very particular reason for doing so.
+
+<!-- TODO turn into "Avoid" warning box -->
 
 ::: {.panel-tabset group="language"}
 
@@ -358,7 +364,7 @@ it is easy to see that
 all conditions have more female than male respondents.
 Try to [compare the exact number of respondents between conditions;
 is that easier for the male of female group?]{.slide-bullet}
-[What's the reason it's easier for one group over the other?]{.slide-bullet}
+[What's the reason it's easier for one group over the other?]{.slide-subbullet}
 
 :::: {.callout-default .ex-hint}
 
