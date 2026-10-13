@@ -534,7 +534,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="chapter-slide-link">
-<a href="slides/8_counts.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<a href="slides/8_counts.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <rect x="3" y="3" width="18" height="13" rx="1"></rect>
         <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
         </svg></a>
@@ -638,7 +638,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="from-points-to-bars" class="level2 content-visible" data-when-format="revealjs" data-number="8.2">
 <h2 class="content-visible anchored" data-when-format="revealjs" data-number="8.2" data-anchor-id="from-points-to-bars"><span class="header-section-number">8.2</span> From points to bars</h2>
-<p>When we are showing <span class="slide-bullet">an accumulated value like a count or sum</span>, it can be beneficial to replace our point mark with a bar to be able to more clearly compare groups. <span class="slide-bullet">Bar charts visualize magnitudes as position and length</span>. <span class="slide-bullet">Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</span> (you can think of the bar as representing all the individual observations stacked on top of each other).</p>
+<p>When we are showing <span class="slide-bullet">an accumulated value like a count or sum</span>, it can be beneficial to replace our point mark with a bar to be able to more clearly compare groups. <span class="slide-bullet">Bar charts visualize magnitudes as position and length</span>. <span class="slide-bullet">Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</span> (you can think of the bar as representing all the individual observations stacked on top of each other). Because of this, we should generally <span class="slide-bullet">always start the axis at zero when showing bars</span> and only zoom in if we have a very particular reason for doing so.</p>
+<!-- TODO turn into "Avoid" warning box -->
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
@@ -992,7 +993,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>In this chart, it is easy to see that all conditions have more female than male respondents. Try to <span class="slide-bullet">compare the exact number of respondents between conditions; is that easier for the male of female group?</span> <span class="slide-bullet">What’s the reason it’s easier for one group over the other?</span></p>
+<p>In this chart, it is easy to see that all conditions have more female than male respondents. Try to <span class="slide-bullet">compare the exact number of respondents between conditions; is that easier for the male of female group?</span> <span class="slide-subbullet">What’s the reason it’s easier for one group over the other?</span></p>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">

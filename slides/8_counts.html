@@ -209,7 +209,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
+<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
@@ -233,7 +233,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="counts" class="slide level2" data-chapter-anchor="counts" data-footer="false">
+<section id="counts" class="slide level2" data-footer="false" data-chapter-anchor="counts">
 <h2>Counts</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Altair</a></li><li><a href="#tabset-1-2">ggplot</a></li></ul>
@@ -323,7 +323,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="from-points-to-bars" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
+<section id="from-points-to-bars" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
 <h2>From points to bars</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -340,8 +340,14 @@
 <li><p>Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</p></li>
 </ul>
 </div>
+<div class="slide-content fragment fade-in" data-fragment-index="3">
+<ul>
+<li><p>Always start the axis at zero when showing bars</p></li>
+</ul>
+</div>
 <aside class="notes">
-<p>When we are showing <span class="slide-bullet"><strong>an accumulated value like a count or sum</strong></span>, it can be beneficial to replace our point mark with a bar to be able to more clearly compare groups. <span class="slide-bullet"><strong>Bar charts visualize magnitudes as position and length</strong></span>. <span class="slide-bullet"><strong>Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</strong></span> (you can think of the bar as representing all the individual observations stacked on top of each other).</p>
+<p>When we are showing <span class="slide-bullet"><strong>an accumulated value like a count or sum</strong></span>, it can be beneficial to replace our point mark with a bar to be able to more clearly compare groups. <span class="slide-bullet"><strong>Bar charts visualize magnitudes as position and length</strong></span>. <span class="slide-bullet"><strong>Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</strong></span> (you can think of the bar as representing all the individual observations stacked on top of each other). Because of this, we should generally <span class="slide-bullet"><strong>always start the axis at zero when showing bars</strong></span> and only zoom in if we have a very particular reason for doing so.</p>
+<!-- TODO turn into "Avoid" warning box -->
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -354,7 +360,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-2-step-1" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
+<section id="tabset-2-step-1" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
 <h2>From points to bars</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Altair</a></li><li><a href="#tabset-2-2">ggplot</a></li></ul>
@@ -443,7 +449,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-giant-bars" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
+<section id="avoid-giant-bars" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
 <h2>Avoid giant bars</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
@@ -468,7 +474,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-bar-charts-for-means-and-medians" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
+<section id="avoid-bar-charts-for-means-and-medians" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
 <h2>Avoid bar charts for means and medians</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -494,7 +500,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="sorting-groups" class="slide level2" data-chapter-anchor="sorting-groups" data-footer="false">
+<section id="sorting-groups" class="slide level2" data-footer="false" data-chapter-anchor="sorting-groups">
 <h2>Sorting groups</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -604,7 +610,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-4-step-1" class="slide level2" data-chapter-anchor="sorting-groups" data-footer="false">
+<section id="tabset-4-step-1" class="slide level2" data-footer="false" data-chapter-anchor="sorting-groups">
 <h2>Sorting by a custom order</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Altair</a></li><li><a href="#tabset-4-2">ggplot</a></li></ul>
@@ -697,7 +703,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="stacked-bars" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
+<section id="stacked-bars" class="slide level2" data-footer="false" data-chapter-anchor="stacked-bars">
 <h2>Stacked bars</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -777,12 +783,12 @@
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="3">
 <ul>
-<li><p>Compare the exact number of respondents between conditions; is that easier for the male of female group?</p></li>
-</ul>
-</div>
-<div class="slide-content fragment fade-in" data-fragment-index="4">
+<li><p>Compare the exact number of respondents between conditions; is that easier for the male of female group?</p>
+<div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="4" data-subbullet-attached="true">
 <ul>
 <li><p>What’s the reason it’s easier for one group over the other?</p></li>
+</ul>
+</div></li>
 </ul>
 </div>
 <aside class="notes">
@@ -791,7 +797,7 @@
 <p>For example, we might be interested in how participants’ self-reported gender is distributed across the study conditions.</p>
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
-<p>In this chart, it is easy to see that all conditions have more female than male respondents. Try to <span class="slide-bullet"><strong>compare the exact number of respondents between conditions; is that easier for the male of female group?</strong></span> <span class="slide-bullet"><strong>What’s the reason it’s easier for one group over the other?</strong></span></p>
+<p>In this chart, it is easy to see that all conditions have more female than male respondents. Try to <span class="slide-bullet"><strong>compare the exact number of respondents between conditions; is that easier for the male of female group?</strong></span> <span class="slide-subbullet"><strong>What’s the reason it’s easier for one group over the other?</strong></span></p>
 <p><strong>Hint</strong></p>
 <p>Look at which bar segments start at zero and which start at another segment’s endpoint. The difficulty is the same as for stacked areas. But the solution is slightly different since we have more options than just layering the bars on top of each other.</p>
 <p><strong>Solution</strong></p>
@@ -809,7 +815,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-6-step-1" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
+<section id="tabset-6-step-1" class="slide level2" data-footer="false" data-chapter-anchor="stacked-bars">
 <h2>Give the groups a shared baseline</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Altair</a></li><li><a href="#tabset-6-2">ggplot</a></li></ul>
@@ -915,7 +921,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="proportions" class="slide level2" data-chapter-anchor="proportions" data-footer="false">
+<section id="proportions" class="slide level2" data-footer="false" data-chapter-anchor="proportions">
 <h2>Proportions</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1056,7 +1062,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="pie-charts" class="slide level2" data-chapter-anchor="pie-charts" data-footer="false">
+<section id="pie-charts" class="slide level2" data-footer="false" data-chapter-anchor="pie-charts">
 <h2>Pie charts</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1153,7 +1159,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-pie-charts-for-precise-comparisons" class="slide level2" data-chapter-anchor="pie-charts" data-footer="false">
+<section id="avoid-pie-charts-for-precise-comparisons" class="slide level2" data-footer="false" data-chapter-anchor="pie-charts">
 <h2>Avoid pie charts for precise comparisons</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
