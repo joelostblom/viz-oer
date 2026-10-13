@@ -225,10 +225,10 @@ function Pandoc(doc)
     if element.classes:includes("slide-text") then return "text" end
   end
 
-  local function text_fragment(blocks, capitalize)
+  local function text_fragment(blocks, bullets)
     local fragment = pandoc.Div(blocks,
       pandoc.Attr("", {"slide-content", "fragment", "fade-in"}))
-    if capitalize then
+    if bullets then
       local content = pandoc.List()
       local items = pandoc.List()
       local function flush_bullets()
@@ -262,14 +262,13 @@ function Pandoc(doc)
       end
       flush_bullets()
       fragment.content = content
-      -- walk returns a transformed copy, preserving the chapter/notes wording.
-      fragment = fragment:walk({Para = capitalize_paragraph, Plain = capitalize_paragraph})
     end
-    return fragment
+    -- Capitalize all selected text; walk preserves the chapter/notes wording.
+    return fragment:walk({Para = capitalize_paragraph, Plain = capitalize_paragraph})
   end
 
-  local function show_text(blocks, capitalize, subbullet)
-    local fragment = text_fragment(blocks, capitalize)
+  local function show_text(blocks, bullets, subbullet)
+    local fragment = text_fragment(blocks, bullets)
     if subbullet then fragment.classes:insert("slide-subbullet") end
     if reveal_with_heading then
       fragment.attributes["slide-reveal-group"] = tostring(reveal_with_heading)

@@ -303,8 +303,8 @@ speaker notes, where the selected passages are bold to make them easy to locate.
 Only the marked phrase appears on the slide, as a bulleted fade-in fragment
 under the current heading. Formatting and links inside the brackets are retained.
 Multiple marked spans become separate fragments, in reading order.
-For bullet and subbullet selections, the first letter of each paragraph or list
-item is automatically
+For `.slide-text`, `.slide-bullet`, and `.slide-subbullet` selections, the first
+letter of each paragraph or list item is automatically
 capitalized in slides, including excerpts starting with bold text or a link.
 The rest of the capitalization is preserved; chapter text and speaker notes
 retain their original wording. Leading code identifiers and formulas stay literal.
