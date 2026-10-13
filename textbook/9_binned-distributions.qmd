@@ -33,11 +33,12 @@ resources:
 ## Why bother?
 
 In @sec-summaries,
-we learned that it is important to inspect the underlying observations
-to see how they are distributed.
-Much of that information would be hidden if we looked only at a summary like the mean or median.
-[But what happens when we have too many data points
-to visualize all of them individually?]{.slide-bullet}
+we learned that [it is important to inspect the underlying observations
+to see how they are distributed]{.slide-bullet}.
+Much of that information would be hidden
+if we looked only at a summary like the mean or median.
+[But what can we do when there are too many data points
+to visualize all of them individually?]{.slide-subbullet}
 
 
 ::: {.callout-default .ex-prompt}
@@ -53,7 +54,6 @@ to more clearly see how they are distributed?
 ```{python}
 #| label: runtime-jitter-motivation
 #| slide-show: output
-#| slide-title: What would make this distribution clearer?
 #| echo: false
 import altair as alt
 import pandas as pd
@@ -156,7 +156,7 @@ so we use a compact chart height here.
 ```{python}
 #| label: runtime-histogram-alt
 #| slide-show: both
-#| slide-title: Binning and counting — Altair
+#| slide-title: Histograms
 movies = pd.read_csv('data/movies.csv')
 alt.Chart(movies, height=150).mark_bar().encode(
     x=alt.X('Running Time min').bin(),
@@ -173,8 +173,6 @@ to compare multiple histograms in the same chart.
 
 ```{python}
 #| label: runtime-histogram-color-alt
-#| slide-show: both
-#| slide-title: Showing bin boundaries — Altair
 alt.Chart(movies, height=150).mark_bar(binSpacing=0).encode(
     x=alt.X('Running Time min').bin(),
     y='count()',
@@ -191,8 +189,7 @@ so this chapter uses a compact default figure height.
 
 ```{r}
 #| label: runtime-histogram-gg
-#| slide-show: output
-#| slide-title: Binning and counting — ggplot
+#| slide-show: both
 #| message: false
 library(ggplot2)
 
@@ -216,11 +213,9 @@ creating the appearance of gaps between them without changing the bin boundaries
 
 ```{r}
 #| label: runtime-histogram-color-gg
-#| slide-show: both
-#| slide-title: Showing bin boundaries — ggplot
-#| message: false
-library(ggplot2)
-
+#| slide-show: code
+#| slide-title: Histograms
+#| slide-output-fragment: true
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_histogram(color = 'white')
 ```
@@ -255,7 +250,6 @@ so that each bin now spans five minutes:
 ```{python}
 #| label: runtime-histogram-bins-alt
 #| slide-show: both
-#| slide-title: Choosing a bin width — Altair
 alt.Chart(movies, height=150).mark_bar().encode(
     x=alt.X('Running Time min').bin(step=5),
     y='count()',
@@ -265,16 +259,15 @@ alt.Chart(movies, height=150).mark_bar().encode(
 ### ggplot {.slide-skip}
 
 To show more detail,
-reduce the `binwidth` of each bin to 5
+reduce the `binwidth` of each bin to 10
 so that each bin now spans five minutes:
 
 ```{r}
 #| label: runtime-histogram-bins-gg
 #| slide-show: both
-#| slide-title: Choosing a bin width — ggplot
 #| message: false
 ggplot(movies, aes(x = `Running Time min`)) +
-    geom_histogram(binwidth = 5, color = 'white')
+    geom_histogram(binwidth = 10, color = 'white')
 ```
 
 :::
@@ -297,20 +290,21 @@ to make the chart easier to interpret.
 
 ::: {.callout-default .ex-prompt}
 
+## Varying bin width {.content-visible when-format="revealjs"}
+
 To experience the impact of different bin widths,
 we explore a dataset
 containing finish times from the 2023 London Marathon
 for male runners aged 18–39.
 Use the slider to explore different bin widths
 in the histogram.
-Which bin width would you choose?
-And how would you explain the peaks that become visible
-when the bins are narrower?
+[Which bin width would you choose?]{.slide-bullet}
+[How would you explain the peaks that become visible
+when the bins are narrower?]{.slide-bullet}
 
 ```{python}
 #| label: marathon-histogram-bins
 #| slide-show: output
-#| slide-title: Try different bin widths
 #| echo: false
 mara = pd.read_csv('data/london_marathon_finish_times.csv')
 bin_widths = [2, 5, 8, 11, 14]
@@ -365,6 +359,9 @@ Popular targets include 3 hours, 3 hours 30 minutes, and 4 hours,
 which correspond to 180, 210, and 240 minutes.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://doi.org/10.1287/mnsc.2015.2417)]
 Trying several bin widths helps us check whether these concentrations persist
 rather than trusting a peak that appears with only one binning choice.
+In general we should [explore bin widths
+in intervals that are meaningful for the binned variable
+or so that they reveal interesting properties of the distribution]{.slide-bullet}.
 
 The y-axis labels show lower count number for narrower bins,
 since less runners fit within each bin.
@@ -376,19 +373,6 @@ within the same interval.
 :::::
 
 ::::
-
-:::
-
-::: {.callout-warning}
-
-### Avoid looking at just a single histogram
-
-Various attributes of the distribution
-can stand out at different bin widths.
-It is therefore important
-to try a few different bin widths
-and reflect on which features of the underlying data
-they might highlight.
 
 :::
 
@@ -406,6 +390,7 @@ with two peaks.
 #| echo: false
 #| label: fig-hist-bin-shift
 #| slide-show: output
+#| slide-title: Same data - different histograms
 #| fig-cap: >
 #|   The same data has been used to create these two histograms,
 #|   which also share a bin width of 50 units.
@@ -445,11 +430,31 @@ hist | hist.encode(
 )
 ```
 
+::: {.content-visible when-format="revealjs"}
+
+[These two histograms are made from the same underlying data and with the same bin width]{.slide-bullet}.
+[Why do they look different?]{.slide-subbullet}
+
+:::
+
+::: {.callout-warning}
+
+### Avoid looking at just a single histogram {.slide-skip}
+
+Various attributes of the distribution
+can stand out at different bin widths.
+It is therefore important
+to try a few different bin widths
+and reflect on which features of the underlying data
+they might highlight.
+
+:::
+
 ## Adding back individual observations
 
 The histogram shortcomings we have learned about
 can be somewhat alleviated
-by [showing individual observations alongside the histogram]{.slide-bullet}.
+by showing individual observations alongside the histogram.
 We can use jittered points, as at the start of the chapter,
 or we can use a small tick to mark each observation
 in what is often called a "rug" plot.
@@ -473,8 +478,7 @@ belong to which bin.
 
 ```{python}
 #| label: runtime-histogram-rug-alt
-#| slide-show: output
-#| slide-title: Add a rug of individual observations — Altair
+#| slide-show: both
 
 hist = alt.Chart(movies, height=150).mark_bar().encode(
     x=alt.X('Running Time min').bin(step=10),
@@ -502,7 +506,6 @@ directly in the margin of the canvas.
 ```{r}
 #| label: runtime-histogram-rug-gg
 #| slide-show: both
-#| slide-title: Add a rug of individual observations — ggplot
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_histogram(color = 'white') +
     geom_rug()
@@ -510,11 +513,25 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 :::
 
+Showing individual observation alongside the histogram can alleviate some of its bin-related shortcomings {.content-visible when-format="revealjs" .slide-bullet}
+
 ## Multiple distributions
 
 With all that we have learned about histograms in mind,
 [let's finally create a version of the plot we started this chapter with,
 using histograms rather than jittered points]{.slide-bullet}.
+
+::: {.content-visible when-format="revealjs" .slide-text}
+
+How can we visualize multiple histograms?
+
+A.  Stacking histograms using color to separate them
+B.  Layering histograms using color to separate them
+C.  Spreading histogram groups out on the x or y axis
+D.  Facetting histograms using color to separate them
+E.  Facetting histograms without color
+
+:::
 
 ::: {.callout-warning}
 
@@ -544,7 +561,7 @@ we make them partially transparent by setting `opacity=0.5`.
 ```{python}
 #| label: genre-histograms-overlaid-alt
 #| slide-show: both
-#| slide-title: Overlapping histograms — Altair
+#| slide-title: Overlapping histograms
 alt.Chart(movies, height=150).mark_bar(opacity=0.5).encode(
     x=alt.X('Running Time min').bin(step=5),
     y=alt.Y('count()').stack(False),
@@ -566,7 +583,7 @@ with the `alpha` parameter.
 ```{r}
 #| label: genre-histograms-overlaid-gg
 #| slide-show: both
-#| slide-title: Overlapping histograms — ggplot
+#| slide-title: Overlapping histograms
 ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
     geom_histogram(color = 'white', position = 'identity', alpha = 0.5)
 ```
@@ -582,8 +599,6 @@ then a colored histogram chart can be effective.
 
 ```{python}
 #| label: two-genre-histograms-alt
-#| slide-show: output
-#| slide-title: When overlap can still be useful
 #| echo: false
 (
     alt.Chart(
