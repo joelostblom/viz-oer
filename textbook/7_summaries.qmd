@@ -28,13 +28,13 @@ In @sec-connections, we connected related observations to reveal changes over ti
 and differences between conditions.
 Sometimes, however, our question concerns a collection of observations:
 How many are there? What is their total? What is a typical value?
-[A summary helps answer these questions by reducing many values to a few]{.slide-bullet}.
+A summary helps answer these questions by reducing many values to a few.
 In this chapter, we will explore how to reduce a collection
 of observations to useful quantities.
 
 That reduction is useful, but it also leaves information out.
 As we work through this chapter, keep asking:
-[What did we lose, and how much of it do we need to put back?]{.slide-bullet}
+What did we lose, and how much of it do we need to put back?
 We will explore these questions here and in the following chapters.
 
 <!-- TODO add summaries for line for lab 1? -->
@@ -63,7 +63,6 @@ grouping observations by position and comparing their values on a shared scale.
 ```{python}
 #| label: meditation-observations-alt
 #| slide-show: output
-#| slide-title: Compare stress scores between conditions
 import pandas as pd
 import altair as alt
 
@@ -80,7 +79,6 @@ alt.Chart(meditation).mark_point().encode(
 ```{r}
 #| label: meditation-observations-gg
 #| slide-show: output
-#| slide-title: Overlapping observations — ggplot
 #| message: false
 library(readr)
 library(ggplot2)
@@ -105,7 +103,11 @@ Although we followed the strategies we have learned so far,
 overlapping points make it difficult to compare where observations are concentrated.
 We can see the range of recorded scores,
 but not how many observations share each position.
-Read on to find out how we could make these comparisons easier.
+Instead,
+we can use statistical summaries,
+such as the mean and median,
+to make it easier to compare conditions.
+Read on to see examples of how to do this.
 
 :::::
 
@@ -118,7 +120,9 @@ Read on to find out how we could make these comparisons easier.
 In @sec-why-visualize-data,
 we saw that statistical summaries can make some patterns easier to identify
 than they are in a raw table of numbers.
-We can use a similar strategy here by [comparing the mean stress score in each condition]{.slide-bullet}.
+We can use a similar strategy here by comparing the mean stress score in each condition,
+to show how observations within the different conditions
+differ on average.
 
 ::: {.panel-tabset group="language"}
 
@@ -136,7 +140,6 @@ for example, `'mean(stress)'`:
 ```{python}
 #| label: meditation-means-alt
 #| slide-show: both
-#| slide-title: Comparing group means — Altair
 alt.Chart(meditation).mark_point().encode(
     y='condition',
     x='mean(stress)'
@@ -156,7 +159,6 @@ other geoms can have different defaults.
 ```{r}
 #| label: meditation-means-gg
 #| slide-show: both
-#| slide-title: Comparing group means — ggplot
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_point(stat = 'summary', fun = mean)
 ```
@@ -164,14 +166,17 @@ ggplot(meditation, aes(y = condition, x = stress)) +
 Instead of calling `geom_point()` and setting the `stat` parameter,
 we could call `stat_summary()` and set the `geom` parameter:
 
+::: {.slide-fragment}
+
 ```{r}
 #| label: meditation-means-stat-summary-gg
 #| slide-show: code
-#| slide-title: Geoms and stats describe the same chart
 #| output: false
 ggplot(meditation, aes(y = condition, x = stress)) +
     stat_summary(geom = 'point', fun = mean)
 ```
+
+:::
 
 These two calls produce **the same chart**,
 and both are commonly used.
@@ -196,23 +201,22 @@ We will discuss axis limits in more detail later.
 :::
 
 Now we can clearly see
-that **on average** there are some differences between the groups.
+that [**on average** there are some differences between the groups]{.slide-bullet}.
 
 ## Visualizing spread
 
-But showing only the mean hides the variability in the observations.
+But showing [only the mean hides the variability in the observations]{.slide-bullet}.
 How the individual values are distributed
 also affects the conclusions we can draw from the data.
-
 So,
 whenever we show a measure of central tendency such as the mean or median,
 it is helpful to pair it with an indication of the underlying variability.
 
-Here, we need to distinguish two concepts:
-[the spread of the underlying data (descriptive statistics)
-and the uncertainty in the estimate of central tendency (inferential statistics)]{.slide-bullet}.
-These answer two different questions,
-but graphically they are often depicted similarly.
+Here, we need to distinguish [two concepts]{.slide-bullet}:
+[the spread of the underlying data (descriptive statistics)]{.slide-subbullet}
+and [the uncertainty in the estimate of central tendency (inferential statistics)]{.slide-subbullet}.
+These [answer two different questions,
+but graphically they are often depicted similarly]{.slide-subbullet}.
 In this chapter,
 we will focus on how spread out the underlying data distribution is,
 and return to confidence intervals and other measures of inferential uncertainty
@@ -226,6 +230,14 @@ which measures how spread out observations are around the mean.^[The population 
 Let's see how we can include the standard deviation
 together with the mean
 in our charts:
+
+::: {.content-visible when-format="revealjs"}
+
+[Two examples]{.slide-bullet}
+[Standard deviation: How spread out observations are around the mean]{.slide-subbullet}
+[Percentile interval: Where a certain range of the observations lie]{.slide-subbullet}
+
+:::
 
 ::: {.panel-tabset group="language"}
 
@@ -338,6 +350,17 @@ observations = (
 alt.hconcat(summaries, observations, spacing=30)
 ```
 
+::: {.content-visible when-format="revealjs" .slide-text}
+
+Which of the scenarios could give rise to the summary plots?
+
+A.  Symmetric
+C.  Outlier
+B.  Bimodal
+D.  Unequal n
+
+:::
+
 :::: {.callout-default .ex-hint}
 
 It's more than just one of them...
@@ -345,7 +368,7 @@ It's more than just one of them...
 ::::: {.callout-default .ex-solution}
 
 In this case,
-[**all four** scenarios produce the same means and standard deviations for groups A and B!]{.slide-bullet}
+**all four** scenarios produce the same means and standard deviations for groups A and B!
 If you only look at the mean ± SD chart,
 you cannot tell which of these very different datasets it represents.
 This matters because depending on what your observations look like,
@@ -405,8 +428,7 @@ We then layer the mean and standard deviation interval over those points.
 
 ```{python}
 #| label: meditation-jitter-summary-alt
-#| slide-show: output
-#| slide-title: Put the underlying observations back — Altair
+#| slide-show: both
 base = alt.Chart(meditation, height=alt.Step(30)).encode(
     y=alt.Y('condition').scale(padding=0.4),
     x='stress'
@@ -416,10 +438,7 @@ points = (
     base
     .transform_calculate(jitter=alt.expr.random())
     .mark_circle(color='lightgrey')
-    .encode(
-        yOffset=alt.YOffset('jitter:Q'),
-        x='stress'
-    )
+    .encode(yOffset=alt.YOffset('jitter:Q'))
 )
 
 points + base.mark_errorbar(extent='stdev', thickness=1.5) + base.mark_circle(size=40, color='black').encode(x='mean(stress)')
@@ -430,7 +449,6 @@ points + base.mark_errorbar(extent='stdev', thickness=1.5) + base.mark_circle(si
 ```{r}
 #| label: meditation-jitter-summary-gg
 #| slide-show: both
-#| slide-title: Put the underlying observations back — ggplot
 ggplot(meditation, aes(y = condition, x = stress)) +
     geom_point(position = 'jitter', color = 'grey') +
     geom_pointrange(stat = 'summary', fun.data = mean_sdl, fun.args = list(mult = 1))
@@ -441,7 +459,7 @@ you could also use the specialized geom `geom_jitter()`.
 
 :::
 
-## Showing medians with boxplots
+## Showing medians & percentile intervals with boxplots
 
 What if we visualize the median instead of the mean?
 Showing the median can be especially useful
@@ -539,7 +557,7 @@ since this affects the conclusions you can draw from the chart.
 
 :::
 
-## What conclusions *can* we draw from the data?
+## What conclusions *can* we draw from the data? {.slide-skip}
 
 The charts show differences in recorded stress scores between conditions in this sample.
 However, we have not assessed the statistical significance of those differences.
@@ -551,17 +569,17 @@ That would require an appropriate inferential analysis,
 informed by the study design.
 
 What about the magnitude of the differences?
-In this dataset, the meditation conditions have mean stress scores
+In this dataset, [the meditation conditions have mean stress scores
 about 0.14–0.28 units below the story-listening control condition.
-Is that a lot or a little?
+Is that a lot or a little?]{.slide-bullet}
 These are differences on the 1–4 questionnaire scale described above;
 judging their practical importance also requires considering what difference would matter in this context.
-The charts help us describe the sample,
+The [charts help us describe the sample,
 but they do not by themselves establish that meditation caused the differences
-or that the differences are large enough to matter in practice.
+or that the differences are large enough to matter in practice]{.slide-bullet}.
 
 The original study's main analysis, using 2,239 participants across 37 sites,
 found evidence that all four 15-minute mindfulness exercises reduced self-reported stress
 relative to the active control.
 The largest mean difference was for body scan: 0.27 points lower than the control on the 1–4 scale.
-The authors concluded that even these brief exercises can offer modest, short-term benefits.
+The authors concluded that [even these brief exercises can offer modest, short-term benefits]{.slide-bullet}.
