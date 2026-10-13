@@ -209,7 +209,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
+<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
@@ -220,7 +220,7 @@
 </ol>
 </div>
 <aside class="notes">
-<p>In <a href="../7_summaries.html#sec-summaries">Summaries</a>, we explored central values and variability. Another useful summary is the number of observations in a group. We will return to the meditation dataset to compare counts across conditions, then explore proportions and different ways to show parts of a whole.</p>
+<p>In <a href="../7_summaries.html#sec-summaries">Summaries</a>, we explored central values and variability. Another useful property we can compute is the number of observations in a group. We will return to the meditation dataset to compare counts across conditions, then explore proportions and different ways to show parts of a whole.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -233,34 +233,13 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="counts" class="slide level2" data-chapter-anchor="counts" data-footer="false">
+<section id="counts" class="slide level2" data-footer="false" data-chapter-anchor="counts">
 <h2>Counts</h2>
-<div class="slide-content fragment fade-in" data-fragment-index="0">
-<ul>
-<li><p>We can summarize the number of observations in each group by computing a count</p></li>
-</ul>
-</div>
-<aside class="notes">
-<p><span class="slide-bullet"><strong>We can summarize the number of observations in each group by computing a count</strong></span>.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tabset-1-step-1" class="slide level2" data-chapter-anchor="counts" data-footer="false">
-<h2>Counting observations</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Altair</a></li><li><a href="#tabset-1-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-1-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Counting observations — Altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_point().encode(</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span></span>
@@ -312,7 +291,7 @@
 </div>
 </div>
 <div id="tabset-1-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Counting observations — ggplot" data-fragment-index="1">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition)) <span class="sc">+</span></span>
 <span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">stat =</span> <span class="st">'count'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -327,11 +306,11 @@
 </div>
 </div>
 <aside class="notes">
+<p>We can summarize the number of observations in each group by computing a count.</p>
 <p><strong>Altair</strong></p>
 <p>We can use the <code>'count()'</code> aggregation to count observations. By default, the categories are sorted alphabetically from top to bottom on the y-axis.</p>
 <p><strong>ggplot</strong></p>
 <p>We can use <code>stat = 'count'</code> to count observations. This stat computes the counts itself, so we don’t need to supply a summary function such as <code>mean</code> or <code>median</code>. By default, the categories are sorted alphabetically from bottom to top on the y-axis.</p>
-<p>When we are showing an accumulated value like a count or sum, it can be beneficial to replace our point mark with a bar to be able to more clearly compare groups. Bar charts visualize magnitudes as position and length. Since the bar is drawn from zero, it makes the accumulated amount explicit through its length (you can think of the bar as representing all the individual observations stacked on top of each other).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -344,13 +323,44 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-2-step-1" class="slide level2" data-chapter-anchor="counts" data-footer="false">
+<section id="from-points-to-bars" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
+<h2>From points to bars</h2>
+<div class="slide-content fragment fade-in" data-fragment-index="0">
+<ul>
+<li><p>An accumulated value like a count or sum</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="1">
+<ul>
+<li><p>Bar charts visualize magnitudes as position and length</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="2">
+<ul>
+<li><p>Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</p></li>
+</ul>
+</div>
+<aside class="notes">
+<p>When we are showing <span class="slide-bullet"><strong>an accumulated value like a count or sum</strong></span>, it can be beneficial to replace our point mark with a bar to be able to more clearly compare groups. <span class="slide-bullet"><strong>Bar charts visualize magnitudes as position and length</strong></span>. <span class="slide-bullet"><strong>Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</strong></span> (you can think of the bar as representing all the individual observations stacked on top of each other).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="tabset-2-step-1" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
 <h2>From points to bars</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Altair</a></li><li><a href="#tabset-2-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-2-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="From points to bars — Altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="From points to bars" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
 <span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span></span>
@@ -402,7 +412,7 @@
 </div>
 </div>
 <div id="tabset-2-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="From points to bars — ggplot" data-fragment-index="1">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="From points to bars" data-fragment-index="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -433,7 +443,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-giant-bars" class="slide level2" data-chapter-anchor="counts" data-footer="false">
+<section id="avoid-giant-bars" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
 <h2>Avoid giant bars</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
@@ -458,32 +468,20 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-bar-charts-for-means-and-medians" class="slide level2" data-chapter-anchor="counts" data-footer="false">
+<section id="avoid-bar-charts-for-means-and-medians" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
 <h2>Avoid bar charts for means and medians</h2>
-<aside class="notes">
-<p>Remember that the length of the bar suggests that we started at zero and added something up, such as a count or sum. Using bars for means has also been observed to bias viewers toward thinking that individual observations are more likely to fall within the graphical region of the bar than beyond it, even at equal distances from the mean.<span>(<a href="https://link.springer.com/article/10.3758/s13423-012-0247-5">Bar graphs depicting averages are perceptually misinterpreted: The within-the-bar bias</a>)</span></p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="sorting-groups" class="slide level2" data-chapter-anchor="sorting-groups" data-footer="false">
-<h2>Sorting groups</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
-<li><p>Sorting by count instead makes it easier to compare groups with similar counts and identify those with the most and fewest observations</p></li>
+<li><p>The length of the bar suggests that we started at zero and added something up</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="1">
+<ul>
+<li><p>Bias viewers toward thinking that individual observations are more likely to fall within the graphical region of the bar than beyond it</p></li>
 </ul>
 </div>
 <aside class="notes">
-<!-- TODO also mentions that we should sort points of mean, medians etc -->
-<p>In our chart above, the groups on the y-axis are sorted in alphabetical order. <span class="slide-bullet"><strong>Sorting by count instead makes it easier to compare groups with similar counts and identify those with the most and fewest observations</strong></span>.</p>
+<p>Remember that <span class="slide-bullet"><strong>the length of the bar suggests that we started at zero and added something up</strong></span>, such as a count or sum. Using bars for means has also been observed to <span class="slide-bullet"><strong>bias viewers toward thinking that individual observations are more likely to fall within the graphical region of the bar than beyond it</strong></span>, even at equal distances from the mean.<span>(<a href="https://link.springer.com/article/10.3758/s13423-012-0247-5">Bar graphs depicting averages are perceptually misinterpreted: The within-the-bar bias</a>)</span></p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -496,13 +494,23 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-3-step-1" class="slide level2" data-chapter-anchor="sorting-groups" data-footer="false">
-<h2>Sorting by count</h2>
+<section id="sorting-groups" class="slide level2" data-footer="false" data-chapter-anchor="sorting-groups">
+<h2>Sorting groups</h2>
+<div class="slide-content fragment fade-in" data-fragment-index="0">
+<ul>
+<li><p>The groups on the y-axis are sorted in alphabetical order</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="1">
+<ul>
+<li><p>Sorting by count instead makes it easier to compare groups</p></li>
+</ul>
+</div>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Altair</a></li><li><a href="#tabset-3-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-3-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Sorting by count — Altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
 <span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>alt.Y(<span class="st">'condition'</span>).sort(<span class="st">'x'</span>)</span>
@@ -554,7 +562,7 @@
 </div>
 </div>
 <div id="tabset-3-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Sorting by count — ggplot" data-fragment-index="1">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>meditation <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">add_count</span>(condition) <span class="sc">|&gt;</span></span>
 <span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(condition, <span class="sc">-</span>n))) <span class="sc">+</span></span>
@@ -570,13 +578,19 @@
 </div>
 </div>
 </div>
+<div class="slide-content fragment fade-in" data-fragment-index="4">
+<p>Could you think of a scenario when it would make sense to sort by something else than the length of the bar?</p>
+</div>
 <aside class="notes">
+<!-- TODO also mentions that we should sort points of mean, medians etc -->
+<p>In our chart above, <span class="slide-bullet"><strong>the groups on the y-axis are sorted in alphabetical order</strong></span>. <span class="slide-bullet"><strong>Sorting by count instead makes it easier to compare groups</strong></span> with similar counts and identify those with the most and fewest observations.</p>
 <p><strong>Altair</strong></p>
 <p>The <code>sort()</code> method takes the name of another visual channel to sort by, such as <code>'x'</code>, <code>'color'</code>, etc.</p>
 <p>This places the largest bar at the bottom, nearest the x-axis. To place it at the top instead, pass <code>'-x'</code> rather than <code>'x'</code>. Either direction can work, but generally it is more visually appealing to have the longest bar, the closest to the axis.</p>
 <p><strong>ggplot</strong></p>
 <p>The base R function <code>reorder()</code> sets the order of categorical levels based on another column in the dataframe, for example, <code>reorder(column_to_sort, column_to_use_as_sorting_order)</code>. To order the categories by their counts, we first need to calculate those counts and add them to the dataframe. Here, we use <code>dplyr::add_count()</code> to create a column automatically named <code>n</code>, then use it to order the categories on the y-axis.</p>
 <p>We used <code>-n</code> to put the longest bar the closest to the axis. To put the largest count at the top instead, use <code>reorder(condition, n)</code>. Either direction can work; but generally it is more visually appealing to have the longest bar, the closest to the axis.</p>
+<p><span class="slide-text"><strong>Could you think of a scenario when it would make sense to sort by something else than the length of the bar?</strong></span></p>
 <p>Ordering categories by their plotted values can also help in other charts, such as point charts of group means. However, when categories have a meaningful order, such as education levels or days of the week, preserving that order is generally more useful than sorting by value. Here, there is no such natural order, but we show an example of how we would define one.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -590,13 +604,13 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-4-step-1" class="slide level2" data-chapter-anchor="sorting-groups" data-footer="false">
-<h2>Choosing a meaningful category order</h2>
+<section id="tabset-4-step-1" class="slide level2" data-footer="false" data-chapter-anchor="sorting-groups">
+<h2>Sorting by a custom order</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Altair</a></li><li><a href="#tabset-4-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-4-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Choosing a meaningful category order — Altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Sorting by a custom order" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>custom_order <span class="op">=</span> [<span class="st">'Control (book chapter)'</span>, <span class="st">'Mindful breathing'</span>, <span class="st">'Body scan'</span>, <span class="st">'Mindful walking'</span>, <span class="st">'Loving kindness'</span>]</span>
 <span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
@@ -649,7 +663,7 @@
 </div>
 </div>
 <div id="tabset-4-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Choosing a meaningful category order — ggplot" data-fragment-index="1">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Sorting by a custom order" data-fragment-index="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>custom_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Control (book chapter)'</span>, <span class="st">'Mindful breathing'</span>, <span class="st">'Body scan'</span>, <span class="st">'Mindful walking'</span>, <span class="st">'Loving kindness'</span>)</span>
 <span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition)) <span class="sc">+</span></span>
 <span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
@@ -683,36 +697,18 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="stacked-bars" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
+<section id="stacked-bars" class="slide level2" data-footer="false" data-chapter-anchor="stacked-bars">
 <h2>Stacked bars</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
 <li><p>Bar charts can also show multiple groups as segments stacked on top of each other</p></li>
 </ul>
 </div>
-<aside class="notes">
-<p>Like area charts, <span class="slide-bullet"><strong>bar charts can also show multiple groups as segments stacked on top of each other</strong></span>. Let’s explore this in the following exercise:</p>
-<p><strong>Exercise</strong></p>
-<p>For example, we might be interested in how participants’ self-reported gender is distributed across the study conditions.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tabset-5-step-1" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
-<h2>What can you compare in stacked bars?</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Altair</a></li><li><a href="#tabset-5-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-5-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="What can you compare in stacked bars?" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'count()'</span>,</span>
@@ -765,7 +761,7 @@
 </div>
 </div>
 <div id="tabset-5-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Stacked counts — ggplot" data-fragment-index="1">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -779,10 +775,23 @@
 </div>
 </div>
 </div>
+<div class="slide-content fragment fade-in" data-fragment-index="3">
+<ul>
+<li><p>Compare the exact number of respondents between conditions; is that easier for the male of female group?</p></li>
+</ul>
+</div>
+<div class="slide-content fragment fade-in" data-fragment-index="4">
+<ul>
+<li><p>What’s the reason it’s easier for one group over the other?</p></li>
+</ul>
+</div>
 <aside class="notes">
+<p>Like area charts, <span class="slide-bullet"><strong>bar charts can also show multiple groups as segments stacked on top of each other</strong></span>. Let’s explore this in the following exercise:</p>
+<p><strong>Exercise</strong></p>
+<p>For example, we might be interested in how participants’ self-reported gender is distributed across the study conditions.</p>
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
-<p>In this chart, it is easy to see that all conditions have more female than male respondents. Is it equally easy to identify which conditions have the most male and female participants? Why, and how could we make the harder comparison easier?</p>
+<p>In this chart, it is easy to see that all conditions have more female than male respondents. Try to <span class="slide-bullet"><strong>compare the exact number of respondents between conditions; is that easier for the male of female group?</strong></span> <span class="slide-bullet"><strong>What’s the reason it’s easier for one group over the other?</strong></span></p>
 <p><strong>Hint</strong></p>
 <p>Look at which bar segments start at zero and which start at another segment’s endpoint. The difficulty is the same as for stacked areas. But the solution is slightly different since we have more options than just layering the bars on top of each other.</p>
 <p><strong>Solution</strong></p>
@@ -800,7 +809,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-6-step-1" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
+<section id="tabset-6-step-1" class="slide level2" data-footer="false" data-chapter-anchor="stacked-bars">
 <h2>Give the groups a shared baseline</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Altair</a></li><li><a href="#tabset-6-2">ggplot</a></li></ul>
@@ -874,28 +883,25 @@
 </div>
 </div>
 </div>
+<div class="slide-content fragment fade-in" data-fragment-index="2">
+<ul>
+<li>Prefer bars with a shared baseline when comparisons between bar segments is important</li>
+<li>Prefer stacked bars when the total is important (similar to stacked areas).</li>
+</ul>
+</div>
 <aside class="notes">
 <p><strong>Altair</strong></p>
 <p>The <code>yOffset</code>/<code>xOffset</code> encodings that we used for jittering can also take a categorical variable to offset groups next to each other.</p>
 <p><strong>ggplot</strong></p>
 <p>The <code>position</code> parameter that we used for jittering can also take the <code>'dodge'</code> value, which places bars next to one another instead of stacking them.</p>
 <p>Now both gender categories can be compared across conditions using a shared zero baseline. Body scan and mindful breathing tie for the most male participants, with 36 each; the control condition has the most female participants, with 86.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="avoid-stacked-bar-charts-when-exact-group-comparisons-matter" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
-<h2>Avoid stacked bar charts when exact group comparisons matter</h2>
-<aside class="notes">
-<p>As with stacked areas, it is difficult to compare the bar segments that do not share a baseline, since we have to rely on their length rather than aligned endpoint positions. Stacked bars work best when the total, such as the count per condition, is of primary importance and precise comparisons between segments are of secondary importance.</p>
+<div class="slide-text">
+<ul>
+<li><strong>Prefer bars with a shared baseline when comparisons between bar segments is important</strong></li>
+<li><strong>Prefer stacked bars when the total is important (similar to stacked areas).</strong></li>
+</ul>
+</div>
+<p>As with stacked areas, it is difficult to compare the bar segments that do not share a baseline, since we have to rely on their length rather than aligned endpoint positions. Stacked bars work best when the total, such as the overall count per condition, is of primary importance and precise comparisons between segments are of secondary importance.</p>
 <!-- TODO include 2d counts there? Pin numbers? -->
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -909,34 +915,18 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="proportions" class="slide level2" data-chapter-anchor="proportions" data-footer="false">
+<section id="proportions" class="slide level2" data-footer="false" data-chapter-anchor="proportions">
 <h2>Proportions</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
 <li><p>A proportion expresses a part relative to a whole</p></li>
 </ul>
 </div>
-<aside class="notes">
-<p><span class="slide-bullet"><strong>A proportion expresses a part relative to a whole</strong></span>. For categorical counts, we calculate it by dividing the count for a subgroup by the total count for the relevant group; multiplying by 100 gives a percentage. Here, each condition is the whole, and the gender categories are its parts. Normalizing each bar to the same length lets us compare gender proportions even though the conditions have different numbers of participants.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tabset-7-step-1" class="slide level2" data-chapter-anchor="proportions" data-footer="false">
-<h2>Normalizing to proportions</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Altair</a></li><li><a href="#tabset-7-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-7-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Normalizing to proportions — Altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_bar().encode(</span>
 <span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'condition'</span>,</span>
 <span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'count()'</span>).stack(<span class="st">'normalize'</span>),</span>
@@ -989,7 +979,7 @@
 </div>
 </div>
 <div id="tabset-7-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Normalizing to proportions — ggplot" data-fragment-index="1">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">'fill'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -1004,30 +994,9 @@
 </div>
 </div>
 <aside class="notes">
+<p><span class="slide-bullet"><strong>A proportion expresses a part relative to a whole</strong></span>. For categorical counts, we calculate it by dividing the count for a subgroup by the total count for the relevant group; multiplying by 100 gives a percentage. Here, each condition is the whole, and the gender categories are its parts. Normalizing each bar to the same length lets us compare gender proportions even though the conditions have different numbers of participants.</p>
 <p><strong>Altair</strong></p>
 <p>We could change the displayed axis values from percentages to proportions by formatting the axis labels as decimals with one digit after the decimal point (<code>.1f</code>). Here, <code>labelExpr</code> formats each tick value directly, overriding the default percentage labels:</p>
-<p><strong>ggplot</strong></p>
-<p>We could change the displayed axis values from proportions to percentages by specifying that the scale labels are percentages:</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tabset-7-step-2" class="slide level2" data-chapter-anchor="proportions" data-footer="false">
-<h2>Proportions versus percentages</h2>
-<div class="slide-tabset panel-tabset" data-group="language">
-<ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Altair</a></li><li><a href="#tabset-8-2">ggplot</a></li></ul>
-<div class="slide-tabset tab-content" data-group="language">
-<div id="tabset-8-1">
-<div class="slide-media fragment fade-in" data-slide-show="output" data-slide-title="Proportions versus percentages" data-fragment-index="0">
-<div class="cell-output-display">
 
 
 
@@ -1070,35 +1039,11 @@
   </script>
 
 
-</div>
-</div>
-</div>
-<div id="tabset-8-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Formatting percentages — ggplot" data-fragment-index="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">y =</span> condition, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
-<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">'fill'</span>) <span class="sc">+</span></span>
-<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_percent</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="8_counts_files/figure-revealjs/condition-gender-percentages-gg-1.png" width="480"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="slide-content fragment fade-in" data-fragment-index="2">
-<ul>
-<li><p>Always make the denominator clear</p></li>
-</ul>
-</div>
-<aside class="notes">
-<p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
-<p>With two segments in each normalized bar, both proportions can be compared against a shared reference: one segment starts at zero, and the other ends at one (100%). With three or more segments, those in the middle generally lack an aligned endpoint, making them harder to compare. Proportions can also be shown with side-by-side bars sharing a zero baseline.</p>
-<p><span class="slide-bullet"><strong>Always make the denominator clear</strong></span>. These bars show proportions <strong>within each condition</strong>, not proportions of the whole sample. Normalizing also hides differences in sample size: the conditions contain between 84 and 113 participants, but all five normalized bars have the same total length. Across the complete 500-observation sample, 344 participants reported female gender (68.8%).</p>
+<p>We could change the displayed axis values from proportions to percentages by specifying that the scale labels are percentages:</p>
+<p><img data-src="8_counts_files/figure-revealjs/condition-gender-percentages-gg-1.png" width="480"></p>
+<p>With two segments in each normalized bar, both proportions can be compared against a shared reference: one segment starts at zero, and the other ends at one (or 100%). With three or more segments, those in the middle generally lack an aligned endpoint, making them harder to compare. Proportions can also be shown with side-by-side bars sharing a zero baseline.</p>
+<p>Always make the denominator clear. These bars show proportions <strong>within each condition</strong>, not proportions of the whole sample. Normalizing also hides differences in sample size: the conditions contain between 84 and 113 participants, but all five normalized bars have the same total length. Across the complete 500-observation sample, 344 participants reported female gender (68.8%).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1111,38 +1056,22 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="pie-charts" class="slide level2" data-chapter-anchor="pie-charts" data-footer="false">
+<section id="pie-charts" class="slide level2" data-footer="false" data-chapter-anchor="pie-charts">
 <h2>Pie charts</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
 <li><p>Pie charts use angles and areas to indicate magnitude</p></li>
 </ul>
 </div>
-<aside class="notes">
-<p><span class="slide-bullet"><strong>Pie charts use angles and areas to indicate magnitude</strong></span>. They should generally be avoided as bar charts with a shared baseline tend to communicate the same insights more effectively. A minor point in favor of pie charts is that familiar fractions, such as one-quarter and one-half, can be easy to recognize. They can therefore be useful for illustration and simple comparisons with just two or (maybe) three groups.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tabset-8-step-1" class="slide level2" data-chapter-anchor="pie-charts" data-footer="false">
-<h2>Parts of a whole</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
-<ul id="tabset-9" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-9-1">Altair</a></li><li><a href="#tabset-9-2">ggplot</a></li></ul>
+<ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Altair</a></li><li><a href="#tabset-8-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
-<div id="tabset-9-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Parts of a whole — Altair" data-fragment-index="0">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_arc().encode(</span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>    theta<span class="op">=</span>alt.Theta(<span class="st">'count()'</span>).stack(<span class="va">True</span>),</span>
-<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'gender'</span></span>
-<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-8-1">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(meditation).mark_arc().encode(</span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>    theta<span class="op">=</span>alt.Theta(<span class="st">'count()'</span>).stack(<span class="va">True</span>),</span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'gender'</span></span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 
 
@@ -1189,11 +1118,11 @@
 </div>
 </div>
 </div>
-<div id="tabset-9-2">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Parts of a whole — ggplot" data-fragment-index="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(<span class="dv">1</span>), <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
-<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb17-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">'y'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-8-2">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-fragment-index="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(meditation, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(<span class="dv">1</span>), <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">'y'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -1206,6 +1135,7 @@
 </div>
 </div>
 <aside class="notes">
+<p><span class="slide-bullet"><strong>Pie charts use angles and areas to indicate magnitude</strong></span>. They should generally be avoided as bar charts with a shared baseline tend to communicate the same insights more effectively. A minor point in favor of pie charts is that familiar fractions, such as one-quarter and one-half, can be easy to recognize. They can therefore be useful for illustration and simple comparisons with just two or (maybe) three groups.</p>
 <p><strong>Altair</strong></p>
 <p><code>theta</code> is the visual channel that controls the angle of each slice in the pie.</p>
 <p>We can also <a href="https://altair-viz.github.io/gallery/radial_chart.html">adjust the inner and outer radii</a>. Setting an inner radius greater than zero creates a donut chart.</p>
@@ -1223,7 +1153,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-pie-charts-for-precise-comparisons" class="slide level2" data-chapter-anchor="pie-charts" data-footer="false">
+<section id="avoid-pie-charts-for-precise-comparisons" class="slide level2" data-footer="false" data-chapter-anchor="pie-charts">
 <h2>Avoid pie charts for precise comparisons</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
