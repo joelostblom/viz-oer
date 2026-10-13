@@ -39,6 +39,8 @@ We will explore these questions here and in the following chapters.
 
 <!-- TODO add summaries for line for lab 1? -->
 
+<!-- TODO I think it makes sense to learn jittering eearlier and show it here in the first example. Or learn it right here as a simpler form of seeing all data, or do we do this in histograms already -->
+
 ::: {.callout-default .ex-prompt}
 
 <!-- TODO add long term benefit comment -->
@@ -51,8 +53,9 @@ The stress score averages 20 items from a questionnaire
 where each item ranges from 1 to 4,
 with higher scores indicating greater self-reported distress after the activity.
 
-How do the recorded stress scores differ between conditions?
-We start by applying the strategies we have learned so far:
+Let's say we're interested in comparing how the stress scores
+differ between conditions.
+We might visualize the data by applying the strategies we have learned so far:
 grouping observations by position and comparing their values on a shared scale.
 
 :::: {.panel-tabset group="language"}
@@ -62,12 +65,11 @@ grouping observations by position and comparing their values on a shared scale.
 
 ```{python}
 #| label: meditation-observations-alt
-#| slide-show: output
+#| slide-show: both
 import pandas as pd
 import altair as alt
 
 meditation = pd.read_csv('data/meditation-stress-sample.csv')
-
 alt.Chart(meditation).mark_point().encode(
     y='condition',
     x='stress'
@@ -78,7 +80,7 @@ alt.Chart(meditation).mark_point().encode(
 
 ```{r}
 #| label: meditation-observations-gg
-#| slide-show: output
+#| slide-show: both
 #| message: false
 library(readr)
 library(ggplot2)
@@ -90,7 +92,8 @@ ggplot(meditation, aes(y = condition, x = stress)) +
 
 ::::
 
-What conclusions can you draw?
+[How do the recorded stress scores differ between conditions?]{.slide-bullet}
+[Why is this comparison difficult to make and how could we improve the chart?]{.slide-subbullet}
 
 :::: {.callout-default .ex-hint}
 
@@ -100,7 +103,7 @@ Could several observations share the same position in the chart?
 ::::: {.callout-default .ex-solution}
 
 Although we followed the strategies we have learned so far,
-overlapping points make it difficult to compare where observations are concentrated.
+[overlapping points make it difficult to compare where observations are concentrated]{.slide-bullet}.
 We can see the range of recorded scores,
 but not how many observations share each position.
 Instead,
@@ -108,6 +111,8 @@ we can use statistical summaries,
 such as the mean and median,
 to make it easier to compare conditions.
 Read on to see examples of how to do this.
+
+[statistical summaries can make it easier to compare conditions]{.content-visible when-format="revealjs" .slide-bullet}
 
 :::::
 
@@ -129,11 +134,11 @@ differ on average.
 ### Altair {.slide-skip}
 
 In Altair,
-we can write a [supported aggregation
+we can [include a [supported aggregation
 function](https://altair-viz.github.io/user_guide/encodings/index.html#encoding-aggregates)
 such as mean, median, or sum
 directly as a string
-wrapping the column name,
+wrapping the column name]{.slide-text},
 for example, `'mean(stress)'`:
 
 
@@ -149,11 +154,12 @@ alt.Chart(meditation).mark_point().encode(
 ### ggplot {.slide-skip}
 
 In ggplot,
-we can tell `geom_point()` to use a summary statistic
-instead of the individual observation values.
+we can [tell `geom_point()` to use a summary statistic
+instead of the individual observation values]{.slide-text}.
 We set `stat = 'summary'` and specify a function that returns a single value,
 such as `mean`, `median`, or `sum`.
-For `geom_point()`, the default stat is `'identity'`, which uses the supplied values directly;
+For `geom_point()`, the default stat is `'identity'`,
+which uses the supplied values directly;
 other geoms can have different defaults.
 
 ```{r}
@@ -202,21 +208,51 @@ We will discuss axis limits in more detail later.
 
 Now we can clearly see
 that [**on average** there are some differences between the groups]{.slide-bullet}.
+But [showing only the mean hides the spread of the observations]{.slide-bullet}.
 
 ## Visualizing spread
 
-But showing [only the mean hides the variability in the observations]{.slide-bullet}.
-How the individual values are distributed
-also affects the conclusions we can draw from the data.
+In addition to differences in central tendencies between conditions,
+[how the individual observations are distributed
+affects the conclusions we can draw from the data]{.slide-bullet}.
 So,
 whenever we show a measure of central tendency such as the mean or median,
 it is helpful to pair it with an indication of the underlying variability.
 
-Here, we need to distinguish [two concepts]{.slide-bullet}:
+::: {.content-visible when-format="revealjs" .slide-fragment}
+
+<!-- TODO turn this into a waning box "Avoid interpreting unlabeled error bars" -->
+
+
+```{python}
+#| label: unlabeled-error-bars
+#| slide-show: output
+base = alt.Chart(meditation).encode(
+    y='condition',
+    x='stress'
+)
+points = base.mark_circle(color='black').encode(x='mean(stress)')
+points + base.mark_errorbar(extent='stdev')
+```
+
+What could these error bars represent?
+
+A.  Standard deviation
+B.  Standard error of the mean
+C.  Percentile interval
+D.  Confidence interval
+E.  Data range (i.e. min and max)
+
+:::
+
+## Visualizing spread {.content-visible when-format="revealjs"}
+
+Here, we need to [distinguish two graphically related concepts]{.slide-bullet}:
 [the spread of the underlying data (descriptive statistics)]{.slide-subbullet}
 and [the uncertainty in the estimate of central tendency (inferential statistics)]{.slide-subbullet}.
 These [answer two different questions,
-but graphically they are often depicted similarly]{.slide-subbullet}.
+but graphically they are often depicted similarly, e.g. with errorbars]{.slide-subbullet}.
+Therefore it is important to [always label what an errorbar represents]{.slide-subbullet}.
 In this chapter,
 we will focus on how spread out the underlying data distribution is,
 and return to confidence intervals and other measures of inferential uncertainty
@@ -233,7 +269,7 @@ in our charts:
 
 ::: {.content-visible when-format="revealjs"}
 
-[Two examples]{.slide-bullet}
+[Two measures of spread]{.slide-bullet}
 [Standard deviation: How spread out observations are around the mean]{.slide-subbullet}
 [Percentile interval: Where a certain range of the observations lie]{.slide-subbullet}
 
@@ -263,7 +299,7 @@ base = alt.Chart(meditation).encode(
 )
 points = base.mark_circle(color='black').encode(x='mean(stress)')
 
-points + base.mark_errorbar(extent='stdev', color='black')
+points + base.mark_errorbar(extent='stdev')
 ```
 
 ### ggplot {.slide-skip}
@@ -582,4 +618,4 @@ The original study's main analysis, using 2,239 participants across 37 sites,
 found evidence that all four 15-minute mindfulness exercises reduced self-reported stress
 relative to the active control.
 The largest mean difference was for body scan: 0.27 points lower than the control on the 1–4 scale.
-The authors concluded that [even these brief exercises can offer modest, short-term benefits]{.slide-bullet}.
+[The authors concluded that even these brief exercises can offer modest, short-term benefits]{.slide-bullet}.
