@@ -1,0 +1,1035 @@
+---
+chapter-slides: slides/12a_exploratory-data-analysis.html
+fig-width: 6
+fig-height: 4
+resources:
+  - data/seattle-weather-sensor.csv
+  - data/seattle-weather-complete.csv
+  - data/seattle-weather-eda.md
+  - utils.py
+  - utils.R
+---
+
+# Exploratory data analysis {#sec-eda}
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+<!-- Draft: use a controlled weather-data mystery to connect broad inspection,
+     focused follow-up, and the limits of what we can infer from observed data. -->
+
+:::: {.slide-outcomes}
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Use** documentation and context to form and check expectations about a dataset.
+
+2. **Construct and interpret** visual overviews of distributions, relationships, and missingness.
+
+3. **Investigate** unexpected values and patterns without automatically treating them as errors.
+
+4. **Choose** follow-up views that help distinguish plausible explanations.
+
+5. **Adapt** exploration to a particular question or target, and **communicate** what remains unresolved.
+
+:::
+
+::::
+
+```{python}
+#| label: eda-python-setup
+#| include: false
+import altair as alt
+import pandas as pd
+from utils import show_df
+
+alt.data_transformers.enable('vegafusion')
+weather = pd.read_csv('data/seattle-weather-sensor.csv', parse_dates=['date'])
+```
+
+```{r}
+#| label: eda-r-setup
+#| include: false
+library(tidyverse)
+source('utils.R')
+weather <- read_csv('data/seattle-weather-sensor.csv', show_col_types = FALSE)
+```
+
+## Why bother?
+
+So far, we have learned how to represent observations,
+compare groups, and examine distributions.
+But when we receive a new dataset,
+we often don't yet know which comparisons are worth making.
+We also don't know whether the data mean what we think they mean.
+Let's begin with a small mystery.
+
+::: {.callout-default .ex-prompt}
+
+The chart below shows the lowest **recorded** daily minimum temperature
+in each of four years of Seattle weather data.
+We have deliberately introduced missing measurements into this dataset
+to create a teaching example; the precise modification will be revealed later.
+
+```{python}
+#| label: eda-suspicious-minima
+#| echo: false
+#| slide-show: output
+#| slide-title: Did it never freeze?
+minimums = alt.Chart(weather, width=400, height=210).mark_point(
+    filled=True, size=90
+).encode(
+    x=alt.X('year(date):O', title='Year'),
+    y=alt.Y('min(temp_min):Q', title='Lowest recorded daily minimum (°C)')
+        .scale(domain=[-5, 5]),
+    tooltip=[alt.Tooltip('year(date):O', title='Year'),
+             alt.Tooltip('min(temp_min):Q', title='Temperature (°C)')],
+)
+freezing = alt.Chart(pd.DataFrame({'temperature': [0]})).mark_rule(
+    strokeDash=[4, 4], color='grey'
+).encode(y='temperature:Q')
+freezing + minimums
+```
+
+All four minima are 1.1°C.
+Would you conclude that there were no freezing days?
+What would you check before making that claim?
+
+:::: {.callout-default .ex-hint}
+
+The minimum is calculated from the values that remain available.
+What kinds of missing measurements could make this summary misleading?
+
+::::: {.callout-default .ex-solution}
+
+The chart establishes that the lowest *recorded* values are above freezing.
+It does not establish that every day's temperature was recorded.
+If colder measurements tend to be missing,
+the recorded minimum could be higher than the actual minimum.
+The identical values across years also deserve investigation:
+they might reflect rounding, a reporting threshold, or another processing step.
+We need to inspect the observations and their missingness before deciding.
+
+:::::
+::::
+:::
+
+This is **exploratory data analysis**, or **EDA**:
+using inspection, visualization, and transformation to understand data
+and develop questions and explanations worth investigating.
+[Broad inspection helps us notice what we would not have thought to ask about]{.slide-bullet}.
+Focused comparisons then help us investigate those observations.
+Neither step replaces the other.
+
+A useful cycle is:
+
+> **Form an expectation → inspect the data → notice agreement or surprise → choose a useful next check.**
+
+An expectation might come from a codebook, a known data-collection procedure,
+or ordinary knowledge of the subject.
+It is a starting point, not a fact we must force the data to obey.
+When something looks strange, either the data or our understanding could be wrong.
+
+## Understand what the data represent
+
+Our example comes from the daily Seattle weather dataset distributed with
+[vega-datasets](https://github.com/vega/vega-datasets/blob/main/data/seattle-weather.csv).
+The original has 1,461 records covering 2012–2015.
+The teaching modification removes some temperature values,
+but keeps every row and the other measurements.
+The preparation and provenance are documented with the
+[local data files](data/seattle-weather-eda.md).
+
+One row represents one date in this Seattle weather series.
+It is not one resident, one weather event, or an average over all cities.
+
+| Column | Meaning in this dataset |
+|:--|:--|
+| `date` | Date of the daily record |
+| `precipitation` | Daily precipitation, in millimetres |
+| `temp_max` | Daily maximum temperature, in degrees Celsius |
+| `temp_min` | Daily minimum temperature, in degrees Celsius |
+| `wind` | Wind speed, in metres per second |
+| `weather` | A description such as rain, sun, or snow |
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-read-weather-alt
+weather = pd.read_csv('data/seattle-weather-sensor.csv', parse_dates=['date'])
+show_df(weather)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-read-weather-gg
+weather <- read_csv('data/seattle-weather-sensor.csv', show_col_types = FALSE)
+show_df(weather)
+```
+
+:::
+
+The first and last rows help us check the columns, values, and date range.
+They do not establish that everything between them is correct.
+For example, if we expect one record per day,
+we should check both that dates are unique and that dates are not missing.
+A correct total number of rows could conceal a missing day and a duplicated day.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-check-dates-alt
+expected_dates = pd.date_range('2012-01-01', '2015-12-31', freq='D')
+pd.DataFrame({
+    'Check': ['Rows', 'Distinct dates', 'Expected dates without a row'],
+    'Result': [len(weather), weather['date'].nunique(),
+               len(expected_dates.difference(weather['date']))],
+})
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-check-dates-gg
+expected_dates <- seq(as.Date('2012-01-01'), as.Date('2015-12-31'), by = 'day')
+tibble(
+    Check = c('Rows', 'Distinct dates', 'Expected dates without a row'),
+    Result = c(nrow(weather), n_distinct(weather$date),
+               sum(!expected_dates %in% weather$date))
+)
+```
+
+:::
+
+All dates are present exactly once.
+That rules out one potential problem,
+but it does not tell us whether every measurement on those dates is present.
+
+::: {.callout-note}
+### Ask what a count counts
+
+If a movie belongs to both Comedy and Animation,
+expanding its genre list creates two rows for one film.
+Those rows can be useful for counting genre memberships,
+but treating them as two independent films changes the interpretation.
+Likewise, repeated measurements from one person are not additional people.
+Count rows **and** the relevant observational units when the distinction matters.
+:::
+
+## Look broadly before focusing
+
+An overview is not just a quick route to a final chart.
+It gives us a chance to notice unexpected features across the dataset.
+We will inspect three complementary things:
+
+- The distribution of each variable.
+- Relationships between variables.
+- Where measurements are missing.
+
+We can automate much of the chart construction,
+but we still need to decide what the columns mean and how to interpret each view.
+In particular, a numerical storage type does not make an identifier
+a numerical measurement worth putting in a histogram or correlation matrix.
+
+### A gallery of distributions
+
+In @sec-binned-distributions and @sec-smoothed-distributions,
+we examined one or a few distributions at a time.
+Here we use a compact gallery to inspect several measurement columns together.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+`repeat` applies one chart specification to several columns.
+`alt.repeat()` indicates where each column should be substituted.
+This differs from faceting: each panel below shows a **different variable**,
+rather than a subset of observations for the same variable.
+
+```{python}
+#| label: eda-distribution-gallery-alt
+#| slide-show: output
+#| slide-title: Inspect several distributions together
+measurements = ['precipitation', 'temp_max', 'temp_min', 'wind']
+
+alt.Chart(weather).mark_bar().encode(
+    x=alt.X(alt.repeat(), type='quantitative', bin=alt.Bin(maxbins=20)),
+    y=alt.Y('count()', title='Recorded days'),
+).properties(width=230, height=140).repeat(measurements, columns=2)
+```
+
+### ggplot {.slide-skip}
+
+We can reuse the faceting grammar by putting the selected measurements
+in a long table with a column identifying the variable.
+The panels use independent scales so that each distribution's shape is readable,
+despite differences in measurement units, ranges, and bin counts.
+
+```{r}
+#| label: eda-distribution-gallery-gg
+#| fig-width: 8
+#| fig-height: 5
+measurements <- c('precipitation', 'temp_max', 'temp_min', 'wind')
+weather_long <- weather |>
+    pivot_longer(all_of(measurements), names_to = 'variable', values_to = 'value')
+
+ggplot(weather_long, aes(x = value)) +
+    geom_histogram(bins = 20, na.rm = TRUE) +
+    facet_wrap(~variable, scales = 'free', ncol = 2) +
+    labs(x = NULL, y = 'Recorded days')
+```
+
+:::
+
+These histograms show the **recorded values**; missing measurements are absent.
+We will account for them separately below.
+The bin settings provide a first look, not a final choice for every variable.
+If a feature matters to our interpretation,
+we should revisit that variable with appropriate bin widths in its own units.
+Read the axis values when comparing panels:
+equal-looking widths or heights need not represent equal ranges or counts.
+
+Precipitation has many zero values and a long right tail.
+Here, zero precipitation is a plausible measurement: a dry day.
+That is different from a missing measurement of precipitation.
+The temperature distributions have a lower boundary worth investigating,
+especially given the suspicious minima in our opening chart.
+
+::: {.callout-default .ex-prompt}
+
+Which of these would be useful follow-ups, and what would each check tell us?
+
+1. Remove all zero precipitation values because they look unusual.
+2. Check the frequency of zero precipitation against the meaning of the variable.
+3. Inspect the records with the largest precipitation values.
+4. Change the temperature bin width to see whether the lower boundary persists.
+
+:::: {.callout-default .ex-solution}
+
+The last three are useful checks.
+A dry day is a valid zero, so a large spike at zero is not itself an error.
+Inspecting extreme records can reveal errors or genuine unusual days;
+their rarity alone does not distinguish those explanations.
+Changing bin width checks whether the apparent boundary depends on the display.
+It does not explain why values might be missing below it.
+
+::::
+:::
+
+Categorical variables also belong in the overview.
+A count plot of the weather descriptions reveals group sizes that a numerical
+summary or a numerical-only pairs plot would omit.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-category-counts-alt
+alt.Chart(weather, height=140).mark_bar().encode(
+    x=alt.X('count()', title='Days'),
+    y=alt.Y('weather:N', title='Weather description').sort('-x'),
+)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-category-counts-gg
+#| fig-height: 2.5
+weather |>
+    count(weather) |>
+    ggplot(aes(x = n, y = reorder(weather, n))) +
+    geom_col() +
+    labs(x = 'Days', y = 'Weather description')
+```
+
+:::
+
+There are even records described as snow days.
+That makes the absence of recorded freezing minima worth a closer look,
+although the description alone does not establish the minimum temperature
+at the measurement location.
+
+### An overview of relationships
+
+A **scatterplot matrix**, also called a **pairs plot**,
+lets us scan multiple relationships without choosing each one in advance.
+Look for clusters, unusual combinations, curved relationships,
+and changes in spread—not just straight-line associations.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+We can repeat a scatterplot along both dimensions.
+Each row selects a y variable and each column selects an x variable.
+The diagonal compares each variable with itself,
+and the two triangles contain transposed versions of the same pairs.
+
+```{python}
+#| label: eda-pairs-alt
+#| slide-show: output
+#| slide-title: Scan relationships before choosing a follow-up
+alt.Chart(weather).mark_point(size=9, opacity=0.2).encode(
+    x=alt.X(alt.repeat('column'), type='quantitative').scale(zero=False),
+    y=alt.Y(alt.repeat('row'), type='quantitative').scale(zero=False),
+).properties(width=110, height=110).repeat(
+    column=measurements,
+    row=measurements,
+)
+```
+
+### ggplot {.slide-skip}
+
+The ggplot extension **GGally** supplies a convenient pairs-plot constructor.
+Here we request points for the lower triangle and histograms on the diagonal.
+The upper triangle is omitted to avoid repeating the same comparisons.
+
+```{r}
+#| label: eda-pairs-gg
+#| fig-width: 9
+#| fig-height: 8
+GGally::ggpairs(
+    weather,
+    columns = measurements,
+    upper = 'blank',
+    lower = list(continuous = GGally::wrap('points', alpha = 0.2, size = 0.5, na.rm = TRUE)),
+    diag = list(continuous = GGally::wrap('barDiag', bins = 20, na.rm = TRUE)),
+    progress = FALSE
+)
+```
+
+:::
+
+The Python and R overviews package the information differently,
+but both support the same task: look across variables before selecting a detail.
+The positive association between minimum and maximum temperature is unsurprising.
+Their lower bounds and the triangular shape are more useful prompts for questions.
+Part of that shape is constrained by the definitions:
+a daily minimum cannot exceed the maximum for the same day.
+
+Each pairwise panel uses the rows where its two measurements are present.
+Consequently, panels involving temperature can contain fewer observations
+than the precipitation–wind panel.
+An overview does not remove the need to check which observations contribute.
+
+::: {.callout-note}
+### Automate repetition, retain control of the question
+
+Faceting, repeating a specification, and composing plots programmatically
+are ways to reuse the grammar we already know.
+Specialized tools such as [GGally](https://ggobi.github.io/ggally/articles/ggpairs.html)
+and [Altair Ally](https://github.com/joelostblom/altair_ally)
+can also generate collections of suitable views.
+Use these tools to make broad inspection inexpensive.
+When a particular panel becomes important,
+return to a focused chart where you can adjust its variables,
+scales, bin widths, or grouping deliberately.
+
+With many variables, use manageable batches or selected combinations.
+Twenty numerical variables already have 190 distinct pairs.
+A giant matrix can include every pair
+without making any pair large enough to inspect usefully.
+:::
+
+## Missing values are part of the data story
+
+We have seen a pattern that might involve missing measurements.
+Even without that clue, missingness should be part of our initial inspection.
+There are two separate questions:
+[how much is missing, and which observations are affected?]{.slide-bullet}
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-missing-counts-alt
+missing_summary = weather.isna().sum().rename('Missing').to_frame()
+missing_summary['Recorded'] = len(weather) - missing_summary['Missing']
+missing_summary['Missing (%)'] = 100 * missing_summary['Missing'] / len(weather)
+missing_summary.round(1)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-missing-counts-gg
+weather |>
+    summarise(across(everything(), ~sum(is.na(.x)))) |>
+    pivot_longer(everything(), names_to = 'variable', values_to = 'Missing') |>
+    mutate(
+        Recorded = nrow(weather) - Missing,
+        `Missing (%)` = round(100 * Missing / nrow(weather), 1)
+    )
+```
+
+:::
+
+There are 116 missing minimum temperatures and five missing maximum temperatures.
+The other columns are complete in this example.
+Those counts do not tell us whether the missing measurements
+occurred together or were concentrated in particular parts of the year.
+
+The meaning of a missing value also requires context.
+It might represent a failed measurement, a question that was never asked,
+a refusal to answer, or a field that does not apply to that observation.
+A missing value can also be introduced by an unsuccessful join between tables.
+These situations can all end up encoded as `NA`, but they are not interchangeable.
+Conversely, an unknown value might be encoded as a number such as `999`
+and therefore escape a simple missing-value count.
+Check the definitions and processing history as well as the table.
+
+### Make the missingness pattern visible
+
+We can create a table of indicators describing whether each cell is missing,
+then visualize those indicators with the same heatmap grammar used for other data.
+Here the horizontal axis represents actual dates, not an arbitrary row order.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-missingness-alt
+#| slide-show: output
+#| slide-title: Missingness has a seasonal pattern
+missing_cells = (
+    weather.set_index('date').isna().reset_index()
+    .melt(id_vars='date', var_name='variable', value_name='is_missing')
+    .assign(
+        end_date=lambda d: d['date'] + pd.Timedelta(days=1),
+        status=lambda d: d['is_missing'].map({True: 'Missing', False: 'Recorded'}),
+    )
+)
+
+alt.Chart(missing_cells, width=560, height=130).mark_rect().encode(
+    x=alt.X('date:T', title='Date').axis(format='%Y', tickCount='year'),
+    x2='end_date:T',
+    y=alt.Y('variable:N', title=None),
+    color=alt.Color('status:N', title=None).scale(
+        domain=['Recorded', 'Missing'], range=['#dedede', '#c44e52']
+    ).legend(orient='bottom'),
+    tooltip=['date:T', 'variable:N', 'status:N'],
+)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-missingness-gg
+#| fig-width: 9
+#| fig-height: 3
+missing_cells <- weather |>
+    mutate(across(-date, is.na)) |>
+    pivot_longer(-date, names_to = 'variable', values_to = 'is_missing') |>
+    mutate(status = if_else(is_missing, 'Missing', 'Recorded'))
+
+ggplot(missing_cells, aes(x = date, y = variable, fill = status)) +
+    geom_tile(width = 1, height = 0.9) +
+    scale_fill_manual(values = c(Recorded = '#dedede', Missing = '#c44e52')) +
+    scale_x_date(date_breaks = '1 year', date_labels = '%Y') +
+    labs(x = 'Date', y = NULL, fill = NULL)
+```
+
+:::
+
+The missing temperatures occur in colder parts of the year.
+This supports further investigation, but it does not identify the mechanism.
+A device problem, a reporting procedure, and a processing rule
+could all produce seasonally patterned missingness.
+
+::: {.callout-default .ex-prompt}
+
+Suppose we suspect that low minimum temperatures are more likely to be missing.
+We cannot inspect a missing minimum temperature directly.
+Which *observed* variable could help us investigate that suspicion?
+What would you expect to see?
+
+:::: {.callout-default .ex-hint}
+
+Think about the relationship between the daily minimum and maximum temperatures
+in the pairs plot.
+
+::::: {.callout-default .ex-solution}
+
+We can compare maximum temperatures on days with and without a recorded minimum.
+If missing minima tend to occur on cold days,
+we would expect lower maximum temperatures on those days.
+This checks a consequence of our explanation using another recorded variable.
+It does not recover the missing temperatures or prove why they are missing.
+
+:::::
+::::
+:::
+
+### Follow the clue with a focused comparison
+
+We create a new categorical variable that records whether the minimum is missing.
+That lets us compare the distributions of maximum temperature between the two groups.
+The five rows without a maximum temperature cannot contribute to this comparison;
+they remain accounted for in our missingness summary.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-missingness-followup-alt
+#| slide-show: output
+#| slide-title: What else differs when a measurement is missing?
+weather_status = weather.assign(
+    minimum_status=weather['temp_min'].isna().map(
+        {True: 'Minimum missing', False: 'Minimum recorded'}
+    )
+)
+
+alt.Chart(weather_status.dropna(subset=['temp_max']), height=100).mark_boxplot().encode(
+    x=alt.X('temp_max:Q', title='Recorded daily maximum (°C)').scale(zero=False),
+    y=alt.Y('minimum_status:N', title=None),
+)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-missingness-followup-gg
+#| fig-height: 2.5
+weather_status <- weather |>
+    mutate(minimum_status = if_else(
+        is.na(temp_min), 'Minimum missing', 'Minimum recorded'
+    ))
+
+weather_status |>
+    drop_na(temp_max) |>
+    ggplot(aes(x = temp_max, y = minimum_status)) +
+    geom_boxplot() +
+    labs(x = 'Recorded daily maximum (°C)', y = NULL)
+```
+
+:::
+
+The recorded maxima are generally lower when the minima are missing.
+Notice how we arrived here:
+the opening summary raised a concern,
+the overview showed the pattern,
+and a relationship in the pairs plot suggested a useful follow-up variable.
+We did not have to specify this comparison before seeing the data.
+
+### Inspect combinations of categories
+
+The weather description gives us another way to investigate missing minima.
+We can count the combinations of weather type and recording status,
+then compare the counts with proportions within each weather type.
+These answer different questions, as we saw in @sec-counts-proportions.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-conditional-missingness-alt
+#| slide-show: output
+#| slide-title: Many missing values, or a high missingness rate?
+status_counts = (
+    weather_status.groupby(['weather', 'minimum_status']).size()
+    .reset_index(name='days')
+)
+status_counts['proportion'] = (
+    status_counts['days'] / status_counts.groupby('weather')['days'].transform('sum')
+)
+
+tiles = alt.Chart(status_counts, width=210, height=150).mark_rect().encode(
+    x=alt.X('minimum_status:N', title=None).axis(labelAngle=0),
+    y=alt.Y('weather:N', title=None),
+    tooltip=['weather:N', 'minimum_status:N', 'days:Q',
+             alt.Tooltip('proportion:Q', format='.1%')],
+)
+counts = tiles.encode(
+    color=alt.Color('days:Q', title='Days').scale(scheme='blues').legend(orient='bottom')
+).properties(title='Counts')
+proportions = tiles.encode(
+    color=alt.Color('proportion:Q', title='Share within weather type')
+        .scale(domain=[0, 1], scheme='blues').legend(format='%', orient='bottom')
+).properties(title='Within-type proportions')
+alt.hconcat(counts, proportions).resolve_scale(color='independent')
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-conditional-missingness-gg
+#| fig-width: 9
+#| fig-height: 4
+status_counts <- weather_status |>
+    count(weather, minimum_status, name = 'days') |>
+    group_by(weather) |>
+    mutate(proportion = days / sum(days)) |>
+    ungroup()
+
+tiles <- ggplot(status_counts, aes(x = minimum_status, y = weather)) +
+    geom_tile() +
+    labs(x = NULL, y = NULL) +
+    theme(legend.position = 'bottom')
+counts <- tiles +
+    aes(fill = days) +
+    scale_fill_gradient(low = '#f7fbff', high = '#08519c') +
+    labs(title = 'Counts', fill = 'Days')
+proportions <- tiles +
+    aes(fill = proportion) +
+    scale_fill_gradient(low = '#f7fbff', high = '#08519c',
+                        limits = c(0, 1), labels = scales::label_percent()) +
+    labs(title = 'Within-type proportions', fill = 'Share within weather type')
+patchwork::wrap_plots(counts, proportions, nrow = 1)
+```
+
+:::
+
+::: {.callout-default .ex-prompt}
+
+There are more missing minima on days described as sunny than on snow days:
+62 versus 19. Does that mean a sunny day's minimum is more likely to be missing?
+
+:::: {.callout-default .ex-solution}
+
+No. There are 640 sunny days but only 26 snow days.
+The proportions are about 10% and 73%, respectively.
+Sunny days account for more missing values in total,
+while snow days have a much higher missingness rate.
+The relevant denominator depends on the question.
+Neither comparison establishes that the weather description caused the missingness.
+
+::::
+:::
+
+::: {.callout-warning}
+### A pattern in missingness is not proof of its cause
+
+In real data, we would now consult the collection procedure, processing code,
+or people who produced the measurements.
+The pattern is consistent with preferential loss of cold measurements,
+but it does not prove a faulty sensor.
+Likewise, failing to see a pattern would not prove that missingness is harmless.
+
+Formal distinctions such as *missing completely at random*,
+*missing at random*, and *missing not at random* describe assumptions
+about how missingness depends on observed and unobserved values.
+We generally cannot establish those assumptions from a missingness plot alone.
+:::
+
+### Reveal the teaching modification
+
+For this example, we know the mechanism because we created it:
+both minimum and maximum temperatures **at or below 0.6°C**
+were replaced with missing values.
+This simulates a reporting failure that removes low measurements;
+it is not evidence that the original weather station had that failure.
+
+We retained the complete source values,
+so we can show something that is normally impossible in a missing-data problem:
+the distribution of the values that went missing.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-missingness-reveal-alt
+#| slide-show: output
+#| slide-title: Which part of the distribution disappeared?
+complete_weather = pd.read_csv('data/seattle-weather-complete.csv', parse_dates=['date'])
+reveal = complete_weather.assign(
+    status=(complete_weather['temp_min'] <= 0.6).map(
+        {True: 'Removed in teaching version', False: 'Retained'}
+    )
+)
+
+alt.Chart(reveal, width=450, height=220).mark_bar().encode(
+    x=alt.X('temp_min:Q', title='Daily minimum temperature (°C)', bin=alt.Bin(step=2)),
+    y=alt.Y('count()', title='Days'),
+    color=alt.Color('status:N', title=None).scale(
+        domain=['Retained', 'Removed in teaching version'],
+        range=['#4c78a8', '#c44e52'],
+    ),
+)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-missingness-reveal-gg
+complete_weather <- read_csv('data/seattle-weather-complete.csv', show_col_types = FALSE)
+reveal <- complete_weather |>
+    mutate(status = if_else(
+        temp_min <= 0.6, 'Removed in teaching version', 'Retained'
+    ))
+
+ggplot(reveal, aes(x = temp_min, fill = status)) +
+    geom_histogram(binwidth = 2, boundary = 0, closed = 'left') +
+    scale_fill_manual(values = c(
+        Retained = '#4c78a8', 'Removed in teaching version' = '#c44e52'
+    )) +
+    labs(x = 'Daily minimum temperature (°C)', y = 'Days', fill = NULL)
+```
+
+:::
+
+The recorded-only mean minimum temperature is about 9.05°C;
+the complete-data mean is about 8.23°C.
+Even though only about 8% of minimum temperatures were removed,
+they came from one part of the distribution.
+Whether missingness matters depends on **which values are missing and which question we ask**,
+not just on the overall percentage.
+
+Replacing the missing temperatures with zero would also be misleading:
+zero Celsius is a particular temperature, not a way to represent ignorance.
+Deleting entire rows would discard their valid precipitation and wind measurements too.
+Handling missing data requires a justified decision for the analysis at hand;
+this example does not establish a universally correct replacement rule.
+
+## Turn patterns into questions
+
+The weather mystery is one example of a broader strategy:
+[follow a surprising pattern with a check that could change your interpretation]{.slide-bullet}.
+Generating another plot is useful when you can explain what it will help you learn.
+
+| Observation in an overview | Possible explanations | A useful next check |
+|:--|:--|:--|
+| Two peaks | Subgroups, rounding, or display settings | Compare subgroups, inspect values, and vary bin width or bandwidth |
+| An extreme value | A genuine unusual case, a unit mismatch, or an entry error | Inspect the record, related variables, and source documentation |
+| A tall distribution for one group | More observations, not necessarily a different shape | Compare counts and within-group normalized distributions |
+| A pooled association | Within-group relationships or differences between groups | Color or facet by a plausible grouping variable |
+| More rows after a transformation | New observations or repeated memberships | Check distinct units as well as row counts |
+
+There need not be a single correct follow-up.
+Its usefulness depends on which explanation you want to investigate.
+Sometimes the next step is to ask the data provider a question rather than draw a chart.
+
+::: {.callout-default .ex-prompt}
+
+An overview of a movie catalog suggests that one genre has higher revenues.
+For each question below, identify what you would need to inspect next.
+
+1. Is the apparent advantage mostly due to one blockbuster?
+2. Does the genre offer the largest number of films above a revenue threshold?
+3. Would licensing that genre produce the most profit for a streaming service?
+
+:::: {.callout-default .ex-solution}
+
+1. Inspect the underlying revenues and the extreme film's record.
+   Compare the conclusion with and without that observation as a sensitivity check,
+   rather than silently deleting it.
+2. Compare qualifying counts, not just central values or normalized shapes.
+   An ECDF can show the qualifying proportion; group size is also needed for a count.
+3. The available revenue comparison does not establish streaming profit.
+   We would also need information such as licensing costs and expected streaming demand.
+
+The three questions require different evidence, even though they begin with the same chart.
+
+::::
+:::
+
+::: {.callout-warning}
+### Check an anomaly before "fixing" it
+
+An unusual value can be an error, but it can also be the observation
+that teaches us something important.
+Use units, definitions, related measurements, and provenance to investigate.
+Record any exclusions and their reasons.
+Do not remove a value simply because the resulting chart looks cleaner
+or the association becomes stronger.
+:::
+
+## Explore around a question or an outcome
+
+So far, we have looked broadly and followed a surprise.
+Sometimes we begin with a more specific question,
+such as which recorded measurements are associated with precipitation.
+The basic checks still matter,
+but we can spend more attention on plots involving that outcome.
+
+Instead of a square matrix containing every pair,
+we can create a gallery with the same outcome on one axis
+and several candidate variables on the other.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-outcome-gallery-alt
+#| slide-show: output
+#| slide-title: Focus the overview around an outcome
+alt.Chart(weather).mark_point(size=14, opacity=0.25).encode(
+    x=alt.X(alt.repeat(), type='quantitative').scale(zero=False),
+    y=alt.Y('precipitation:Q', title='Daily precipitation (mm)'),
+).properties(width=180, height=180).repeat(['temp_max', 'temp_min', 'wind'])
+```
+
+### ggplot {.slide-skip}
+
+The long-table approach also works when one variable is held fixed.
+We keep `precipitation` as the response column and pivot the candidate variables.
+
+```{r}
+#| label: eda-outcome-gallery-gg
+#| fig-width: 9
+#| fig-height: 3.5
+weather |>
+    pivot_longer(c(temp_max, temp_min, wind),
+                 names_to = 'measurement', values_to = 'value') |>
+    ggplot(aes(x = value, y = precipitation)) +
+    geom_point(alpha = 0.25, size = 0.8, na.rm = TRUE) +
+    facet_wrap(~measurement, scales = 'free_x', nrow = 1) +
+    labs(x = NULL, y = 'Daily precipitation (mm)')
+```
+
+:::
+
+The pile-up at zero precipitation, the spread of wet-day values,
+and unusual combinations are all relevant features—not just the overall direction.
+These plots describe same-day associations among the recorded measurements.
+They do not tell us that changing the wind would cause rain,
+or that today's completed measurements would be available for a morning forecast.
+
+If the outcome is categorical instead,
+we can compare predictor distributions within its categories,
+or inspect counts and proportions for combinations of categorical variables.
+There is no reason to turn a category code into a quantitative variable
+just to put it in a correlation matrix.
+
+### Use correlations to navigate, not to replace the plots
+
+A correlation heatmap compresses many relationships into one display.
+That can help us choose which pairs to inspect,
+but it leaves out the distributional detail visible in a pairs plot.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: eda-correlation-alt
+correlations = (
+    weather[measurements].corr(method='spearman')
+    .rename_axis(index='variable_y', columns='variable_x')
+    .stack().rename('correlation').reset_index()
+    .query('variable_x != variable_y')
+)
+
+alt.Chart(correlations, width=250, height=250).mark_rect().encode(
+    x=alt.X('variable_x:N', title=None).axis(labelAngle=-30),
+    y=alt.Y('variable_y:N', title=None),
+    color=alt.Color('correlation:Q', title='Spearman correlation')
+        .scale(domain=[-1, 1], scheme='blueorange'),
+    tooltip=['variable_x:N', 'variable_y:N',
+             alt.Tooltip('correlation:Q', format='.2f')],
+)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: eda-correlation-gg
+correlations <- weather |>
+    select(all_of(measurements)) |>
+    cor(method = 'spearman', use = 'pairwise.complete.obs') |>
+    as.data.frame() |>
+    rownames_to_column('variable_y') |>
+    pivot_longer(-variable_y, names_to = 'variable_x', values_to = 'correlation') |>
+    filter(variable_x != variable_y)
+
+ggplot(correlations, aes(x = variable_x, y = variable_y, fill = correlation)) +
+    geom_tile() +
+    scale_fill_gradient2(low = '#2166ac', mid = 'white', high = '#b35806',
+                         midpoint = 0, limits = c(-1, 1)) +
+    coord_equal() +
+    labs(x = NULL, y = NULL, fill = 'Spearman\ncorrelation')
+```
+
+:::
+
+Pearson correlation summarizes **linear** association.
+Spearman correlation uses ranks and summarizes **monotonic** association:
+whether larger values of one variable tend to accompany larger or smaller values of another.
+It can capture some nonlinear relationships, but not arbitrary curves.
+For example, a strong U-shaped relationship can have little correlation.
+Relationships that depend on a combination of predictors can also be missed
+by inspecting each predictor separately.
+
+We preserve the sign in the color scale and omit the self-comparisons on the diagonal.
+Each coefficient uses the rows where that pair of variables is recorded.
+Different cells can therefore describe different subsets of days,
+and the deliberately missing cold measurements affect the associations we can inspect.
+A blank diagonal is not a correlation of zero;
+an undefined correlation, such as for a constant variable, would not be zero either.
+
+::: {.callout-note}
+### When EDA precedes machine learning
+
+An outcome-focused overview helps us understand a prospective target
+and candidate predictors, but it does not establish future predictive performance.
+Ask whether a feature would actually be available when a prediction is made.
+For example, using the measured precipitation for a day to predict whether that day
+had rain would reveal the answer rather than provide a useful forecast.
+
+Once evaluation data have been held out,
+use the training data for exploratory choices that influence feature selection,
+transformations, or fitted preprocessing.
+For time-dependent prediction, also consider whether a chronological split is needed.
+Later modeling courses develop these evaluation decisions in more detail.
+:::
+
+## What have we learned, and what remains unresolved?
+
+EDA does not have to end with a striking discovery.
+Finding a data limitation, ruling out an explanation,
+or recognizing that the available variables cannot answer the question
+can be a useful result.
+
+For our weather investigation, a short record could be:
+
+| Stage | What we learned |
+|:--|:--|
+| Initial observation | Every year's lowest recorded minimum is 1.1°C. |
+| Broad inspection | The lower temperature range is absent, although all dates are present. |
+| Missingness overview | Missing temperature measurements are concentrated in colder months. |
+| Focused comparison | Missing minima tend to occur on days with lower recorded maxima. |
+| Mechanism check | The teaching preparation removed temperatures at or below 0.6°C. |
+| Revised conclusion | The incomplete data cannot establish that freezing days were absent; their temperature summaries describe a selected subset of measurements. |
+
+In a real investigation, the mechanism-check row might still say "unresolved".
+That is more informative than quietly assuming a cause and proceeding.
+
+You do not need to publish every chart made during exploration.
+Keep enough of the analysis history to explain important decisions,
+and communicate the evidence relevant to the final question.
+Useful stopping points include having enough evidence for the current decision,
+or discovering that the next step requires information outside the dataset.
+
+For your next dataset, try leaving a short trail of reasoning:
+
+> **What did I expect? What did I observe? What could explain it? What did I check next? What can I now conclude?**
+
+## Further reading
+
+- Wickham, Çetinkaya-Rundel, and Grolemund,
+  [*R for Data Science*, Chapter 10: Exploratory data analysis](https://r4ds.hadley.nz/EDA.html).
+  A question-driven cycle of visualization, transformation, and follow-up, with R examples.
+- Peng and Matsui,
+  [*The Art of Data Science*, Chapter 4](https://bookdown.org/rdpeng/artofdatascience/exploratory-data-analysis.html),
+  especially "Always be Checking Your n's" and "Challenge Your Solution."
+- Wongsuphasawat, Liu, and Heer (2019),
+  [*Goals, Process, and Challenges of Exploratory Data Analysis: An Interview Study*](https://arxiv.org/abs/1911.00568).
+  Describes how analysts combine data-quality assessment, discovery, and automated overviews.
+- Emerson and colleagues,
+  [*The Generalized Pairs Plot*](https://vita.had.co.nz/papers/gpp.html).
+  Explains how a matrix of appropriate displays can reveal relationships among mixed variable types.
+- Waskom, [*Visualizing distributions of data*](https://seaborn.pydata.org/tutorial/distributions.html)
+  and [*Building structured multi-plot grids*](https://seaborn.pydata.org/tutorial/axis_grids.html).
+  Python examples connecting representation choices with exploratory tasks.
