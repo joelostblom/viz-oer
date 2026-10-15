@@ -496,6 +496,20 @@ ggplot(movies, aes(x = `Running Time min`)) +
     geom_density(bw = 'SJ', fill = 'grey80')
 ```
 
+Since we don't know which `bw` value is selected by the Sheather-Jones rule,
+it can be tricky to know where to start when trying multiple `bw` values.
+For this,
+it can be helpful to use the `adjust` parameter instead,
+which adjust the default selected bandwidth by multiplying it by the value we pass.
+E.g. to try half the bandwidth of the Sheather-Jones rule:
+
+```{r}
+#| label: runtime-kde-bandwidth-sj-adjust-gg
+#| slide-show: both
+#| slide-title: A different bandwidth-selection rule
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_density(bw = 'SJ', adjust = 1/2, fill = 'grey80')
+```
 
 :::
 
@@ -760,8 +774,7 @@ Sharing the x-scale keeps the ticks aligned with their positions on the curve.
 density = alt.Chart(movies, height=200).transform_density(
     'Running Time min',
     as_=['runtime', 'density'],
-    bandwidth=5,
-    extent=[40, 260],
+    bandwidth=5
 ).mark_area().encode(
     x=alt.X('runtime:Q').title('Running time (min)'),
     y=alt.Y('density:Q').title('Density'),
