@@ -561,7 +561,6 @@ we make them partially transparent by setting `opacity=0.5`.
 ```{python}
 #| label: genre-histograms-overlaid-alt
 #| slide-show: both
-#| slide-title: Overlapping histograms
 alt.Chart(movies, height=150).mark_bar(opacity=0.5).encode(
     x=alt.X('Running Time min').bin(step=5),
     y=alt.Y('count()').stack(False),
@@ -583,7 +582,6 @@ with the `alpha` parameter.
 ```{r}
 #| label: genre-histograms-overlaid-gg
 #| slide-show: both
-#| slide-title: Overlapping histograms
 ggplot(movies, aes(x = `Running Time min`, fill = `Major Genre`)) +
     geom_histogram(color = 'white', position = 'identity', alpha = 0.5)
 ```
@@ -636,8 +634,7 @@ Use the same bin boundaries and axis scales across facets to make those comparis
 
 ```{python}
 #| label: genre-histograms-faceted-alt
-#| slide-show: output
-#| slide-title: Align distributions with facets — Altair
+#| slide-show: both
 alt.Chart(movies, height=80).mark_bar().encode(
     x=alt.X('Running Time min').bin(step=5),
     y='count()',
@@ -652,7 +649,6 @@ alt.Chart(movies, height=80).mark_bar().encode(
 ```{r}
 #| label: genre-histograms-faceted-gg
 #| slide-show: both
-#| slide-title: Align distributions with facets — ggplot
 #| fig-height: 6
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_histogram(color = 'white') +

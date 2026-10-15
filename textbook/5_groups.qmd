@@ -144,7 +144,7 @@ to find out if there is more to this dataset than meets the eye!
 
 ::::: {.callout-default .ex-prompt}
 
-## Why bother? {.content-visible when-format="revealjs" .slide-visual}
+## Why bother? {.content-visible when-format="revealjs"}
 
 [An unexpected pattern is a good reason to look more closely,
 instead of jumping to a conclusion]{.slide-bullet}.

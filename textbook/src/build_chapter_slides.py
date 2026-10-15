@@ -46,6 +46,12 @@ CHAPTER_ASSETS = {
         "data/movies.csv",
         "data/london_marathon_finish_times.csv",
     ),
+    "11_cumulative-distributions": ("data/movies.csv",),
+    "12_joint-distributions": (
+        "data/movies.csv",
+        "data/diamonds-carat-price.csv",
+        "data/diamonds-carat-price.md",
+    ),
     # "12a_exploratory-data-analysis": (
     #     "data/seattle-weather-sensor.csv", "data/seattle-weather-complete.csv",
     #     "data/seattle-weather-eda.md",
