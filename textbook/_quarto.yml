@@ -44,6 +44,8 @@ book:
     # - 99_misc.qmd
 
 filters:
+  - path: chapter-slide-options.lua
+    at: pre-ast
   - illustrative-chart-actions.lua
   - custom-callouts.lua
   - chapter-slides.lua

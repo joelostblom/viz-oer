@@ -200,6 +200,18 @@ wrappers so their slide placement is explicit.
 | Same slide; heading reveals separately | `### Title {.slide-fragment}` |
 | Same slide; heading and first selected block reveal together | `### Title {.slide-fragment .slide-with-content}` |
 
+Headings also accept format visibility conditions directly:
+
+```markdown
+## Why bother? {.content-visible when-format="revealjs"}
+```
+
+This shows only the heading in slides. Following content still uses the normal
+selection rules and remains in the textbook. `unless-format` and `.content-hidden`
+are also supported on headings, and can be combined with `.slide-fragment` and
+`.slide-with-content`. Use a conditional div when the heading and its contents
+should be shown or hidden together.
+
 With `.slide-with-content`, the heading and its first selected block share one
 advance. Later blocks retain their own reveal steps. Multiple heading/content
 pairs on the same slide reveal in sequence, rather than all at once.
@@ -632,11 +644,7 @@ right, close the chart's `.slide-visual` wrapper before the right-hand heading:
 
 :::
 
-::: {.content-visible when-format="revealjs"}
-
-## Because {.slide-fragment}
-
-:::
+## Because {.slide-fragment .content-visible when-format="revealjs"}
 
 Explanatory book prose with [the first conclusion]{.slide-bullet}
 and [the second conclusion]{.slide-bullet}.
@@ -645,8 +653,8 @@ and [the second conclusion]{.slide-bullet}.
 The current slide title remains above the left column. All selected content
 after `Because` stacks in the right column until the next slide heading;
 bullets reveal one at a time. Add `.slide-with-content` to `Because` to reveal
-it together with the first bullet. Put the format condition on the heading-only
-div, rather than on the heading itself, to hide it in the book while preserving
+it together with the first bullet. A format condition can go directly on the
+heading, as above, or on a heading-only div to hide it in the book while preserving
 the explanatory prose. Chapter 1 uses this layout for
 its Anscombe charts and conclusions.
 
@@ -673,8 +681,9 @@ uv run --locked python -m unittest discover -s textbook/tests
 
 `chapter-slides.lua` handles the two views. `_chapter-slides.yml` selects the
 Reveal format and output location; `chapter-slides.css` controls slide layout.
-`chapter-slide-options.lua` preserves tab-heading annotations before Quarto
-processes tabsets. The builder appends `_slide-chunks.qmd` to the staged knitr
+`chapter-slide-options.lua` applies heading format conditions in both views and
+preserves slide tab-heading annotations before Quarto processes tabsets.
+The builder appends `_slide-chunks.qmd` to the staged knitr
 include to implement presentation-only cell visibility.
 `chapter-slides.js` implements Escape navigation and resets fragments when entering
 a slide. Decks and chapters use matching HTML filenames, with decks one directory
