@@ -1,3 +1,215 @@
+---
+fig-width: 6
+fig-height: 4
+resources:
+  - data/movies.csv
+---
+
 # Cumulative distributions {#sec-cumulative-distributions}
 
-*Material is being finalized before it is uploaded*
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+:::: {.slide-outcomes}
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Visualize** cumulative distributions using empirical cumulative distribution functions (ECDFs).
+
+2. **Read** proportions and percentiles from an ECDF and **compare** distributions across groups.
+
+:::
+
+::::
+
+## Why bother?
+
+Suppose we have 100 minutes available to watch a movie.
+What proportion of the films in our dataset would fit?
+Histograms and density plots show where values are concentrated,
+but answering this question requires combining bins or estimating an area.
+A **cumulative distribution** makes the proportion directly visible.
+
+An **empirical cumulative distribution function**, or **ECDF**,
+shows the proportion of observations that are **less than or equal to**
+each value on the x-axis.
+For example, its height at 100 minutes is the number of films lasting
+at most 100 minutes divided by the total number of films.
+"Empirical" means that we calculate it from the observed data.
+
+## Visualizing cumulative distributions
+
+We will reuse the movie dataset from @sec-binned-distributions.
+Here we use all 797 films, each of which has a recorded runtime.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+The `cume_dist()` operation computes the cumulative proportion.
+We use the helper class `SortField` to sort by runtime
+so that the calculation proceeds from the shortest films
+to the longest, then use a step line to connect the results.
+
+```{python}
+#| label: runtime-ecdf-alt
+#| message: false
+import pandas as pd
+import altair as alt
+
+movies = pd.read_csv('data/movies.csv')
+
+alt.Chart(movies).transform_window(
+    ecdf='cume_dist()',
+    sort=[alt.SortField('Running Time min')],
+).mark_line(interpolate='step-after').encode(
+    x=alt.X('Running Time min'),
+    y=alt.Y('ecdf:Q')
+)
+```
+
+### ggplot {.slide-skip}
+
+`stat = 'ecdf'` computes the cumulative proportions and draws a step line.
+We use `pad = FALSE` to show the curve only between the observed minimum
+and maximum, as in the Altair example.
+
+```{r}
+#| label: runtime-ecdf-gg
+#| message: false
+library(ggplot2)
+
+movies <- readr::read_csv('data/movies.csv')
+
+ggplot(movies, aes(x = `Running Time min`)) +
+    geom_step(stat = 'ecdf', pad = FALSE)
+```
+
+:::
+
+Every step in the curve corresponds to at least one observation;
+films with identical runtimes contribute together, creating a larger jump.
+In an ECDF, concentrations appear as rapid increases,
+while intervals without observations
+appear as flat sections.
+
+To answer a threshold question,
+find the runtime on the x-axis and read the curve's height.
+At a jump, read the upper end to include films lasting exactly that long.
+We can also work in the other direction:
+choose a proportion on the y-axis and find the smallest runtime
+where the curve reaches that height.
+
+::: {.callout-default .ex-prompt}
+
+Use the chart to estimate:
+
+1. What proportion of the movies last at most 100 minutes?
+2. How long would our viewing window need to be to accommodate at least 80% of the movies?
+
+:::: {.callout-default .ex-hint}
+
+For the first question, start at 100 minutes on the x-axis.
+For the second, start at 80% on the y-axis.
+
+::::: {.callout-default .ex-solution}
+
+About 41% of the films fit within 100 minutes:
+326 of the 797 films have runtimes less than or equal to 100 minutes.
+The curve first reaches at least 80% at 124 minutes,
+so a little over two hours would accommodate that proportion of the dataset.
+Reading the chart gives an approximation; the exact values can be checked in the data.
+Here we use the first observed runtime reaching the requested proportion;
+other sample-percentile conventions may interpolate between observations.
+
+Notice that "at most 100" includes the 18 films lasting exactly 100 minutes.
+They account for the jump at that value.
+
+:::::
+::::
+:::
+
+Unlike a histogram or density estimate,
+an ECDF does not require a bin width or a smoothing bandwidth.
+Its cumulative form also avoids the need to add up several bins
+when answering threshold questions.
+However, features such as modes are usually easier to recognize
+in a histogram or density plot.
+
+## Comparing groups
+
+We can compare genres by computing an ECDF separately for each group.
+Each curve uses the number of films in its own genre as the denominator.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+Add `groupby` to calculate the proportions within each genre,
+then use color to distinguish the curves.
+
+```{python}
+#| label: genre-ecdfs-alt
+alt.Chart(movies).transform_window(
+    ecdf='cume_dist()',
+    sort=[alt.SortField('Running Time min')],
+    groupby=['Major Genre'],
+).mark_line(interpolate='step-after').encode(
+    x=alt.X('Running Time min'),
+    y=alt.Y('ecdf:Q'),
+    color='Major Genre',
+)
+```
+
+### ggplot {.slide-skip}
+
+Mapping genre to color groups the observations,
+so `stat_ecdf()` calculates a separate curve for each genre.
+
+```{r}
+#| label: genre-ecdfs-gg
+ggplot(movies, aes(x = `Running Time min`, color = `Major Genre`)) +
+    geom_step(stat = 'ecdf', pad = FALSE)
+```
+
+:::
+
+At a particular runtime,
+a higher curve means a larger proportion of that genre's films
+are at or below the threshold.
+For example, around 100 minutes,
+a larger proportion of comedies than dramas fit into the viewing window.
+If curves cross, which group has the larger cumulative proportion
+can depend on the threshold we choose.
+
+::: {.callout-default .ex-prompt}
+
+At 100 minutes, the Horror curve is above the Adventure curve.
+Does that mean there are more horror films than adventure films
+that fit within our viewing window?
+
+:::: {.callout-default .ex-hint}
+
+Does the ECDDF show counts or proportions?
+
+::::: {.callout-default .ex-solution}
+
+No. The curves show proportions within genres, not counts.
+About 56% of the 77 horror films fit, compared with about 47% of the
+154 adventure films. That corresponds to 43 horror films and 72 adventure films.
+Horror has the higher qualifying proportion, but Adventure offers more qualifying films.
+
+:::::
+::::
+:::
+
+::: {.callout-warning}
+
+### Avoid reading an ECDF as a density plot
+
+The height of an ECDF at 100 minutes is the proportion lasting **at most**
+100 minutes, not the proportion lasting exactly 100 minutes.
+The proportion at an individual value is represented by the jump there.
+Use step lines to preserve these empirical proportions between observed values;
+straight diagonal segments would interpolate values that are not part of the ECDF.
+
+:::
