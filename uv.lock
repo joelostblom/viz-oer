@@ -31,6 +31,20 @@ all = [
 ]
 
 [[package]]
+name = "altair-ally"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "altair" },
+    { name = "numpy" },
+    { name = "pandas" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a5/08/b6d97a4d32a2e723b4eecda1cd404711373d80e9d026ea0bfd2f891cf226/altair_ally-0.2.1.tar.gz", hash = "sha256:3a32509e9a81d80b9f92afb18391ea24bd8f0942e0f57577e8384e114f6e1ffc", size = 277057, upload-time = "2026-10-13T17:53:47.792Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/62/0b/fc9e22f9e1ff8438019a8a9f732725300d6dcfcb986adba1db1e51aeec8e/altair_ally-0.2.1-py3-none-any.whl", hash = "sha256:883473b99cf70979660bcd96686a49ebc517778eb32f0b7e43c9b66b67c9430c", size = 13843, upload-time = "2026-10-13T17:53:49.006Z" },
+]
+
+[[package]]
 name = "altair-tiles"
 version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1237,6 +1251,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "altair", extra = ["all"] },
+    { name = "altair-ally" },
     { name = "jupyter-cache" },
     { name = "pandas" },
     { name = "polars" },
@@ -1248,6 +1263,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "altair", extras = ["all"], git = "https://github.com/vega/altair.git?rev=feat%2Fto_html-should-work-as_save_html" },
+    { name = "altair-ally", specifier = ">=0.2.1" },
     { name = "jupyter-cache", specifier = ">=1.0.1" },
     { name = "pandas", specifier = ">=3.0.5" },
     { name = "polars", specifier = ">=1.44.2" },
