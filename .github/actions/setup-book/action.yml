@@ -17,7 +17,7 @@ runs:
     - name: Install uvr
       shell: bash
       env:
-        UVR_VERSION: v0.4.6
+        UVR_VERSION: v0.4.7
       run: |
         curl -fsSL https://raw.githubusercontent.com/nbafrank/uvr/v0.4.6/install.sh | sh
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
