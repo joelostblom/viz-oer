@@ -44,14 +44,14 @@ we learned that histograms first divide the axis into bins
 and then assign each observation entirely to one bin,
 regardless of how close it is to a bin edge.
 This gave rise to one of the shortcomings of histograms:
-that the exact position of the bins along the axis
-could drastically impact the appearance of the histogram
+that [the exact position of the bins along the axis
+could drastically impact the appearance of the histogram]{.slide-subbullet}
 and lead to varying perceptions of the underlying distribution
 as we saw in @fig-hist-bin-shift.
 
-Can you try to think of how we could change
+[How could we could change
 the histogram creation process
-to remedy this shortcoming?
+so that bins were always created in a fixed position?]{.slide-subbullet}
 Study the animated schematic in @fig-hist-buildup again
 to help you brainstorm possible improvements.
 
@@ -76,10 +76,10 @@ as can be seen in this animation:
 ::::::
 
 
-This modification removes the need to select
-fixed bin boundaries along the axis
-and thus the appearance of the distribution
-depend only on the width of each bin
+[This modification removes the need to select
+fixed bin boundaries along the axis]{.slide-bullet}
+and thus [the appearance of the distribution
+depend only on the width of each bin]{.slide-bullet}
 (i.e. one parameter less than the histogram).
 For a fixed rectangular kernel shape, the estimate depends on the window width
 but no longer requires a separate choice of bin origin.
@@ -164,23 +164,23 @@ removes the histogram's sensitivity to bin alignment.
 Since we are no longer binning the axis
 at fixed intervals,
 this chart is technically no longer a histogram.
-To turn these overlapping contributions into a probability density,
-we sum them and normalize the resulting curve so that its total area is one.
-This method is called **kernel density estimation**, or **KDE**.
+[To turn these overlapping contributions into a probability density,
+we sum them and normalize the resulting curve so that its total area is one]{.slide-bullet}.
+[This method is called **kernel density estimation**, or **KDE**]{.slide-subbullet}.
 As the name implies,
 this method estimates
 the unknown probability density function
 (i.e. the density of the underlying *population*),
 using contributions called kernels.
 
-A kernel describes how an observation's contribution is spread
-around its recorded value.
-In the exercise above,
-we used a rectangular kernel
+[A kernel describes how an observation's contribution spreads
+around its recorded value]{.slide-bullet}.
+[In the exercise above,
+we used a rectangular kernel]{.slide-subbullet}
 to make the connection to histograms clearer.
 This kernel has a constant height within its window
 and drops abruptly to zero outside it.
-A smooth kernel instead reduces an observation's contribution gradually
+[A smooth kernel instead reduces an observation's contribution gradually]{.slide-subbullet}
 as we move farther from its recorded value.
 The most commonly used shape is the Gaussian bell-shaped kernel,
 and summing these smooth individual kernels,
@@ -216,14 +216,15 @@ and Altair can't infer its type from the dataframe.
 
 ```{python}
 #| label: runtime-kde-alt
-#| slide-show: output
-#| slide-title: Estimating a density — Altair
 import altair as alt
 import pandas as pd
 
 alt.data_transformers.enable('vegafusion');
 movies = pd.read_csv('data/movies.csv')
+```
 
+```{python}
+#| slide-show: both
 alt.Chart(movies, height=200).transform_density(
     'Running Time min',
     as_=['Running Time min', 'Density'],
@@ -242,12 +243,14 @@ directly in `geom_density()`.
 
 ```{r}
 #| label: runtime-kde-gg
-#| slide-show: both
-#| slide-title: Estimating a density — ggplot
 #| message: false
 library(ggplot2)
 
 movies <- readr::read_csv('data/movies.csv')
+```
+
+```{r}
+#| slide-show: both
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_density(fill = 'grey')
 ```
@@ -255,28 +258,20 @@ ggplot(movies, aes(x = `Running Time min`)) +
 :::
 
 As you can see above,
-the y-axis is not showing the count of movies,
-but rather their probability *density*,
-which means the probability per unit of the x-axis.
+[the y-axis is not showing the count of movies,
+but rather their probability *density*]{.slide-bullet},
+which means [the probability per unit of the x-axis]{.slide-subbullet}.
 A higher curve indicates a greater concentration of observations
 around that runtime.
 
-:::: {.slide-visual slide-title="Reading a density curve"}
-
-::: {.slide-bullet}
-
 Importantly,
-it is the area under the curve over an interval,
+it is [the area under the curve over an interval,
 rather than the height at a specific point,
-that represents an estimated proportion.
-The full density curve is normalized to have area one.
+that represents an estimated proportion]{.slide-bullet}.
+[The full density curve is normalized to have area one]{.slide-bullet}.
 Its height therefore depends on the units of the variable:
 a density per minute has different numerical values from a density per second,
 even though both describe the same observations.
-
-:::
-
-::::
 
 For these reasons,
 use densities primarily to understand the shape of a distribution,
@@ -288,7 +283,7 @@ is that they are simpler to interpret and explain.
 
 ::: {.callout-warning}
 
-### Avoid interpreting count-scaled densities as bin counts
+### Avoid interpreting count-scaled densities as bin counts {.slide-skip}
 
 Multiplying a density by the number of observations
 creates a **count-scaled density**.
@@ -315,7 +310,6 @@ but labeling the vertical axis merely "counts" can be misleading.
 ```{python}
 #| echo: false
 #| label: fig-runtime-kde-count-alt
-#| slide-show: output
 #| fig-cap: >
 #|   The same runtimes measured in minutes (left) and half-minute units (right).
 #|   Count-scaled density heights halve when the numerical x-values double.
@@ -460,8 +454,8 @@ alt.Chart(movies, height=200).transform_density(
     as_=['runtime', 'density'],
     bandwidth=2,
 ).mark_area().encode(
-    x=alt.X('runtime:Q').title('Running time (min)').scale(zero=False),
-    y=alt.Y('density:Q').title('Density'),
+    x='runtime:Q',
+    y='density:Q'
 )
 ```
 
@@ -481,8 +475,7 @@ so `bw = 2` uses a bandwidth of two minutes.
 #| slide-show: both
 #| slide-title: Choosing a bandwidth — ggplot
 ggplot(movies, aes(x = `Running Time min`)) +
-    geom_density(bw = 2, fill = 'grey80') +
-    labs(x = 'Running time (min)', y = 'Density')
+    geom_density(bw = 2, fill = 'grey80')
 ```
 
 If left unset,
@@ -500,8 +493,7 @@ and suggests Sheather–Jones as a preferred alternative.
 #| slide-show: both
 #| slide-title: A different bandwidth-selection rule
 ggplot(movies, aes(x = `Running Time min`)) +
-    geom_density(bw = 'SJ', fill = 'grey80') +
-    labs(x = 'Running time (min)', y = 'Density')
+    geom_density(bw = 'SJ', fill = 'grey80')
 ```
 
 
@@ -511,7 +503,7 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 ::: {.callout-warning}
 
-### Avoid assigning density to impossible values
+### Avoid assigning density to impossible values {.slide-skip}
 
 Since each observation contributes to the overall density
 with a kernel centered on the observation,
@@ -540,7 +532,6 @@ the omitted tails would simply taper smoothly toward zero).
 ```{python}
 #| echo: false
 #| label: fig-kde-beyond-range
-#| slide-show: output
 #| fig-cap: >
 #|   The same KDE displayed only over the observed range (left) or beyond it (right).
 #|   The red curve is multiplied by the sample size and 3-minute bin width for
@@ -605,7 +596,23 @@ chart = (
 chart
 ```
 
-Limiting the display to the observed range, as on the left, hides the impossible tail
+## What's odd with this density chart? {.content-visible when-format="revealjs"}
+
+```{python}
+#| include: false
+#| slide-show: output
+panel(x_domain).properties(height=300, width=400)
+```
+
+## Avoid impossible values {.content-visible when-format="revealjs"}
+
+```{python}
+#| include: false
+#| slide-show: output
+panel(observed_range).properties(height=300, width=400)
+```
+
+[Limiting the display to the observed range, hides the impossible tail]{.slide-bullet}
 but also removes unobserved values that could be possible.
 It neither corrects boundary bias nor renormalizes the truncated curve.
 For bounded variables, consider a boundary-aware density estimator
@@ -617,7 +624,7 @@ or a histogram with bins restricted to the valid range.
 
 ::: {.callout-default .ex-prompt}
 
-[The curve below was calculated from a set of movie runtimes]{.slide-bullet}.
+The curve below was calculated from a set of movie runtimes.
 Before opening the solution,
 sketch what you think the individual observations
 might look like along the x-axis:
@@ -627,7 +634,7 @@ Roughly how many ticks would you draw, and where would you place them?
 ```{python}
 #| label: sparse-runtime-density-question
 #| slide-show: output
-#| slide-title: How many observations are behind this curve?
+#| slide-output-fragment: true
 #| echo: false
 runtime_values = movies['Running Time min'].dropna().sort_values().to_numpy()
 # Deliberately choose five observations spread across the empirical distribution.
@@ -661,6 +668,8 @@ def runtime_comparison_curve(label, width=420, height=160):
 runtime_comparison_curve('Five movies')
 ```
 
+[How many movies are this density chart created from?]{.content-visible when-format="revealjs" .slide-bullet}
+
 :::: {.callout-default .ex-hint}
 
 Remember that the area under the curve is normalized to one
@@ -679,7 +688,7 @@ Compare their density and rug with those for all **797 movies**:
 #| echo: false
 #| label: fig-sparse-runtime-density-reveal
 #| slide-show: output
-#| slide-title: Similar curves, very different sample sizes
+#| slide-title: Avoid trusting a density curve just because it looks smooth
 #| fig-cap: Two nearly identical density charts with very different numbers of underlying observations.
 
 runtime_reveal_panels = []
@@ -729,8 +738,8 @@ Histograms normalized to density or proportion also hide the total sample size.
 
 :::
 
-As with histograms, we can add individual observations below a density curve
-using a rug plot.
+As with histograms, we can [add individual observations below a density curve
+using a rug plot]{.slide-text}.
 This is especially helpful since density smoothing
 might conceal how sparse the data is.
 This can help us see
@@ -747,8 +756,7 @@ Sharing the x-scale keeps the ticks aligned with their positions on the curve.
 
 ```{python}
 #| label: runtime-kde-rug-alt
-#| slide-show: output
-#| slide-title: Inspect the observations with a rug — Altair
+#| slide-show: both
 density = alt.Chart(movies, height=200).transform_density(
     'Running Time min',
     as_=['runtime', 'density'],
@@ -774,19 +782,16 @@ Transparency helps reveal where many ticks overlap.
 ```{r}
 #| label: runtime-kde-rug-gg
 #| slide-show: both
-#| slide-title: Inspect the observations with a rug — ggplot
 ggplot(movies, aes(x = `Running Time min`)) +
     geom_density(bw = 5, fill = 'grey80') +
-    geom_rug(alpha = 0.25) +
-    scale_x_continuous(limits = c(40, 260)) +
-    labs(x = 'Running time (min)', y = 'Density')
+    geom_rug(alpha = 0.25)
 ```
 
 :::
 
-## Multiple distributions {.slide-skip}
+## Multiple distributions
 
-### Contrasting small differences with density lines
+### Contrasting small differences with density lines {.slide-skip}
 
 As with histograms,
 it can also be beneficial to stratify densities
@@ -797,7 +802,7 @@ is that it can be difficult to compare small differences
 since the distributions are now far apart.
 As we learned in @sec-groups,
 [to highlight small differences between groups,
-we want their visual components close together]{.slide-bullet}.
+we want their visual components close together]{.slide-text}.
 But we also learned in @sec-binned-distributions
 that with several distributions in the same chart,
 overlapping distributions can obscure one another.
@@ -820,8 +825,7 @@ is computed for each genre.
 
 ```{python}
 #| label: genre-kde-lines-alt
-#| slide-show: output
-#| slide-title: Compare distribution shapes with lines — Altair
+#| slide-show: both
 alt.Chart(movies, height=200).transform_density(
     'Running Time min',
     as_=['Running Time min', 'Density'],
@@ -838,7 +842,6 @@ alt.Chart(movies, height=200).transform_density(
 ```{r}
 #| label: genre-kde-lines-gg
 #| slide-show: both
-#| slide-title: Compare distribution shapes with lines — ggplot
 ggplot(movies, aes(x = `Running Time min`, color = `Major Genre`)) +
     geom_density(bw = 'SJ')
 ```
@@ -876,7 +879,7 @@ but still having them near each other for easier comparison.
 While it is possible to do this with density curves directly,
 a more common way is to use a so called violin plot.
 
-[Violin plots mirror a density estimate around a group’s position]{.slide-bullet},
+[Violin plots mirror a density estimate around a group’s position]{.slide-text},
 creating a centered shape
 that can accommodate a boxplot or other summary marks.
 The thickness of the violin at a particular runtime
@@ -915,8 +918,7 @@ for an effective visualization.
 
 ```{python}
 #| label: compact-densities-alt
-#| slide-show: output
-#| slide-title: Compact faceted densities — Altair
+#| slide-show: both
 alt.Chart(movies, height=60).transform_density(
     'Running Time min',
     groupby=['Major Genre'],
@@ -946,7 +948,6 @@ just like the densities.
 ```{r}
 #| label: runtime-violins-gg
 #| slide-show: both
-#| slide-title: Compact mirrored densities — ggplot
 #| fig-height: 4
 ggplot(movies, aes(x = `Running Time min`, y = `Major Genre`)) +
     geom_violin(bw = 'SJ', fill = 'grey80')
