@@ -1,3 +1,5 @@
+manifest_fingerprint = "sha256:e12af3cac8b2aaf868ec73eaa80a7f6deb2d31737593f85292bc9cd22c4b53bf"
+
 [r]
 version = "4.6.1"
 
