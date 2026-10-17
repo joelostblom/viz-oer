@@ -498,8 +498,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./18_geospatial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
+  <a href="./18_trends.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19_geospatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
   </div>
 </li>
       </ul>
@@ -543,6 +549,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="chapter-slide-link">
+<a href="slides/11_cumulative-distributions.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <rect x="3" y="3" width="18" height="13" rx="1"></rect>
+        <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
+        </svg></a>
+</div>
 <div class="slide-outcomes">
 <div class="callout callout-style-default callout-note callout-titled" title="Learning outcomes &amp; Chapter summary">
 <div class="callout-header d-flex align-content-center">
@@ -563,8 +575,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="why-bother" class="level2" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="why-bother"><span class="header-section-number">11.1</span> Why bother?</h2>
-<p>Suppose we have 100 minutes available to watch a movie. What proportion of the films in our dataset would fit? Histograms and density plots show where values are concentrated, but answering this question requires combining bins or estimating an area. A <strong>cumulative distribution</strong> makes the proportion directly visible.</p>
-<p>An <strong>empirical cumulative distribution function</strong>, or <strong>ECDF</strong>, shows the proportion of observations that are <strong>less than or equal to</strong> each value on the x-axis. For example, its height at 100 minutes is the number of films lasting at most 100 minutes divided by the total number of films. “Empirical” means that we calculate it from the observed data.</p>
+<p><span class="slide-bullet">Suppose we have 100 minutes available to watch a movie. What proportion of the films in our dataset would fit?</span> Histograms and density plots show where values are concentrated, but answering this question requires combining bins or estimating an area. A <strong>cumulative distribution</strong> makes the proportion directly visible.</p>
+<p><span class="slide-bullet">An <strong>empirical cumulative distribution function</strong>, or <strong>ECDF</strong>, shows the proportion of observations that are <strong>less than or equal to</strong> each value on the x-axis.</span> For example, its height at 100 minutes is the number of films lasting at most 100 minutes divided by the total number of films. “Empirical” means that we calculate it from the observed data.</p>
 </section>
 <section id="visualizing-cumulative-distributions" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="visualizing-cumulative-distributions"><span class="header-section-number">11.2</span> Visualizing cumulative distributions</h2>
@@ -574,7 +586,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content" data-group="language">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>The <code>cume_dist()</code> operation computes the cumulative proportion. We use the helper class <code>SortField</code> to sort by runtime so that the calculation proceeds from the shortest films to the longest, then use a step line to connect the results.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -635,7 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p><code>stat = 'ecdf'</code> computes the cumulative proportions and draws a step line. We use <code>pad = FALSE</code> to show the curve only between the observed minimum and maximum, as in the Altair example.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>movies <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'data/movies.csv'</span>)</span>
@@ -653,8 +665,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Every step in the curve corresponds to at least one observation; films with identical runtimes contribute together, creating a larger jump. In an ECDF, concentrations appear as rapid increases, while intervals without observations appear as flat sections.</p>
-<p>To answer a threshold question, find the runtime on the x-axis and read the curve’s height. At a jump, read the upper end to include films lasting exactly that long. We can also work in the other direction: choose a proportion on the y-axis and find the smallest runtime where the curve reaches that height.</p>
+<p><span class="slide-bullet">Every step in the curve corresponds to at least one observation; films with identical runtimes contribute together, creating a larger jump.</span> In an ECDF, concentrations appear as rapid increases, while intervals without observations appear as flat sections.</p>
+<p><span class="slide-bullet">To answer a threshold question, find the runtime on the x-axis and read the curve’s height. At a jump, read the upper end to include films lasting exactly that long.</span> <span class="slide-bullet">We can also work in the other direction: choose a proportion on the y-axis and find the smallest runtime where the curve reaches that height.</span></p>
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -670,8 +682,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-default ex-prompt">
 <p>Use the chart to estimate:</p>
 <ol type="1">
-<li>What proportion of the movies last at most 100 minutes?</li>
-<li>How long would our viewing window need to be to accommodate at least 80% of the movies?</li>
+<li><span class="slide-bullet">What proportion of the movies last at most 100 minutes?</span></li>
+<li><span class="slide-bullet">How long would our viewing window need to be to accommodate at least 80% of the movies?</span></li>
 </ol>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
@@ -686,7 +698,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-hint">
-<p>For the first question, start at 100 minutes on the x-axis. For the second, start at 80% on the y-axis.</p>
+<p><span class="slide-bullet">For the first question, start at 100 minutes on the x-axis. For the second, start at 80% on the y-axis.</span></p>
 <div class="callout callout-style-default callout-ex-solution no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -700,7 +712,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
-<p>About 41% of the films fit within 100 minutes: 326 of the 797 films have runtimes less than or equal to 100 minutes. The curve first reaches at least 80% at 124 minutes, so a little over two hours would accommodate that proportion of the dataset. Reading the chart gives an approximation; the exact values can be checked in the data. Here we use the first observed runtime reaching the requested proportion; other sample-percentile conventions may interpolate between observations.</p>
+<p><span class="slide-bullet">About 41% of the films fit within 100 minutes: 326 of the 797 films have runtimes less than or equal to 100 minutes.</span> <span class="slide-bullet">The curve first reaches at least 80% at 124 minutes, so a little over two hours would accommodate that proportion of the dataset.</span> Reading the chart gives an approximation; the exact values can be checked in the data. Here we use the first observed runtime reaching the requested proportion; other sample-percentile conventions may interpolate between observations.</p>
 <p>Notice that “at most 100” includes the 18 films lasting exactly 100 minutes. They account for the jump at that value.</p>
 </div>
 </div>
@@ -714,17 +726,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Unlike a histogram or density estimate, an ECDF does not require a bin width or a smoothing bandwidth. Its cumulative form also avoids the need to add up several bins when answering threshold questions. However, features such as modes are usually easier to recognize in a histogram or density plot.</p>
+<p><span class="slide-bullet">Unlike a histogram or density estimate, an ECDF does not require a bin width or a smoothing bandwidth.</span> Its cumulative form also avoids the need to add up several bins when answering threshold questions. <span class="slide-bullet">However, features such as modes are usually easier to recognize in a histogram or density plot.</span></p>
 </section>
 <section id="comparing-groups" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="comparing-groups"><span class="header-section-number">11.3</span> Comparing groups</h2>
-<p>We can compare genres by computing an ECDF separately for each group. Each curve uses the number of films in its own genre as the denominator.</p>
+<p><span class="slide-bullet">We can compare genres by computing an ECDF separately for each group. Each curve uses the number of films in its own genre as the denominator.</span></p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">ggplot</a></li></ul>
 <div class="tab-content" data-group="language">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <p>Add <code>groupby</code> to calculate the proportions within each genre, then use color to distinguish the curves.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(movies).transform_window(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    ecdf<span class="op">=</span><span class="st">'cume_dist()'</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    sort<span class="op">=</span>[alt.SortField(<span class="st">'Running Time min'</span>)],</span>
@@ -782,7 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>Mapping genre to color groups the observations, so <code>stat_ecdf()</code> calculates a separate curve for each genre.</p>
-<div class="cell">
+<div class="cell" data-slide-show="both">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Running Time min</span><span class="st">`</span>, <span class="at">color =</span> <span class="st">`</span><span class="at">Major Genre</span><span class="st">`</span>)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_step</span>(<span class="at">stat =</span> <span class="st">'ecdf'</span>, <span class="at">pad =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -796,7 +808,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>At a particular runtime, a higher curve means a larger proportion of that genre’s films are at or below the threshold. For example, around 100 minutes, a larger proportion of comedies than dramas fit into the viewing window. If curves cross, which group has the larger cumulative proportion can depend on the threshold we choose.</p>
+<p><span class="slide-bullet">At a particular runtime, a higher curve means a larger proportion of that genre’s films are at or below the threshold.</span> For example, around 100 minutes, a larger proportion of comedies than dramas fit into the viewing window. <span class="slide-bullet">If curves cross, which group has the larger cumulative proportion can depend on the threshold we choose.</span></p>
 <div class="callout callout-style-default callout-ex-prompt no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -810,7 +822,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-7" class="callout-7-contents callout-collapse collapse show">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-prompt">
-<p>At 100 minutes, the Horror curve is above the Adventure curve. Does that mean there are more horror films than adventure films that fit within our viewing window?</p>
+<p><span class="slide-bullet">At 100 minutes, the Horror curve is above the Adventure curve. Does that mean there are more horror films than adventure films that fit within our viewing window?</span></p>
 <div class="callout callout-style-default callout-ex-hint no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -824,7 +836,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-hint">
-<p>Does the ECDDF show counts or proportions?</p>
+<p><span class="slide-bullet">Does the ECDF show counts or proportions?</span></p>
 <div class="callout callout-style-default callout-ex-solution no-icon callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -838,7 +850,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="callout-default ex-solution">
-<p>No.&nbsp;The curves show proportions within genres, not counts. About 56% of the 77 horror films fit, compared with about 47% of the 154 adventure films. That corresponds to 43 horror films and 72 adventure films. Horror has the higher qualifying proportion, but Adventure offers more qualifying films.</p>
+<p><span class="slide-bullet">No.&nbsp;The curves show proportions within genres, not counts. About 56% of the 77 horror films fit, compared with about 47% of the 154 adventure films. That corresponds to 43 horror films and 72 adventure films.</span> Horror has the higher qualifying proportion, but Adventure offers more qualifying films.</p>
 </div>
 </div>
 </div>
@@ -861,7 +873,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The height of an ECDF at 100 minutes is the proportion lasting <strong>at most</strong> 100 minutes, not the proportion lasting exactly 100 minutes. The proportion at an individual value is represented by the jump there. Use step lines to preserve these empirical proportions between observed values; straight diagonal segments would interpolate values that are not part of the ECDF.</p>
+<p><span class="slide-bullet">The height of an ECDF at 100 minutes is the proportion lasting <strong>at most</strong> 100 minutes, not the proportion lasting exactly 100 minutes.</span> The proportion at an individual value is represented by the jump there. Use step lines to preserve these empirical proportions between observed values; straight diagonal segments would interpolate values that are not part of the ECDF.</p>
 </div>
 </div>
 

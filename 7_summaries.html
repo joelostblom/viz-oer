@@ -498,8 +498,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./18_geospatial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
+  <a href="./18_trends.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19_geospatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
   </div>
 </li>
       </ul>
@@ -517,10 +523,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#why-bother" id="toc-why-bother" class="nav-link active" data-scroll-target="#why-bother"><span class="header-section-number">7.1</span> Why bother?</a></li>
   <li><a href="#visualizing-statistical-summaries" id="toc-visualizing-statistical-summaries" class="nav-link" data-scroll-target="#visualizing-statistical-summaries"><span class="header-section-number">7.2</span> Visualizing statistical summaries</a></li>
   <li><a href="#visualizing-spread" id="toc-visualizing-spread" class="nav-link" data-scroll-target="#visualizing-spread"><span class="header-section-number">7.3</span> Visualizing spread</a></li>
-  <li><a href="#visualizing-spread-1" id="toc-visualizing-spread-1" class="nav-link" data-scroll-target="#visualizing-spread-1"><span class="header-section-number">7.4</span> Visualizing spread</a></li>
-  <li><a href="#including-the-underlying-observations" id="toc-including-the-underlying-observations" class="nav-link" data-scroll-target="#including-the-underlying-observations"><span class="header-section-number">7.5</span> Including the underlying observations</a></li>
-  <li><a href="#showing-medians-percentile-intervals-with-boxplots" id="toc-showing-medians-percentile-intervals-with-boxplots" class="nav-link" data-scroll-target="#showing-medians-percentile-intervals-with-boxplots"><span class="header-section-number">7.6</span> Showing medians &amp; percentile intervals with boxplots</a></li>
-  <li><a href="#what-conclusions-can-we-draw-from-the-data" id="toc-what-conclusions-can-we-draw-from-the-data" class="nav-link" data-scroll-target="#what-conclusions-can-we-draw-from-the-data"><span class="header-section-number">7.7</span> What conclusions <em>can</em> we draw from the data?</a></li>
+  <li><a href="#including-the-underlying-observations" id="toc-including-the-underlying-observations" class="nav-link" data-scroll-target="#including-the-underlying-observations"><span class="header-section-number">7.4</span> Including the underlying observations</a></li>
+  <li><a href="#showing-medians-percentile-intervals-with-boxplots" id="toc-showing-medians-percentile-intervals-with-boxplots" class="nav-link" data-scroll-target="#showing-medians-percentile-intervals-with-boxplots"><span class="header-section-number">7.5</span> Showing medians &amp; percentile intervals with boxplots</a></li>
+  <li><a href="#what-conclusions-can-we-draw-from-the-data" id="toc-what-conclusions-can-we-draw-from-the-data" class="nav-link" data-scroll-target="#what-conclusions-can-we-draw-from-the-data"><span class="header-section-number">7.6</span> What conclusions <em>can</em> we draw from the data?</a></li>
   </ul>
 </nav>
     </div>
@@ -548,7 +553,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="chapter-slide-link">
-<a href="slides/7_summaries.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<a href="slides/7_summaries.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <rect x="3" y="3" width="18" height="13" rx="1"></rect>
         <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
         </svg></a>
@@ -803,12 +808,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>As you can see, different packages make different decisions about whether to include zero by default. For point summaries, the appropriate axis range depends on the comparisons we want to make and the meaning of the scale. We will discuss axis limits in more detail later.</p>
 </div></div><p>Now we can clearly see that <span class="slide-bullet"><strong>on average</strong> there are some differences between the groups</span>. But <span class="slide-bullet">showing only the mean hides the spread of the observations</span>.</p>
 </section>
-<section id="visualizing-spread" class="level2" data-number="7.3">
+<section id="visualizing-spread" class="level2 page-columns page-full" data-number="7.3">
 <h2 data-number="7.3" class="anchored" data-anchor-id="visualizing-spread"><span class="header-section-number">7.3</span> Visualizing spread</h2>
 <p>In addition to differences in central tendencies between conditions, <span class="slide-bullet">how the individual observations are distributed affects the conclusions we can draw from the data</span>. So, whenever we show a measure of central tendency such as the mean or median, it is helpful to pair it with an indication of the underlying variability.</p>
-</section>
-<section id="visualizing-spread-1" class="level2 content-visible page-columns page-full" data-when-format="revealjs" data-number="7.4">
-<h2 class="content-visible anchored" data-when-format="revealjs" data-number="7.4" data-anchor-id="visualizing-spread-1"><span class="header-section-number">7.4</span> Visualizing spread</h2>
 <p>Here, we need to <span class="slide-bullet">distinguish two graphically related concepts</span>: <span class="slide-subbullet">the spread of the underlying data (descriptive statistics)</span> and <span class="slide-subbullet">the uncertainty in the estimate of central tendency (inferential statistics)</span>. These <span class="slide-subbullet">answer two different questions, but graphically they are often depicted similarly, e.g.&nbsp;with errorbars</span>. Therefore it is important to <span class="slide-subbullet">always label what an errorbar represents</span>. In this chapter, we will focus on how spread out the underlying data distribution is, and return to confidence intervals and other measures of inferential uncertainty in a future chapter. <!-- TODO which chapter for ci, link to it and include more discussion around bootstrap there? and also talk about how more points changes the interval to become smaller --> <!-- TODO mention error bar --></p>
 <p>One measure of the spread in the underlying data is the <a href="https://en.wikipedia.org/wiki/Standard_deviation">standard deviation</a>, which measures how spread out observations are around the mean.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Let’s see how we can include the standard deviation together with the mean in our charts:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
@@ -996,8 +998,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="fig-summary-sd-obs-caption" class="margin-figure-caption column-margin callout-7-contents callout-collapse collapse show callout-margin-content"><div class="figure-caption-content">Figure&nbsp;7.1: Underlying distributions for mean and standard deviation. Adapted from <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002128">Beyond bar and line graphs</a>.</div></div></section>
-<section id="including-the-underlying-observations" class="level2 page-columns page-full" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="including-the-underlying-observations"><span class="header-section-number">7.5</span> Including the underlying observations</h2>
+<section id="including-the-underlying-observations" class="level2 page-columns page-full" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="including-the-underlying-observations"><span class="header-section-number">7.4</span> Including the underlying observations</h2>
 <p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap. <span class="slide-bullet"><strong>Jittering</strong> adds small random offsets to the points to help separate them</span>. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
@@ -1087,8 +1089,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="showing-medians-percentile-intervals-with-boxplots" class="level2 page-columns page-full" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="showing-medians-percentile-intervals-with-boxplots"><span class="header-section-number">7.6</span> Showing medians &amp; percentile intervals with boxplots</h2>
+<section id="showing-medians-percentile-intervals-with-boxplots" class="level2 page-columns page-full" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="showing-medians-percentile-intervals-with-boxplots"><span class="header-section-number">7.5</span> Showing medians &amp; percentile intervals with boxplots</h2>
 <p>What if we visualize the median instead of the mean? Showing the median can be especially useful when there are a few extreme values in the data since these impact the mean more than the median, and the median thus becomes a more helpful indication of a typical value. But this decision is context-dependent: if we are interested in these extreme values, the mean may capture their influence in a way that is relevant to our question. Therefore, it is often a good idea to show means and medians together, since they tell us different things about the data.</p>
 <p>A common measure of spread used together with medians is a percentile interval, which marks the range between two chosen percentiles. For comparison, the interval from one standard deviation below the mean to one above it contains about 68% of a normal distribution.</p>
 <p>A common way to show the median and a percentile interval is a <strong>boxplot</strong>. The box spans the 25th to the 75th percentile, enclosing the middle 50% of the data, with a line marking the median. In the default boxplots below, the whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box edges; observations beyond the whiskers are drawn separately. This illustration can help you interpret the different parts of the box:</p>
@@ -1197,8 +1199,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="what-conclusions-can-we-draw-from-the-data" class="level2 slide-skip" data-number="7.7">
-<h2 class="slide-skip anchored" data-number="7.7" data-anchor-id="what-conclusions-can-we-draw-from-the-data"><span class="header-section-number">7.7</span> What conclusions <em>can</em> we draw from the data?</h2>
+<section id="what-conclusions-can-we-draw-from-the-data" class="level2 slide-skip" data-number="7.6">
+<h2 class="slide-skip anchored" data-number="7.6" data-anchor-id="what-conclusions-can-we-draw-from-the-data"><span class="header-section-number">7.6</span> What conclusions <em>can</em> we draw from the data?</h2>
 <p>The charts show differences in recorded stress scores between conditions in this sample. However, we have not assessed the statistical significance of those differences. <span class="slide-bullet">Standard deviations and boxplots describe the spread of the observations, not the uncertainty in the group means or their differences</span>. In particular, <span class="slide-bullet">overlap between these descriptive intervals does not establish whether a difference is statistically significant</span>. That would require an appropriate inferential analysis, informed by the study design.</p>
 <p>What about the magnitude of the differences? In this dataset, <span class="slide-bullet">the meditation conditions have mean stress scores about 0.14–0.28 units below the story-listening control condition. Is that a lot or a little?</span> These are differences on the 1–4 questionnaire scale described above; judging their practical importance also requires considering what difference would matter in this context. The <span class="slide-bullet">charts help us describe the sample, but they do not by themselves establish that meditation caused the differences or that the differences are large enough to matter in practice</span>.</p>
 <p>The original study’s main analysis, using 2,239 participants across 37 sites, found evidence that all four 15-minute mindfulness exercises reduced self-reported stress relative to the active control. The largest mean difference was for body scan: 0.27 points lower than the control on the 1–4 scale. <span class="slide-bullet">The authors concluded that even these brief exercises can offer modest, short-term benefits</span>.</p>

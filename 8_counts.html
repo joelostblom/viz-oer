@@ -498,8 +498,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./18_geospatial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
+  <a href="./18_trends.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Trends</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19_geospatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
   </div>
 </li>
       </ul>
@@ -514,13 +520,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#counts" id="toc-counts" class="nav-link active" data-scroll-target="#counts"><span class="header-section-number">8.1</span> Counts</a></li>
-  <li><a href="#from-points-to-bars" id="toc-from-points-to-bars" class="nav-link" data-scroll-target="#from-points-to-bars"><span class="header-section-number">8.2</span> From points to bars</a>
+  <li><a href="#counts" id="toc-counts" class="nav-link active" data-scroll-target="#counts"><span class="header-section-number">8.1</span> Counts</a>
   <ul class="collapse">
   <li><a href="#sorting-groups" id="toc-sorting-groups" class="nav-link" data-scroll-target="#sorting-groups">Sorting groups</a></li>
   <li><a href="#stacked-bars" id="toc-stacked-bars" class="nav-link" data-scroll-target="#stacked-bars">Stacked bars</a></li>
   </ul></li>
-  <li><a href="#proportions" id="toc-proportions" class="nav-link" data-scroll-target="#proportions"><span class="header-section-number">8.3</span> Proportions</a>
+  <li><a href="#proportions" id="toc-proportions" class="nav-link" data-scroll-target="#proportions"><span class="header-section-number">8.2</span> Proportions</a>
   <ul class="collapse">
   <li><a href="#pie-charts" id="toc-pie-charts" class="nav-link" data-scroll-target="#pie-charts">Pie charts</a></li>
   </ul></li>
@@ -652,9 +657,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section>
-<section id="from-points-to-bars" class="level2 content-visible" data-when-format="revealjs" data-number="8.2">
-<h2 class="content-visible anchored" data-when-format="revealjs" data-number="8.2" data-anchor-id="from-points-to-bars"><span class="header-section-number">8.2</span> From points to bars</h2>
 <p>When we are showing <span class="slide-bullet">an accumulated value like a count or sum</span>, it can be beneficial to replace our point mark with a bar to be able to more clearly compare groups. <span class="slide-bullet">Bar charts visualize magnitudes as position and length</span>. <span class="slide-bullet">Since the bar is drawn from zero, it makes the accumulated amount explicit through its length</span> (you can think of the bar as representing all the individual observations stacked on top of each other). Because of this, we should generally <span class="slide-bullet">always start the axis at zero when showing bars</span> and only zoom in if we have a very particular reason for doing so.</p>
 <!-- TODO turn into "Avoid" warning box -->
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
@@ -1143,8 +1145,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- TODO include 2d counts there? Pin numbers? -->
 </section>
 </section>
-<section id="proportions" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="proportions"><span class="header-section-number">8.3</span> Proportions</h2>
+<section id="proportions" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="proportions"><span class="header-section-number">8.2</span> Proportions</h2>
 <p><span class="slide-bullet">A proportion expresses a part relative to a whole</span>. For categorical counts, we calculate it by dividing the count for a subgroup by the total count for the relevant group; multiplying by 100 gives a percentage. Here, each condition is the whole, and the gender categories are its parts. Normalizing each bar to the same length lets us compare gender proportions even though the conditions have different numbers of participants.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Altair</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">ggplot</a></li></ul>
