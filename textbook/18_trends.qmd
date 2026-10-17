@@ -1,0 +1,356 @@
+---
+chapter-slides: slides/18_trends.html
+fig-width: 6
+fig-height: 4
+resources:
+  - data/vega-cars.csv
+  - data/communication-color-data.md
+execute:
+  message: false
+  warning: false
+---
+
+# Trends {#sec-trends}
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+<!-- Trendline material adapted from DSCI 531 lecture 5,
+     originally introduced in the communication chapter. -->
+
+:::: {.slide-outcomes}
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Use** means and rolling averages to summarize patterns while retaining the observations as context.
+2. **Distinguish** global regression models from local smoothing, and **choose** a trendline according to the question and audience.
+3. **Adjust** smoothing neighborhoods and **explain** how they affect the local detail shown by a curve.
+4. **Recognize** that describing a trend within the observed data does not justify extrapolating it beyond that range.
+
+:::
+
+::::
+
+```{python}
+#| label: trends-python-setup
+#| include: false
+import altair as alt
+import pandas as pd
+
+alt.data_transformers.enable('vegafusion')
+cars = pd.read_csv('data/vega-cars.csv', parse_dates=['Year']).dropna(subset=['Horsepower'])
+cars['Year'] = cars['Year'].dt.year
+```
+
+```{r}
+#| label: trends-r-setup
+#| include: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+cars <- read_csv('data/vega-cars.csv', show_col_types = FALSE) |>
+    filter(!is.na(Horsepower)) |>
+    mutate(Year = lubridate::year(Year))
+```
+
+## Why bother?
+
+In @sec-connections, lines connected observations to show relationships and changes.
+Here we use lines to summarize a pattern rather than connect every observation.
+[A trendline can make a general pattern easier to see when individual observations
+or multiple groups obscure it.]{.slide-bullet}
+Trendlines are also called fitted lines or lines of best fit.
+The choice of line determines which features of the data are emphasized.
+
+We use automobile specifications from the Vega datasets collection,
+with missing horsepower observations omitted and the year represented numerically.
+
+:::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-car-points-alt
+#| slide-show: both
+#| slide-title: A trend hidden among observations
+points = alt.Chart(cars).mark_point(opacity=0.3).encode(
+    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
+    y='Horsepower',
+    color='Origin'
+)
+points
+```
+
+Connecting every observation does not provide a useful summary of the trend.
+
+```{python}
+#| label: trends-connected-points-alt
+#| slide-show: both
+#| slide-title: Connecting observations is not a summary
+points + points.mark_line()
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: trends-car-points-gg
+#| slide-show: both
+#| slide-title: A trend hidden among observations
+car_points <- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin)) +
+    geom_point(alpha = 0.3) +
+    scale_x_continuous(breaks = seq(1970, 1982, by = 2))
+car_points
+```
+
+```{r}
+#| label: trends-connected-points-gg
+#| slide-show: both
+#| slide-title: Connecting observations is not a summary
+car_points + geom_line()
+```
+
+::::
+
+## Means and rolling averages
+
+A simple summary is the mean horsepower for each year and origin.
+This works here because each year has several observations.
+For a more continuous x variable, binning or smoothing may be needed
+to avoid a noisy line driven by individual observations.
+
+:::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-yearly-mean-alt
+#| slide-show: both
+#| slide-title: Summarize each year
+points + points.mark_line().encode(y='mean(Horsepower)')
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: trends-yearly-mean-gg
+#| slide-show: both
+#| slide-title: Summarize each year
+car_points + geom_line(stat = 'summary', fun = 'mean')
+```
+
+::::
+
+A moving or rolling average uses a neighborhood of observations.
+Because there are several cars at each year, we first calculate the annual means
+and then smooth those means within each origin.
+This weights each annual mean equally, rather than weighting years by their number of cars.
+
+::: {.deep-dive}
+
+### Calculating a rolling average
+
+In Altair, `transform_window()` can average the previous, current, and next annual mean.
+The explicit sort ensures that these are neighboring years.
+
+```{python}
+#| label: trends-rolling-window-alt
+mean_per_year = cars.groupby(['Origin', 'Year'])['Horsepower'].mean().reset_index()
+alt.Chart(mean_per_year).transform_window(
+    mean_hp='mean(Horsepower)',
+    frame=[-1, 1],
+    sort=[alt.SortField('Year')],
+    groupby=['Origin']
+).mark_line().encode(
+    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
+    y='mean_hp:Q',
+    color='Origin'
+)
+```
+
+Pandas also provides a `rolling()` operation.
+By default, this version requires all three values, so its line omits the end years.
+That differs from the smaller windows used at the edges by the Altair example.
+
+```{python}
+#| label: trends-rolling-pandas-alt
+mean_per_year['rolling_hp'] = mean_per_year.groupby('Origin')['Horsepower'].transform(
+    lambda values: values.rolling(3, center=True).mean()
+)
+alt.Chart(mean_per_year).mark_line().encode(
+    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
+    y='rolling_hp',
+    color='Origin'
+)
+```
+
+See also [Altair's rolling-average example](https://altair-viz.github.io/gallery/scatter_with_rolling_mean.html).
+
+:::
+
+## Regression lines
+
+Another way to show a trend is regression.
+Linear least-squares regression fits a straight line by minimizing the sum
+of squared vertical deviations from the observations to the line.
+
+:::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-linear-fit-alt
+#| slide-show: both
+#| slide-title: A linear trend
+points + points.mark_line(size=3).transform_regression(
+    'Year', 'Horsepower', groupby=['Origin']
+)
+```
+
+Regression is not restricted to straight lines.
+For example, a polynomial of order two gives a quadratic fit.
+
+```{python}
+#| label: trends-polynomial-fit-alt
+#| slide-show: both
+#| slide-title: A polynomial trend
+points + points.mark_line(size=3).transform_regression(
+    'Year', 'Horsepower', groupby=['Origin'], method='poly', order=2
+)
+```
+
+### ggplot {.slide-skip}
+
+Set the smoothing method to `lm` for a linear model.
+
+```{r}
+#| label: trends-linear-fit-gg
+#| slide-show: both
+#| slide-title: A linear trend
+car_points + geom_smooth(method = 'lm', se = FALSE, linewidth = 1.2)
+```
+
+The formula can be changed to fit a polynomial.
+
+```{r}
+#| label: trends-polynomial-fit-gg
+#| slide-show: both
+#| slide-title: A polynomial trend
+car_points +
+    geom_smooth(method = 'lm', formula = y ~ poly(x, 2), se = FALSE, linewidth = 1.2)
+```
+
+::::
+
+## Local smoothing
+
+Sometimes one equation is a poor description of the whole dataset.
+[Local regression fits nearby observations in overlapping neighborhoods,
+allowing the trend to change across the x-axis.]{.slide-bullet}
+This is usually called *LOESS* (locally estimated scatterplot smoothing)
+or *LOWESS* (locally weighted scatterplot smoothing).
+The animation builds up the red fitted curve from local fits.
+
+::: {.slide-visual slide-title="How local regression builds a curve"}
+
+![A local regression curve is assembled by moving a fitting window across the observations. Animation by Rafael Irizarry, from [Simply Statistics](https://simplystatistics.org/posts/2017-08-08-code-for-my-educational-gifs/).](img/loess-local-regression.gif)
+
+:::
+
+:::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-loess-alt
+#| slide-show: both
+#| slide-title: A local trend
+points + points.mark_line(size=3).transform_loess(
+    'Year', 'Horsepower', groupby=['Origin']
+)
+```
+
+`bandwidth` controls the fraction of observations included in each neighborhood.
+Larger fractions usually give a smoother, more general curve.
+The default is 0.3; a bandwidth of 1 uses all observations in each neighborhood,
+but is not generally identical to a single global linear regression.
+
+```{python}
+#| label: trends-loess-bandwidth-alt
+#| slide-show: both
+#| slide-title: Control the amount of smoothing
+points + points.mark_line(size=3).transform_loess(
+    'Year', 'Horsepower', groupby=['Origin'], bandwidth=0.8
+)
+```
+
+### ggplot {.slide-skip}
+
+For these small groups, `geom_smooth()` uses LOESS by default.
+We set the method explicitly here.
+Its default span is 0.75, whereas Altair's default bandwidth is 0.3;
+the two implementations need not produce identical curves.
+The shaded area is a pointwise 95% confidence interval for the fitted mean,
+not an interval expected to contain 95% of individual cars.
+
+```{r}
+#| label: trends-loess-gg
+#| slide-show: both
+#| slide-title: A local trend
+car_points + geom_smooth(method = 'loess')
+```
+
+The `span` parameter changes the fraction of observations in each neighborhood.
+
+```{r}
+#| label: trends-loess-span-gg
+#| slide-show: both
+#| slide-title: Control the amount of smoothing
+car_points + geom_smooth(method = 'loess', se = FALSE, linewidth = 1.2, span = 1)
+```
+
+Map `fill` to the grouping variable to color the confidence bands by origin.
+
+```{r}
+#| label: trends-loess-fill-gg
+car_points + geom_smooth(aes(fill = Origin), method = 'loess')
+```
+
+Or remove the confidence bands when the purpose is to show only the fitted curves.
+Uncertainty in fitted relationships is discussed further in the chapter on uncertainty.
+
+```{r}
+#| label: trends-loess-no-interval-gg
+car_points + geom_smooth(method = 'loess', se = FALSE, linewidth = 1.2)
+```
+
+::::
+
+The following animations illustrate the qualitative effect of narrower and wider
+weighting neighborhoods in a different LOWESS implementation.
+Its Gaussian-width parameter, $\sigma$, is not the same parameter as Altair's bandwidth
+or ggplot's span.
+
+:::: {.slide-visual slide-title="Local variation and smoothness" slide-layout="columns"}
+
+![A narrower weighting neighborhood follows more local variation. Source: [scikit-lego](https://scikit-lego.netlify.app/linear-models.html).](img/lowess-small-bandwidth.gif)
+
+![A wider weighting neighborhood produces a smoother curve. Source: [scikit-lego](https://scikit-lego.netlify.app/linear-models.html).](img/lowess-large-bandwidth.gif)
+
+::::
+
+## When to choose which trendline?
+
+::: {.slide-bullet}
+
+- **Means and rolling averages** are useful when the summarized values should have
+  a straightforward interpretation. They can be particularly accessible to a general audience.
+- **Regression models** are useful when a simple equation is a reasonable description
+  of the relationship. Predictions beyond the observed range rely on that model continuing
+  to hold, and become more uncertain as they move further from the data.
+- **LOESS** is useful for describing patterns within the observed data without choosing
+  one global equation. It often resembles the trend a reader would sketch by eye,
+  but depends on the smoothing setting and is poorly suited to extrapolation.
+
+:::
+
+## Further reading {.slide-skip}
+
+- [Visualizing trends](https://clauswilke.com/dataviz/visualizing-trends.html).

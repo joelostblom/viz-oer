@@ -14,7 +14,7 @@ From the repository root:
 ```sh
 make preview  # Start the live preview
 make book     # Render the textbook
-make slides   # Render the chapter key and all developed chapters (1–10)
+make slides   # Render the chapter key and developed decks (1–14 and 18)
 ```
 
 Preview and book builds use the shared `activate-uvr` recipe fragment to activate the
@@ -84,7 +84,7 @@ Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
 The slide decks retain their separate dark presentation theme.
 
-The chapter key and all developed chapters (1–10) open as ordinary textbook pages. Their small **Present slides**
+The chapter key and developed chapters (1–14 and 18) open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
@@ -121,13 +121,27 @@ both Anscombe tables, the Altair chart, and the Datasaurus animation. Chapter 2
 also includes the exercise dataset, declarative/imperative charts and pseudocode,
 arithmetic code examples and grammar implementations.
 
-Chapters 3–10 have first-draft decks covering their key principles, selected
+Chapters 3–14 and 18 have first-draft decks covering their key principles, selected
 exercise visuals, diagrams/animations, and Altair/ggplot examples. Short examples
 show source and output together; longer examples show the chart with explanations
 in speaker notes. Language variants share interactive tabs, with their selected
 content paired step by step when examples have descriptive slide titles.
-Deep dives and margin notes are excluded. The
-placeholder chapters (11–17) have no decks yet.
+Deep dives and margin notes are excluded. Chapters 15–17 and 19 are not yet registered
+for slide builds.
+
+Material from the DSCI 531 communication and color lectures is organized into
+ordinary Quarto chapters with synchronized Altair/ggplot tabs. Chapter 12 combines
+overplotting, rectangular/hexagonal bins, and two-dimensional density estimates
+with the joint-distribution examples. Chapter 13 focuses on number formats,
+titles, and scale ranges; chapter 14 covers palettes, accessibility, highlights,
+annotations, and direct labeling. Chapter 18, **Trends**, follows Interactivity
+and covers means, rolling averages, regression, and local smoothing. Geospatial
+is chapter 19.
+The examples read local Vega dataset snapshots rather than downloading data
+during rendering. Their provenance and regeneration command are in
+`textbook/data/communication-color-data.md`. The R examples require `hexbin` and
+`ggthemes`, both recorded in `uvr.toml` and `uvr.lock`. The LOESS animations are
+local, attributed files under `textbook/img/`.
 
 Charts and static plots are constrained to the slide canvas, including tall
 faceted charts, without changing the chart specifications used in the book.
@@ -707,7 +721,7 @@ Generated files:
 - Reading view: `textbook/_book/2_grammar-of-graphics.html`
 - Slide view: `textbook/_book/slides/2_grammar-of-graphics.html`
 
-Chapters 3–10 follow the same pattern, for example
+Chapters 3–14 and 18 follow the same pattern, for example
 `textbook/_book/slides/9_binned-distributions.html`.
 
 All decks are part of the published `_book` directory. Each deck has its own generated

@@ -1,4 +1,4 @@
-manifest_fingerprint = "sha256:e12af3cac8b2aaf868ec73eaa80a7f6deb2d31737593f85292bc9cd22c4b53bf"
+manifest_fingerprint = "sha256:e4f7ad1e13eb9297955826042befc9e862de994a33392b664e444c9025918f0f"
 
 [r]
 version = "4.6.1"
@@ -551,6 +551,23 @@ requires = [
 ]
 
 [[package]]
+name = "ggthemes"
+version = "7.0.0"
+source = "cran"
+raw_version = "7.0.0"
+url = "https://cran.r-project.org/src/contrib/ggthemes_7.0.0.tar.gz"
+checksum = "md5:5914ef11bcf4a1c336c507fb59e62219"
+requires = [
+    "cli",
+    "ggplot2",
+    "lifecycle",
+    "purrr",
+    "rlang",
+    "scales",
+    "tibble",
+]
+
+[[package]]
 name = "glue"
 version = "1.8.1"
 source = "cran"
@@ -659,6 +676,15 @@ raw_version = "1.0.2"
 url = "https://cran.r-project.org/src/contrib/here_1.0.2.tar.gz"
 checksum = "md5:d2ff22b1f33c99b75ab3597ef0f79506"
 requires = ["rprojroot"]
+
+[[package]]
+name = "hexbin"
+version = "1.28.6"
+source = "cran"
+raw_version = "1.28.6"
+url = "https://cran.r-project.org/src/contrib/hexbin_1.28.6.tar.gz"
+checksum = "md5:8222b0f44503b0eab15814641127d9d3"
+requires = ["lattice"]
 
 [[package]]
 name = "highr"
@@ -1504,11 +1530,11 @@ checksum = "md5:121bf3699aadb9d1b47d648964b934f8"
 
 [[package]]
 name = "xfun"
-version = "0.61.0"
+version = "0.62.0"
 source = "cran"
-raw_version = "0.61"
-url = "https://cran.r-project.org/src/contrib/xfun_0.61.tar.gz"
-checksum = "md5:70130070c686204fb71dbf20c6c871ac"
+raw_version = "0.62"
+url = "https://cran.r-project.org/src/contrib/xfun_0.62.tar.gz"
+checksum = "md5:93bc01d797fcdf1e4014998e4c248bd7"
 
 [[package]]
 name = "xml2"

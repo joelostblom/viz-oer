@@ -52,6 +52,21 @@ CHAPTER_ASSETS = {
         "data/diamonds-carat-price.csv",
         "data/diamonds-carat-price.md",
     ),
+    "13_communication": (
+        "data/diamonds-carat-price.csv",
+        "data/communication-color-data.md",
+    ),
+    "14_color": (
+        "data/vega-iris.csv",
+        "data/vega-gapminder.csv",
+        "data/vega-wheat.csv",
+        "data/vega-stocks.csv",
+        "data/communication-color-data.md",
+    ),
+    "18_trends": (
+        "data/vega-cars.csv",
+        "data/communication-color-data.md",
+    ),
     # "12a_exploratory-data-analysis": (
     #     "data/seattle-weather-sensor.csv", "data/seattle-weather-complete.csv",
     #     "data/seattle-weather-eda.md",

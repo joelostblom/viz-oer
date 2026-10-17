@@ -40,7 +40,8 @@ book:
         - 15_exploratory-data-analysis.qmd
         - 16_uncertainty.qmd
         - 17_interactivity.qmd
-        - 18_geospatial.qmd
+        - 18_trends.qmd
+        - 19_geospatial.qmd
     # - 99_misc.qmd
 
 filters:
