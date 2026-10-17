@@ -287,7 +287,7 @@ alt.Chart(weather, height=200).mark_bar().encode(
 Since the construction of the plot grids in EDA tends to demand more complex syntax,
 we often use helper packages that allows us to focus on exploring the data
 rather than getting to bogged down with writing code.
-A related helper package for Altair is Altair Ally,
+A related helper package for Altair is [Altair Ally](https://github.com/joelostblom/altair_ally),
 and we could use it to visualize the distributions in the following way:
 
 ```{python}
@@ -330,7 +330,7 @@ ggplot(weather_long, aes(x = value)) +
 Since the construction of the plot grids in EDA tends to demand more complex syntax,
 we often use helper packages that allows us to focus on exploring the data
 rather than getting to bogged down with writing code.
-A related helper package for ggplot is GGally
+A related helper package for ggplot is [GGally](https://ggobi.github.io/ggally/articles/ggpairs.html)
 and we could use it to visualize the distributions of each variable.
 By default,
 it also shows a lot of other information than just the histograms,
@@ -439,87 +439,169 @@ How can there be snowy days if there were no negative temperatures in the data?
 This lends support to that there is something suspicious going on with this data
 that we should explore further.
 
-### An overview of relationships
+### An overview of bivariate relationships
 
-A **scatterplot matrix**, also called a **pairs plot**,
-lets us scan multiple relationships without choosing each one in advance.
-Look for clusters, unusual combinations, curved relationships,
-and changes in spread—not just straight-line associations.
+In addition to viewing the univariate distributions above,
+we might also be interesting in the bivariate or joint distributions.
+Creating a grid of usch distributions is often referred to as a 
+a scatterplot matrix or a pairs plot
+and lets us scan multiple relationships effectively.
+Usually,
+we are on the lookout for clusters, straight and curved relationships,
+and changes in spread.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
-We can repeat a scatterplot along both dimensions.
-Each row selects a y variable and each column selects an x variable.
-The diagonal compares each variable with itself,
-and the two triangles contain transposed versions of the same pairs.
+We can use the repeat-syntax to create a scatterplot matrix;
+each row selects a y variable and each column selects an x variable.
 
 ```{python}
 #| label: eda-pairs-alt
 #| slide-show: output
 #| slide-title: Scan relationships before choosing a follow-up
 alt.Chart(weather).mark_point(size=9, opacity=0.2).encode(
-    x=alt.X(alt.repeat('column'), type='quantitative').scale(zero=False),
-    y=alt.Y(alt.repeat('row'), type='quantitative').scale(zero=False),
+    x=alt.X(alt.repeat('column'), type='quantitative'),
+    y=alt.Y(alt.repeat('row'), type='quantitative'),
 ).properties(width=110, height=110).repeat(
     column=measurements,
     row=measurements,
 )
 ```
 
+As you can see
+the diagonal compares each variable with itself,
+why we see a straight line for all those relationships,
+and it redundant to include.
+Likewise,
+the lower and upper diagonal are mirrors of each other
+and we really only need to include one of them.
+It would be a tedious manual process to modify this,
+so instead we can use a Altair ally,
+which also let's us easily bin the points 
+to avoid saturation.
+
+```{python}
+aly.pair(weather, mark='rect')
+```
+
+```{python}
+#| echo: false
+# from IPython.display import HTML
+
+# HTML(
+#     aly.pair(weather, mark='rect').to_html(
+#         output_div="splom",
+#         fullhtml=False,
+#     )
+# )
+```
+
 ### ggplot {.slide-skip}
 
-The ggplot extension **GGally** supplies a convenient pairs-plot constructor.
+It would be tedious and laborious 
+to try to create a scatterplot matrix
+directly in ggplot. 
+Instead,
+GGally supplies a convenient pairs-plot constructor
+that we will use.
 Here we request points for the lower triangle and histograms on the diagonal.
-The upper triangle is omitted to avoid repeating the same comparisons.
+We include the densities on the diagonal,
+but we could have excluded them if we wanted to just show the bivariate relationships.
+GGally also let's us easily use a 2D density instead of plotting the points directly
+to avoid saturation.
 
 ```{r}
 #| label: eda-pairs-gg
 #| fig-width: 9
 #| fig-height: 8
+#| message: false
 GGally::ggpairs(
     weather,
     columns = measurements,
     upper = 'blank',
-    lower = list(continuous = GGally::wrap('points', alpha = 0.2, size = 0.5, na.rm = TRUE)),
-    diag = list(continuous = GGally::wrap('barDiag', bins = 20, na.rm = TRUE)),
-    progress = FALSE
+    lower = list(continuous = "density")
 )
 ```
 
 :::
 
-The Python and R overviews package the information differently,
-but both support the same task: look across variables before selecting a detail.
-The positive association between minimum and maximum temperature is unsurprising.
-Their lower bounds and the triangular shape are more useful prompts for questions.
-Part of that shape is constrained by the definitions:
-a daily minimum cannot exceed the maximum for the same day.
+From the chart,
+we can see a positive association 
+between minimum and maximum temperature,
+which is rather unsurprising,
+since these likely vary together depending on
+whether a single day is warm or cold.
 
-Each pairwise panel uses the rows where its two measurements are present.
-Consequently, panels involving temperature can contain fewer observations
-than the precipitation–wind panel.
-An overview does not remove the need to check which observations contribute.
+### Use correlations to navigate bivariate relationships
 
-::: {.callout-note}
-### Automate repetition, retain control of the question
+A correlation heatmap compresses many relationships into one display.
+That can help us choose which pairs to inspect,
+but it leaves out the distributional detail visible in a pairs plot.
 
-Faceting, repeating a specification, and composing plots programmatically
-are ways to reuse the grammar we already know.
-Specialized tools such as [GGally](https://ggobi.github.io/ggally/articles/ggpairs.html)
-and [Altair Ally](https://github.com/joelostblom/altair_ally)
-can also generate collections of suitable views.
-Use these tools to make broad inspection inexpensive.
-When a particular panel becomes important,
-return to a focused chart where you can adjust its variables,
-scales, bin widths, or grouping deliberately.
+::: {.panel-tabset group="language"}
 
-With many variables, use manageable batches or selected combinations.
-Twenty numerical variables already have 190 distinct pairs.
-A giant matrix can include every pair
-without making any pair large enough to inspect usefully.
+### Altair {.slide-skip}
+
+```python
+aly.corr(weather)
+```
+
+```{python}
+#| echo: false
+# from IPython.display import HTML
+
+# HTML(
+#     aly.corr(weather).to_html(
+#         output_div="correlation-summary",
+#         fullhtml=False,
+#     )
+# )
+from html import escape
+from IPython.display import HTML
+
+HTML(
+    aly.corr(weather).to_html(
+        output_div="correlation-summary",
+        fullhtml=False,
+        embed_options={"renderer": "canvas"},
+    )
+)
+# chart_html = aly.corr(weather).to_html()
+# HTML(
+#     '<iframe '
+#     'style="width:100%;height:500px;border:0" '
+#     f'srcdoc="{escape(chart_html, quote=True)}">'
+#     '</iframe>'
+# )
+
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+GGally::ggcorr(weather)
+```
+
 :::
+
+Pearson correlation tends to be the default and summarizes **linear** association.
+It's good to also visualize Spearman correlation
+which uses ranks and summarizes **monotonic** associations:
+whether larger values of one variable tend to accompany larger or smaller values of another.
+It can capture some nonlinear relationships, but not arbitrary curves.
+For example, a strong U-shaped relationship can have little correlation
+for both the Pearson and Spearmean metrics.
+Relationships that depend on a combination of predictors can also be missed
+by inspecting each predictor separately.
+
+Correlation values are defined from -1 for a perfect negative correlation
+to +1 for a perfect positive correlation.
+<!-- TODO gudelines for what is a "strong" correlation -->
+We therefore use a colorscale 
+with two different colors diverging 
+from a midpoint.
 
 ## Missing values are part of the data story
 
@@ -534,40 +616,29 @@ There are two separate questions:
 
 ```{python}
 #| label: eda-missing-counts-alt
-missing_summary = weather.isna().sum().rename('Missing').to_frame()
-missing_summary['Recorded'] = len(weather) - missing_summary['Missing']
-missing_summary['Missing (%)'] = 100 * missing_summary['Missing'] / len(weather)
-missing_summary.round(1)
+weather.info()
 ```
 
 ### ggplot {.slide-skip}
 
 ```{r}
 #| label: eda-missing-counts-gg
-weather |>
-    summarise(across(everything(), ~sum(is.na(.x)))) |>
-    pivot_longer(everything(), names_to = 'variable', values_to = 'Missing') |>
-    mutate(
-        Recorded = nrow(weather) - Missing,
-        `Missing (%)` = round(100 * Missing / nrow(weather), 1)
-    )
+weather |> summary()
 ```
 
 :::
 
 There are 116 missing minimum temperatures and five missing maximum temperatures.
-The other columns are complete in this example.
-Those counts do not tell us whether the missing measurements
-occurred together or were concentrated in particular parts of the year.
-
 The meaning of a missing value also requires context.
-It might represent a failed measurement, a question that was never asked,
+It might represent a failed measurement, a survey question that was never asked,
 a refusal to answer, or a field that does not apply to that observation.
-A missing value can also be introduced by an unsuccessful join between tables.
-These situations can all end up encoded as `NA`, but they are not interchangeable.
+A missing value can also be introduced by an unsuccessful join between tables,
+so the issue could like in the data processing rather than the data collection step.
+All these situations can all end up encoded as `NA`,
+but they require different interpreatations and actions.
 Conversely, an unknown value might be encoded as a number such as `999`
-and therefore escape a simple missing-value count.
-Check the definitions and processing history as well as the table.
+and therefore escape a simple missing-value count
+(this is not good practice but can still happen).
 
 ### Make the missingness pattern visible
 
@@ -603,6 +674,13 @@ alt.Chart(missing_cells, width=560, height=130).mark_rect().encode(
 )
 ```
 
+<!-- This is quite involved, so an easier way is to use a helper package:
+
+```{python}
+aly.nan(weather)
+```
+-->
+
 ### ggplot {.slide-skip}
 
 ```{r}
@@ -623,8 +701,8 @@ ggplot(missing_cells, aes(x = date, y = variable, fill = status)) +
 
 :::
 
-The missing temperatures occur in colder parts of the year.
-This supports further investigation, but it does not identify the mechanism.
+The missing temperatures seems to occur in colder parts of the year.
+This supports further investigation as we don't yet know the mechanism.
 A device problem, a reporting procedure, and a processing rule
 could all produce seasonally patterned missingness.
 
@@ -645,8 +723,6 @@ in the pairs plot.
 We can compare maximum temperatures on days with and without a recorded minimum.
 If missing minima tend to occur on cold days,
 we would expect lower maximum temperatures on those days.
-This checks a consequence of our explanation using another recorded variable.
-It does not recover the missing temperatures or prove why they are missing.
 
 :::::
 ::::
@@ -699,11 +775,7 @@ weather_status |>
 :::
 
 The recorded maxima are generally lower when the minima are missing.
-Notice how we arrived here:
-the opening summary raised a concern,
-the overview showed the pattern,
-and a relationship in the pairs plot suggested a useful follow-up variable.
-We did not have to specify this comparison before seeing the data.
+So maybe something is going wrong with the sensor on cold days?
 
 ### Inspect combinations of categories
 
@@ -792,7 +864,7 @@ Neither comparison establishes that the weather description caused the missingne
 :::
 
 ::: {.callout-warning}
-### A pattern in missingness is not proof of its cause
+### Avoid drawing premature conclusions about the cause of the missingness
 
 In real data, we would now consult the collection procedure, processing code,
 or people who produced the measurements.
@@ -811,68 +883,15 @@ We generally cannot establish those assumptions from a missingness plot alone.
 For this example, we know the mechanism because we created it:
 both minimum and maximum temperatures **at or below 0.6°C**
 were replaced with missing values.
-This simulates a reporting failure that removes low measurements;
-it is not evidence that the original weather station had that failure.
+This simulates a reporting failure that removes low measurements,
+e.g. due to a faulty sensor that can't record low temperatures.
 
-We retained the complete source values,
-so we can show something that is normally impossible in a missing-data problem:
-the distribution of the values that went missing.
-
-::: {.panel-tabset group="language"}
-
-### Altair {.slide-skip}
-
-```{python}
-#| label: eda-missingness-reveal-alt
-#| slide-show: output
-#| slide-title: Which part of the distribution disappeared?
-complete_weather = pd.read_csv('data/seattle-weather-complete.csv', parse_dates=['date'])
-reveal = complete_weather.assign(
-    status=(complete_weather['temp_min'] <= 0.6).map(
-        {True: 'Removed in teaching version', False: 'Retained'}
-    )
-)
-
-alt.Chart(reveal, width=450, height=220).mark_bar().encode(
-    x=alt.X('temp_min:Q', title='Daily minimum temperature (°C)', bin=alt.Bin(step=2)),
-    y=alt.Y('count()', title='Days'),
-    color=alt.Color('status:N', title=None).scale(
-        domain=['Retained', 'Removed in teaching version'],
-        range=['#4c78a8', '#c44e52'],
-    ),
-)
-```
-
-### ggplot {.slide-skip}
-
-```{r}
-#| label: eda-missingness-reveal-gg
-complete_weather <- read_csv('data/seattle-weather-complete.csv', show_col_types = FALSE)
-reveal <- complete_weather |>
-    mutate(status = if_else(
-        temp_min <= 0.6, 'Removed in teaching version', 'Retained'
-    ))
-
-ggplot(reveal, aes(x = temp_min, fill = status)) +
-    geom_histogram(binwidth = 2, boundary = 0, closed = 'left') +
-    scale_fill_manual(values = c(
-        Retained = '#4c78a8', 'Removed in teaching version' = '#c44e52'
-    )) +
-    labs(x = 'Daily minimum temperature (°C)', y = 'Days', fill = NULL)
-```
-
-:::
-
-The recorded-only mean minimum temperature is about 9.05°C;
-the complete-data mean is about 8.23°C.
 Even though only about 8% of minimum temperatures were removed,
 they came from one part of the distribution.
-Whether missingness matters depends on **which values are missing and which question we ask**,
+Whether missingness matters depends on which values are missing and which question we are asking,
 not just on the overall percentage.
-
 Replacing the missing temperatures with zero would also be misleading:
-zero Celsius is a particular temperature, not a way to represent ignorance.
-Deleting entire rows would discard their valid precipitation and wind measurements too.
+zero Celsius is a particular temperature, not a way to represent missingness.
 Handling missing data requires a justified decision for the analysis at hand;
 this example does not establish a universally correct replacement rule.
 
@@ -881,6 +900,7 @@ this example does not establish a universally correct replacement rule.
 The weather mystery is one example of a broader strategy:
 [follow a surprising pattern with a check that could change your interpretation]{.slide-bullet}.
 Generating another plot is useful when you can explain what it will help you learn.
+Here is an example of some common scenarios and what a helpful next step could be.
 
 | Observation in an overview | Possible explanations | A useful next check |
 |:--|:--|:--|
@@ -919,7 +939,7 @@ The three questions require different evidence, even though they begin with the 
 :::
 
 ::: {.callout-warning}
-### Check an anomaly before "fixing" it
+### Avoid "fixing" an anomaly without first investigating it
 
 An unusual value can be an error, but it can also be the observation
 that teaches us something important.
@@ -928,130 +948,6 @@ Record any exclusions and their reasons.
 Do not remove a value simply because the resulting chart looks cleaner
 or the association becomes stronger.
 :::
-
-## Explore around a question or an outcome
-
-So far, we have looked broadly and followed a surprise.
-Sometimes we begin with a more specific question,
-such as which recorded measurements are associated with precipitation.
-The basic checks still matter,
-but we can spend more attention on plots involving that outcome.
-
-Instead of a square matrix containing every pair,
-we can create a gallery with the same outcome on one axis
-and several candidate variables on the other.
-
-::: {.panel-tabset group="language"}
-
-### Altair {.slide-skip}
-
-```{python}
-#| label: eda-outcome-gallery-alt
-#| slide-show: output
-#| slide-title: Focus the overview around an outcome
-alt.Chart(weather).mark_point(size=14, opacity=0.25).encode(
-    x=alt.X(alt.repeat(), type='quantitative').scale(zero=False),
-    y=alt.Y('precipitation:Q', title='Daily precipitation (mm)'),
-).properties(width=180, height=180).repeat(['temp_max', 'temp_min', 'wind'])
-```
-
-### ggplot {.slide-skip}
-
-The long-table approach also works when one variable is held fixed.
-We keep `precipitation` as the response column and pivot the candidate variables.
-
-```{r}
-#| label: eda-outcome-gallery-gg
-#| fig-width: 9
-#| fig-height: 3.5
-weather |>
-    pivot_longer(c(temp_max, temp_min, wind),
-                 names_to = 'measurement', values_to = 'value') |>
-    ggplot(aes(x = value, y = precipitation)) +
-    geom_point(alpha = 0.25, size = 0.8, na.rm = TRUE) +
-    facet_wrap(~measurement, scales = 'free_x', nrow = 1) +
-    labs(x = NULL, y = 'Daily precipitation (mm)')
-```
-
-:::
-
-The pile-up at zero precipitation, the spread of wet-day values,
-and unusual combinations are all relevant features—not just the overall direction.
-These plots describe same-day associations among the recorded measurements.
-They do not tell us that changing the wind would cause rain,
-or that today's completed measurements would be available for a morning forecast.
-
-If the outcome is categorical instead,
-we can compare predictor distributions within its categories,
-or inspect counts and proportions for combinations of categorical variables.
-There is no reason to turn a category code into a quantitative variable
-just to put it in a correlation matrix.
-
-### Use correlations to navigate, not to replace the plots
-
-A correlation heatmap compresses many relationships into one display.
-That can help us choose which pairs to inspect,
-but it leaves out the distributional detail visible in a pairs plot.
-
-::: {.panel-tabset group="language"}
-
-### Altair {.slide-skip}
-
-```{python}
-#| label: eda-correlation-alt
-correlations = (
-    weather[measurements].corr(method='spearman')
-    .rename_axis(index='variable_y', columns='variable_x')
-    .stack().rename('correlation').reset_index()
-    .query('variable_x != variable_y')
-)
-
-alt.Chart(correlations, width=250, height=250).mark_rect().encode(
-    x=alt.X('variable_x:N', title=None).axis(labelAngle=-30),
-    y=alt.Y('variable_y:N', title=None),
-    color=alt.Color('correlation:Q', title='Spearman correlation')
-        .scale(domain=[-1, 1], scheme='blueorange'),
-    tooltip=['variable_x:N', 'variable_y:N',
-             alt.Tooltip('correlation:Q', format='.2f')],
-)
-```
-
-### ggplot {.slide-skip}
-
-```{r}
-#| label: eda-correlation-gg
-correlations <- weather |>
-    select(all_of(measurements)) |>
-    cor(method = 'spearman', use = 'pairwise.complete.obs') |>
-    as.data.frame() |>
-    rownames_to_column('variable_y') |>
-    pivot_longer(-variable_y, names_to = 'variable_x', values_to = 'correlation') |>
-    filter(variable_x != variable_y)
-
-ggplot(correlations, aes(x = variable_x, y = variable_y, fill = correlation)) +
-    geom_tile() +
-    scale_fill_gradient2(low = '#2166ac', mid = 'white', high = '#b35806',
-                         midpoint = 0, limits = c(-1, 1)) +
-    coord_equal() +
-    labs(x = NULL, y = NULL, fill = 'Spearman\ncorrelation')
-```
-
-:::
-
-Pearson correlation summarizes **linear** association.
-Spearman correlation uses ranks and summarizes **monotonic** association:
-whether larger values of one variable tend to accompany larger or smaller values of another.
-It can capture some nonlinear relationships, but not arbitrary curves.
-For example, a strong U-shaped relationship can have little correlation.
-Relationships that depend on a combination of predictors can also be missed
-by inspecting each predictor separately.
-
-We preserve the sign in the color scale and omit the self-comparisons on the diagonal.
-Each coefficient uses the rows where that pair of variables is recorded.
-Different cells can therefore describe different subsets of days,
-and the deliberately missing cold measurements affect the associations we can inspect.
-A blank diagonal is not a correlation of zero;
-an undefined correlation, such as for a constant variable, would not be zero either.
 
 ::: {.callout-note}
 ### When EDA precedes machine learning
