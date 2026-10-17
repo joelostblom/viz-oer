@@ -25,6 +25,8 @@ resources:
 
 3. **Use** a two-dimensional histogram to reveal concentrations obscured by overplotting, and **explain** the effect of bin size.
 
+4. **Compare** rectangular bins, hexagonal bins, and two-dimensional density estimates, distinguishing counts from estimated density.
+
 :::
 
 ::::
@@ -115,14 +117,11 @@ of the categories on the two axes.
 #| slide-show: both
 movies |>
     dplyr::add_count(`Major Genre`, `MPAA Rating`) |>
-    ggplot(
-        aes(
-            y = `Major Genre`,
-            x = `MPAA Rating`,
-            size = n,
-            color = n
-        )
-    ) +
+    ggplot(aes(
+        y = `Major Genre`,
+        x = `MPAA Rating`,
+        size = n, color = n
+    )) +
     geom_point()
 ```
 
@@ -168,8 +167,7 @@ movies |>
         aes(
             y = reorder(`Major Genre`, -n),
             x = `MPAA Rating`,
-            size = n,
-            color = n
+            size = n, color = n
         ) +
         geom_point()
 ```
@@ -261,11 +259,13 @@ the appearance of a heatmap alone does not tell us which question it answers.
 ::::
 :::
 
-## Binning quantitative variables
+## Overplotting and binning quantitative variables {#binning-quantitative-variables}
 
 For numerical variables, a scatterplot shows the observed value pairs directly.
 But with many observations, overlapping marks can make regions with quite different
 numbers of observations look similarly crowded.
+[Drawing every observation can saturate a scatterplot,
+making very different concentrations look equally dense.]{.slide-bullet}
 
 We will use all 53,940 observations from the `carat` and `price` columns of
 a diamonds dataset.
@@ -278,8 +278,21 @@ Carat measures diamond weight, and price is in US dollars.
 ```{python}
 #| label: joint-diamonds-points-alt
 #| slide-show: both
+#| slide-title: When points overlap
 diamonds = pd.read_csv('data/diamonds-carat-price.csv')
 
+alt.Chart(diamonds).mark_point().encode(
+    x='carat',
+    y='price',
+)
+```
+
+Smaller, more transparent marks can help reveal some of the overlap.
+
+```{python}
+#| label: joint-diamonds-transparency-alt
+#| slide-show: both
+#| slide-title: Small and transparent points
 alt.Chart(diamonds).mark_circle(size=10, opacity=0.3).encode(
     x='carat',
     y='price',
@@ -291,9 +304,20 @@ alt.Chart(diamonds).mark_circle(size=10, opacity=0.3).encode(
 ```{r}
 #| label: joint-diamonds-points-gg
 #| slide-show: both
+#| slide-title: When points overlap
 #| message: false
-diamonds <- readr::read_csv('data/diamonds-carat-price.csv')
+diamonds <- readr::read_csv('data/diamonds-carat-price.csv', show_col_types = FALSE)
 
+ggplot(diamonds, aes(x = carat, y = price)) +
+    geom_point()
+```
+
+Smaller points and a lower `alpha` make the marks less opaque.
+
+```{r}
+#| label: joint-diamonds-transparency-gg
+#| slide-show: both
+#| slide-title: Small and transparent points
 ggplot(diamonds, aes(x = carat, y = price)) +
     geom_point(size = 0.6, alpha = 0.3)
 ```
@@ -309,9 +333,9 @@ but eventually even they saturate when there is enough overlap.
 To examine where observations are concentrated,
 we can extend the histogram idea from @sec-binned-distributions to two dimensions.
 
-[A two-dimensional histogram divides both numerical axes into intervals.
-Each rectangular cell is the combination of one x interval and one y interval;
-its color represents the number of observations in that rectangle.]{.slide-bullet}
+[A two-dimensional histogram bins both axes and maps the count in each rectangle
+to color.]{.slide-bullet}
+Each rectangular cell is the combination of one x interval and one y interval.
 
 ::: {.panel-tabset group="language"}
 
@@ -356,8 +380,69 @@ when a pattern matters to your interpretation.
 
 [When a scatterplot becomes so saturated
 that we can't be sure how many individual observations there are in a specific area,
-we should switch to a two dimensional histogram instead.]{.slide-bullet}
+we should consider a two-dimensional histogram or density estimate,
+depending on the question we want to answer.]{.slide-bullet}
 
 :::
 
-<!-- TODO add 2D KDE -->
+::: {.deep-dive}
+
+## Hexagonal bins
+
+Hexagonal bins are another option for showing joint counts.
+Each hexagon has six edge-sharing neighbors, whereas square bins distinguish
+edge-sharing and diagonal neighbors.
+Hexagons are also more nearly circular.
+These properties can be useful, although either bin shape still requires a choice of bin size.
+
+In ggplot, `geom_hex()` computes the counts in hexagonal bins.
+It requires the `hexbin` package.
+As with `geom_bin_2d()`, `binwidth` controls the resolution along the two axes.
+
+```{r}
+#| label: joint-diamonds-hexagons-gg
+#| slide-show: both
+#| slide-title: Hexagonal bins
+ggplot(diamonds, aes(x = carat, y = price)) +
+    geom_hex(binwidth = c(0.1, 500))
+```
+
+## Two-dimensional density estimates
+
+We can also extend the kernel density estimates from @sec-smoothed-distributions
+to two dimensions.
+Each observation contributes a two-dimensional kernel rather than a one-dimensional bump.
+[The resulting colors represent estimated density,
+rather than counts in bins.]{.slide-bullet}
+As with a one-dimensional KDE, the smoothing settings affect how much detail is retained.
+
+The following ggplot example displays the estimated density as filled bands.
+
+```{r}
+#| label: joint-diamonds-density-filled-gg
+#| slide-show: both
+#| slide-title: Two-dimensional density
+ggplot(diamonds, aes(x = carat, y = price)) +
+    geom_density_2d_filled()
+```
+
+Contour lines show levels of equal estimated density, rather like elevation contours on a map.
+They can be useful, but an unfilled contour plot can be harder to interpret
+than a filled density plot.
+It does not automatically provide a colorbar, and the outermost contour does not
+necessarily cover the full extent of the observations.
+
+```{r}
+#| label: joint-diamonds-density-contours-gg
+#| slide-show: both
+#| slide-title: Density contours
+ggplot(diamonds, aes(x = carat, y = price)) +
+    geom_density_2d()
+```
+
+:::
+
+## Further reading and walkthroughs {.slide-skip}
+
+- [Overlapping points](https://clauswilke.com/dataviz/overlapping-points.html).
+- [Original overplotting walkthrough, 9 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/ETAy81Oh7Z5OixVE-7RSYF8BRliyfQIx6uIvu7A1cZBdDg?e=oba0bD) (UBC sign-in may be required).
