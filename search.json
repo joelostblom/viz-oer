@@ -767,7 +767,84 @@
     "href": "13_communication.html",
     "title": "13  Communication",
     "section": "",
-    "text": "13.1 Why bother?\nDuring exploration, you are often the main person interpreting a chart. For communication, a figure needs to make sense to someone who does not already know the data or the plotting code. That reader might encounter it without the surrounding text or a spoken explanation. Readable labels, an informative title, and an appropriate view of the data are therefore part of the explanation itself.\nMany useful design recommendations are collected in the Cato Institute’s visualization style guide. Other collections include these style guidelines, this spreadsheet of visualization guides, and the Data Visualization Society’s resources. Another way to learn is from other people’s mistakes: the Economist’s review of its own charts contains useful examples.\nThese are guidelines, not rules that work independently of the audience and context. For example, a familiar association with a fruit or political party may matter more than using the default palette. This discussion of breaking visualization rules illustrates how a deliberate exception can sometimes make a visualization more memorable. The important question is whether the choice helps readers understand the data.\nWays to reveal concentrations hidden by overplotting are covered in Chapter 12. Here we focus on formatting and framing those visualizations for an audience. Methods for summarizing relationships with fitted lines are covered in Chapter 18.",
+    "text": "13.1 Why bother?\n[During data exploration, you are often the main person interpreting a chart.]{slide-bullet} For communication, a figure needs to make sense to someone who does not already know the data or the plotting code. That reader might encounter it without the surrounding text or a spoken explanation. Readable labels, an informative title, and an appropriate view of the data are therefore part of the explanation itself.\nMany useful design recommendations are collected in the Cato Institute’s visualization style guide. Other collections include these style guidelines, this spreadsheet of visualization guides, and the Data Visualization Society’s resources. Another way to learn is from other people’s mistakes: the Economist’s review of its own charts contains useful examples.\nThese are guidelines, not rules that work independently of the audience and context. For example, a familiar association with a fruit or political party may matter more than using the default palette. This discussion of breaking visualization rules illustrates how a deliberate exception can sometimes make a visualization more memorable. The important question is whether the choice helps readers understand the data.\nThe examples below use (mostly) published figures to show how design choices affect what a reader notices and concludes. Treat them as prompts to ask what comparison the reader needs to make.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
+    ]
+  },
+  {
+    "objectID": "13_communication.html#design-shapes-the-message",
+    "href": "13_communication.html#design-shapes-the-message",
+    "title": "13  Communication",
+    "section": "13.2 Design shapes the message",
+    "text": "13.2 Design shapes the message\nTitles, colors, and graphical direction can emphasize different aspects of a dataset. Ask what message each design brings forward, and what important context it leaves behind. This first figure using red color and a reversed axis to draw parallels between the deaths in this war to the dripping of blood.\n\n\n\nThe same data set could have been presented with a more positive design, focusing on the recent decline in the death rate.\n\n\n\nBoth these messages are true and the complete data story includes both, but in a visulization we can what to highlight. This not only important to be aware of when making our own visualization, but also when reading a visualization from someone else.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
+    ]
+  },
+  {
+    "objectID": "13_communication.html#match-the-detail-to-the-audience",
+    "href": "13_communication.html#match-the-detail-to-the-audience",
+    "title": "13  Communication",
+    "section": "13.3 Match the detail to the audience",
+    "text": "13.3 Match the detail to the audience\nThis chart of the evolution of the size of Napoleon’s army when they marched towards Moscow rewards careful study by combining several kinds of information. That richness can be useful for exploration, but may require more explanation than a reader has time for in a short presentation.\n\n\n\nA simpler “take home” message of this chart presented to C-level executives in a short update meeting, might be much simpler and just focus on the outcome of the operation.\n\n\n\nThe simplified chart emphasizes the scale of the losses but discards route, timing, and conditions. Even a concise label needs checking: a reduction in army strength does not, by itself, establish how many soldiers died.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
+    ]
+  },
+  {
+    "objectID": "13_communication.html#make-category-comparisons-easy",
+    "href": "13_communication.html#make-category-comparisons-easy",
+    "title": "13  Communication",
+    "section": "13.4 Make category comparisons easy",
+    "text": "13.4 Make category comparisons easy\n\n\n\nPositions and lengths on a common scale are usually easier to compare than angles and areas. A bar chart can also place each category name beside the value it identifies.\n\n\n\nComparisons across several pies require the reader to mentally align angles. A shared baseline makes the intended comparison more direct.\n\n\n\n\n\n\nWith many categories, matching small wedges to a long legend becomes hard work. Extrusion and exploded pieces add visual complexity without making the values easier to compare.\n\n\n\nA published chart can look polished while contradicting its own numerical labels. Check whether sector angles and areas represent the values proportionally, rather than trusting the visual finish.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
+    ]
+  },
+  {
+    "objectID": "13_communication.html#use-color-to-add-information",
+    "href": "13_communication.html#use-color-to-add-information",
+    "title": "13  Communication",
+    "section": "13.5 Use color to add information",
+    "text": "13.5 Use color to add information\n\n\n\nWhen a chart shows one series, extra colors can imply distinctions that do not exist. A single color often provides a clear starting point.\n\n\n\nUse a contrasting color to draw attention to the observation or series that matters for the current question. Keep the remaining observations as context.\n\n\n\nIf every series asks for attention, highlighting stops being selective. Consider smaller, separate views when a comparison becomes too crowded.\n\n\n\nMake the foreground comparison easier to find by reducing the saturation or contrast of the background series. The context should remain visible and interpretable.\n\n\n\nUse the same color for the same group across related figures. Reassigning a familiar color forces the reader to relearn the mapping; Chapter 14 develops these choices in more detail.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
+    ]
+  },
+  {
+    "objectID": "13_communication.html#make-long-labels-readable",
+    "href": "13_communication.html#make-long-labels-readable",
+    "title": "13  Communication",
+    "section": "13.6 Make long labels readable",
+    "text": "13.6 Make long labels readable\n\n\n\nChange the chart orientation when that gives category names room to be read naturally. Horizontal bars often preserve the comparison while avoiding rotated or heavily wrapped text.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
+    ]
+  },
+  {
+    "objectID": "13_communication.html#ask-what-a-chart-does-not-show",
+    "href": "13_communication.html#ask-what-a-chart-does-not-show",
+    "title": "13  Communication",
+    "section": "13.7 Ask what a chart does not show",
+    "text": "13.7 Ask what a chart does not show\n\n\n\nAn increasing number of horror releases does not establish that horror’s share of all films is increasing. Ask what denominator would be needed to support that claim.\n\n\n\nAdding total releases changes the question we can answer. To discuss relative popularity, examine the horror share alongside counts, and consider whether dataset coverage or reporting has changed.\n\n\n\nA cumulative total of nonnegative sales cannot decrease. Its increasing height alone does not show that the current rate of sales is accelerating.\n\n\n\nQuarterly sales correspond to increments in the cumulative total, not its height. Showing both can reveal changes in the rate that an ever-increasing total conceals.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
+    ]
+  },
+  {
+    "objectID": "13_communication.html#avoid-redundant-3d",
+    "href": "13_communication.html#avoid-redundant-3d",
+    "title": "13  Communication",
+    "section": "13.8 Avoid redundant 3D",
+    "text": "13.8 Avoid redundant 3D\n\n\n\n\nPerspective and occlusion make both heights and colored segments harder to compare. Use a third spatial dimension when it represents something the reader needs to understand, rather than simply as decoration.\n\n\n\nTextures, gradients, tilted axes, and competing colors can obscure the values. Readers should be able to answer the data question without first decoding the decoration.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -777,8 +854,8 @@
     "objectID": "13_communication.html#axis-label-formatting",
     "href": "13_communication.html#axis-label-formatting",
     "title": "13  Communication",
-    "section": "13.2 Axis label formatting",
-    "text": "13.2 Axis label formatting\nChoose number formats that your audience can read easily: units, currency symbols, and sensible rounding can be more useful than scientific notation. The same principle applies to legend values.\nFor the following formatting examples, we take a reproducible sample of 1,000 diamonds. The full dataset and the binning techniques are introduced in Chapter 12.\n\nAltairggplot\n\n\n\ndiamond_sample = diamonds.sample(1000, random_state=1010)\nsample_bins = alt.Chart(diamond_sample).mark_rect().encode(\n    x=alt.X('carat').bin(maxbins=40),\n    y=alt.Y('price').bin(maxbins=40),\n    color='count()'\n)\n\nAltair uses D3 format strings. Useful format characters include % for percentages, $ for currency, e for scientific notation, and s for SI prefixes. Scientific notation can be useful internally, but may be unfamiliar to a general audience.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='e'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSI prefixes such as k for thousands are often easier to read.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='s'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nA preceding ~ removes insignificant trailing zeros.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='~s'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFormat characters can also be combined.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='$~s'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe legend accepts the same format strings. Here scientific notation demonstrates the syntax; ordinary counts would usually be easier to read.\n\nsample_bins.encode(\n    y=alt.Y('price').bin(maxbins=40).axis(format='$~s'),\n    color=alt.Color('count()').legend(format='e')\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSet a legend to None to remove it. Only do this when its meaning is conveyed elsewhere.\n\nsample_bins.encode(color=alt.Color('count()').legend(None))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe tickCount setting requests a number of ticks on an unbinned axis. We switch to a small scatterplot to demonstrate this; binned axes determine their ticks differently.\n\nsample_points = alt.Chart(diamond_sample.sample(100, random_state=1010)).mark_point().encode(\n    x=alt.X('carat').axis(tickCount=40),\n    y=alt.Y('price').axis(tickCount=2)\n)\nsample_points\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nAs with a legend, an axis can be removed by setting it to None.\n\nsample_points.encode(x=alt.X('carat').axis(None))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThemes control many styling choices at once. They are global settings rather than a change to only one chart.\n\nalt.theme.names()\n\n['carbong10', 'carbong100', 'carbong90', 'carbonwhite', 'dark', 'default', 'excel', 'fivethirtyeight', 'ggplot2', 'googlecharts', 'latimes', 'none', 'opaque', 'powerbi', 'quartz', 'urbaninstitute', 'vox']\n\n\n\nalt.theme.enable('dark');\nsample_points\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nThe scales package supplies functions for formatting labels. Here we use the hexagonal bins introduced in Chapter 12.\n\ndiamond_hex &lt;- ggplot(diamonds, aes(x = carat, y = price)) +\n    geom_hex()\n\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_scientific())\n\n\n\n\n\n\n\n\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_number(scale_cut = scales::cut_si('')))\n\n\n\n\n\n\n\n\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar())\n\n\n\n\n\n\n\n\nThe label functions can be parameterized. For example, we can divide the displayed values by 1,000 and add a K suffix. This changes the labels, not the data used to draw the chart.\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar(scale = 0.001, suffix = 'K'))\n\n\n\n\n\n\n\n\nThe same functions can format the legend. Hexagons use the fill aesthetic, so we change the fill scale.\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar()) +\n    scale_fill_continuous(labels = scales::label_number(scale_cut = scales::cut_si('')))\n\n\n\n\n\n\n\n\nIn ggplot, tick locations are called breaks. pretty_breaks() requests an approximately specified number of readable breaks.\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar(), breaks = scales::pretty_breaks(n = 10))\n\n\n\n\n\n\n\n\nAn axis consists of several elements that can be removed independently.\n\ndiamond_hex +\n    theme(axis.title.x = element_blank(),\n          axis.text.x = element_blank(),\n          axis.ticks.x = element_blank())\n\n\n\n\n\n\n\n\nRemove a legend, referred to as a guide in ggplot, with guides().\n\ndiamond_hex + guides(fill = 'none')\n\n\n\n\n\n\n\n\ntheme_void() removes all axis objects and much of the surrounding decoration.\n\ndiamond_hex + theme_void()\n\n\n\n\n\n\n\n\ntheme_classic() is another built-in theme. The ggthemes package supplies additional choices.\n\ndiamond_hex + theme_classic()",
+    "section": "13.9 Axis label formatting",
+    "text": "13.9 Axis label formatting\nChoose number formats that your audience can read easily: units, currency symbols, and sensible rounding can be more useful than scientific notation. The same principle applies to legend values.\nFor the following formatting examples, we take a reproducible sample of 1,000 diamonds. The full dataset and the binning techniques are introduced in Chapter 12.\n\nAltairggplot\n\n\n\ndiamond_sample = diamonds.sample(1000, random_state=1010)\nsample_bins = alt.Chart(diamond_sample).mark_rect().encode(\n    x=alt.X('carat').bin(maxbins=40),\n    y=alt.Y('price').bin(maxbins=40),\n    color='count()'\n)\n\nAltair uses D3 format strings. Useful format characters include % for percentages, $ for currency, e for scientific notation, and s for SI prefixes. Scientific notation can be useful internally, but may be unfamiliar to a general audience.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='e'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSI prefixes such as k for thousands are often easier to read.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='s'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nA preceding ~ removes insignificant trailing zeros.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='~s'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFormat characters can also be combined.\n\nsample_bins.encode(y=alt.Y('price').bin(maxbins=40).axis(format='$~s'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe legend accepts the same format strings. Here scientific notation demonstrates the syntax; ordinary counts would usually be easier to read.\n\nsample_bins.encode(\n    y=alt.Y('price').bin(maxbins=40).axis(format='$~s'),\n    color=alt.Color('count()').legend(format='e')\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSet a legend to None to remove it. Only do this when its meaning is conveyed elsewhere.\n\nsample_bins.encode(color=alt.Color('count()').legend(None))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe tickCount setting requests a number of ticks on an unbinned axis. We switch to a small scatterplot to demonstrate this; binned axes determine their ticks differently.\n\nsample_points = alt.Chart(diamond_sample.sample(100, random_state=1010)).mark_point().encode(\n    x=alt.X('carat').axis(tickCount=40),\n    y=alt.Y('price').axis(tickCount=2)\n)\nsample_points\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nAs with a legend, an axis can be removed by setting it to None.\n\nsample_points.encode(x=alt.X('carat').axis(None))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThemes control many styling choices at once. They are global settings rather than a change to only one chart.\n\nalt.theme.names()\n\n['carbong10', 'carbong100', 'carbong90', 'carbonwhite', 'dark', 'default', 'excel', 'fivethirtyeight', 'ggplot2', 'googlecharts', 'latimes', 'none', 'opaque', 'powerbi', 'quartz', 'urbaninstitute', 'vox']\n\n\n\nalt.theme.enable('dark');\nsample_points\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nThe scales package supplies functions for formatting labels. Here we use the hexagonal bins introduced in Chapter 12.\n\ndiamond_hex &lt;- ggplot(diamonds, aes(x = carat, y = price)) +\n    geom_hex()\n\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_scientific())\n\n\n\n\n\n\n\n\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_number(scale_cut = scales::cut_si('')))\n\n\n\n\n\n\n\n\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar())\n\n\n\n\n\n\n\n\nThe label functions can be parameterized. For example, we can divide the displayed values by 1,000 and add a K suffix. This changes the labels, not the data used to draw the chart.\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar(scale = 0.001, suffix = 'K'))\n\n\n\n\n\n\n\n\nThe same functions can format the legend. Hexagons use the fill aesthetic, so we change the fill scale.\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar()) +\n    scale_fill_continuous(labels = scales::label_number(scale_cut = scales::cut_si('')))\n\n\n\n\n\n\n\n\nIn ggplot, tick locations are called breaks. pretty_breaks() requests an approximately specified number of readable breaks.\n\ndiamond_hex +\n    scale_y_continuous(labels = scales::label_dollar(), breaks = scales::pretty_breaks(n = 10))\n\n\n\n\n\n\n\n\nAn axis consists of several elements that can be removed independently.\n\ndiamond_hex +\n    theme(axis.title.x = element_blank(),\n          axis.text.x = element_blank(),\n          axis.ticks.x = element_blank())\n\n\n\n\n\n\n\n\nRemove a legend, referred to as a guide in ggplot, with guides().\n\ndiamond_hex + guides(fill = 'none')\n\n\n\n\n\n\n\n\ntheme_void() removes all axis objects and much of the surrounding decoration.\n\ndiamond_hex + theme_void()\n\n\n\n\n\n\n\n\ntheme_classic() is another built-in theme. The ggthemes package supplies additional choices.\n\ndiamond_hex + theme_classic()",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -788,8 +865,8 @@
     "objectID": "13_communication.html#figure-axis-and-legend-titles",
     "href": "13_communication.html#figure-axis-and-legend-titles",
     "title": "13  Communication",
-    "section": "13.3 Figure, axis, and legend titles",
-    "text": "13.3 Figure, axis, and legend titles\nAxis and legend titles should describe the values in language the reader understands, including units where appropriate. Replace variable names with underscores by readable labels.\n\nAltairggplot\n\n\nChannel titles are set inside the encoding.\n\ntitled_bins = sample_bins.encode(\n    x=alt.X('carat').bin(maxbins=40).title('Carat'),\n    y=alt.Y('price').bin(maxbins=40).title('Price (USD)')\n)\ntitled_bins\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe legend title is controlled by the channel whose values it explains.\n\ntitled_bins = titled_bins.encode(color=alt.Color('count()').title('Number of diamonds'))\ntitled_bins\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nAn overall figure title should communicate the take-home message or pose a useful question, rather than simply repeat the axis names. For this chart, “Higher-carat diamonds are more expensive” is more informative than “Diamond carat versus price”.\n\ntitled_bins.properties(title='Higher-carat diamonds are more expensive')\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nA subtitle can qualify the main message or provide context. If the title asks a question, the subtitle can guide readers toward the answer rather than leaving them to infer it unaided. Depending on the publication, a longer subtitle may also serve some of the role of a caption.\n\ntitled_bins.properties(title=alt.Title(\n    text='Higher-carat diamonds are more expensive',\n    subtitle='But most diamonds have a low carat value'\n))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nanchor controls title alignment. frame='group' aligns it with the plotting area rather than the outer edge of all labels.\n\ntitled_bins.properties(title=alt.Title(\n    text='Higher-carat diamonds are more expensive',\n    subtitle='But most diamonds have a low carat value',\n    anchor='start', frame='group'\n))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nUse labs() to name the axes and aesthetic scales.\n\ntitled_hex &lt;- diamond_hex + labs(x = 'Carat', y = 'Price (USD)')\ntitled_hex\n\n\n\n\n\n\n\n\n\ntitled_hex &lt;- titled_hex + labs(fill = 'Number of diamonds')\ntitled_hex\n\n\n\n\n\n\n\n\nThe same function sets the figure title and subtitle.\n\ntitled_hex +\n    labs(title = 'Higher-carat diamonds are more expensive') +\n    scale_y_continuous(labels = scales::label_dollar())\n\n\n\n\n\n\n\n\n\ntitled_hex +\n    labs(title = 'Higher-carat diamonds are more expensive',\n         subtitle = 'But most diamonds have a low carat value') +\n    scale_y_continuous(labels = scales::label_dollar())\n\n\n\n\n\n\n\n\nTitle alignment is controlled through theme elements.\n\ntitled_hex +\n    labs(title = 'Higher-carat diamonds are more expensive',\n         subtitle = 'But most diamonds have a low carat value') +\n    scale_y_continuous(labels = scales::label_dollar()) +\n    theme(plot.title = element_text(hjust = 0.5),\n          plot.subtitle = element_text(hjust = 0.5))",
+    "section": "13.10 Figure, axis, and legend titles",
+    "text": "13.10 Figure, axis, and legend titles\nAxis and legend titles should describe the values in language the reader understands, including units where appropriate. Replace variable names with underscores by readable labels.\n\nAltairggplot\n\n\nChannel titles are set inside the encoding.\n\ntitled_bins = sample_bins.encode(\n    x=alt.X('carat').bin(maxbins=40).title('Carat'),\n    y=alt.Y('price').bin(maxbins=40).title('Price (USD)')\n)\ntitled_bins\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe legend title is controlled by the channel whose values it explains.\n\ntitled_bins = titled_bins.encode(color=alt.Color('count()').title('Number of diamonds'))\ntitled_bins\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nAn overall figure title should communicate the take-home message or pose a useful question, rather than simply repeat the axis names. For this chart, “Higher-carat diamonds are more expensive” is more informative than “Diamond carat versus price”.\n\ntitled_bins.properties(title='Higher-carat diamonds are more expensive')\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nA subtitle can qualify the main message or provide context. If the title asks a question, the subtitle can guide readers toward the answer rather than leaving them to infer it unaided. Depending on the publication, a longer subtitle may also serve some of the role of a caption.\n\ntitled_bins.properties(title=alt.Title(\n    text='Higher-carat diamonds are more expensive',\n    subtitle='But most diamonds have a low carat value'\n))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nanchor controls title alignment. frame='group' aligns it with the plotting area rather than the outer edge of all labels.\n\ntitled_bins.properties(title=alt.Title(\n    text='Higher-carat diamonds are more expensive',\n    subtitle='But most diamonds have a low carat value',\n    anchor='start', frame='group'\n))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nUse labs() to name the axes and aesthetic scales.\n\ntitled_hex &lt;- diamond_hex + labs(x = 'Carat', y = 'Price (USD)')\ntitled_hex\n\n\n\n\n\n\n\n\n\ntitled_hex &lt;- titled_hex + labs(fill = 'Number of diamonds')\ntitled_hex\n\n\n\n\n\n\n\n\nThe same function sets the figure title and subtitle.\n\ntitled_hex +\n    labs(title = 'Higher-carat diamonds are more expensive') +\n    scale_y_continuous(labels = scales::label_dollar())\n\n\n\n\n\n\n\n\n\ntitled_hex +\n    labs(title = 'Higher-carat diamonds are more expensive',\n         subtitle = 'But most diamonds have a low carat value') +\n    scale_y_continuous(labels = scales::label_dollar())\n\n\n\n\n\n\n\n\nTitle alignment is controlled through theme elements.\n\ntitled_hex +\n    labs(title = 'Higher-carat diamonds are more expensive',\n         subtitle = 'But most diamonds have a low carat value') +\n    scale_y_continuous(labels = scales::label_dollar()) +\n    theme(plot.title = element_text(hjust = 0.5),\n          plot.subtitle = element_text(hjust = 0.5))",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -799,8 +876,8 @@
     "objectID": "13_communication.html#axis-ranges",
     "href": "13_communication.html#axis-ranges",
     "title": "13  Communication",
-    "section": "13.4 Axis ranges",
-    "text": "13.4 Axis ranges\nThe two-dimensional histograms show that many diamonds occupy a small part of the chart. We can inspect that area more closely, but filtering observations and zooming into a plot are different operations. Filtering changes which observations are available to summaries and statistical transformations. Zooming changes the displayed region.\n\nAltairggplot\n\n\nAn explicit scale domain sets the displayed range. When marks extend beyond that range, clip=True keeps them inside the plotting area. The bins here are made smaller so that the restricted view retains detail. nice=False prevents the domain from being rounded to convenient endpoints.\n\nalt.Chart(diamonds).mark_rect(clip=True).encode(\n    x=alt.X('carat').bin(maxbins=400).scale(domain=[0, 1], nice=False),\n    y=alt.Y('price').bin(maxbins=400).scale(domain=[0, 2000], nice=False),\n    color='count()'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFor an analysis restricted to these observations, it is often simpler to filter first and let Altair choose scales for the remaining data. That also avoids sending unnecessary observations to the chart. However, the binning will then be calculated on the filtered data.\n\nsmall_diamonds = diamonds.query('carat &lt;= 1 and price &lt;= 2000')\nalt.Chart(small_diamonds).mark_rect().encode(\n    x=alt.X('carat').bin(maxbins=40),\n    y=alt.Y('price').bin(maxbins=40),\n    color='count()'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nScale limits remove out-of-bounds observations before the statistical calculation. For a binned chart, this can therefore change the bins and counts.\n\ndiamond_hex +\n    scale_x_continuous(limits = c(0, 1)) +\n    scale_y_continuous(limits = c(0, 2000))\n\n\n\n\n\n\n\n\nIf the purpose is to inspect part of a chart without removing observations before statistical calculations, use coordinate limits. This distinction also matters for fitted lines.\n\ndiamond_hex + coord_cartesian(xlim = c(0, 1), ylim = c(0, 2000))\n\n\n\n\n\n\n\n\nThe scale’s out-of-bounds behavior can also be changed explicitly with scales::oob_keep. This is useful when partially visible marks should be retained.\n\ndiamond_hex +\n    scale_x_continuous(limits = c(0, 1), oob = scales::oob_keep) +\n    scale_y_continuous(limits = c(0, 2000), oob = scales::oob_keep)\n\n\n\n\n\n\n\n\nexpand controls padding around the limits. The two values in mult specify padding at the low and high ends as fractions of the range. For example, c(0, 0.05) keeps padding only at the high end.\n\ndiamond_hex +\n    scale_x_continuous(limits = c(0, 1), expand = expansion(mult = c(0, 0))) +\n    scale_y_continuous(limits = c(0, 2000))\n\n\n\n\n\n\n\n\n\n\n\nFor communication, make a restricted view apparent through the labels and surrounding explanation. In particular, truncating the baseline of bars can mislead because their lengths encode values.",
+    "section": "13.11 Axis ranges",
+    "text": "13.11 Axis ranges\nThe two-dimensional histograms show that many diamonds occupy a small part of the chart. We can inspect that area more closely, but filtering observations and zooming into a plot are different operations. Filtering changes which observations are available to summaries and statistical transformations. Zooming changes the displayed region.\n\nAltairggplot\n\n\nAn explicit scale domain sets the displayed range. When marks extend beyond that range, clip=True keeps them inside the plotting area. The bins here are made smaller so that the restricted view retains detail. nice=False prevents the domain from being rounded to convenient endpoints.\n\nalt.Chart(diamonds).mark_rect(clip=True).encode(\n    x=alt.X('carat').bin(maxbins=400).scale(domain=[0, 1], nice=False),\n    y=alt.Y('price').bin(maxbins=400).scale(domain=[0, 2000], nice=False),\n    color='count()'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFor an analysis restricted to these observations, it is often simpler to filter first and let Altair choose scales for the remaining data. That also avoids sending unnecessary observations to the chart. However, the binning will then be calculated on the filtered data.\n\nsmall_diamonds = diamonds.query('carat &lt;= 1 and price &lt;= 2000')\nalt.Chart(small_diamonds).mark_rect().encode(\n    x=alt.X('carat').bin(maxbins=40),\n    y=alt.Y('price').bin(maxbins=40),\n    color='count()'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nScale limits remove out-of-bounds observations before the statistical calculation. For a binned chart, this can therefore change the bins and counts.\n\ndiamond_hex +\n    scale_x_continuous(limits = c(0, 1)) +\n    scale_y_continuous(limits = c(0, 2000))\n\n\n\n\n\n\n\n\nIf the purpose is to inspect part of a chart without removing observations before statistical calculations, use coordinate limits. This distinction also matters for fitted lines.\n\ndiamond_hex + coord_cartesian(xlim = c(0, 1), ylim = c(0, 2000))\n\n\n\n\n\n\n\n\nThe scale’s out-of-bounds behavior can also be changed explicitly with scales::oob_keep. This is useful when partially visible marks should be retained.\n\ndiamond_hex +\n    scale_x_continuous(limits = c(0, 1), oob = scales::oob_keep) +\n    scale_y_continuous(limits = c(0, 2000), oob = scales::oob_keep)\n\n\n\n\n\n\n\n\nexpand controls padding around the limits. The two values in mult specify padding at the low and high ends as fractions of the range. For example, c(0, 0.05) keeps padding only at the high end.\n\ndiamond_hex +\n    scale_x_continuous(limits = c(0, 1), expand = expansion(mult = c(0, 0))) +\n    scale_y_continuous(limits = c(0, 2000))\n\n\n\n\n\n\n\n\n\n\n\nFor communication, make a restricted view apparent through the labels and surrounding explanation. In particular, truncating the baseline of bars can mislead because their lengths encode values.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -810,8 +887,8 @@
     "objectID": "13_communication.html#reversing-an-axis",
     "href": "13_communication.html#reversing-an-axis",
     "title": "13  Communication",
-    "section": "13.5 Reversing an axis",
-    "text": "13.5 Reversing an axis\nReversing an axis is less common than changing its range, but useful to know. The same scale ideas also apply to color, size, and other channels.\n\nAltairggplot\n\n\nSet reverse=True on a scale.\n\nzoomed_bins = alt.Chart(diamonds).mark_rect(clip=True).encode(\n    x=alt.X('carat').bin(maxbins=400).scale(domain=[0, 1]),\n    y=alt.Y('price').bin(maxbins=400).scale(domain=[0, 2000], reverse=True),\n    color='count()'\n)\nzoomed_bins\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nColor can be reversed in the same way. We explore color choices in Chapter 14.\n\nzoomed_bins.encode(color=alt.Color('count()').scale(reverse=True))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nApply the reverse transformation, and supply the limits in decreasing order. Other transformations include log10, with shortcuts such as scale_x_log10().\n\nreversed_hex &lt;- diamond_hex +\n    scale_x_continuous(limits = c(0, 1), expand = expansion(mult = c(0, 0))) +\n    scale_y_continuous(limits = c(2000, 0), transform = 'reverse')\nreversed_hex\n\n\n\n\n\n\n\n\nHexagon colors are controlled by the fill scale.\n\nreversed_hex + scale_fill_continuous(transform = 'reverse')",
+    "section": "13.12 Reversing an axis",
+    "text": "13.12 Reversing an axis\nReversing an axis is less common than changing its range, but useful to know. The same scale ideas also apply to color, size, and other channels.\n\nAltairggplot\n\n\nSet reverse=True on a scale.\n\nzoomed_bins = alt.Chart(diamonds).mark_rect(clip=True).encode(\n    x=alt.X('carat').bin(maxbins=400).scale(domain=[0, 1]),\n    y=alt.Y('price').bin(maxbins=400).scale(domain=[0, 2000], reverse=True),\n    color='count()'\n)\nzoomed_bins\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nColor can be reversed in the same way. We explore color choices in Chapter 14.\n\nzoomed_bins.encode(color=alt.Color('count()').scale(reverse=True))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nApply the reverse transformation, and supply the limits in decreasing order. Other transformations include log10, with shortcuts such as scale_x_log10().\n\nreversed_hex &lt;- diamond_hex +\n    scale_x_continuous(limits = c(0, 1), expand = expansion(mult = c(0, 0))) +\n    scale_y_continuous(limits = c(2000, 0), transform = 'reverse')\nreversed_hex\n\n\n\n\n\n\n\n\nHexagon colors are controlled by the fill scale.\n\nreversed_hex + scale_fill_continuous(transform = 'reverse')",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -821,8 +898,8 @@
     "objectID": "13_communication.html#further-reading-and-walkthroughs",
     "href": "13_communication.html#further-reading-and-walkthroughs",
     "title": "13  Communication",
-    "section": "13.6 Further reading and walkthroughs",
-    "text": "13.6 Further reading and walkthroughs\n\nFigure titles and captions.\nSmall axis labels.\n\nThe original lecture recordings provide optional walkthroughs (UBC sign-in may be required):\n\nAxis extents, 8 minutes.\nAxis value formatting, 4 minutes.\nFigure titles, 11 minutes.",
+    "section": "13.13 Further reading and walkthroughs",
+    "text": "13.13 Further reading and walkthroughs\n\nFigure titles and captions.\nSmall axis labels.\n\nThe original lecture recordings provide optional walkthroughs (UBC sign-in may be required):\n\nAxis extents, 8 minutes.\nAxis value formatting, 4 minutes.\nFigure titles, 11 minutes.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -833,7 +910,227 @@
     "href": "14_color.html",
     "title": "14  Color",
     "section": "",
-    "text": "14.1 Why bother?\nColor can distinguish groups, communicate numerical magnitude, or draw attention to a particular observation. A color scheme should make those meanings easier to see, rather than introduce patterns that are not present in the data. This chapter builds on the grouping channels in Chapter 5 and the communication choices in Chapter 13.",
+    "text": "14.1 Why bother?\nColor can distinguish groups, communicate numerical magnitude, or draw attention to a particular observation. A color scheme should make those meanings easier to see, rather than introduce patterns that are not present in the data. This chapter builds on the grouping channels in Chapter 5 and the communication choices in Chapter 13.\nA useful palette is not simply a collection of favorite colors. These lecture figures show how context, perception, and the meaning of a variable affect what a color choice communicates. The programming examples follow the visual examples later in the chapter.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#color-depends-on-context",
+    "href": "14_color.html#color-depends-on-context",
+    "title": "14  Color",
+    "section": "14.2 Color depends on context",
+    "text": "14.2 Color depends on context\n\n\n\n\nThe dress debate illustrates that perceived color depends on how we interpret illumination. Different readers can experience the same image differently, so a color choice that seems obvious to its creator may not be obvious to everyone.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#surroundings-change-apparent-lightness",
+    "href": "14_color.html#surroundings-change-apparent-lightness",
+    "title": "14  Color",
+    "section": "14.3 Surroundings change apparent lightness",
+    "text": "14.3 Surroundings change apparent lightness\n\n\n\nCompare squares A and B before watching the next example. The surrounding checkerboard and cast shadow influence our judgment of their lightness. Illustration: Edward H. Adelson.\n\n\n\nThe animation reveals that the two squares use the same gray values. Apparent lightness is not determined by a pixel value alone; its surroundings help determine how we interpret it. Animation: Edward H. Adelson.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#picking-the-right-color-palette",
+    "href": "14_color.html#picking-the-right-color-palette",
+    "title": "14  Color",
+    "section": "14.4 Picking the right color palette",
+    "text": "14.4 Picking the right color palette\n\n\n\n\n\n\n\n\nThe distance is a continuous numerical variable, not a collection of distinct groups. Abrupt hue or lightness changes can nevertheless encourage us to see boundaries that were not defined in the data.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#keep-numerical-gradients-continuous",
+    "href": "14_color.html#keep-numerical-gradients-continuous",
+    "title": "14  Color",
+    "section": "14.5 Keep numerical gradients continuous",
+    "text": "14.5 Keep numerical gradients continuous\n\n\n\nRainbow\n\n\nViridis\n\n\nGrayscale\n\n\n\n\nAn ordered progression in lightness helps readers follow increasing values. Grayscale can provide that order, while a carefully designed progression in hue can help readers distinguish additional detail without introducing abrupt bands.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#test-the-ordering-in-grayscale",
+    "href": "14_color.html#test-the-ordering-in-grayscale",
+    "title": "14  Color",
+    "section": "14.6 Test the ordering in grayscale",
+    "text": "14.6 Test the ordering in grayscale\n\n\n\n\n\n\n\n\n\nConverting a figure to grayscale reveals whether its lightness supports the intended order. Alternating light and dark regions can make a smooth numerical change look discontinuous.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#check-contrast-for-different-color-vision",
+    "href": "14_color.html#check-contrast-for-different-color-vision",
+    "title": "14  Color",
+    "section": "14.7 Check contrast for different color vision",
+    "text": "14.7 Check contrast for different color vision\n\n\n\n\n\n\n\n\n\nA palette needs to remain interpretable when readers perceive its hue contrasts differently. Simulations are useful checks, but do not represent every viewer; ordered lightness, labels, and redundant encodings can provide additional support.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#rgb-and-hsl-describe-display-colors",
+    "href": "14_color.html#rgb-and-hsl-describe-display-colors",
+    "title": "14  Color",
+    "section": "14.8 RGB and HSL describe display colors",
+    "text": "14.8 RGB and HSL describe display colors\n\n\n\n\n\n\n\nRGB and HSL models: SharkD, CC BY-SA 3.0.\n\nRGB specifies red, green, and blue components; HSL describes hue, saturation, and lightness. These are ways to specify colors, not guarantees of perceptual uniformity: equal steps in their coordinates need not look equally different.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#separate-hue-saturation-and-lightness",
+    "href": "14_color.html#separate-hue-saturation-and-lightness",
+    "title": "14  Color",
+    "section": "14.9 Separate hue, saturation, and lightness",
+    "text": "14.9 Separate hue, saturation, and lightness\n\n\n\nHue answers roughly “which color?”, saturation describes how colorful or gray it looks, and lightness describes a dark-to-light dimension. The swatches from the Seaborn palette tutorial help separate these choices.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#use-hue-to-distinguish-unordered-groups",
+    "href": "14_color.html#use-hue-to-distinguish-unordered-groups",
+    "title": "14  Color",
+    "section": "14.10 Use hue to distinguish unordered groups",
+    "text": "14.10 Use hue to distinguish unordered groups\n\n\nSource: Seaborn palette tutorial.\n\nDistinct hues can separate categories without suggesting a low-to-high sequence. An ordered lightness palette can accidentally imply a ranking among otherwise unordered groups.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#use-lightness-to-communicate-numerical-order",
+    "href": "14_color.html#use-lightness-to-communicate-numerical-order",
+    "title": "14  Color",
+    "section": "14.11 Use lightness to communicate numerical order",
+    "text": "14.11 Use lightness to communicate numerical order\n\n\nSource: Seaborn palette tutorial.\n\nFor numerical magnitude, the colors should support a recoverable order. An arbitrary set of category colors makes it harder to judge which values are larger.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#sequential-palettes-need-an-ordered-progression",
+    "href": "14_color.html#sequential-palettes-need-an-ordered-progression",
+    "title": "14  Color",
+    "section": "14.12 Sequential palettes need an ordered progression",
+    "text": "14.12 Sequential palettes need an ordered progression\n\n\n\nA sequential palette represents movement along a numerical range. Check the lightness progression as well as the attractiveness of the color strip; plateaus or reversals can make some changes stand out more than others.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#perceptual-uniformity-helps-equal-steps-look-equal",
+    "href": "14_color.html#perceptual-uniformity-helps-equal-steps-look-equal",
+    "title": "14  Color",
+    "section": "14.13 Perceptual uniformity helps equal steps look equal",
+    "text": "14.13 Perceptual uniformity helps equal steps look equal\n\n\n\nPerceptually designed palettes aim to make equal data steps look approximately equally different. These reference diagrams come from the Matplotlib colormap guide.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#inspect-uneven-lightness-changes",
+    "href": "14_color.html#inspect-uneven-lightness-changes",
+    "title": "14  Color",
+    "section": "14.14 Inspect uneven lightness changes",
+    "text": "14.14 Inspect uneven lightness changes\n\n\n\nA colorful palette can have a highly uneven lightness profile. Those peaks and troughs can create artificial emphasis or obscure the ordering of values.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#the-same-values-can-look-very-different",
+    "href": "14_color.html#the-same-values-can-look-very-different",
+    "title": "14  Color",
+    "section": "14.15 The same values can look very different",
+    "text": "14.15 The same values can look very different\n\n\n\nChanging the palette changes which features attract attention even when the values are unchanged. Choose a palette for the comparison it supports, rather than for visual excitement alone.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#guessing-a-numerical-sequence-from-hue",
+    "href": "14_color.html#guessing-a-numerical-sequence-from-hue",
+    "title": "14  Color",
+    "section": "14.16 Guessing a numerical sequence from hue",
+    "text": "14.16 Guessing a numerical sequence from hue\n\n\n\n\n\n\nWhere would you expect red to fall in this sequence before reading the legend? Hue alone does not provide an unambiguous numerical order; the legend and the palette’s lightness structure both matter.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#cyclic-data-need-a-palette-that-wraps-around",
+    "href": "14_color.html#cyclic-data-need-a-palette-that-wraps-around",
+    "title": "14  Color",
+    "section": "14.17 Cyclic data need a palette that wraps around",
+    "text": "14.17 Cyclic data need a palette that wraps around\n\n\n\nUse a cyclic palette when the underlying variable wraps around, such as an angle or a position within a yearly cycle. Similar endpoint colors communicate that connection, but would be misleading for unrelated low and high endpoints on a linear scale.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#diverging-palettes-need-a-meaningful-midpoint",
+    "href": "14_color.html#diverging-palettes-need-a-meaningful-midpoint",
+    "title": "14  Color",
+    "section": "14.18 Diverging palettes need a meaningful midpoint",
+    "text": "14.18 Diverging palettes need a meaningful midpoint\n\n\n\nUse a diverging palette when departures above and below a meaningful reference have different interpretations. Examples include change from a baseline or correlations centered on zero; the middle should not be chosen merely because it is halfway between the observed extremes.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#categorical-palettes-distinguish-groups",
+    "href": "14_color.html#categorical-palettes-distinguish-groups",
+    "title": "14  Color",
+    "section": "14.19 Categorical palettes distinguish groups",
+    "text": "14.19 Categorical palettes distinguish groups\n\n\n\nA categorical palette should make groups distinguishable without implying a numerical order. Its usefulness still depends on the number of categories, the background, and readers’ color vision.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#too-many-colors-become-clutter",
+    "href": "14_color.html#too-many-colors-become-clutter",
+    "title": "14  Color",
+    "section": "14.20 Too many colors become clutter",
+    "text": "14.20 Too many colors become clutter\n\n\n\n\n\n\n\n\nColoring every country can create decoration rather than useful identification. Highlight selected comparisons, divide the display into smaller views, or use direct labels when that makes the intended question easier to answer.",
+    "crumbs": [
+      "Communication & design",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
+    ]
+  },
+  {
+    "objectID": "14_color.html#work-with-familiar-color-associations",
+    "href": "14_color.html#work-with-familiar-color-associations",
+    "title": "14  Color",
+    "section": "14.21 Work with familiar color associations",
+    "text": "14.21 Work with familiar color associations\n\n\n\n\n\n\n\n\nWhen colors have a strong existing association, working with it can reduce the reader’s effort. The bar values are unchanged, but using blue for water and green for land makes the categories easier to anticipate.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -843,8 +1140,8 @@
     "objectID": "14_color.html#facilitate-interpretation-through-informed-color-choices",
     "href": "14_color.html#facilitate-interpretation-through-informed-color-choices",
     "title": "14  Color",
-    "section": "14.2 Facilitate interpretation through informed color choices",
-    "text": "14.2 Facilitate interpretation through informed color choices\nFor continuous data, a perceptually uniform colormap is often a useful starting point. Equal steps in the data should produce approximately equal perceived changes in color. Lightness is especially important for conveying ordered magnitude: a sequential palette with steadily changing lightness makes low-to-high values easier to interpret than a palette with unrelated bright and dark patches. The Matplotlib colormap guide contains examples, and this talk about viridis explains many of the design principles.\n\nColor vision and accessibility\nColor vision deficiencies affect a substantial number of readers. Red–green deficiencies are more common among men than women, and their prevalence varies across populations. Do not rely on a color distinction that some readers cannot see. The same guidelines often improve a chart for readers with typical color vision too.\nThe Coblis simulator can simulate different color vision deficiencies for an uploaded image. The cividis palette was designed to give similar perceptual ordering to readers with and without common red–green deficiencies. For categorical groups, redundant shapes or direct labels can help in addition to choosing colors carefully.\n\n\nAvoid artificial boundaries\nThe jet rainbow colormap has sharp changes in hue and uneven lightness. Yellow and cyan regions can attract disproportionate attention, creating apparent boundaries or features in otherwise smoothly varying data. Because higher values are not consistently lighter, the order is also hard to recover in grayscale.\nChoose a palette whose perceptual changes support the comparison you want readers to make. For more examples, see How bad is your colormap? and The rainbow is dead … long live the rainbow. The turbo palette improves some shortcomings of jet, but does not make every rainbow palette perceptually uniform or suitable for every reader. Viridis or cividis are often better defaults for ordered values. For a broader discussion, see how color determines what we see.",
+    "section": "14.22 Facilitate interpretation through informed color choices",
+    "text": "14.22 Facilitate interpretation through informed color choices\nFor continuous data, a perceptually uniform colormap is often a useful starting point. Equal steps in the data should produce approximately equal perceived changes in color. Lightness is especially important for conveying ordered magnitude: a sequential palette with steadily changing lightness makes low-to-high values easier to interpret than a palette with unrelated bright and dark patches. The Matplotlib colormap guide contains examples, and this talk about viridis explains many of the design principles.\n\nColor vision and accessibility\nColor vision deficiencies affect a substantial number of readers. Red–green deficiencies are more common among men than women, and their prevalence varies across populations. Do not rely on a color distinction that some readers cannot see. The same guidelines often improve a chart for readers with typical color vision too.\nThe Coblis simulator can simulate different color vision deficiencies for an uploaded image. The cividis palette was designed to give similar perceptual ordering to readers with and without common red–green deficiencies. For categorical groups, redundant shapes or direct labels can help in addition to choosing colors carefully.\n\n\nAvoid artificial boundaries\nThe jet rainbow colormap has sharp changes in hue and uneven lightness. Yellow and cyan regions can attract disproportionate attention, creating apparent boundaries or features in otherwise smoothly varying data. Because higher values are not consistently lighter, the order is also hard to recover in grayscale.\nChoose a palette whose perceptual changes support the comparison you want readers to make. For more examples, see How bad is your colormap? and The rainbow is dead … long live the rainbow. The turbo palette improves some shortcomings of jet, but does not make every rainbow palette perceptually uniform or suitable for every reader. Viridis or cividis are often better defaults for ordered values. For a broader discussion, see how color determines what we see.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -854,8 +1151,8 @@
     "objectID": "14_color.html#categorical-color-schemes",
     "href": "14_color.html#categorical-color-schemes",
     "title": "14  Color",
-    "section": "14.3 Categorical color schemes",
-    "text": "14.3 Categorical color schemes\nCategorical palettes distinguish groups without implying a low-to-high order. We use iris measurements to compare the three species.\n\nAltairggplot\n\n\nAltair’s default categorical palette is tableau10, a sequence of ten colors beginning with blue, orange, and red.\n\niris_points = alt.Chart(iris).mark_circle(size=100).encode(\n    x='petalWidth',\n    y='petalLength',\n    color='species'\n)\niris_points\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSet the palette by name with scheme inside alt.Scale. The Vega scheme reference lists categorical, sequential, diverging, and cyclic palettes.\n\niris_points.encode(color=alt.Color('species').scale(scheme='dark2'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nYou can also supply colors explicitly, using names or hexadecimal codes. Here the order of the color range corresponds to the order of the species domain.\n\ncolors = ['coral', 'steelblue', 'rebeccapurple']\niris_points.encode(color=alt.Color('species').scale(\n    domain=['setosa', 'versicolor', 'virginica'], range=colors\n))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nThe default categorical scale in ggplot selects equally spaced hues from a color wheel.\n\niris_points &lt;- ggplot(iris, aes(x = Petal.Width, y = Petal.Length, color = Species)) +\n    geom_point(size = 5)\niris_points\n\n\n\n\n\n\n\n\nColorBrewer palettes are available through scale_color_brewer() and scale_fill_brewer() for categories. The distiller scales interpolate these palettes for continuous values.\n\niris_points + scale_color_brewer(palette = 'Dark2')\n\n\n\n\n\n\n\n\nThe Tableau palette used by Altair is available through ggthemes. The R color palettes collection shows many other choices and the packages that provide them.\n\niris_points + ggthemes::scale_color_tableau()\n\n\n\n\n\n\n\n\nHere we specify the same colors as the Altair example using their hexadecimal codes. Naming the values makes the mapping to species explicit.\n\niris_points + scale_color_manual(values = c(\n    setosa = '#FF7F50', versicolor = '#4682B4', virginica = '#663399'\n))\n\n\n\n\n\n\n\n\n\n\n\nExperimenting with custom palettes can be useful, but well-designed existing palettes incorporate considerable research and testing. They are a good starting point for a final communication figure. Hexadecimal RGB codes range from #000000 for black to #ffffff for white. An image editor or online color picker can help recover the exact code for a color in an existing image.\n\n\nThe name rebeccapurple is a reminder of the people behind computational tools. Read the story of this color’s name.",
+    "section": "14.23 Categorical color schemes",
+    "text": "14.23 Categorical color schemes\nCategorical palettes distinguish groups without implying a low-to-high order. We use iris measurements to compare the three species.\n\nAltairggplot\n\n\nAltair’s default categorical palette is tableau10, a sequence of ten colors beginning with blue, orange, and red.\n\niris_points = alt.Chart(iris).mark_circle(size=100).encode(\n    x='petalWidth',\n    y='petalLength',\n    color='species'\n)\niris_points\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSet the palette by name with scheme inside alt.Scale. The Vega scheme reference lists categorical, sequential, diverging, and cyclic palettes.\n\niris_points.encode(color=alt.Color('species').scale(scheme='dark2'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nYou can also supply colors explicitly, using names or hexadecimal codes. Here the order of the color range corresponds to the order of the species domain.\n\ncolors = ['coral', 'steelblue', 'rebeccapurple']\niris_points.encode(color=alt.Color('species').scale(\n    domain=['setosa', 'versicolor', 'virginica'], range=colors\n))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nThe default categorical scale in ggplot selects equally spaced hues from a color wheel.\n\niris_points &lt;- ggplot(iris, aes(x = Petal.Width, y = Petal.Length, color = Species)) +\n    geom_point(size = 5)\niris_points\n\n\n\n\n\n\n\n\nColorBrewer palettes are available through scale_color_brewer() and scale_fill_brewer() for categories. The distiller scales interpolate these palettes for continuous values.\n\niris_points + scale_color_brewer(palette = 'Dark2')\n\n\n\n\n\n\n\n\nThe Tableau palette used by Altair is available through ggthemes. The R color palettes collection shows many other choices and the packages that provide them.\n\niris_points + ggthemes::scale_color_tableau()\n\n\n\n\n\n\n\n\nHere we specify the same colors as the Altair example using their hexadecimal codes. Naming the values makes the mapping to species explicit.\n\niris_points + scale_color_manual(values = c(\n    setosa = '#FF7F50', versicolor = '#4682B4', virginica = '#663399'\n))\n\n\n\n\n\n\n\n\n\n\n\nExperimenting with custom palettes can be useful, but well-designed existing palettes incorporate considerable research and testing. They are a good starting point for a final communication figure. Hexadecimal RGB codes range from #000000 for black to #ffffff for white. An image editor or online color picker can help recover the exact code for a color in an existing image.\n\n\nThe name rebeccapurple is a reminder of the people behind computational tools. Read the story of this color’s name.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -865,8 +1162,8 @@
     "objectID": "14_color.html#sequential-color-schemes",
     "href": "14_color.html#sequential-color-schemes",
     "title": "14  Color",
-    "section": "14.4 Sequential color schemes",
-    "text": "14.4 Sequential color schemes\nSequential palettes communicate increasing or decreasing magnitude. When working on a light background, it is often useful for low values to be closest to that background and larger values to be more visually prominent. Consider the background, the palette direction, and the meaning of high values together.\n\nAltairggplot\n\n\nMapping petal width to color selects a continuous palette.\n\niris_points.encode(color=alt.Color('petalWidth:Q'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe palette can be changed in the same way as for categories.\n\niris_points.encode(color=alt.Color('petalWidth:Q').scale(scheme='greenblue'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nViridis was developed for Matplotlib and is now available in many visualization tools. It uses changes in lightness and hue while aiming to preserve perceptual ordering.\n\niris_points.encode(color=alt.Color('petalWidth:Q').scale(scheme='viridis'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nReverse the palette with reverse=True, just as for the axis scales in Chapter 13.\n\niris_points.encode(color=alt.Color('petalWidth:Q').scale(scheme='viridis', reverse=True))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nMapping a numerical variable to color uses a continuous scale.\n\niris_numeric &lt;- ggplot(iris, aes(x = Petal.Width, y = Petal.Length, color = Petal.Width)) +\n    geom_point(size = 5)\niris_numeric\n\n\n\n\n\n\n\n\nUse scale_color_viridis_c() for a continuous viridis palette. The _d variant is for discrete values.\n\niris_numeric + scale_color_viridis_c()\n\n\n\n\n\n\n\n\nA reverse transformation reverses the numerical color scale, which also reverses the ordering of the legend values.\n\niris_numeric + scale_color_viridis_c(transform = 'reverse')\n\n\n\n\n\n\n\n\nTo reverse only the palette while preserving the legend’s numerical order, use direction = -1 instead.\n\niris_numeric + scale_color_viridis_c(direction = -1)",
+    "section": "14.24 Sequential color schemes",
+    "text": "14.24 Sequential color schemes\nSequential palettes communicate increasing or decreasing magnitude. When working on a light background, it is often useful for low values to be closest to that background and larger values to be more visually prominent. Consider the background, the palette direction, and the meaning of high values together.\n\nAltairggplot\n\n\nMapping petal width to color selects a continuous palette.\n\niris_points.encode(color=alt.Color('petalWidth:Q'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe palette can be changed in the same way as for categories.\n\niris_points.encode(color=alt.Color('petalWidth:Q').scale(scheme='greenblue'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nViridis was developed for Matplotlib and is now available in many visualization tools. It uses changes in lightness and hue while aiming to preserve perceptual ordering.\n\niris_points.encode(color=alt.Color('petalWidth:Q').scale(scheme='viridis'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nReverse the palette with reverse=True, just as for the axis scales in Chapter 13.\n\niris_points.encode(color=alt.Color('petalWidth:Q').scale(scheme='viridis', reverse=True))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nMapping a numerical variable to color uses a continuous scale.\n\niris_numeric &lt;- ggplot(iris, aes(x = Petal.Width, y = Petal.Length, color = Petal.Width)) +\n    geom_point(size = 5)\niris_numeric\n\n\n\n\n\n\n\n\nUse scale_color_viridis_c() for a continuous viridis palette. The _d variant is for discrete values.\n\niris_numeric + scale_color_viridis_c()\n\n\n\n\n\n\n\n\nA reverse transformation reverses the numerical color scale, which also reverses the ordering of the legend values.\n\niris_numeric + scale_color_viridis_c(transform = 'reverse')\n\n\n\n\n\n\n\n\nTo reverse only the palette while preserving the legend’s numerical order, use direction = -1 instead.\n\niris_numeric + scale_color_viridis_c(direction = -1)",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -876,8 +1173,8 @@
     "objectID": "14_color.html#diverging-color-schemes",
     "href": "14_color.html#diverging-color-schemes",
     "title": "14  Color",
-    "section": "14.5 Diverging color schemes",
-    "text": "14.5 Diverging color schemes\nDiverging palettes distinguish departures on either side of a meaningful midpoint. For example, a correlation ranges from −1 to 1 and has a natural midpoint at zero. A sequential palette can make a value near zero look more important than a strongly negative correlation simply because zero is numerically larger.\nWe calculate a correlation matrix from the Gapminder example data. The numeric cluster identifier is excluded because its codes are categories, not a quantitative measurement. The point here is to compare color encodings, not to infer causal relationships from these correlations.\n\nAltairggplot\n\n\n\nnumeric_gapminder = gapminder[['year', 'pop', 'life_expect', 'fertility']]\ncorr_df = (\n    numeric_gapminder.corr()\n    .rename_axis(index='variable_x', columns='variable_y')\n    .stack().reset_index(name='correlation')\n)\n\nFirst, notice how the default sequential scale treats zero.\n\ncorrelation_heatmap = alt.Chart(corr_df, width=240, height=240).mark_rect().encode(\n    x='variable_x:N',\n    y='variable_y:N',\n    tooltip='correlation:Q',\n    color='correlation:Q'\n)\ncorrelation_heatmap\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nChoose a diverging palette and set the domain to the full possible correlation range. The symmetric limits make equal-magnitude positive and negative correlations comparable.\n\ncorrelation_heatmap.encode(\n    color=alt.Color('correlation:Q').scale(domain=[-1, 1], scheme='purpleorange')\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nAlternatively, domainMid=0 identifies the midpoint and selects a default diverging palette.\n\ncorrelation_heatmap.encode(color=alt.Color('correlation:Q').scale(domainMid=0))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nThe same correlation matrix can be computed directly in R.\n\ncorr_df &lt;- gapminder |&gt;\n    select(year, pop, life_expect, fertility) |&gt;\n    cor(use = 'pairwise.complete.obs') |&gt;\n    as.table() |&gt;\n    as.data.frame() |&gt;\n    set_names(c('variable_x', 'variable_y', 'correlation'))\n\n\ncorrelation_heatmap &lt;- ggplot(corr_df, aes(x = variable_x, y = variable_y, fill = correlation)) +\n    geom_tile()\ncorrelation_heatmap\n\n\n\n\n\n\n\n\nggthemes provides a Tableau diverging palette.\n\ncorrelation_heatmap + ggthemes::scale_fill_gradient2_tableau()\n\n\n\n\n\n\n\n\nColorBrewer offers alternatives through scale_fill_distiller(). The palette direction should agree with any relevant familiar association, such as red for warmer temperatures; the sign of a correlation has no inherent color.\n\ncorrelation_heatmap + scale_fill_distiller(palette = 'PuOr')\n\n\n\n\n\n\n\n\nSpecify symmetric limits to make equal-magnitude departures from zero equally prominent.\n\ncorrelation_heatmap + scale_fill_distiller(palette = 'PuOr', limits = c(-1, 1))",
+    "section": "14.25 Diverging color schemes",
+    "text": "14.25 Diverging color schemes\nDiverging palettes distinguish departures on either side of a meaningful midpoint. For example, a correlation ranges from −1 to 1 and has a natural midpoint at zero. A sequential palette can make a value near zero look more important than a strongly negative correlation simply because zero is numerically larger.\nWe calculate a correlation matrix from the Gapminder example data. The numeric cluster identifier is excluded because its codes are categories, not a quantitative measurement. The point here is to compare color encodings, not to infer causal relationships from these correlations.\n\nAltairggplot\n\n\n\nnumeric_gapminder = gapminder[['year', 'pop', 'life_expect', 'fertility']]\ncorr_df = (\n    numeric_gapminder.corr()\n    .rename_axis(index='variable_x', columns='variable_y')\n    .stack().reset_index(name='correlation')\n)\n\nFirst, notice how the default sequential scale treats zero.\n\ncorrelation_heatmap = alt.Chart(corr_df, width=240, height=240).mark_rect().encode(\n    x='variable_x:N',\n    y='variable_y:N',\n    tooltip='correlation:Q',\n    color='correlation:Q'\n)\ncorrelation_heatmap\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nChoose a diverging palette and set the domain to the full possible correlation range. The symmetric limits make equal-magnitude positive and negative correlations comparable.\n\ncorrelation_heatmap.encode(\n    color=alt.Color('correlation:Q').scale(domain=[-1, 1], scheme='purpleorange')\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nAlternatively, domainMid=0 identifies the midpoint and selects a default diverging palette.\n\ncorrelation_heatmap.encode(color=alt.Color('correlation:Q').scale(domainMid=0))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nThe same correlation matrix can be computed directly in R.\n\ncorr_df &lt;- gapminder |&gt;\n    select(year, pop, life_expect, fertility) |&gt;\n    cor(use = 'pairwise.complete.obs') |&gt;\n    as.table() |&gt;\n    as.data.frame() |&gt;\n    set_names(c('variable_x', 'variable_y', 'correlation'))\n\n\ncorrelation_heatmap &lt;- ggplot(corr_df, aes(x = variable_x, y = variable_y, fill = correlation)) +\n    geom_tile()\ncorrelation_heatmap\n\n\n\n\n\n\n\n\nggthemes provides a Tableau diverging palette.\n\ncorrelation_heatmap + ggthemes::scale_fill_gradient2_tableau()\n\n\n\n\n\n\n\n\nColorBrewer offers alternatives through scale_fill_distiller(). The palette direction should agree with any relevant familiar association, such as red for warmer temperatures; the sign of a correlation has no inherent color.\n\ncorrelation_heatmap + scale_fill_distiller(palette = 'PuOr')\n\n\n\n\n\n\n\n\nSpecify symmetric limits to make equal-magnitude departures from zero equally prominent.\n\ncorrelation_heatmap + scale_fill_distiller(palette = 'PuOr', limits = c(-1, 1))",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -887,8 +1184,8 @@
     "objectID": "14_color.html#highlighting-with-colors",
     "href": "14_color.html#highlighting-with-colors",
     "title": "14  Color",
-    "section": "14.6 Highlighting with colors",
-    "text": "14.6 Highlighting with colors\nColor can also select a small part of a chart for attention. We use historical wheat prices after 1700, with fewer bars to keep the example readable. Give the observation of interest a distinct color while leaving the other observations as context.\n\nAltairggplot\n\n\nCreate a Boolean column for the year to highlight.\n\nwheat['highlight'] = wheat['year'] == 1810\nbars = alt.Chart(wheat).mark_bar().encode(\n    x='year:O',\n    y='wheat:Q',\n    color='highlight:N'\n)\nbars\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe Boolean legend is not helpful unless the reader knows what True means. We can remove it and explain the selected year with text instead.\n\nbars = bars.encode(color=alt.Color('highlight:N').legend(None))\nbars\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nBar interiors use fill, rather than the outline color aesthetic.\n\nwheat &lt;- wheat |&gt; mutate(highlight = year == 1810)\nbars &lt;- ggplot(wheat, aes(x = year, y = wheat, fill = highlight)) +\n    geom_col(color = 'white') + ggthemes::scale_fill_tableau()\nbars\n\n\n\n\n\n\n\n\nRemove the legend through the theme or guides(fill = 'none').\n\nbars &lt;- bars + theme(legend.position = 'none')\nbars",
+    "section": "14.26 Highlighting with colors",
+    "text": "14.26 Highlighting with colors\nColor can also select a small part of a chart for attention. We use historical wheat prices after 1700, with fewer bars to keep the example readable. Give the observation of interest a distinct color while leaving the other observations as context.\n\nAltairggplot\n\n\nCreate a Boolean column for the year to highlight.\n\nwheat['highlight'] = wheat['year'] == 1810\nbars = alt.Chart(wheat).mark_bar().encode(\n    x='year:O',\n    y='wheat:Q',\n    color='highlight:N'\n)\nbars\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe Boolean legend is not helpful unless the reader knows what True means. We can remove it and explain the selected year with text instead.\n\nbars = bars.encode(color=alt.Color('highlight:N').legend(None))\nbars\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nBar interiors use fill, rather than the outline color aesthetic.\n\nwheat &lt;- wheat |&gt; mutate(highlight = year == 1810)\nbars &lt;- ggplot(wheat, aes(x = year, y = wheat, fill = highlight)) +\n    geom_col(color = 'white') + ggthemes::scale_fill_tableau()\nbars\n\n\n\n\n\n\n\n\nRemove the legend through the theme or guides(fill = 'none').\n\nbars &lt;- bars + theme(legend.position = 'none')\nbars",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -898,8 +1195,8 @@
     "objectID": "14_color.html#text-annotations",
     "href": "14_color.html#text-annotations",
     "title": "14  Color",
-    "section": "14.7 Text annotations",
-    "text": "14.7 Text annotations\nAn exact value can make an important comparison easier to read. Text can also explain why an observation is highlighted. Keep in mind that labeling every observation may add more clutter than information.\n\nAltairggplot\n\n\nLayer a text mark above the bars.\n\nbars + bars.mark_text(dy=-5).encode(text='wheat:Q')\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe text inherited the bar chart’s color encoding. An encoding takes precedence over a color set directly in the mark. To override it, set a literal encoding value with alt.value(); otherwise a string in an encoding is interpreted as a data column name.\n\nbars + bars.mark_text(dy=-5).encode(text='wheat:Q', color=alt.value('black'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nUse geom_text() with the label aesthetic.\n\nbars + geom_text(aes(label = wheat), vjust = -0.3)\n\n\n\n\n\n\n\n\nTo match the text to the highlighted bar colors, map the color aesthetic and add a corresponding color scale. This is separate from the fill scale used by the bars.\n\nbars +\n    geom_text(aes(label = wheat, color = highlight), vjust = -0.3) +\n    ggthemes::scale_color_tableau()\n\n\n\n\n\n\n\n\nWhen a label represents a computed count rather than a precomputed value, use a layer with the same counting statistic, for example geom_text(stat = 'count', aes(label = after_stat(count))).\n\n\n\n\nRemove unnecessary decoration\nWhen exact labels already supply the values, some gridlines may be unnecessary. This is a design choice: gridlines can still help readers compare distant marks.\n\nAltairggplot\n\n\n\nbars = bars.encode(y=alt.Y('wheat:Q').axis(grid=False))\nbars + bars.mark_text(dy=-5).encode(text='wheat:Q', color=alt.value('black'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nWithout gridlines, the outline around the plotting area may stand out unnecessarily. Remove it with configure_view(stroke=None).\n\n(bars + bars.mark_text(dy=-5).encode(\n    text='wheat:Q', color=alt.value('black')\n)).configure_view(stroke=None)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nRemove the major and minor gridlines through theme elements.\n\nbars +\n    geom_text(aes(label = wheat, color = highlight), vjust = -0.3) +\n    ggthemes::scale_color_tableau() +\n    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnnotate selected observations\nOften only the highlighted observation needs a label. Filtering the annotation data leaves the other bars intact.\n\nAltairggplot\n\n\n\nbars + alt.Chart(wheat.query('year == 1810')).mark_text(dy=-5).encode(\n    x='year:O', y='wheat:Q', text='wheat:Q'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFor custom annotation text, use a literal value again.\n\nbars + alt.Chart(wheat.query('year == 1810')).mark_text(dy=-5, dx=-30).encode(\n    x='year:O', y='wheat:Q', text=alt.value('The record year')\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFor multiple annotations, either add a text column to the original data or create a separate annotation dataframe.\n\nannot_wheat = pd.DataFrame({\n    'year': [1730, 1810],\n    'wheat': [26, 99],\n    'text': ['The lowest year', 'The record year']\n})\nannot_wheat\n\n   year  wheat             text\n0  1730     26  The lowest year\n1  1810     99  The record year\n\n\n\nbars + alt.Chart(annot_wheat).mark_text(dy=-5).encode(\n    x='year:O', y='wheat:Q', text='text:N'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nIf labels overlap bars or other labels, adjust their positions, alignment, or color. Separate annotation layers allow each label to have its own placement.\n\n\nSupply filtered data to the text layer, rather than filtering the whole chart.\n\nbars + geom_text(data = filter(wheat, year == 1810), aes(label = wheat), vjust = -0.3)\n\n\n\n\n\n\n\n\nFor a fixed annotation, annotate() avoids adding a data column.\n\nbars + annotate('text', label = 'The record year', x = 1810, y = 102, hjust = 1)",
+    "section": "14.27 Text annotations",
+    "text": "14.27 Text annotations\nAn exact value can make an important comparison easier to read. Text can also explain why an observation is highlighted. Keep in mind that labeling every observation may add more clutter than information.\n\nAltairggplot\n\n\nLayer a text mark above the bars.\n\nbars + bars.mark_text(dy=-5).encode(text='wheat:Q')\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe text inherited the bar chart’s color encoding. An encoding takes precedence over a color set directly in the mark. To override it, set a literal encoding value with alt.value(); otherwise a string in an encoding is interpreted as a data column name.\n\nbars + bars.mark_text(dy=-5).encode(text='wheat:Q', color=alt.value('black'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nUse geom_text() with the label aesthetic.\n\nbars + geom_text(aes(label = wheat), vjust = -0.3)\n\n\n\n\n\n\n\n\nTo match the text to the highlighted bar colors, map the color aesthetic and add a corresponding color scale. This is separate from the fill scale used by the bars.\n\nbars +\n    geom_text(aes(label = wheat, color = highlight), vjust = -0.3) +\n    ggthemes::scale_color_tableau()\n\n\n\n\n\n\n\n\nWhen a label represents a computed count rather than a precomputed value, use a layer with the same counting statistic, for example geom_text(stat = 'count', aes(label = after_stat(count))).\n\n\n\n\nRemove unnecessary decoration\nWhen exact labels already supply the values, some gridlines may be unnecessary. This is a design choice: gridlines can still help readers compare distant marks.\n\nAltairggplot\n\n\n\nbars = bars.encode(y=alt.Y('wheat:Q').axis(grid=False))\nbars + bars.mark_text(dy=-5).encode(text='wheat:Q', color=alt.value('black'))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nWithout gridlines, the outline around the plotting area may stand out unnecessarily. Remove it with configure_view(stroke=None).\n\n(bars + bars.mark_text(dy=-5).encode(\n    text='wheat:Q', color=alt.value('black')\n)).configure_view(stroke=None)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nRemove the major and minor gridlines through theme elements.\n\nbars +\n    geom_text(aes(label = wheat, color = highlight), vjust = -0.3) +\n    ggthemes::scale_color_tableau() +\n    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnnotate selected observations\nOften only the highlighted observation needs a label. Filtering the annotation data leaves the other bars intact.\n\nAltairggplot\n\n\n\nbars + alt.Chart(wheat.query('year == 1810')).mark_text(dy=-5).encode(\n    x='year:O', y='wheat:Q', text='wheat:Q'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFor custom annotation text, use a literal value again.\n\nbars + alt.Chart(wheat.query('year == 1810')).mark_text(dy=-5, dx=-30).encode(\n    x='year:O', y='wheat:Q', text=alt.value('The record year')\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nFor multiple annotations, either add a text column to the original data or create a separate annotation dataframe.\n\nannot_wheat = pd.DataFrame({\n    'year': [1730, 1810],\n    'wheat': [26, 99],\n    'text': ['The lowest year', 'The record year']\n})\nannot_wheat\n\n   year  wheat             text\n0  1730     26  The lowest year\n1  1810     99  The record year\n\n\n\nbars + alt.Chart(annot_wheat).mark_text(dy=-5).encode(\n    x='year:O', y='wheat:Q', text='text:N'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nIf labels overlap bars or other labels, adjust their positions, alignment, or color. Separate annotation layers allow each label to have its own placement.\n\n\nSupply filtered data to the text layer, rather than filtering the whole chart.\n\nbars + geom_text(data = filter(wheat, year == 1810), aes(label = wheat), vjust = -0.3)\n\n\n\n\n\n\n\n\nFor a fixed annotation, annotate() avoids adding a data column.\n\nbars + annotate('text', label = 'The record year', x = 1810, y = 102, hjust = 1)",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -909,8 +1206,8 @@
     "objectID": "14_color.html#direct-labeling-instead-of-using-a-legend",
     "href": "14_color.html#direct-labeling-instead-of-using-a-legend",
     "title": "14  Color",
-    "section": "14.8 Direct labeling instead of using a legend",
-    "text": "14.8 Direct labeling instead of using a legend\nA legend can make the reader repeatedly look away from the plotted marks. Matching the legend’s order to the visible order of the series reduces that effort; direct labels can remove the lookup entirely. The stock-price data provide an example where alphabetical order does not match the order of the line endpoints.\n\nAltairggplot\n\n\n\nstock_lines = alt.Chart(stocks).mark_line().encode(\n    x='date:T', y='price:Q', color='symbol:N'\n)\nstock_lines\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nCalculate the series order at the final date.\n\nstock_order = (\n    stocks.loc[stocks['date'] == stocks['date'].max()]\n    .sort_values('price', ascending=False)\n)\nstock_order\n\n    symbol       date   price\n436   GOOG 2010-03-01  560.19\n559   AAPL 2010-03-01  223.02\n245   AMZN 2010-03-01  128.82\n368    IBM 2010-03-01  125.55\n122   MSFT 2010-03-01   28.80\n\n\nPass that ordering to the color encoding’s sort parameter.\n\nstock_lines.encode(color=alt.Color('symbol:N').sort(stock_order['symbol'].tolist()))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe title “symbol” provides little additional information here and can be removed.\n\nstock_lines.encode(color=alt.Color('symbol:N').sort(stock_order['symbol'].tolist()).title(None))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nTo label the lines directly, add text at each endpoint and remove the legend. Use consistent color domains so the line and text layers identify the same series. The IBM and AMZN endpoints are very close together, so we give their labels small vertical offsets. Only the label positions change, not the line values.\n\nlines = stock_lines.encode(\n    y=alt.Y('price:Q').title('Price'), color=alt.Color('symbol:N').legend(None)\n)\nlabels = stock_order.assign(\n    label_price=stock_order['price'] + stock_order['symbol'].map({'IBM': 25, 'AMZN': -25}).fillna(0)\n)\ntext = alt.Chart(labels).mark_text(align='left', dx=6).encode(\n    x='date:T', y=alt.Y('label_price:Q').title('Price'), text='symbol:N', color='symbol:N'\n)\nlines + text\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\n\nstock_lines &lt;- ggplot(stocks, aes(x = date, y = price, color = symbol)) +\n    geom_line() + ggthemes::scale_color_tableau()\nstock_lines\n\n\n\n\n\n\n\n\nCalculate the last-date ordering, then use it as the legend’s breaks.\n\nstock_order &lt;- stocks |&gt;\n    filter(date == max(date)) |&gt;\n    arrange(desc(price))\nstock_order\n\n# A tibble: 5 × 3\n  symbol date       price\n  &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt;\n1 GOOG   2010-03-01 560. \n2 AAPL   2010-03-01 223. \n3 AMZN   2010-03-01 129. \n4 IBM    2010-03-01 126. \n5 MSFT   2010-03-01  28.8\n\n\n\nstock_lines + ggthemes::scale_color_tableau(breaks = stock_order$symbol)\n\n\n\n\n\n\n\n\n\nstock_lines + ggthemes::scale_color_tableau(breaks = stock_order$symbol, name = NULL)\n\n\n\n\n\n\n\n\nTo remove the legend altogether, set legend.position = 'none'. Then add geom_text() with the endpoint data. Some extra space on the right keeps the labels within the plotting area. As in Altair, only the labels for the closely spaced IBM and AMZN series are offset.\n\nlabels &lt;- stock_order |&gt;\n    mutate(label_price = price + case_when(\n        symbol == 'IBM' ~ 25, symbol == 'AMZN' ~ -25, TRUE ~ 0\n    ))\nstock_lines +\n    geom_text(data = labels, aes(y = label_price, label = symbol), hjust = -0.1) +\n    scale_x_date(expand = expansion(mult = c(0.02, 0.14))) +\n    theme(legend.position = 'none')",
+    "section": "14.28 Direct labeling instead of using a legend",
+    "text": "14.28 Direct labeling instead of using a legend\nA legend can make the reader repeatedly look away from the plotted marks. Matching the legend’s order to the visible order of the series reduces that effort; direct labels can remove the lookup entirely. The stock-price data provide an example where alphabetical order does not match the order of the line endpoints.\n\nAltairggplot\n\n\n\nstock_lines = alt.Chart(stocks).mark_line().encode(\n    x='date:T', y='price:Q', color='symbol:N'\n)\nstock_lines\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nCalculate the series order at the final date.\n\nstock_order = (\n    stocks.loc[stocks['date'] == stocks['date'].max()]\n    .sort_values('price', ascending=False)\n)\nstock_order\n\n    symbol       date   price\n436   GOOG 2010-03-01  560.19\n559   AAPL 2010-03-01  223.02\n245   AMZN 2010-03-01  128.82\n368    IBM 2010-03-01  125.55\n122   MSFT 2010-03-01   28.80\n\n\nPass that ordering to the color encoding’s sort parameter.\n\nstock_lines.encode(color=alt.Color('symbol:N').sort(stock_order['symbol'].tolist()))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nThe title “symbol” provides little additional information here and can be removed.\n\nstock_lines.encode(color=alt.Color('symbol:N').sort(stock_order['symbol'].tolist()).title(None))\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nTo label the lines directly, add text at each endpoint and remove the legend. Use consistent color domains so the line and text layers identify the same series. The IBM and AMZN endpoints are very close together, so we give their labels small vertical offsets. Only the label positions change, not the line values.\n\nlines = stock_lines.encode(\n    y=alt.Y('price:Q').title('Price'), color=alt.Color('symbol:N').legend(None)\n)\nlabels = stock_order.assign(\n    label_price=stock_order['price'] + stock_order['symbol'].map({'IBM': 25, 'AMZN': -25}).fillna(0)\n)\ntext = alt.Chart(labels).mark_text(align='left', dx=6).encode(\n    x='date:T', y=alt.Y('label_price:Q').title('Price'), text='symbol:N', color='symbol:N'\n)\nlines + text\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\n\nstock_lines &lt;- ggplot(stocks, aes(x = date, y = price, color = symbol)) +\n    geom_line() + ggthemes::scale_color_tableau()\nstock_lines\n\n\n\n\n\n\n\n\nCalculate the last-date ordering, then use it as the legend’s breaks.\n\nstock_order &lt;- stocks |&gt;\n    filter(date == max(date)) |&gt;\n    arrange(desc(price))\nstock_order\n\n# A tibble: 5 × 3\n  symbol date       price\n  &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt;\n1 GOOG   2010-03-01 560. \n2 AAPL   2010-03-01 223. \n3 AMZN   2010-03-01 129. \n4 IBM    2010-03-01 126. \n5 MSFT   2010-03-01  28.8\n\n\n\nstock_lines + ggthemes::scale_color_tableau(breaks = stock_order$symbol)\n\n\n\n\n\n\n\n\n\nstock_lines + ggthemes::scale_color_tableau(breaks = stock_order$symbol, name = NULL)\n\n\n\n\n\n\n\n\nTo remove the legend altogether, set legend.position = 'none'. Then add geom_text() with the endpoint data. Some extra space on the right keeps the labels within the plotting area. As in Altair, only the labels for the closely spaced IBM and AMZN series are offset.\n\nlabels &lt;- stock_order |&gt;\n    mutate(label_price = price + case_when(\n        symbol == 'IBM' ~ 25, symbol == 'AMZN' ~ -25, TRUE ~ 0\n    ))\nstock_lines +\n    geom_text(data = labels, aes(y = label_price, label = symbol), hjust = -0.1) +\n    scale_x_date(expand = expansion(mult = c(0.02, 0.14))) +\n    theme(legend.position = 'none')",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -920,8 +1217,8 @@
     "objectID": "14_color.html#further-reading-and-walkthroughs",
     "href": "14_color.html#further-reading-and-walkthroughs",
     "title": "14  Color",
-    "section": "14.9 Further reading and walkthroughs",
-    "text": "14.9 Further reading and walkthroughs\n\nColor basics.\nCommon color pitfalls.\nVega color schemes.\nR color palettes.\n\nThe original lecture recordings provide optional walkthroughs (UBC sign-in may be required):\n\nReview of visualization guidelines, 16 minutes.\nProgramming with color choices, 44 minutes.",
+    "section": "14.29 Further reading and walkthroughs",
+    "text": "14.29 Further reading and walkthroughs\n\nColor basics.\nCommon color pitfalls.\nVega color schemes.\nR color palettes.\n\nThe original lecture recordings provide optional walkthroughs (UBC sign-in may be required):\n\nReview of visualization guidelines, 16 minutes.\nProgramming with color choices, 44 minutes.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
@@ -1093,11 +1390,22 @@
     ]
   },
   {
+    "objectID": "18_trends.html#compare-the-questions-answered-by-different-summaries",
+    "href": "18_trends.html#compare-the-questions-answered-by-different-summaries",
+    "title": "18  Trends",
+    "section": "18.5 Compare the questions answered by different summaries",
+    "text": "18.5 Compare the questions answered by different summaries\n\n\n\nMean-based summary\n\n\nLinear regression\n\n\nLocal smoothing\n\n\n\n\nThese comparison figures from the communication lecture show how the choice of summary changes the pattern a reader sees. Decide whether the audience needs year-specific averages, a global trend, or variation within the observed range.",
+    "crumbs": [
+      "Extensions & applications",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+    ]
+  },
+  {
     "objectID": "18_trends.html#when-to-choose-which-trendline",
     "href": "18_trends.html#when-to-choose-which-trendline",
     "title": "18  Trends",
-    "section": "18.5 When to choose which trendline?",
-    "text": "18.5 When to choose which trendline?\n\n\nMeans and rolling averages are useful when the summarized values should have a straightforward interpretation. They can be particularly accessible to a general audience.\nRegression models are useful when a simple equation is a reasonable description of the relationship. Predictions beyond the observed range rely on that model continuing to hold, and become more uncertain as they move further from the data.\nLOESS is useful for describing patterns within the observed data without choosing one global equation. It often resembles the trend a reader would sketch by eye, but depends on the smoothing setting and is poorly suited to extrapolation.",
+    "section": "18.6 When to choose which trendline?",
+    "text": "18.6 When to choose which trendline?\n\n\nMeans and rolling averages are useful when the summarized values should have a straightforward interpretation. They can be particularly accessible to a general audience.\nRegression models are useful when a simple equation is a reasonable description of the relationship. Predictions beyond the observed range rely on that model continuing to hold, and become more uncertain as they move further from the data.\nLOESS is useful for describing patterns within the observed data without choosing one global equation. It often resembles the trend a reader would sketch by eye, but depends on the smoothing setting and is poorly suited to extrapolation.",
     "crumbs": [
       "Extensions & applications",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
@@ -1107,8 +1415,8 @@
     "objectID": "18_trends.html#further-reading",
     "href": "18_trends.html#further-reading",
     "title": "18  Trends",
-    "section": "18.6 Further reading",
-    "text": "18.6 Further reading\n\nVisualizing trends.",
+    "section": "18.7 Further reading",
+    "text": "18.7 Further reading\n\nVisualizing trends.",
     "crumbs": [
       "Extensions & applications",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
