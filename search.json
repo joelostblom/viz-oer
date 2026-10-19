@@ -800,7 +800,7 @@
     "href": "13_communication.html#make-category-comparisons-easy",
     "title": "13  Communication",
     "section": "13.4 Make category comparisons easy",
-    "text": "13.4 Make category comparisons easy\n\n\n\nPositions and lengths on a common scale are usually easier to compare than angles and areas. A bar chart can also place each category name beside the value it identifies.\n\n\n\nComparisons across several pies require the reader to mentally align angles. A shared baseline makes the intended comparison more direct.\n\n\n\n\n\n\nWith many categories, matching small wedges to a long legend becomes hard work. Extrusion and exploded pieces add visual complexity without making the values easier to compare.\n\n\n\nA published chart can look polished while contradicting its own numerical labels. Check whether sector angles and areas represent the values proportionally, rather than trusting the visual finish.",
+    "text": "13.4 Make category comparisons easy\n\n\n\nPositions and lengths on a common scale are usually easier to compare than angles and areas. A bar chart can also place each category name beside the value it identifies.\n\n\n\nComparisons across several pies require the reader to mentally align angles. A shared baseline makes the intended comparison more direct.\n\n\n\nWith many categories, matching small wedges to a long legend becomes hard work. Extrusion and exploded pieces add visual complexity without making the values easier to compare.\n\n\n\nA published chart can look polished while contradicting its own numerical labels. Check whether sector angles and areas represent the values proportionally, rather than trusting the visual finish.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -844,7 +844,7 @@
     "href": "13_communication.html#avoid-redundant-3d",
     "title": "13  Communication",
     "section": "13.8 Avoid redundant 3D",
-    "text": "13.8 Avoid redundant 3D\n\n\n\n\nPerspective and occlusion make both heights and colored segments harder to compare. Use a third spatial dimension when it represents something the reader needs to understand, rather than simply as decoration.\n\n\n\nTextures, gradients, tilted axes, and competing colors can obscure the values. Readers should be able to answer the data question without first decoding the decoration.",
+    "text": "13.8 Avoid redundant 3D\n\n\n\n\n\n\n\nPerspective and occlusion make both heights and colored segments harder to compare. Use a third spatial dimension when it represents something the reader needs to understand, rather than simply as decoration.\n\n\n\nTextures, gradients, tilted axes, and competing colors can obscure the values. Readers should be able to answer the data question without first decoding the decoration.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
