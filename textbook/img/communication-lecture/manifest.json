@@ -1,0 +1,168 @@
+{
+  "source": "Copy of DSCI 531 - Lec 5.odp",
+  "sha256": "2a6b5074ef077e03fb43105ee1e53397fe139dc1fdce2ef63753b6db79b1c63b",
+  "figures": [
+    {
+      "file": "iraq-bloody-toll.png",
+      "slide": 2,
+      "member": "Pictures/100000000000026C00000350B87AE5001ADB1B0D.png",
+      "sha256": "b7e0e4c4efb50babd98dbb43e23a332025cfa4e6193b8dddaa77ef586c2d4275"
+    },
+    {
+      "file": "iraq-deaths-on-decline.png",
+      "slide": 2,
+      "member": "Pictures/100000000000026C0000035187A44387E88A41A8.png",
+      "sha256": "fee46738acc0d000cf3535fe3de2b46410a8cd49b249d89097c0257e06596eab"
+    },
+    {
+      "file": "minard-napoleon-campaign.png",
+      "slide": 3,
+      "member": "Pictures/1000000000000800000003DB07CCDE7DF9B663A1.png",
+      "sha256": "dedcf8634164cfa65c2ba55dc5b9e7f02a8d72f47b2499810575607f5950735a"
+    },
+    {
+      "file": "napoleon-survival-summary.png",
+      "slide": 3,
+      "member": "Pictures/100000000000026C000001D3B9F492946469E1AC.png",
+      "sha256": "ebf55471f1fcc01b3393070f9aa3210cbbe5f8cafcbb10bbb1a1dcb8fea1a39e"
+    },
+    {
+      "file": "pie-bar-comparison.png",
+      "slide": 4,
+      "member": "Pictures/10000000000005A400000174C94FDE583A801329.png",
+      "sha256": "67814bff6a36bbb9213aff5ae81fa1aff3bfc97e4fb95a1bbab9b851fddf6ee4"
+    },
+    {
+      "file": "pie-bar-alternatives.png",
+      "slide": 4,
+      "member": "Pictures/10000000000005F6000001799B8B57E76F3683F6.png",
+      "sha256": "7ef4ebb4f5352dc4d743c2471108c054174ad4d8cfb5c47977f1730e36a3adc2"
+    },
+    {
+      "file": "many-category-pie.png",
+      "slide": 4,
+      "member": "Pictures/10000000000003C0000002AD72746FB8630F2D74.png",
+      "sha256": "7add7be310e8ab240c3147f27b6a74beda63f69ed5232a95d5566f685046d7d0"
+    },
+    {
+      "file": "three-dimensional-donut.png",
+      "slide": 4,
+      "member": "Pictures/10000000000002BE0000035E6F2CE68970483154.png",
+      "sha256": "95fdd867f8d0aa4427c86120061213683514df97247f1961c8d66db7abc26ce1"
+    },
+    {
+      "file": "donut-chart-election.png",
+      "slide": 5,
+      "member": "Pictures/10000201000002DC000003739ECDF57737389429.png",
+      "sha256": "4863c88e979111d2553eeffe00af952ccafb9f6d9726bcf705e9a4aa95a43e5e"
+    },
+    {
+      "file": "one-series-one-color.png",
+      "slide": 6,
+      "member": "Pictures/10000000000006ED0000017533D05FDCFB5732F7.png",
+      "sha256": "f3090beb915c9172b2004f9437e78cc9513e0c212d32ed7033ecba1c7beafc78"
+    },
+    {
+      "file": "highlight-one-series.png",
+      "slide": 6,
+      "member": "Pictures/10000000000006F30000017D88B003CBD149F88B.png",
+      "sha256": "ae19e0d7fb8cdf44c0b52237d659e9922e6078dc7d8e63757135b3485f5ae624"
+    },
+    {
+      "file": "too-many-highlights.png",
+      "slide": 6,
+      "member": "Pictures/100000000000072300000177A63AB356CF797E03.png",
+      "sha256": "db87b632be0a0510541b533165673eb16de0cae211ba93a9925b45a0bd203130"
+    },
+    {
+      "file": "highlight-a-line.png",
+      "slide": 7,
+      "member": "Pictures/10000000000005A60000016B2B1854608590262C.png",
+      "sha256": "b8a7c63bd3f9c833c90543cbf01569ccb80e1d17a534f3d741c672c7f0706b07"
+    },
+    {
+      "file": "consistent-group-colors.png",
+      "slide": 7,
+      "member": "Pictures/100000000000063C0000017748E28237A2989ADE.png",
+      "sha256": "3f15bf6bca503452e01fce56d9374975ba49015d08f316f52fea5c08f95b46b1"
+    },
+    {
+      "file": "horizontal-category-labels.png",
+      "slide": 8,
+      "member": "Pictures/10000000000006330000019067EB85A28EF67586.png",
+      "sha256": "96466b8ba18871c6740eb086cc424c5a644aecffd1e34493db30e4f66b68893f"
+    },
+    {
+      "file": "horror-film-counts.png",
+      "slide": 9,
+      "member": "Pictures/10000201000006C00000039A2ED1BEEFA22E524A.png",
+      "sha256": "ef3e68584ab2436b7fe9cf81a0d5cbdb8900a6a0d39659bf970909b6806c4c42"
+    },
+    {
+      "file": "horror-film-context.png",
+      "slide": 9,
+      "member": "Pictures/100002010000053E000002B72C08E01F29A5C070.png",
+      "sha256": "8674c9edd5fc87bce7edc8458958f3fca3a7e1f4296d7feb0e6d6167b0e2721b"
+    },
+    {
+      "file": "iphone-cumulative-sales.png",
+      "slide": 10,
+      "member": "Pictures/10000201000003FC000002A8D2985BF348F45F1D.png",
+      "sha256": "f1fcb23e5f82a74b5cf99f4b165129d119599f6350e236bf9f53143eece6e56e"
+    },
+    {
+      "file": "iphone-quarterly-context.png",
+      "slide": 10,
+      "member": "Pictures/10000201000003FC0000026C0974B01CDFFC1D15.png",
+      "sha256": "83e35afa57fbd7cffbc4a6c941070196bc26bd1cdc90b2ce2e1d0f5b4dc2a4c3"
+    },
+    {
+      "file": "position-length-slope.png",
+      "slide": 10,
+      "member": "Pictures/100002010000022B000001DA19A4BE161AA0767C.png",
+      "sha256": "cb796f085166285b3e92776cff5f0e413bedf115942674fff88a4983b7c2a434"
+    },
+    {
+      "file": "trend-mean.png",
+      "slide": 11,
+      "member": "Pictures/100002010000020A000001B1A353925BCC59A7CD.png",
+      "sha256": "28346acdbce244892fde9e0336938066ebd2958da502f4d1da2aad1b0a5bea9b"
+    },
+    {
+      "file": "trend-linear-regression.png",
+      "slide": 11,
+      "member": "Pictures/100002010000020B000001B173BBEAE9579F2582.png",
+      "sha256": "de87e9c2edaebbbce02abf8f22a2a45c5099cd4ff567552e8dbaf585924a5f82"
+    },
+    {
+      "file": "trend-loess.png",
+      "slide": 11,
+      "member": "Pictures/100002010000020B000001B10B190E6113DF0B5D.png",
+      "sha256": "c78568f66937deff2491d2273916ba903622fe588b62173e29d00753ba723b8e"
+    },
+    {
+      "file": "spurious-correlation.png",
+      "slide": 12,
+      "member": "Pictures/1000020100000800000003278179679B51884529.png",
+      "sha256": "be22d2fc39742bd78502df8d8254bd6a1e9acc35fb5e0ea5a50445f4b10b7566"
+    },
+    {
+      "file": "correlation-cartoon.png",
+      "slide": 12,
+      "member": "Pictures/10000201000001CB000000B9364533166FE6A584.png",
+      "sha256": "63ef7e518af5191705caf022e1e9abfbb33667dd39c1b1b8e628dc825bd35171"
+    },
+    {
+      "file": "three-dimensional-cylinders.png",
+      "slide": 14,
+      "member": "Pictures/10000000000003A2000002AD8DAE60A2B3405800.png",
+      "sha256": "e07ac62476eecf608d555d068a30c8e2de6f295a4349db545f44a7447f27157e"
+    },
+    {
+      "file": "banana-chart.png",
+      "slide": 15,
+      "member": "Pictures/1000000000000239000002567D75A1DD694810AB.png",
+      "sha256": "62e274929b2eb5ccf3a8decf8527585a91ef9d113109012c7dfb3b72a936b684"
+    }
+  ]
+}

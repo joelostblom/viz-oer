@@ -1,0 +1,180 @@
+{
+  "source": "Copy of DSCI 531 - Lec 6.odp",
+  "sha256": "c8d2947b02a9040fb197fd14afe049dfc526b5532807ab0648a4a1dd5332c52a",
+  "figures": [
+    {
+      "file": "dress-photograph.png",
+      "slide": 3,
+      "member": "Pictures/10000201000002FE0000042D282A6D6EB08ED487.png",
+      "sha256": "06e0256d723a78552e9ad72185d17f62f3737efd2636b9bd4383d9a35003aa24"
+    },
+    {
+      "file": "dress-lighting-context.png",
+      "slide": 3,
+      "member": "Pictures/1000020100000500000002D0E8F32AB5A60EFD78.png",
+      "sha256": "03ca8533e3ddf7132c234bf75d42bbd90e1978895642f73458a3192e464fd9fe"
+    },
+    {
+      "file": "checker-shadow.png",
+      "slide": 4,
+      "member": "Pictures/1000000000000281000001F2523B038650289775.png",
+      "sha256": "5e50e559e07ae505d859e16d33d5ab2b9fef16974b237e85def72e9c4ac67161"
+    },
+    {
+      "file": "checker-shadow-reveal.gif",
+      "slide": 5,
+      "member": "Pictures/1000006E0000023E000001BC83D01A3CEBDF2C29.gif",
+      "sha256": "939643e584a7722a2cd2d00bcaadcd3484d973a6ba7b802f9f8a83d34412719e"
+    },
+    {
+      "file": "microscopy-boundary.png",
+      "slide": 6,
+      "member": "Pictures/100002010000013D000000E7D3E1D6AC73FC6E53.png",
+      "sha256": "98859d1279d684a2b36471bad628d7bf13d9b97d3d49499d0c65a2e9a9a1abe6"
+    },
+    {
+      "file": "distance-rainbow.png",
+      "slide": 6,
+      "member": "Pictures/1000020100000149000000E7AF1F4A82E1CF8DAF.png",
+      "sha256": "b04723d644fbeef499124da68e20a014e47cdb681f65bdb52c0a77c844c8c7f3"
+    },
+    {
+      "file": "distance-grayscale.png",
+      "slide": 7,
+      "member": "Pictures/1000020100000149000000E71B256A105D468DD9.png",
+      "sha256": "69af201bd2f7b4f29c650e1c65d8c2980baa7c54d30e66b2e05f24eb86888270"
+    },
+    {
+      "file": "distance-viridis.png",
+      "slide": 7,
+      "member": "Pictures/1000020100000149000000E7C4F5F56D8E6F9E10.png",
+      "sha256": "63a13ab10bf6e8259bdb2f05044e91e840bd47bd98f10d7966ecea970f8b4052"
+    },
+    {
+      "file": "rainbow-monochrome.png",
+      "slide": 8,
+      "member": "Pictures/10000000000002F50000021FE07ACC25B96EFCD3.png",
+      "sha256": "fdbfb2a7eb48f3db1ce53d4dcb3a86845188a5531f00d9d1023254141e6df0e5"
+    },
+    {
+      "file": "viridis-monochrome.png",
+      "slide": 8,
+      "member": "Pictures/10000000000002EC0000020C18E132CBD36CF0DF.png",
+      "sha256": "dd0c1be395651c56206641ac9216f8a2ab4b9bc05e4138d31ddb058f32b2156e"
+    },
+    {
+      "file": "rainbow-cvd-simulation.png",
+      "slide": 8,
+      "member": "Pictures/10000000000002F10000020F1210B3E990ACB074.png",
+      "sha256": "46b7273dd345ccee69783a2c1b41f2e37cacdb271bef721bf3140dc5f7dfae87"
+    },
+    {
+      "file": "viridis-cvd-simulation.png",
+      "slide": 8,
+      "member": "Pictures/10000000000002F10000020FE5F5C6FB5B8582A5.png",
+      "sha256": "568abde644b0bef290cd26673842216a13bd991bda66e6ad832a52f3391c396d"
+    },
+    {
+      "file": "rgb-color-model.png",
+      "slide": 10,
+      "member": "Pictures/1000000000000500000003C0FCB30FB5732361CD.png",
+      "sha256": "2d26e681c0490801e7b4ed387b26042a99ba3ec80cd3f1339066e14ce7be1bce"
+    },
+    {
+      "file": "hsl-color-model.png",
+      "slide": 10,
+      "member": "Pictures/1000000000000500000003C0B0A2074E5DB53A27.png",
+      "sha256": "5d04918e8d8b8eaa55365d67b4b08daa3190229881946361e43fb1951610a0db"
+    },
+    {
+      "file": "hue-saturation-lightness.png",
+      "slide": 11,
+      "member": "Pictures/10000000000002A400000186C35DD2FAE9ECC647.png",
+      "sha256": "5a461ad8271e3a99a2530b9575cd9db396ab9f17548798e1cb130dead3b18fae"
+    },
+    {
+      "file": "numerical-palette-comparison.png",
+      "slide": 12,
+      "member": "Pictures/100000000000038F00000200697FE978C9E62255.png",
+      "sha256": "49cc4f489e253e72f755634965616751224b37db32efc67a70fe5fafffd44aed"
+    },
+    {
+      "file": "categorical-palette-comparison.png",
+      "slide": 12,
+      "member": "Pictures/1000000000000255000001254DFDFB349C813C4B.png",
+      "sha256": "44939dd18cd8de1b8d55c238bd6adc3017a134f5af238451bbd558dfa97fece7"
+    },
+    {
+      "file": "sequential-lightness.png",
+      "slide": 14,
+      "member": "Pictures/10000000000002AB0000010C532A979A178EA309.png",
+      "sha256": "1f8c571a379446513942fda870a5ded80c4ea3fd4f12aecf5f3171584adc024c"
+    },
+    {
+      "file": "uniform-sequential-lightness.png",
+      "slide": 14,
+      "member": "Pictures/10000000000002B3000000EFE56E2691C78A435C.png",
+      "sha256": "e17f27a47de8d0a9bd9c8e43a477fffcf5ac9e853ade426cbb7fe9f0b349ef92"
+    },
+    {
+      "file": "nonuniform-lightness.png",
+      "slide": 15,
+      "member": "Pictures/10000000000002A80000010EAE527B46E890858E.png",
+      "sha256": "e027cf9c27e6f77dca13fd85971ca62e24e31957a52edbc11c4fca3b40312fd6"
+    },
+    {
+      "file": "palette-rendering-comparison.png",
+      "slide": 16,
+      "member": "Pictures/10000000000002AE000002F4A5135A8BFECD3929.png",
+      "sha256": "225dfcc629b600ddad002db40418678bbe167e068413b5be6f7a5071833e9e41"
+    },
+    {
+      "file": "texas-color-sequence.png",
+      "slide": 17,
+      "member": "Pictures/100002010000024E0000019685A1AFB01249E934.png",
+      "sha256": "f4d9679a105b537ad1e516114063ae50f16ac3e67ebf8961b8892adcd9e3c355"
+    },
+    {
+      "file": "cyclic-palettes.png",
+      "slide": 18,
+      "member": "Pictures/10000000000002C7000000F7C3169A9895CA6111.png",
+      "sha256": "c8135286fdeef023d11dbef6659cd8e822e63a0aeeaa41b2d0d0c5768309abeb"
+    },
+    {
+      "file": "diverging-palettes.png",
+      "slide": 19,
+      "member": "Pictures/100000000000039400000279ACB6334D18922669.png",
+      "sha256": "2cf7f9bfb27c9ccbbdf9f12e574c751e32df6aca59e1899838b308ae0d8a51a5"
+    },
+    {
+      "file": "categorical-palettes.png",
+      "slide": 20,
+      "member": "Pictures/10000000000002B10000010662C084CC0D659DB2.png",
+      "sha256": "3981cf9a1c457cf68857554e5a9b06fd8294b81b4a736e372fad6540e1b0a319"
+    },
+    {
+      "file": "too-many-country-colors-bars.png",
+      "slide": 21,
+      "member": "Pictures/100000000000048000000566CF55B0B6E333FA4D.png",
+      "sha256": "70ea16c727be0066e7ff013bd69c52d8b871c838db924970772b34e58de6a63a"
+    },
+    {
+      "file": "too-many-country-colors-scatter.png",
+      "slide": 21,
+      "member": "Pictures/10000000000004800000058F58A0BFDB683FF219.png",
+      "sha256": "d850e020fe516900bec5d9ce64bbe1561123b2267912d8f7d596d25a88bf045a"
+    },
+    {
+      "file": "land-water-unintuitive.png",
+      "slide": 22,
+      "member": "Pictures/100002010000016F00000120EF0E097A90EACD1E.png",
+      "sha256": "0a7f4b449c1061909295be92d9b70552cb958bc8e7f060c740c81f50134f2e73"
+    },
+    {
+      "file": "land-water-intuitive.png",
+      "slide": 22,
+      "member": "Pictures/100002010000016F00000120DBF83039BE1631E8.png",
+      "sha256": "5d39ee0808806d7e4d0b4e3cdbfccf431b59c5d9f3bcaa39645891a50bbb9663"
+    }
+  ]
+}

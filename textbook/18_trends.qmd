@@ -336,6 +336,34 @@ or ggplot's span.
 
 ::::
 
+## Compare the questions answered by different summaries
+
+::: {.slide-visual}
+
+:::: {.columns}
+::: {.column width="33%"}
+**Mean-based summary**
+
+![](img/communication-lecture/trend-mean.png){fig-alt="A scatterplot of automobile horsepower by year uses separate jagged mean-based lines for the three origins."}
+:::
+::: {.column width="33%"}
+**Linear regression**
+
+![](img/communication-lecture/trend-linear-regression.png){fig-alt="The same automobile observations are summarized by a straight regression line for each origin."}
+:::
+::: {.column width="33%"}
+**Local smoothing**
+
+![](img/communication-lecture/trend-loess.png){fig-alt="The same automobile observations are summarized by locally smoothed curves for each origin."}
+:::
+::::
+
+:::
+
+These comparison figures from the communication lecture show how the choice of
+summary changes the pattern a reader sees. Decide whether the audience needs
+year-specific averages, a global trend, or variation within the observed range.
+
 ## When to choose which trendline?
 
 ::: {.slide-bullet}

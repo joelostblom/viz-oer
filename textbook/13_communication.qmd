@@ -14,8 +14,6 @@ execute:
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-<!-- Adapted from DSCI 531 lecture 5, 5-communication-intro.ipynb. -->
-
 :::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
@@ -28,30 +26,12 @@ execute:
 
 ::::
 
-```{python}
-#| label: communication-python-setup
-#| include: false
-import altair as alt
-import pandas as pd
-
-alt.data_transformers.enable('vegafusion')
-diamonds = pd.read_csv('data/diamonds-carat-price.csv')
-```
-
-```{r}
-#| label: communication-r-setup
-#| include: false
-library(tidyverse)
-theme_set(theme_gray(base_size = 14))
-diamonds <- read_csv('data/diamonds-carat-price.csv', show_col_types = FALSE)
-```
-
 ## Why bother?
 
-During exploration, you are often the main person interpreting a chart.
+[During data exploration, you are often the main person interpreting a chart.]{slide-bullet}
 [For communication, a figure needs to make sense to someone who does not already
 know the data or the plotting code.]{.slide-bullet}
-That reader might encounter it without the surrounding text or a spoken explanation.
+[That reader might encounter it without the surrounding text or a spoken explanation.]{.slide-bullet}
 Readable labels, an informative title, and an appropriate view of the data
 are therefore part of the explanation itself.
 
@@ -71,9 +51,254 @@ more than using the default palette.
 illustrates how a deliberate exception can sometimes make a visualization more memorable.
 The important question is whether the choice helps readers understand the data.
 
-Ways to reveal concentrations hidden by overplotting are covered in @sec-joint-distributions.
-Here we focus on formatting and framing those visualizations for an audience.
-Methods for summarizing relationships with fitted lines are covered in @sec-trends.
+The examples below use (mostly) published figures to show how design
+choices affect what a reader notices and concludes.
+Treat them as prompts to ask what comparison the reader needs to make.
+
+## Design shapes the message
+
+Titles, colors, and graphical direction can emphasize different aspects of a dataset.
+Ask what message each design brings forward, and what important context it leaves behind. This first figure using red color and a reversed axis to draw parallels between the deaths in this war to the dripping of blood.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/iraq-bloody-toll.png){width=70% fig-alt="An Iraq casualty infographic uses a red, downward-pointing area and the title Iraq's bloody toll."}
+
+:::
+
+The same data set could have been presented with a more positive design,
+focusing on the recent decline in the death rate.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/iraq-deaths-on-decline.png){width=70% fig-alt="A contrasting Iraq casualty infographic uses blue, upward-pointing bars and the title Iraq: Deaths on the decline."}
+
+:::
+
+[Both these messages are true
+and the complete data story includes both]{.slide-bullet},
+but in a visulization we can what to highlight.
+This not only important to be aware of when making our own visualization,
+but also when reading a visualization from someone else.
+
+
+## Match the detail to the audience
+
+This chart of the evolution of the size of Napoleon's army
+when they marched towards Moscow
+rewards careful study by combining several kinds of information.
+That richness can be useful for exploration,
+but may require more explanation
+than a reader has time for in a short presentation.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/minard-napoleon-campaign.png){fig-alt="Minard's map of Napoleon's Russian campaign combines troop strength, direction of travel, geography, and temperature."}
+
+:::
+
+A simpler "take home" message of this chart presented to C-level executives
+in a short update meeting,
+might be much simpler and just focus on the outcome of the operation.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/napoleon-survival-summary.png){fig-alt="A simplified pie-chart summary of Napoleon's campaign labels 98 percent as died and 2 percent as survived."}
+
+:::
+
+The simplified chart emphasizes the scale of the losses but discards route, timing,
+and conditions. Even a concise label needs checking: a reduction in army strength
+does not, by itself, establish how many soldiers died.
+
+## Make category comparisons easy
+
+::: {.slide-visual}
+
+![](img/communication-lecture/pie-bar-comparison.png){fig-alt="A comparison schematic replaces a many-category pie chart and its legend with a sorted horizontal bar chart."}
+
+:::
+
+Positions and lengths on a common scale are usually easier to compare than angles
+and areas. A bar chart can also place each category name beside the value it identifies.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/pie-bar-alternatives.png){fig-alt="A schematic compares reading proportions from several pie charts with reading aligned horizontal bars."}
+
+:::
+
+Comparisons across several pies require the reader to mentally align angles.
+A shared baseline makes the intended comparison more direct.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/many-category-pie.png){fig-alt="A video-game survey pie chart has many narrow slices and a long color legend."}
+:::
+
+::: {.slide-visual}
+
+![](img/communication-lecture/three-dimensional-donut.png){fig-alt="An exploded three-dimensional donut chart adds perspective, separated pieces, and overlapping surfaces to a part-to-whole display."}
+
+:::
+
+With many categories, matching small wedges to a long legend becomes hard work.
+Extrusion and exploded pieces add visual complexity without making the values easier to compare.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/donut-chart-election.png){fig-alt="An election-news graphic uses donut sectors whose apparent areas do not match the displayed seat counts."}
+
+:::
+
+A published chart can look polished while contradicting its own numerical labels.
+Check whether sector angles and areas represent the values proportionally,
+rather than trusting the visual finish.
+
+## Use color to add information
+
+::: {.slide-visual}
+
+![](img/communication-lecture/one-series-one-color.png){fig-alt="Examples of a single bar series and a single line series use one consistent color instead of unnecessary category colors."}
+
+:::
+
+When a chart shows one series, extra colors can imply distinctions that do not exist.
+A single color often provides a clear starting point.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/highlight-one-series.png){fig-alt="Bar and line chart examples use orange to highlight one series while leaving the remaining series gray."}
+
+:::
+
+Use a contrasting color to draw attention to the observation or series that matters
+for the current question. Keep the remaining observations as context.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/too-many-highlights.png){fig-alt="Chart examples marked with red crosses illustrate how many saturated colors and competing series undermine selective highlighting."}
+
+:::
+
+If every series asks for attention, highlighting stops being selective.
+Consider smaller, separate views when a comparison becomes too crowded.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/highlight-a-line.png){fig-alt="A not-ideal versus better line-chart comparison keeps one orange line prominent and makes the contextual series lighter."}
+
+:::
+
+Make the foreground comparison easier to find by reducing the saturation or contrast
+of the background series. The context should remain visible and interpretable.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/consistent-group-colors.png){fig-alt="A comparison across line and pie charts shows that reusing the same colors for the same groups makes identification easier."}
+
+:::
+
+Use the same color for the same group across related figures.
+Reassigning a familiar color forces the reader to relearn the mapping;
+@sec-color develops these choices in more detail.
+
+## Make long labels readable
+
+::: {.slide-visual}
+
+![](img/communication-lecture/horizontal-category-labels.png){fig-alt="A schematic replaces vertical bars with awkwardly wrapped category names by horizontal bars with readable labels."}
+
+:::
+
+Change the chart orientation when that gives category names room to be read naturally.
+Horizontal bars often preserve the comparison while avoiding rotated or heavily wrapped text.
+
+## Ask what a chart does *not* show
+
+::: {.slide-visual}
+
+![](img/communication-lecture/horror-film-counts.png){fig-alt="A line chart shows the number of horror-film releases increasing over time."}
+
+:::
+
+An increasing number of horror releases does not establish that horror's share
+of all films is increasing. Ask what denominator would be needed to support that claim.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/horror-film-context.png){fig-alt="The horror-film series is shown alongside a much larger series for all movie releases."}
+
+:::
+
+Adding total releases changes the question we can answer.
+To discuss relative popularity, examine the horror share alongside counts,
+and consider whether dataset coverage or reporting has changed.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/iphone-cumulative-sales.png){fig-alt="A presentation graphic emphasizes an increasing cumulative total of iPhone sales."}
+
+:::
+
+A cumulative total of nonnegative sales cannot decrease.
+Its increasing height alone does not show that the current rate of sales is accelerating.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/iphone-quarterly-context.png){fig-alt="An annotated iPhone-sales graphic adds quarterly sales to the cumulative total."}
+
+:::
+
+Quarterly sales correspond to increments in the cumulative total, not its height.
+Showing both can reveal changes in the rate that an ever-increasing total conceals.
+
+## Avoid redundant 3D
+
+<!-- TODO we could move these examples to the channel encoding lesson -->
+
+::: {.slide-visual}
+
+![](img/communication-lecture/three-dimensional-cylinders.png){fig-alt="A three-dimensional chart uses stacked, translucent cylinders with perspective and overlapping surfaces."}
+
+:::
+
+Perspective and occlusion make both heights and colored segments harder to compare.
+Use a third spatial dimension when it represents something the reader needs to understand,
+rather than simply as decoration.
+
+::: {.slide-visual}
+
+![](img/communication-lecture/banana-chart.png){fig-alt="A densely decorated three-dimensional banana-export chart combines a fruit-textured background, many colors, and angled labels."}
+
+:::
+
+Textures, gradients, tilted axes, and competing colors can obscure the values.
+Readers should be able to answer the data question without first decoding the decoration.
+
+<!-- Existing learning outcomes and programming examples remain in the reading
+     view. The Communication presentation uses only the image examples above. -->
+
+
+```{python}
+#| label: communication-python-setup
+#| include: false
+import altair as alt
+import pandas as pd
+
+alt.data_transformers.enable('vegafusion')
+diamonds = pd.read_csv('data/diamonds-carat-price.csv')
+```
+
+```{r}
+#| label: communication-r-setup
+#| include: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+diamonds <- read_csv('data/diamonds-carat-price.csv', show_col_types = FALSE)
+```
+
+:::::::: {.slide-skip}
 
 ## Axis label formatting
 
@@ -601,3 +826,5 @@ The original lecture recordings provide optional walkthroughs (UBC sign-in may b
 - [Axis extents, 8 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EYdY6HJ0SrVJmc5M9RHBA-YBCje0IN3JzhxnYP_o_Lz8mw?e=k1Q3rB).
 - [Axis value formatting, 4 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EXRnOov1dApHinIZCo1cRTIBdnXIPJbbdLrkE92h2xEfjQ?e=RNvUyR).
 - [Figure titles, 11 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EXZoWY1f7RdLondbOSgIjAoBFrSvzfsIAguPcKphrFW-bw?e=jZWhKL).
+
+::::::::

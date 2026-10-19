@@ -2,6 +2,14 @@
 chapter-slides: slides/14_color.html
 fig-width: 6
 fig-height: 4
+include-in-header:
+  - text: |
+      <style>
+      img[src*="color-lecture/"],
+      img[data-src*="color-lecture/"] {
+        background-color: #fff;
+      }
+      </style>
 resources:
   - data/vega-iris.csv
   - data/vega-gapminder.csv
@@ -17,8 +25,6 @@ execute:
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-<!-- Adapted from DSCI 531 lecture 6, 6-color-theory-and-application.ipynb. -->
-
 :::: {.slide-outcomes}
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
@@ -30,8 +36,355 @@ execute:
 5. **Order** legends to match the chart, or **label** series directly when that makes identification easier.
 
 :::
+::::
+
+## Why bother?
+
+[Color can distinguish groups, communicate numerical magnitude, or draw attention
+to a particular observation.]{.slide-bullet}
+[A color scheme should make those meanings easier to see,
+rather than introduce patterns that are not present in the data.]{.slide-bullet}
+This chapter builds on the grouping channels in @sec-groups
+and the communication choices in @sec-communication.
+
+[A useful palette is not simply a collection of favorite colors]{.slide-bullet}.
+These lecture figures show how [context, perception, and the meaning of a variable
+affect what a color choice communicates]{.slide-bullet}.
+The programming examples follow the visual examples later in the chapter.
+
+## Color depends on context
+
+::: {.slide-visual}
+
+![](img/color-lecture/dress-photograph.png){fig-alt="The photograph of the dress that viewers famously interpreted as either blue and black or white and gold."}
+
+<!-- ![](img/color-lecture/dress-lighting-context.png){fig-alt="An illustration places the dress in different lighting contexts to show how assumptions about illumination affect perceived color."} -->
+
+:::
+
+The dress debate illustrates that perceived color depends on how we interpret
+illumination. Different readers can experience the same image differently,
+so a color choice that seems obvious to its creator may not be obvious to everyone.
+
+## Surroundings change apparent lightness
+
+::: {.slide-visual}
+
+![](img/color-lecture/checker-shadow.png){fig-alt="Edward H. Adelson's checker-shadow illusion shows squares A and B on a checkerboard beneath the shadow of a green cylinder."}
+
+:::
+
+Compare squares A and B before watching the next example.
+The surrounding checkerboard and cast shadow influence our judgment of their lightness.
+Illustration: Edward H. Adelson.
+
+::: {.slide-visual}
+
+![](img/color-lecture/checker-shadow-reveal.gif){width=650 fig-alt="An animated version of the checker-shadow illusion connects the two squares with matching gray regions, revealing that their pixel values are the same."}
+
+:::
+
+The animation reveals that the two squares use the same gray values.
+Apparent lightness is not determined by a pixel value alone;
+its surroundings help determine how we interpret it.
+Animation: Edward H. Adelson.
+
+## Picking the right color palette
+
+::: {.slide-columns}
+
+:::: {.slide-fragment slide-title="Colored by protein expression" .slide-with-content}
+
+![](img/color-lecture/microscopy-boundary.png){width=100% fig-alt="A microscopy image shows cells inside an irregular white boundary."}
 
 ::::
+
+:::: {.slide-fragment slide-title="Colored by distance" .slide-with-content}
+
+![](img/color-lecture/distance-rainbow.png){width=100% fig-alt="A continuous distance field is rendered with a rainbow palette that makes several distinct bands appear within the region."}
+
+::::
+
+:::
+
+The distance is a continuous numerical variable, not a collection of distinct groups.
+Abrupt hue or lightness changes can nevertheless encourage us to see boundaries
+that were not defined in the data.
+
+## Keep numerical gradients continuous
+
+::: {.slide-visual}
+
+:::: {.columns}
+::: {.column width="33%"}
+**Rainbow**
+
+![](img/color-lecture/distance-rainbow.png){width=100% fig-alt="The distance field uses a rainbow palette with prominent bands."}
+:::
+::: {.column width="33%"}
+**Viridis**
+
+![](img/color-lecture/distance-viridis.png){width=100% fig-alt="The same distance field uses a smoothly varying viridis palette."}
+:::
+::: {.column width="33%"}
+**Grayscale**
+
+![](img/color-lecture/distance-grayscale.png){width=100% fig-alt="The same distance field is represented by an ordered grayscale gradient."}
+:::
+::::
+
+:::
+
+An ordered progression in lightness helps readers follow increasing values.
+Grayscale can provide that order, while a carefully designed progression in hue
+can help readers distinguish additional detail without introducing abrupt bands.
+
+## Test the ordering in grayscale
+
+::: {.slide-visual}
+
+:::: {.columns}
+::: {.column width="50%"}
+![](img/color-lecture/rainbow-monochrome.png){width=100% fig-alt="A monochrome view of the rainbow distance map retains alternating bright and dark rings."}
+:::
+::: {.column width="50%"}
+![](img/color-lecture/viridis-monochrome.png){width=100% fig-alt="A monochrome view of the viridis distance map retains a more steadily changing lightness gradient."}
+:::
+::::
+
+:::
+
+Converting a figure to grayscale reveals whether its lightness supports the intended order.
+Alternating light and dark regions can make a smooth numerical change look discontinuous.
+
+## Check contrast for different color vision
+
+::: {.slide-visual}
+
+:::: {.columns}
+::: {.column width="50%"}
+![](img/color-lecture/rainbow-cvd-simulation.png){width=100% fig-alt="A color-vision-deficiency simulation changes the rainbow map into strong blue and yellow bands."}
+:::
+::: {.column width="50%"}
+![](img/color-lecture/viridis-cvd-simulation.png){width=100% fig-alt="A color-vision-deficiency simulation of the viridis map preserves a more continuous lightness progression."}
+:::
+::::
+
+:::
+
+A palette needs to remain interpretable when readers perceive its hue contrasts differently.
+Simulations are useful checks, but do not represent every viewer;
+ordered lightness, labels, and redundant encodings can provide additional support.
+
+## RGB and HSL describe display colors
+
+
+::: {.slide-columns}
+
+:::: {.slide-fragment slide-title="RGB" .slide-with-content}
+
+![](img/color-lecture/rgb-color-model.png){fig-alt="An RGB color model represents colors by combinations of red, green, and blue components."}
+
+::::
+
+:::: {.slide-fragment slide-title="HSL" .slide-with-content}
+
+![](img/color-lecture/hsl-color-model.png){fig-alt="An HSL color model arranges hue around a circle, saturation from gray toward vivid color, and lightness from black to white."}
+
+::::
+
+[RGB](https://commons.wikimedia.org/w/index.php?curid=9803320) and
+[HSL](https://commons.wikimedia.org/w/index.php?curid=9801661) models:
+SharkD, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
+
+:::
+
+RGB specifies red, green, and blue components; HSL describes hue, saturation, and lightness.
+These are ways to specify colors, not guarantees of perceptual uniformity:
+equal steps in their coordinates need not look equally different.
+
+## Separate hue, saturation, and lightness
+
+::: {.slide-visual}
+
+![](img/color-lecture/hue-saturation-lightness.png){width=100% fig-alt="Three rows of swatches vary hue across colors, saturation from gray to blue, and lightness from dark to light."}
+
+:::
+
+Hue answers roughly "which color?", saturation describes how colorful or gray it looks,
+and lightness describes a dark-to-light dimension.
+The swatches from the [Seaborn palette tutorial](https://seaborn.pydata.org/tutorial/color_palettes.html)
+help separate these choices.
+
+## [Use hue to distinguish unordered groups]{.fragment .fade-in}
+
+::: {.slide-visual slide-reveal=false}
+
+![](img/color-lecture/categorical-palette-comparison.png){fig-alt="Two scatterplots compare distinct hues for categories with shades of blue that imply an order among the groups."}
+
+Source: [Seaborn palette tutorial](https://seaborn.pydata.org/tutorial/color_palettes.html).
+
+:::
+
+Distinct hues can separate categories without suggesting a low-to-high sequence.
+An ordered lightness palette can accidentally imply a ranking among otherwise unordered groups.
+
+## [Use lightness to communicate numerical order]{.fragment .fade-in}
+
+::: {.slide-visual slide-reveal=false}
+
+![](img/color-lecture/numerical-palette-comparison.png){fig-alt="Two binned plots compare an unordered many-hue palette with an ordered dark-to-light palette for numerical values."}
+
+Source: [Seaborn palette tutorial](https://seaborn.pydata.org/tutorial/color_palettes.html).
+
+:::
+
+For numerical magnitude, the colors should support a recoverable order.
+An arbitrary set of category colors makes it harder to judge which values are larger.
+
+## Sequential palettes need an ordered progression
+
+::: {.slide-visual}
+
+![](img/color-lecture/sequential-lightness.png){width=100% fig-alt="Several sequential palettes are plotted against perceptual lightness, showing how lightness changes through each palette."}
+
+:::
+
+A sequential palette represents movement along a numerical range.
+Check the lightness progression as well as the attractiveness of the color strip;
+plateaus or reversals can make some changes stand out more than others.
+
+## Perceptual uniformity helps equal steps look equal
+
+::: {.slide-visual}
+
+![](img/color-lecture/uniform-sequential-lightness.png){width=100% fig-alt="Lightness plots for viridis, plasma, inferno, magma, and cividis show approximately uniform sequential progressions."}
+
+:::
+
+Perceptually designed palettes aim to make equal data steps look approximately equally different.
+These reference diagrams come from the
+[Matplotlib colormap guide](https://matplotlib.org/stable/users/explain/colors/colormaps.html).
+
+## Inspect uneven lightness changes
+
+::: {.slide-visual}
+
+![](img/color-lecture/nonuniform-lightness.png){width=100% fig-alt="Lightness plots for several miscellaneous palettes have peaks, troughs, and unequal changes across the range."}
+
+:::
+
+A colorful palette can have a highly uneven lightness profile.
+Those peaks and troughs can create artificial emphasis or obscure the ordering of values.
+
+## The same values can look very different
+
+::: {.slide-visual}
+
+![](img/color-lecture/palette-rendering-comparison.png){fig-alt="The same scene is rendered with Turbo, Jet, Viridis, and Inferno, revealing different apparent bands and levels of emphasis."}
+
+:::
+
+Changing the palette changes which features attract attention even when the values are unchanged.
+Choose a palette for the comparison it supports, rather than for visual excitement alone.
+
+## Guessing a numerical sequence from hue
+
+::: {.slide-visual}
+
+![](img/color-lecture/texas-color-sequence-no-legend.png){width=800 fig-alt="A Texas county map uses a rainbow-like palette to represent the percentage identifying as white."}
+
+:::
+
+
+::: {.slide-visual}
+
+![](img/color-lecture/texas-color-sequence.png){width=800 fig-alt="A Texas county map uses a rainbow-like palette to represent the percentage identifying as white."}
+
+:::
+
+Where would you expect red to fall in this sequence before reading the legend?
+Hue alone does not provide an unambiguous numerical order;
+the legend and the palette's lightness structure both matter.
+
+## Cyclic data need a palette that wraps around
+
+::: {.slide-visual}
+
+![](img/color-lecture/cyclic-palettes.png){width=100% fig-alt="Cyclic palette diagrams show colors returning to a similar appearance at the beginning and end of the range."}
+
+:::
+
+Use a cyclic palette when the underlying variable wraps around, such as an angle
+or a position within a yearly cycle. Similar endpoint colors communicate that connection,
+but would be misleading for unrelated low and high endpoints on a linear scale.
+
+## Diverging palettes need a meaningful midpoint
+
+::: {.slide-visual}
+
+![](img/color-lecture/diverging-palettes.png){fig-alt="Diverging palettes use two sides around a central light region, with their lightness profiles shown for comparison."}
+
+:::
+
+Use a diverging palette when departures above and below a meaningful reference have different interpretations.
+Examples include change from a baseline or correlations centered on zero;
+the middle should not be chosen merely because it is halfway between the observed extremes.
+
+## Categorical palettes distinguish groups
+
+::: {.slide-visual}
+
+![](img/color-lecture/categorical-palettes.png){width=100% fig-alt="Qualitative palette examples use distinct colors to separate groups without a numerical progression."}
+
+:::
+
+A categorical palette should make groups distinguishable without implying a numerical order.
+Its usefulness still depends on the number of categories, the background, and readers' color vision.
+
+## Too many colors become clutter
+
+::: {.slide-columns}
+
+:::: {.slide-fragment slide-title="" .slide-with-content}
+
+![](img/color-lecture/too-many-country-colors-scatter.png){fig-alt="A country-level scatterplot assigns a different color to many countries and requires a very long legend."}
+
+::::
+
+:::: {.slide-fragment slide-title="" .slide-with-content}
+
+![](img/color-lecture/too-many-country-colors-bars.png){fig-alt="A bar chart uses many different country colors that form a striking rainbow but are difficult to identify individually."}
+
+::::
+:::
+
+Coloring every country can create decoration rather than useful identification.
+Highlight selected comparisons, divide the display into smaller views,
+or use direct labels when that makes the intended question easier to answer.
+
+## Work with familiar color associations
+
+::: {.slide-columns}
+
+:::: {.slide-fragment slide-title="" .slide-with-content}
+
+![](img/color-lecture/land-water-unintuitive.png){width=100% fig-alt="A land-cover bar chart colors land blue and water green, contrary to a common map-color convention."}
+
+::::
+
+:::: {.slide-fragment slide-title="" .slide-with-content}
+![](img/color-lecture/land-water-intuitive.png){width=100% fig-alt="The same land-cover values use green for land and blue for water."}
+
+::::
+:::
+
+When colors have a strong existing association, working with it can reduce the reader's effort.
+The bar values are unchanged, but using blue for water and green for land makes
+the categories easier to anticipate.
+
+:::::::: {.slide-skip}
+
 
 ```{python}
 #| label: color-python-setup
@@ -57,15 +410,6 @@ wheat <- read_csv('data/vega-wheat.csv', show_col_types = FALSE) |>
     filter(year > 1700)
 stocks <- read_csv('data/vega-stocks.csv', show_col_types = FALSE)
 ```
-
-## Why bother?
-
-Color can distinguish groups, communicate numerical magnitude, or draw attention
-to a particular observation.
-[A color scheme should make those meanings easier to see,
-rather than introduce patterns that are not present in the data.]{.slide-bullet}
-This chapter builds on the grouping channels in @sec-groups
-and the communication choices in @sec-communication.
 
 ## Facilitate interpretation through informed color choices
 
@@ -798,3 +1142,5 @@ The original lecture recordings provide optional walkthroughs (UBC sign-in may b
 
 - [Review of visualization guidelines, 16 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EeEC6rCGeWJIq0UR3GXtmwYB8YVyiwuAe0OhPFP4I-diJg?e=fyo7l9).
 - [Programming with color choices, 44 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/Ea_9a23ys_JEp1t5WJ7vLR4Bj8GAQcA6XgfTw8GchRfB7g?e=GNIv1Y).
+
+::::::::

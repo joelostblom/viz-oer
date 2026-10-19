@@ -132,11 +132,25 @@ for slide builds.
 Material from the DSCI 531 communication and color lectures is organized into
 ordinary Quarto chapters with synchronized Altair/ggplot tabs. Chapter 12 combines
 overplotting, rectangular/hexagonal bins, and two-dimensional density estimates
-with the joint-distribution examples. Chapter 13 focuses on number formats,
-titles, and scale ranges; chapter 14 covers palettes, accessibility, highlights,
-annotations, and direct labeling. Chapter 18, **Trends**, follows Interactivity
+with the joint-distribution examples. Chapter 13 opens with annotated comparison
+figures from the supplied DSCI 531 lecture ODP; its presentation uses only those
+design examples. Its learning outcomes and existing programming material are in
+a reading-view `.slide-skip` block. The later reading sections cover number
+formats, titles, and scale ranges. Chapter 14 likewise opens with figures and an
+animation from the color lecture ODP, with short comments about perception,
+palette types, accessibility, and color associations. Its slideshow uses that
+new image material; the original prose and programming sections are reading-only.
+Those sections cover palettes, highlights, annotations, and direct labeling.
+Chapter 18, **Trends**, follows Interactivity
 and covers means, rolling averages, regression, and local smoothing. Geospatial
 is chapter 19.
+The ODP's trendline-comparison figures are included in Trends, while its
+overplotting figures are omitted. Original figure assets, their source manifest,
+and regeneration instructions are in `textbook/img/communication-lecture/`;
+`textbook/src/export_communication_figures.py` extracts them directly from the ODP.
+Color's original images, animation, source credits, and extraction manifest are
+in `textbook/img/color-lecture/`; regenerate them with
+`textbook/src/export_color_figures.py` and the color lecture ODP.
 The examples read local Vega dataset snapshots rather than downloading data
 during rendering. Their provenance and regeneration command are in
 `textbook/data/communication-color-data.md`. The R examples require `hexbin` and
