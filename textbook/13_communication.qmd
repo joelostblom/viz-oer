@@ -136,12 +136,6 @@ A shared baseline makes the intended comparison more direct.
 ![](img/communication-lecture/many-category-pie.png){fig-alt="A video-game survey pie chart has many narrow slices and a long color legend."}
 :::
 
-::: {.slide-visual}
-
-![](img/communication-lecture/three-dimensional-donut.png){fig-alt="An exploded three-dimensional donut chart adds perspective, separated pieces, and overlapping surfaces to a part-to-whole display."}
-
-:::
-
 With many categories, matching small wedges to a long legend becomes hard work.
 Extrusion and exploded pieces add visual complexity without making the values easier to compare.
 
@@ -256,6 +250,13 @@ Showing both can reveal changes in the rate that an ever-increasing total concea
 ## Avoid redundant 3D
 
 <!-- TODO we could move these examples to the channel encoding lesson -->
+
+::: {.slide-visual}
+
+![](img/communication-lecture/three-dimensional-donut.png){fig-alt="An exploded three-dimensional donut chart adds perspective, separated pieces, and overlapping surfaces to a part-to-whole display."}
+
+:::
+
 
 ::: {.slide-visual}
 
