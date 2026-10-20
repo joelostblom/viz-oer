@@ -63,7 +63,7 @@ CHAPTER_ASSETS = {
         "data/vega-stocks.csv",
         "data/communication-color-data.md",
     ),
-    "18_trends": (
+    "16_trends": (
         "data/vega-cars.csv",
         "data/communication-color-data.md",
     ),

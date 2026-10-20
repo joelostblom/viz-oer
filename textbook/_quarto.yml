@@ -38,9 +38,9 @@ book:
     - part: "Extensions & applications"
       chapters:
         - 15_exploratory-data-analysis.qmd
-        - 16_uncertainty.qmd
-        - 17_interactivity.qmd
-        - 18_trends.qmd
+        - 16_trends.qmd
+        - 17_uncertainty.qmd
+        - 18_interactivity.qmd
         - 19_geospatial.qmd
     # - 99_misc.qmd
 

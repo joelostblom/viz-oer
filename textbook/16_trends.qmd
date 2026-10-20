@@ -1,5 +1,5 @@
 ---
-chapter-slides: slides/18_trends.html
+chapter-slides: slides/16_trends.html
 fig-width: 6
 fig-height: 4
 resources:
