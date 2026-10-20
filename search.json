@@ -752,11 +752,11 @@
     ]
   },
   {
-    "objectID": "12_joint-distributions.html#further-reading-and-walkthroughs",
-    "href": "12_joint-distributions.html#further-reading-and-walkthroughs",
+    "objectID": "12_joint-distributions.html#further-reading",
+    "href": "12_joint-distributions.html#further-reading",
     "title": "12  Joint distributions",
-    "section": "12.6 Further reading and walkthroughs",
-    "text": "12.6 Further reading and walkthroughs\n\nOverlapping points.\nOriginal overplotting walkthrough, 9 minutes (UBC sign-in may be required).",
+    "section": "12.6 Further reading",
+    "text": "12.6 Further reading\n\nOverlapping points.",
     "crumbs": [
       "Distributions",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>Joint distributions</span>"
@@ -895,11 +895,11 @@
     ]
   },
   {
-    "objectID": "13_communication.html#further-reading-and-walkthroughs",
-    "href": "13_communication.html#further-reading-and-walkthroughs",
+    "objectID": "13_communication.html#further-reading",
+    "href": "13_communication.html#further-reading",
     "title": "13  Communication",
-    "section": "13.13 Further reading and walkthroughs",
-    "text": "13.13 Further reading and walkthroughs\n\nFigure titles and captions.\nSmall axis labels.\n\nThe original lecture recordings provide optional walkthroughs (UBC sign-in may be required):\n\nAxis extents, 8 minutes.\nAxis value formatting, 4 minutes.\nFigure titles, 11 minutes.",
+    "section": "13.13 Further reading",
+    "text": "13.13 Further reading\n\nFigure titles and captions.\nSmall axis labels.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Communication</span>"
@@ -1214,11 +1214,11 @@
     ]
   },
   {
-    "objectID": "14_color.html#further-reading-and-walkthroughs",
-    "href": "14_color.html#further-reading-and-walkthroughs",
+    "objectID": "14_color.html#further-reading",
+    "href": "14_color.html#further-reading",
     "title": "14  Color",
-    "section": "14.29 Further reading and walkthroughs",
-    "text": "14.29 Further reading and walkthroughs\n\nColor basics.\nCommon color pitfalls.\nVega color schemes.\nR color palettes.\n\nThe original lecture recordings provide optional walkthroughs (UBC sign-in may be required):\n\nReview of visualization guidelines, 16 minutes.\nProgramming with color choices, 44 minutes.",
+    "section": "14.29 Further reading",
+    "text": "14.29 Further reading\n\nColor basics.\nCommon color pitfalls.\nVega color schemes.\nR color palettes.",
     "crumbs": [
       "Communication & design",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>Color</span>"
