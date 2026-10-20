@@ -1,3 +1,310 @@
+---
+fig-width: 6
+fig-height: 4
+resources:
+  - data/vega-cars.csv
+---
+
 # Uncertainty {#sec-uncertainty}
 
-*Material is being finalized before it is uploaded*
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+:::: {.slide-outcomes}
+
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Distinguish** variability among observations from uncertainty in an estimated mean.
+2. **Create and interpret** confidence intervals displayed as bands and point ranges.
+3. **Combine** estimates and their intervals with the underlying observations or distributions.
+
+:::
+
+::::
+
+## Why bother?
+
+In @sec-summaries, we combined measures of central tendency with indications
+of how the observations vary.
+But the spread of the observations and the uncertainty in an estimated mean
+answer different questions.
+For example, cars can have very different horsepower values even when
+we have enough observations to estimate their mean relatively precisely.
+
+A **confidence interval** describes uncertainty in an estimate.
+For a 95% confidence interval, the intended interpretation is that
+if we repeatedly sampled data and constructed intervals in the same way,
+about 95% of those intervals would contain the population quantity,
+provided the method's assumptions hold.
+It is not an interval containing 95% of the individual observations.
+
+Here we will use **bootstrap confidence intervals for the mean**.
+Bootstrapping resamples observations with replacement from the observed data,
+calculates the mean for each resample,
+and uses the resulting distribution of means to construct an interval.
+Our focus is how to display and interpret these intervals;
+the plotting functions will do the resampling for us.
+
+## From observations to confidence bands
+
+We will use the [cars dataset from Vega](https://github.com/vega/vega-datasets/blob/main/data/cars.json),
+available here as a local CSV.
+Each row describes a car, including its model year, horsepower, and origin.
+We omit rows with missing horsepower for these examples.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: uncertainty-cars-points-alt
+import altair as alt
+import pandas as pd
+
+cars = pd.read_csv('data/vega-cars.csv', parse_dates=['Year']).dropna(subset=['Horsepower'])
+
+points = alt.Chart(cars).mark_point(opacity=0.3).encode(
+    x='Year:T',
+    y='Horsepower:Q',
+    color='Origin:N'
+)
+points
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: uncertainty-cars-points-gg
+#| message: false
+library(tidyverse)
+
+cars <- read_csv('data/vega-cars.csv') |>
+    drop_na(Horsepower)
+
+points <- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin)) +
+    geom_point(alpha = 0.3)
+points
+```
+
+:::
+
+These points show the variation among cars.
+To summarize the uncertainty in the mean horsepower for each origin and year,
+we can draw a **confidence band**.
+At each year, the lower and upper edges show the endpoints of an interval;
+shading connects those intervals across years.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+`mark_errorband()` calculates and draws the interval.
+Setting `extent='ci'` requests a 95% bootstrap confidence interval for the mean,
+calculated separately for each combination of year and origin.
+The default extent is `'stderr'`, which instead shows the mean plus or minus
+one standard error. Use `'stdev'` to show one standard deviation.
+These choices have different meanings, so specify the extent explicitly.
+
+```{python}
+#| label: uncertainty-cars-band-alt
+band = points.mark_errorband(extent='ci', opacity=0.3)
+band
+```
+
+### ggplot {.slide-skip}
+
+In ggplot, we can create confidence bands with `geom_ribbon()`.
+Previously we passed summary functions such as `mean` to `fun`.
+Here we use `fun.data`, because a ribbon needs both a lower and an upper bound.
+
+The `mean_cl_boot` function returns three values: `y`, `ymin`, and `ymax`.
+These are the mean and the lower and upper endpoints of its bootstrap confidence interval.
+The ribbon uses the two endpoints.
+This function requires the **Hmisc** package, which is included in the textbook's R environment.
+
+```{r}
+#| label: uncertainty-cars-band-gg
+set.seed(531)
+
+band <- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin, fill = Origin)) +
+    geom_ribbon(stat = 'summary', fun.data = mean_cl_boot,
+                fun.args = list(conf.int = 0.95), alpha = 0.3, color = NA)
+band
+```
+
+`color = NA` removes the ribbon's boundary lines, leaving only the shaded area.
+The random seed makes the R bootstrap reproducible.
+Both libraries use bootstrap intervals, but their endpoints can differ slightly
+because the resamples are random and are generated separately.
+
+:::
+
+### Adding the estimated mean
+
+A band shows the interval, but it is also helpful to show the estimate itself.
+We can add a line for the mean, using the same grouping as the band.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: uncertainty-cars-band-mean-alt
+mean_line = points.mark_line().encode(y='mean(Horsepower):Q')
+band + mean_line
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: uncertainty-cars-band-mean-gg
+set.seed(531)
+band + geom_line(stat = 'summary', fun = mean)
+```
+
+:::
+
+These are **pointwise intervals**: each interval is calculated separately
+for one origin in one year.
+Connecting them does not turn them into a simultaneous 95% confidence band
+for the entire trajectory.
+Similarly, the connecting segments do not establish the mean or its uncertainty
+at unobserved times, as discussed in @sec-connections.
+
+The cars provide a convenient illustration of the plotting tools.
+Interpreting these intervals as uncertainty about a broader population would
+also require justifying how the cars were sampled and whether resampling
+individual rows is appropriate.
+
+## Confidence intervals around individual estimates
+
+For comparisons between categories, an interval around a point can be easier
+to read than a band.
+Here we pool the years and estimate mean horsepower separately for each origin.
+This answers a different question from the preceding year-by-year comparison.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+`mark_errorbar()` displays an interval around a single estimate.
+As with the band, `extent='ci'` requests a 95% bootstrap interval for the mean.
+
+```{python}
+#| label: uncertainty-cars-interval-alt
+err_bars = alt.Chart(cars).mark_errorbar(
+    extent='ci', rule=alt.LineConfig(strokeWidth=2)
+).encode(
+    x='Horsepower:Q',
+    y='Origin:N'
+)
+err_bars
+```
+
+We can add the mean as a point.
+
+```{python}
+#| label: uncertainty-cars-interval-mean-alt
+mean_points = err_bars.mark_point(color='black', filled=True).encode(
+    x='mean(Horsepower):Q'
+)
+err_bars + mean_points
+```
+
+### ggplot {.slide-skip}
+
+`geom_pointrange()` displays both the mean and its interval.
+It uses all three values returned by `mean_cl_boot`.
+With horsepower on the x-axis and origin on the y-axis,
+the intervals are horizontal.
+
+```{r}
+#| label: uncertainty-cars-interval-mean-gg
+set.seed(531)
+
+ggplot(cars, aes(x = Horsepower, y = Origin)) +
+    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,
+                    fun.args = list(conf.int = 0.95))
+```
+
+:::
+
+## Showing the observations alongside uncertainty
+
+A mean and its confidence interval can still hide the distribution of the data.
+Adding faded marks for individual observations lets the reader distinguish
+the spread of the cars' horsepower values from uncertainty in their mean.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+Draw the observations as light ticks first, so that the interval and mean
+remain visible on top.
+
+```{python}
+#| label: uncertainty-cars-ticks-alt
+observations = err_bars.mark_tick(color='lightgrey', opacity=0.5)
+observations + err_bars + mean_points
+```
+
+### ggplot {.slide-skip}
+
+We can use a vertical bar as the point shape to create the same kind of display.
+
+```{r}
+#| label: uncertainty-cars-ticks-gg
+set.seed(531)
+
+ggplot(cars, aes(x = Horsepower, y = Origin)) +
+    geom_point(shape = '|', color = 'grey', alpha = 0.5, size = 5) +
+    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,
+                    fun.args = list(conf.int = 0.95))
+```
+
+Alternatively, a faded violin can provide an overview of each distribution.
+The point here represents the **mean**, unlike the median often shown inside a violin.
+
+```{r}
+#| label: uncertainty-cars-violin-gg
+set.seed(531)
+
+ggplot(cars, aes(x = Horsepower, y = Origin)) +
+    geom_violin(color = NA, fill = 'steelblue', alpha = 0.4) +
+    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,
+                    fun.args = list(conf.int = 0.95))
+```
+
+:::
+
+::: {.callout-default .ex-prompt}
+
+Most of the individual cars fall outside the confidence interval for their origin's mean.
+Does this indicate that the interval was calculated incorrectly?
+What would you expect to happen to the interval if we collected more independent
+observations from the same population, with a similar spread of horsepower values?
+
+:::: {.callout-default .ex-hint}
+
+Is the interval describing variation among individual cars,
+or uncertainty in the mean horsepower?
+
+::::: {.callout-default .ex-solution}
+
+No. A confidence interval for the mean is not intended to contain 95% of the cars.
+The ticks and violin show the spread of individual observations;
+the interval describes uncertainty in the estimated mean.
+With more independent observations and similar variability,
+we generally expect the confidence interval to become narrower,
+even though the spread of individual horsepower values remains similar.
+
+:::::
+::::
+:::
+
+Always identify what an interval represents in its caption or accompanying text.
+Standard deviations, standard errors, and confidence intervals can be drawn
+with the same marks, but they answer different questions.
+
+## Further reading
+
+- [Fundamentals of Data Visualization: Visualizing uncertainty](https://clauswilke.com/dataviz/visualizing-uncertainty.html).
