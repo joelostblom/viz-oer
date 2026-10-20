@@ -1131,16 +1131,9 @@ stock_lines +
 
 ::::
 
-## Further reading and walkthroughs {.slide-skip}
+## Further reading {.slide-skip}
 
 - [Color basics](https://clauswilke.com/dataviz/color-basics.html).
 - [Common color pitfalls](https://clauswilke.com/dataviz/color-pitfalls.html).
 - [Vega color schemes](https://vega.github.io/vega/docs/schemes/).
 - [R color palettes](https://github.com/EmilHvitfeldt/r-color-palettes).
-
-The original lecture recordings provide optional walkthroughs (UBC sign-in may be required):
-
-- [Review of visualization guidelines, 16 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EeEC6rCGeWJIq0UR3GXtmwYB8YVyiwuAe0OhPFP4I-diJg?e=fyo7l9).
-- [Programming with color choices, 44 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/Ea_9a23ys_JEp1t5WJ7vLR4Bj8GAQcA6XgfTw8GchRfB7g?e=GNIv1Y).
-
-::::::::

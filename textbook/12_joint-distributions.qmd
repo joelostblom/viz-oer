@@ -442,7 +442,6 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 
 :::
 
-## Further reading and walkthroughs {.slide-skip}
+## Further reading {.slide-skip}
 
 - [Overlapping points](https://clauswilke.com/dataviz/overlapping-points.html).
-- [Original overplotting walkthrough, 9 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/ETAy81Oh7Z5OixVE-7RSYF8BRliyfQIx6uIvu7A1cZBdDg?e=oba0bD) (UBC sign-in may be required).

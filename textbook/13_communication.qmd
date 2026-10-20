@@ -817,15 +817,7 @@ reversed_hex + scale_fill_continuous(transform = 'reverse')
 
 ::::
 
-## Further reading and walkthroughs {.slide-skip}
+## Further reading {.slide-skip}
 
 - [Figure titles and captions](https://clauswilke.com/dataviz/figure-titles-captions.html).
 - [Small axis labels](https://clauswilke.com/dataviz/small-axis-labels.html).
-
-The original lecture recordings provide optional walkthroughs (UBC sign-in may be required):
-
-- [Axis extents, 8 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EYdY6HJ0SrVJmc5M9RHBA-YBCje0IN3JzhxnYP_o_Lz8mw?e=k1Q3rB).
-- [Axis value formatting, 4 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EXRnOov1dApHinIZCo1cRTIBdnXIPJbbdLrkE92h2xEfjQ?e=RNvUyR).
-- [Figure titles, 11 minutes](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/EXZoWY1f7RdLondbOSgIjAoBFrSvzfsIAguPcKphrFW-bw?e=jZWhKL).
-
-::::::::
