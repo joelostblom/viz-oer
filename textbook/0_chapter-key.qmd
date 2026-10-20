@@ -8,8 +8,7 @@ chapter-slides: slides/0_chapter-key.html
 
 ## Presentation shortcuts
 
-Slides are currently available for the chapter key and chapters 1–10.
-You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000/svg"
+Click the small screen icon <svg xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24" width="1.1em" height="1.1em"
   style="vertical-align: -0.15em"
   fill="none" stroke="currentColor" stroke-width="1.6"
@@ -17,13 +16,16 @@ You can view them by clicking the screen icon <svg xmlns="http://www.w3.org/2000
   aria-hidden="true" focusable="false">
   <rect x="3" y="3" width="18" height="13" rx="1"/>
   <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"/>
-</svg> beside a chapter title.
+</svg> beside the chapter title to view the chapter's slides.
 
 ::: {.slide-bullet}
 
 1. Press `?` to explore the keyboard shortcuts.
-2. Close the shortcut help with `Esc` or `Q`, then press `E` to enter PDF-export mode.
-3. Open your browser's print dialog and choose **Save as PDF**. Press `E` again to return to the slides.
+2. Press `E` to enter PDF-export preview mode.
+3. Open your browser's print dialog and choose **Save as PDF**.
+
+After printing the preview, press `E` again to return to the slideshow
+or `Esc` or `Q` to return to the textbook chapter.
 
 :::
 
