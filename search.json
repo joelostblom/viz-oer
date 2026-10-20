@@ -14,7 +14,7 @@
     "href": "0_chapter-key.html",
     "title": "Chapter key",
     "section": "",
-    "text": "Presentation shortcuts\nSlides are currently available for the chapter key and chapters 1–10. You can view them by clicking the screen icon     beside a chapter title.",
+    "text": "Presentation shortcuts\nClick the small screen icon     beside the chapter title to view the chapter’s slides.",
     "crumbs": [
       "Chapter key"
     ]
@@ -24,7 +24,7 @@
     "href": "0_chapter-key.html#presentation-shortcuts",
     "title": "Chapter key",
     "section": "",
-    "text": "Press ? to explore the keyboard shortcuts.\nClose the shortcut help with Esc or Q, then press E to enter PDF-export mode.\nOpen your browser’s print dialog and choose Save as PDF. Press E again to return to the slides.",
+    "text": "Press ? to explore the keyboard shortcuts.\nPress E to enter PDF-export preview mode.\nOpen your browser’s print dialog and choose Save as PDF.\n\nAfter printing the preview, press E again to return to the slideshow or Esc or Q to return to the textbook chapter.",
     "crumbs": [
       "Chapter key"
     ]
