@@ -21,10 +21,11 @@ execute:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Use** means and rolling averages to summarize patterns while retaining the observations as context.
+1. **Use** means and rolling means to summarize patterns while retaining the observations as context.
 2. **Distinguish** global regression models from local smoothing, and **choose** a trendline according to the question and audience.
 3. **Adjust** smoothing neighborhoods and **explain** how they affect the local detail shown by a curve.
 4. **Recognize** that describing a trend within the observed data does not justify extrapolating it beyond that range.
+5. **Relate** rolling means and local regression to kernel weighting, and **distinguish** estimating a response from estimating a density.
 
 :::
 
@@ -66,7 +67,7 @@ from uncertainty in an estimated mean.
 We use automobile specifications from the Vega datasets collection,
 with missing horsepower observations omitted and the year represented numerically.
 
-:::: {.panel-tabset group="language"}
+::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
@@ -82,15 +83,6 @@ points = alt.Chart(cars).mark_point(opacity=0.3).encode(
 points
 ```
 
-Connecting every observation does not provide a useful summary of the trend.
-
-```{python}
-#| label: trends-connected-points-alt
-#| slide-show: both
-#| slide-title: Connecting observations is not a summary
-points + points.mark_line()
-```
-
 ### ggplot {.slide-skip}
 
 ```{r}
@@ -103,6 +95,23 @@ car_points <- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin)) +
 car_points
 ```
 
+:::
+
+Connecting every observation without any aggregation does not provide a useful summary of the trend.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-connected-points-alt
+#| slide-show: both
+#| slide-title: Connecting observations is not a summary
+points + points.mark_line()
+```
+
+### ggplot {.slide-skip}
+
 ```{r}
 #| label: trends-connected-points-gg
 #| slide-show: both
@@ -110,14 +119,16 @@ car_points
 car_points + geom_line()
 ```
 
-::::
+:::
 
-## Means and rolling averages
+## Means and rolling means
 
 A simple summary is the mean horsepower for each year and origin.
 This works here because each year has several observations.
 For a more continuous x variable, binning or smoothing may be needed
-to avoid a noisy line driven by individual observations.
+to avoid a noisy line driven by individual observations
+(similar to how a histogram needs a binned axis instead of counting 
+the number of observations for every exact value).
 
 :::: {.panel-tabset group="language"}
 
@@ -141,14 +152,24 @@ car_points + geom_line(stat = 'summary', fun = 'mean')
 
 ::::
 
-A moving or rolling average uses a neighborhood of observations.
+Each annual mean is estimated separately:
+changing the cars observed in one year changes that year's mean, but not the others.
+Connecting the means does not change those estimates.
+If we read the connecting segments as estimates between years,
+we are adding a **piecewise-linear interpolation rule**,
+not fitting a shared regression to all the cars.
+
+For a continuous x variable, we could instead divide its range into bins
+and calculate the mean response within each bin.
+This uses fixed, non-overlapping neighborhoods.
+A moving or rolling mean uses overlapping neighborhoods that move along x.
 Because there are several cars at each year, we first calculate the annual means
 and then smooth those means within each origin.
 This weights each annual mean equally, rather than weighting years by their number of cars.
 
 ::: {.deep-dive}
 
-### Calculating a rolling average
+### Calculating a rolling mean
 
 :::: {.panel-tabset group="language"}
 
@@ -395,11 +416,21 @@ These comparison figures from the communication lecture show how the choice of
 summary changes the pattern a reader sees. Decide whether the audience needs
 year-specific averages, a global trend, or variation within the observed range.
 
+| Summary | Neighborhood | What is fitted? |
+|:--|:--|:--|
+| Annual or binned mean | One year or fixed bin | A separate constant |
+| Rolling mean | Moving, overlapping window | A local constant |
+| Local linear regression | Nearby observations, usually distance-weighted | A local line |
+| Global linear regression | All observations in the fitted group | One shared line |
+
+[Trend estimators differ in which observations they use, how they weight them,
+and how flexible a function they fit.]{.slide-bullet}
+
 ## When to choose which trendline?
 
 ::: {.slide-bullet}
 
-- **Means and rolling averages** are useful when the summarized values should have
+- **Means and rolling means** are useful when the summarized values should have
   a straightforward interpretation. They can be particularly accessible to a general audience.
 - **Regression models** are useful when a simple equation is a reasonable description
   of the relationship. Predictions beyond the observed range rely on that model continuing
