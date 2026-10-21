@@ -67,6 +67,10 @@ CHAPTER_ASSETS = {
         "data/vega-cars.csv",
         "data/communication-color-data.md",
     ),
+    "17_uncertainty": (
+        "data/vega-cars.csv",
+        "img/uncertainty-lecture/README.md",
+    ),
     # "12a_exploratory-data-analysis": (
     #     "data/seattle-weather-sensor.csv", "data/seattle-weather-complete.csv",
     #     "data/seattle-weather-eda.md",

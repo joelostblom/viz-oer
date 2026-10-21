@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/17_uncertainty.html
 fig-width: 6
 fig-height: 4
 resources:
@@ -16,12 +17,130 @@ resources:
 1. **Distinguish** variability among observations from uncertainty in an estimated mean.
 2. **Create and interpret** confidence intervals displayed as bands and point ranges.
 3. **Combine** estimates and their intervals with the underlying observations or distributions.
+4. **Communicate** probabilities using frequency framing and hypothetical outcomes.
+5. **Recognize** misleading interpretations of error bars, shaded bands, and forecast cones.
 
 :::
 
 ::::
 
 ## Why bother?
+
+[A point or a line can look precise even when it represents an uncertain estimate.]{.slide-bullet}
+Showing uncertainty helps readers judge which conclusions the data support,
+but the visual representation also matters:
+[an interval that is familiar to a statistician may convey something quite different
+to a general audience]{.slide-bullet}.
+We will first explore how to communicate uncertainty,
+then create interval plots in Altair and ggplot.
+
+## Framing probabilities as frequencies
+
+The lecture's historical example compares three forecasts of Donald Trump's
+chance of winning the 2016 US presidential election.
+These percentages describe the probability of winning, not the predicted share of votes.
+
+::: {.slide-visual}
+
+![Three historical forecasts assign Trump approximately 28%, 15%, and 2% chances of winning. The slide credits Justin H. Gross, Washington Post.](img/uncertainty-lecture/election-probabilities.png){#fig-election-probabilities fig-alt="FiveThirtyEight: 28%; NYT Upshot: 15%; HuffPo Pollster: 2%."}
+
+:::
+
+::: {.callout-default .ex-prompt}
+
+## Interpreting a probabilistic forecast {.content-visible when-format="revealjs"}
+
+[Trump won the election. Does that result alone establish that all three models were bad?]{.slide-bullet}
+[How could we make the probabilities more intuitive to an audience unfamiliar with forecasting?]{.slide-bullet}
+
+:::: {.callout-default .ex-hint}
+
+[An outcome with a probability below 50% is less likely than its alternative,
+but is it impossible? Think about rolling a particular number on a fair six-sided die.]{.slide-bullet}
+
+::::: {.callout-default .ex-solution}
+
+[No. A probabilistic forecast is not a promise that the most likely outcome will occur.]{.slide-bullet}
+Rolling a six does not establish that a die is unfair merely because that outcome
+had only a one-in-six chance.
+The models assigned different probabilities, so they did not express the same degree
+of uncertainty. A scoring rule can reward a forecast that assigned more probability
+to the observed outcome, but one election cannot establish a model's long-run calibration.
+
+We can make the probabilities easier to imagine by expressing them as frequencies:
+roughly 28, 15, or 2 wins out of 100 comparable hypothetical elections under each forecast.
+These are model-implied scenarios, not a claim that we observed 100 elections.
+
+:::::
+::::
+:::
+
+## Making probabilities tangible {.content-visible when-format="revealjs"}
+
+[**Frequency framing** expresses a probability as a share of a collection of outcomes.]{.slide-bullet}
+In the theater-seat version below, imagine choosing a seat without seeing its color first.
+Dark seats represent scenarios in which Trump wins.
+Even in the first forecast, a dark seat is less likely than a light one,
+but selecting one would hardly be extraordinary.
+
+::: {.slide-visual}
+
+![The same forecasts represented by dark seats among 1,000 seats: 286, 150, and 20 winning scenarios. The first panel uses a finer value than the rounded percentage above. Credit: Justin H. Gross, Washington Post, as cited in the lecture.](img/uncertainty-lecture/election-frequency-seats.png){#fig-election-frequency-seats fig-alt="Three theater seating charts have progressively fewer dark seats, showing different winning probabilities as frequencies."}
+
+:::
+
+The format can show more than a binary win or loss.
+FiveThirtyEight's 2020 forecast displayed both a distribution of simulated electoral-vote
+outcomes and a sample of 100 scenarios.
+The scenario display combines a frequency statement with the possible margin of victory.
+
+::: {.slide-visual slide-title="A distribution of possible election outcomes"}
+
+![Historical FiveThirtyEight forecast distributions for electoral votes.](img/uncertainty-lecture/election-distributions.png){#fig-election-distributions width=550 fig-alt="Trump and Biden electoral-vote distributions show many possible outcomes around a 270-vote winning threshold."}
+
+:::
+
+::: {.slide-visual slide-title="One hundred hypothetical elections"}
+
+![A historical FiveThirtyEight screenshot summarizes 100 scenarios: 10 Trump wins, 89 Biden wins, and one scenario without an Electoral College majority.](img/uncertainty-lecture/election-scenarios.png){#fig-election-scenarios width=550 fig-alt="A dot display positions election scenarios by electoral-vote margin and colors them by winner."}
+
+:::
+
+These are snapshots from the [2020 forecast](https://projects.fivethirtyeight.com/2020-election-forecast/),
+not current predictions. Each dot represents a simulated scenario, not a voter.
+Frequency displays can make unlikely outcomes more tangible,
+but labels must explain what the marks represent and how they were generated.
+Too many tiny marks can also become difficult to count.
+
+## Reading error bars and bands
+
+Error bars are compact and useful when comparing many estimates,
+but their appearance alone does not tell us what they represent.
+
+::: {.callout-default .ex-prompt}
+
+:::: {.slide-visual}
+
+![An intentionally unlabeled interval example from the lecture.](img/uncertainty-lecture/unlabeled-penguin-intervals.png){#fig-unlabeled-penguin-intervals width=550 fig-alt="Body-mass point estimates for penguins on three islands, each accompanied by a horizontal interval with no stated definition."}
+
+::::
+
+## What do the intervals represent? {.content-visible when-format="revealjs"}
+
+[What information would you need before interpreting these intervals?]{.slide-bullet}
+[Could you tell whether they show the spread of penguin body masses or uncertainty in a mean?]{.slide-bullet}
+
+:::: {.callout-default .ex-solution}
+
+[We need to know what the point estimates and intervals represent:
+for example, means with standard deviations, confidence intervals for means,
+or some other summary.]{.slide-bullet} [For confidence intervals, we also need the confidence level
+and an explanation of how they were calculated.]{.slide-bullet}
+The same point-and-line marks can display all these quantities,
+so we cannot infer the interval definition from their shape.
+
+::::
+:::
 
 In @sec-summaries, we combined measures of central tendency with indications
 of how the observations vary.
@@ -32,26 +151,154 @@ Here we group the cars by model year and origin, then add intervals to the annua
 For example, cars can have very different horsepower values even when
 we have enough observations to estimate their mean relatively precisely.
 
+::: {.slide-visual slide-title="Spread and uncertainty answer different questions"}
+
 | Display | What it describes |
 |:--|:--|
 | Mean ± one standard deviation (SD) | Spread of the individual observations around their mean |
 | Mean ± one standard error (SE) | Estimated sampling variability of the mean; not a 95% confidence interval |
 | 95% confidence interval (CI) for the mean | Uncertainty in the estimated population mean, using a stated interval method |
 
+:::
+
+::: {.slide-visual slide-title="Same observations, different intervals"}
+
+![Different intervals for the same chocolate-rating sample. The labels distinguish standard deviation, standard error, and three confidence levels. Adapted from Claus O. Wilke, *Fundamentals of Data Visualization*, Figure 16.5; data credit: Brady Brelinski, Manhattan Chocolate Society.](img/uncertainty-lecture/interval-definitions.png){#fig-interval-definitions fig-alt="Identical mean estimates have different interval widths when displaying plus or minus SD, plus or minus SE, and 80%, 95%, or 99% confidence intervals."}
+
+:::
+
+A shorter bar does not by itself mean that the data or model are better.
+Changing from SD to SE changes the question being answered;
+changing the confidence level changes the interval's intended coverage.
+Choose the quantity that addresses the question and label it explicitly.
+
+## Interpreting confidence intervals {.content-visible when-format="revealjs"}
+
 A **confidence interval** describes uncertainty in an estimate.
 For a 95% confidence interval, the intended interpretation is that
-if we repeatedly sampled data and constructed intervals in the same way,
+[if we repeatedly sampled data and constructed intervals in the same way,
 about 95% of those intervals would contain the population quantity,
-provided the method's assumptions hold.
-It is not an interval containing 95% of the individual observations.
+provided the method's assumptions hold]{.slide-bullet}.
+[It is not an interval containing 95% of the individual observations.]{.slide-bullet}
 
 After first showing a standard-deviation band for comparison,
 we will use **bootstrap confidence intervals for the mean**.
-Bootstrapping resamples observations with replacement from the observed data,
+[Bootstrapping resamples observations with replacement from the observed data,
 calculates the mean for each resample,
-and uses the resulting distribution of means to construct an interval.
+and uses the resulting distribution of means to construct an interval.]{.slide-bullet}
 Our focus is how to display and interpret these intervals;
 the plotting functions will do the resampling for us.
+
+### Interval endpoints are not walls
+
+Readers can interpret the endpoints of an error bar as the limits of what is possible.
+This is sometimes called a **deterministic construal error**:
+treating an uncertainty display as a hard constraint.
+An interval summarizing part of a distribution need not contain all its possible values.
+For a confidence interval, remember that the coverage statement concerns repeated
+sampling; a particular interval can miss the population quantity.
+
+::: {.slide-visual}
+
+![A schematic distribution continues beyond the displayed interval. The drawing illustrates why an interval should not automatically be read as the full range of possible values; it does not specify a confidence level.](img/uncertainty-lecture/distribution-and-interval.png){#fig-distribution-and-interval fig-alt="A smooth distribution with tails extending beyond a horizontal interval around its center."}
+
+:::
+
+[Nor should we assume that every kind of error bar must exclude observations:
+a minimum-to-maximum interval includes the observed range by construction.
+The interpretation depends on what the interval actually represents.]{.slide-bullet}
+
+### Overlap is not a general significance test
+
+::: {.slide-visual}
+
+![The lecture's overlap schematic illustrates that overlapping intervals can accompany a statistically significant difference under particular assumptions. Its printed p-values are not universal thresholds for interpreting error bars.](img/uncertainty-lecture/interval-overlap.png){#fig-interval-overlap width=300 fig-alt="Two panels show pairs of intervals with partial overlap or just touching; the original illustration labels them with approximate p-values of .05 and .01."}
+
+:::
+
+## Compare the difference itself {.content-visible when-format="revealjs"}
+
+[The amount of overlap alone does not establish whether two estimates differ significantly.]{.slide-bullet}
+The answer depends on the interval definition and the relationship between the estimates,
+including whether observations are paired.
+[If the question concerns a difference, calculate and visualize an interval for
+**the difference itself**, using a method appropriate to the data.]{.slide-bullet}
+
+## Showing alternative outcomes
+
+A single line and shaded band can make one fitted curve seem inevitable,
+with uncertainty appearing only as a little movement up or down.
+Showing alternative curves makes the possible variation in shape more explicit.
+
+::: {.slide-visual}
+
+![A fitted spline and interval band compared with alternative curves drawn from a posterior distribution. Source: Wilke, *Fundamentals of Data Visualization*, Figure 16.18, using Motor Trend car data.](img/uncertainty-lecture/fitted-curves-and-band.png){#fig-alternative-fitted-curves fig-alt="Fuel efficiency versus engine displacement, with a smooth fit and band on the left and multiple alternative fitted curves on the right."}
+
+:::
+
+A **hypothetical outcome plot (HOP)** cycles through sampled possibilities,
+rather than drawing them all at once.
+In this example, each frame shows an alternative fitted curve from the model's
+posterior distribution. The animation shows uncertainty in the fitted relationship,
+not a time sequence in which the cars change.
+
+::: {.slide-visual slide-title="Hypothetical outcome plots"}
+
+![An animated hypothetical outcome plot of alternative fitted curves. Source: Wilke, *Fundamentals of Data Visualization*, Figure 16.22.](img/uncertainty-lecture/hypothetical-fitted-curves.gif){#fig-hypothetical-fitted-curves width=550 fig-alt="An animation keeps the observed cars fixed while cycling through alternative fuel-efficiency curves."}
+
+:::
+
+The static comparison above remains useful for print and for readers who prefer
+to inspect several alternatives at once.
+For an animation, outcomes should be sampled to represent the modeled uncertainty,
+rather than selected to exaggerate stability or variation.
+Rare but important outcomes may need explicit annotation or a separate view,
+since a short animation can easily omit them.
+
+## Forecast uncertainty is not physical size
+
+::: {.callout-default .ex-prompt}
+
+:::: {.slide-visual}
+
+![A hurricane forecast shown as a cone and as a collection of possible tracks, reproduced from the lecture.](img/uncertainty-lecture/hurricane-cone-and-paths.png){#fig-hurricane-uncertainty fig-alt="Two maps compare a widening shaded cone along a hurricane track with an ensemble of possible tracks spreading across the Gulf Coast."}
+
+::::
+
+## Reading the forecast cone {.content-visible when-format="revealjs"}
+
+[What might an unfamiliar reader think the widening shaded region represents?]{.slide-bullet}
+[How could the alternative tracks help, and what explanation would they still need?]{.slide-bullet}
+
+:::: {.callout-default .ex-hint}
+
+[Does the widening cone describe a growing storm, or growing uncertainty about
+the location of its center?]{.slide-bullet}
+
+::::: {.callout-default .ex-solution}
+
+## Position uncertainty, not storm size {.content-visible when-format="revealjs"}
+
+A forecast cone can be mistaken for the storm's physical size.
+[Its widening instead represents increasing uncertainty about the future position
+of the storm's center.]{.slide-bullet} [Its boundary is not a line separating dangerous from safe locations:
+the center can move outside the cone, and hazardous weather can extend beyond it.]{.slide-bullet}
+
+Alternative tracks make the uncertainty about location more explicit,
+but viewers still need to know what the tracks represent and how they were generated.
+[A collection of different models is not automatically a set of equally probable outcomes.]{.slide-bullet}
+For decisions such as evacuation, pair the uncertainty display with information
+about the relevant hazards and guidance, rather than asking readers to infer risk
+from the center line or cone alone.
+
+:::::
+::::
+:::
+
+The same general lesson applies to statistical bands:
+explain what is uncertain, what the displayed region means,
+and which conclusions its boundaries do and do not support.
+We now turn to constructing intervals with the plotting libraries.
 
 ## From trend summaries to intervals
 
@@ -66,6 +313,7 @@ We omit rows with missing horsepower for these examples.
 
 ```{python}
 #| label: uncertainty-cars-points-alt
+#| slide-show: output
 import altair as alt
 import pandas as pd
 
@@ -84,6 +332,7 @@ points
 
 ```{r}
 #| label: uncertainty-cars-points-gg
+#| slide-show: output
 #| message: false
 library(tidyverse)
 
@@ -112,6 +361,7 @@ It is not guaranteed to contain a particular percentage of observations.
 
 ```{python}
 #| label: uncertainty-cars-sd-alt
+#| slide-show: both
 mean_line = points.mark_line().encode(y='mean(Horsepower):Q')
 points.mark_errorband(extent='stdev', opacity=0.3) + mean_line
 ```
@@ -123,6 +373,7 @@ Its default multiplier is two, so we explicitly set `mult = 1` to match Altair.
 
 ```{r}
 #| label: uncertainty-cars-sd-gg
+#| slide-show: both
 ggplot(cars, aes(x = Year, y = Horsepower, color = Origin, fill = Origin)) +
     geom_ribbon(stat = 'summary', fun.data = mean_sdl,
                 fun.args = list(mult = 1), alpha = 0.3, color = NA) +
@@ -151,6 +402,7 @@ These choices have different meanings, so specify the extent explicitly.
 
 ```{python}
 #| label: uncertainty-cars-band-alt
+#| slide-show: both
 band = points.mark_errorband(extent='ci', opacity=0.3)
 band
 ```
@@ -168,6 +420,7 @@ This function requires the **Hmisc** package, which is included in the textbook'
 
 ```{r}
 #| label: uncertainty-cars-band-gg
+#| slide-show: both
 set.seed(531)
 
 band <- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin, fill = Origin)) +
@@ -194,6 +447,7 @@ We can add a line for the mean, using the same grouping as the band.
 
 ```{python}
 #| label: uncertainty-cars-band-mean-alt
+#| slide-show: both
 band + mean_line
 ```
 
@@ -201,21 +455,24 @@ band + mean_line
 
 ```{r}
 #| label: uncertainty-cars-band-mean-gg
+#| slide-show: both
 set.seed(531)
 band + geom_line(stat = 'summary', fun = mean)
 ```
 
 :::
 
-These are **pointwise intervals**: each interval is calculated separately
-for one origin in one year.
-Connecting them does not turn them into a simultaneous 95% confidence band
-for the entire trajectory.
+## What the band does and does not show {.content-visible when-format="revealjs"}
+
+[These are **pointwise intervals**: each interval is calculated separately
+for one origin in one year.]{.slide-bullet}
+[Connecting them does not turn them into a simultaneous 95% confidence band
+for the entire trajectory.]{.slide-bullet}
 Similarly, the connecting segments do not establish the mean or its uncertainty
 at unobserved times, as discussed in @sec-connections.
 
-These intervals summarize each year's observations independently;
-they are not confidence bands around a fitted regression or LOESS curve.
+[These intervals summarize each year's observations independently;
+they are not confidence bands around a fitted regression or LOESS curve.]{.slide-bullet}
 
 The cars provide a convenient illustration of the plotting tools.
 Interpreting these intervals as uncertainty about a broader population would
@@ -229,19 +486,21 @@ Here we return to **horsepower versus acceleration time**, fitting a separate
 relationship for each origin. Acceleration time is measured in seconds to reach
 60 mph, so larger values indicate slower acceleration.
 
-Unlike the separate annual means above, a fitted relationship uses observations
-across x-values to estimate its curve.
-The confidence band should describe uncertainty in **that fitted curve**,
-using the same model as the line.
+[Unlike the separate annual means above, a fitted relationship uses observations
+across x-values to estimate its curve.]{.slide-bullet}
+[The confidence band should describe uncertainty in **that fitted curve**,
+using the same model as the line.]{.slide-bullet}
+
+## Fitting the line and its confidence band {.content-visible when-format="revealjs"}
 
 ::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
-Altair's built-in regression and LOESS transforms return fitted curves,
-but do not calculate their confidence bounds.
-We would need to calculate the fit and interval endpoints with a statistical
-library first, then draw the line and shaded area in Altair.
+[Altair's built-in regression and LOESS transforms return fitted curves,
+but do not calculate their confidence bounds.]{.slide-bullet}
+[We would need to calculate the fit and interval endpoints with a statistical
+library first, then draw the line and shaded area in Altair.]{.slide-bullet}
 For example, scikit-learn fits could be bootstrapped by repeatedly resampling
 the observations and refitting the model, but scikit-learn does not supply
 these confidence bands automatically.
@@ -262,6 +521,8 @@ Mapping both `color` and `fill` to origin gives each line and its band matching 
 
 ```{r}
 #| label: uncertainty-acceleration-lm-gg
+#| slide-show: both
+#| slide-title: Linear regression with a confidence band
 trend_points <- ggplot(
     drop_na(cars, Acceleration),
     aes(x = Acceleration, y = Horsepower, color = Origin, fill = Origin)
@@ -283,6 +544,8 @@ making those defaults explicit.
 
 ```{r}
 #| label: uncertainty-acceleration-loess-gg
+#| slide-show: both
+#| slide-title: LOESS with a confidence band
 trend_points + geom_smooth(
     method = 'loess', span = 0.75, se = TRUE, level = 0.95,
     method.args = list(degree = 2, family = 'gaussian')
@@ -318,6 +581,8 @@ As with the band, `extent='ci'` requests a 95% bootstrap interval for the mean.
 
 ```{python}
 #| label: uncertainty-cars-interval-alt
+#| slide-show: both
+#| slide-title: Confidence intervals for group means
 err_bars = alt.Chart(cars).mark_errorbar(
     extent='ci', rule=alt.LineConfig(strokeWidth=2)
 ).encode(
@@ -331,6 +596,8 @@ We can add the mean as a point.
 
 ```{python}
 #| label: uncertainty-cars-interval-mean-alt
+#| slide-show: both
+#| slide-title: Show the estimate with its interval
 mean_points = err_bars.mark_point(color='black', filled=True).encode(
     x='mean(Horsepower):Q'
 )
@@ -346,6 +613,8 @@ the intervals are horizontal.
 
 ```{r}
 #| label: uncertainty-cars-interval-mean-gg
+#| slide-show: both
+#| slide-title: Show the estimate with its interval
 set.seed(531)
 
 ggplot(cars, aes(x = Horsepower, y = Origin)) +
@@ -370,6 +639,8 @@ remain visible on top.
 
 ```{python}
 #| label: uncertainty-cars-ticks-alt
+#| slide-show: both
+#| slide-title: Observations, means, and confidence intervals
 observations = err_bars.mark_tick(color='lightgrey', opacity=0.5)
 observations + err_bars + mean_points
 ```
@@ -380,6 +651,8 @@ We can use a vertical bar as the point shape to create the same kind of display.
 
 ```{r}
 #| label: uncertainty-cars-ticks-gg
+#| slide-show: both
+#| slide-title: Observations, means, and confidence intervals
 set.seed(531)
 
 ggplot(cars, aes(x = Horsepower, y = Origin)) +
@@ -393,6 +666,8 @@ The point here represents the **mean**, unlike the median often shown inside a v
 
 ```{r}
 #| label: uncertainty-cars-violin-gg
+#| slide-show: both
+#| slide-title: A distribution behind the mean and interval
 set.seed(531)
 
 ggplot(cars, aes(x = Horsepower, y = Origin)) +
@@ -405,33 +680,45 @@ ggplot(cars, aes(x = Horsepower, y = Origin)) +
 
 ::: {.callout-default .ex-prompt}
 
-Most of the individual cars fall outside the confidence interval for their origin's mean.
-Does this indicate that the interval was calculated incorrectly?
-What would you expect to happen to the interval if we collected more independent
-observations from the same population, with a similar spread of horsepower values?
+## Spread versus precision {.content-visible when-format="revealjs"}
+
+[Most of the individual cars fall outside the confidence interval for their origin's mean.
+Does this indicate that the interval was calculated incorrectly?]{.slide-bullet}
+[What would you expect to happen to the interval if we collected more independent
+observations from the same population, with a similar spread of horsepower values?]{.slide-bullet}
 
 :::: {.callout-default .ex-hint}
 
-Is the interval describing variation among individual cars,
-or uncertainty in the mean horsepower?
+[Is the interval describing variation among individual cars,
+or uncertainty in the mean horsepower?]{.slide-bullet}
 
 ::::: {.callout-default .ex-solution}
 
-No. A confidence interval for the mean is not intended to contain 95% of the cars.
+## More observations can give a more precise mean {.content-visible when-format="revealjs"}
+
+[No. A confidence interval for the mean is not intended to contain 95% of the cars.]{.slide-bullet}
 The ticks and violin show the spread of individual observations;
 the interval describes uncertainty in the estimated mean.
-With more independent observations and similar variability,
+[With more independent observations and similar variability,
 we generally expect the confidence interval to become narrower,
-even though the spread of individual horsepower values remains similar.
+even though the spread of individual horsepower values remains similar.]{.slide-bullet}
 
 :::::
 ::::
 :::
 
-Always identify what an interval represents in its caption or accompanying text.
-Standard deviations, standard errors, and confidence intervals can be drawn
-with the same marks, but they answer different questions.
+## Label what the interval represents {.content-visible when-format="revealjs"}
 
-## Further reading
+[Always identify what an interval represents in its caption or accompanying text.]{.slide-bullet}
+[Standard deviations, standard errors, and confidence intervals can be drawn
+with the same marks, but they answer different questions.]{.slide-bullet}
+
+## Further reading {.slide-skip}
 
 - [Fundamentals of Data Visualization: Visualizing uncertainty](https://clauswilke.com/dataviz/visualizing-uncertainty.html).
+- [When(ish) is My Bus? User-centered Visualizations of Uncertainty in Everyday, Mobile Predictive Systems](https://idl.uw.edu/papers/when-ish-is-my-bus).
+- The lecture's videos on [communicating uncertainty](https://www.youtube.com/watch?v=-Zc47NNGwm4)
+  and [hurricane forecasts](https://www.youtube.com/watch?v=byDZlMwi7kU).
+
+<!-- Imported lecture-figure sources and extraction instructions:
+     img/uncertainty-lecture/README.md. -->
