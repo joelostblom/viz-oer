@@ -25,7 +25,6 @@ execute:
 2. **Distinguish** global regression models from local smoothing, and **choose** a trendline according to the question and audience.
 3. **Adjust** smoothing neighborhoods and **explain** how they affect the local detail shown by a curve.
 4. **Recognize** that describing a trend within the observed data does not justify extrapolating it beyond that range.
-5. **Relate** rolling means and local regression to kernel weighting, and **distinguish** estimating a response from estimating a density.
 
 :::
 
@@ -74,9 +73,8 @@ We examine how horsepower varies with this acceleration time, separately by orig
 ```{python}
 #| label: trends-car-points-alt
 #| slide-show: both
-#| slide-title: A trend hidden among observations
 points = alt.Chart(cars).mark_circle(opacity=0.2).encode(
-    x=alt.X('Acceleration:Q').scale(zero=False).title('Acceleration time (seconds)'),
+    x=alt.X('Acceleration:Q').scale(zero=False),
     y='Horsepower',
     color='Origin'
 )
@@ -88,16 +86,14 @@ points
 ```{r}
 #| label: trends-car-points-gg
 #| slide-show: both
-#| slide-title: A trend hidden among observations
 car_points <- ggplot(cars, aes(x = Acceleration, y = Horsepower, color = Origin)) +
-    geom_point(alpha = 0.2) +
-    labs(x = 'Acceleration time (seconds)')
+    geom_point(alpha = 0.2)
 car_points
 ```
 
 :::
 
-Connecting every observation without any aggregation does not provide a useful summary of the trend.
+[Connecting every observation without any aggregation does not provide a useful summary of the trend]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
 
@@ -106,7 +102,6 @@ Connecting every observation without any aggregation does not provide a useful s
 ```{python}
 #| label: trends-connected-points-alt
 #| slide-show: both
-#| slide-title: Connecting observations is not a summary
 points + points.mark_line()
 ```
 
@@ -115,20 +110,17 @@ points + points.mark_line()
 ```{r}
 #| label: trends-connected-points-gg
 #| slide-show: both
-#| slide-title: Connecting observations is not a summary
 car_points + geom_line()
 ```
 
 :::
 
-## Means and rolling means
+## Means
 
 [A simple summary is the mean horsepower at each recorded acceleration time and origin.]{.slide-bullet}
-[Some acceleration times occur repeatedly, but others have very few observations.]{.slide-bullet}
-For a continuous x variable like this, binning or smoothing can help
-avoid a noisy line driven by individual observations
-(similar to how a histogram uses a binned axis instead of counting
-the number of observations at every exact value).
+[Some acceleration times occur repeatedly, but others have very few observations,]{.slide-bullet}
+resulting in [a noisy appearance of the line with many spikes
+that makes it hard to see the overall trend]{.slide-subbullet}
 
 ::: {.panel-tabset group="language"}
 
@@ -137,7 +129,6 @@ the number of observations at every exact value).
 ```{python}
 #| label: trends-exact-mean-alt
 #| slide-show: both
-#| slide-title: Summarize each acceleration time
 points + points.mark_line().encode(y='mean(Horsepower)')
 ```
 
@@ -146,24 +137,24 @@ points + points.mark_line().encode(y='mean(Horsepower)')
 ```{r}
 #| label: trends-exact-mean-gg
 #| slide-show: both
-#| slide-title: Summarize each acceleration time
 car_points + geom_line(stat = 'summary', fun = 'mean')
 ```
 
 :::
 
-## Connecting estimates versus fitting a relationship {.content-visible when-format="revealjs"}
+<!-- TODO move to regression section? -->
+<!-- If we read the connecting segments as estimates between recorded acceleration times, -->
+<!-- we are adding a [**piecewise-linear interpolation rule**, -->
+<!-- not fitting a shared regression to all the cars]{.slide-bullet}. -->
+<!-- [Each mean is estimated separately: -->
+<!-- changing the horsepower values at one acceleration time changes that mean, but not the others.]{.slide-bullet} -->
 
-[Each mean is estimated separately:
-changing the horsepower values at one acceleration time changes that mean, but not the others.]{.slide-bullet}
-[Connecting the means does not change those estimates.]{.slide-bullet}
-If we read the connecting segments as estimates between recorded acceleration times,
-we are adding a [**piecewise-linear interpolation rule**,
-not fitting a shared regression to all the cars]{.slide-bullet}.
+### Binned means
 
-For a continuous x variable, we could instead divide its range into bins
-and calculate the mean response within each bin.
-Here we use five-second intervals of acceleration time.
+For a continuous x variable, we could instead [divide its range into bins
+and calculate the mean response within each bin]{.slide-bullet},
+similar to how a histogram uses a binned axis instead of counting
+the number of observations at every exact value.
 
 ::: {.panel-tabset group="language"}
 
@@ -172,36 +163,37 @@ Here we use five-second intervals of acceleration time.
 ```{python}
 #| label: trends-binned-mean-alt
 #| slide-show: both
-#| slide-title: Average within acceleration bins
 points + points.mark_line().encode(
-    x=alt.X('Acceleration:Q').bin(step=5).title('Acceleration time (seconds)'),
+    x=alt.X('Acceleration:Q').bin(step=3),
     y='mean(Horsepower)'
 )
 ```
 
 ### ggplot {.slide-skip}
 
+We use `stat = 'summary_bin'` to allow us to define a custom summary 
+function with the bin instead of counting the observations.
+
 ```{r}
 #| label: trends-binned-mean-gg
 #| slide-show: both
-#| slide-title: Average within acceleration bins
-car_points + geom_line(stat = 'summary_bin', fun = mean,
-                       binwidth = 5, boundary = 0, closed = 'left')
+car_points + geom_line(stat = 'summary_bin', fun = mean, binwidth = 3)
 ```
-
-`boundary = 0` aligns the bins to multiples of five seconds, and `closed = 'left'`
-includes each lower boundary and excludes the upper boundary, matching Altair's bins.
 
 :::
 
-## From bins to moving windows {.content-visible when-format="revealjs"}
+### Rolling means
 
 [Binning uses fixed, non-overlapping neighborhoods.]{.slide-bullet}
-More commonly for trends lines we would use overlapping neighborhoods that move along the axis;
-this is commonly referred to as a moving or rolling mean.
-[Here we sort the individual cars by acceleration time and average neighboring observations,
-separately for each origin.]{.slide-bullet} Each car included in a window receives equal weight.
-[This is an observation-based window, not a fixed interval of acceleration times.]{.slide-bullet}
+If we instead use,
+[overlapping neighborhoods that move along the axis
+produces a smoother curve]{.slide-bullet};
+this is [referred to as a moving or rolling mean]{.slide-subbullet}.
+Here we sort the individual cars
+by acceleration time and average neighboring observations,
+separately for each origin.
+[Each car included in a window receives equal weight by default,
+but this could be adjusted]{.slide-bullet}
 
 ### Calculating a rolling mean
 
@@ -218,7 +210,7 @@ so a window can include more than 61 cars when acceleration times repeat.
 ```{python}
 #| label: trends-rolling-window-alt
 #| slide-show: both
-#| slide-title: A centered rolling mean
+#| slide-title: Rolling means
 alt.Chart(cars).transform_window(
     rolling_hp='mean(Horsepower)',
     frame=[-30, 30],
@@ -240,8 +232,8 @@ all cars between those values, including boundary ties as in Altair.
 
 ```{r}
 #| label: trends-rolling-window-gg
-#| slide-show: output
-#| slide-title: A centered rolling mean
+#| slide-show: both
+#| slide-title: Rolling means
 rolling_cars <- cars |>
     arrange(Origin, Acceleration) |>
     group_by(Origin) |>
@@ -275,31 +267,38 @@ Three window types answer different questions:
 
 - **Expanding** (`[None, 0]`, the default in Altair): average everything up to the current position in the sort order.
   This estimates a cumulative level rather than a local trend.
-- **Trailing** (for example, `[-30, 0]`): use observations at or before the current position.
+- **Trailing** (for example, `[-30, 0]`): use observations at or before the current position. Common in e.g. finance.
   With a chronological sort, this is useful for monitoring as observations arrive.
-- **Centered** (`[-30, 30]`): use observations on both sides to describe a local pattern.
-  This is the closest of these choices to the neighborhood idea behind LOESS,
-  although LOESS selects nearby x-values and uses distance weights and local regression.
+- **Centered** (`[-30, 30]`): use observations on both sides to describe a local pattern. Common in e.g. statistics.
 
 :::
 
 ## Regression lines
 
 Another way to show a trend is regression.
-[Linear least-squares regression fits a straight line by minimizing the sum
-of squared vertical deviations from the observations to the line.]{.slide-bullet}
-
-There is a useful connection to the mean:
-[**the mean is the constant that minimizes the sum of squared deviations**]{.slide-bullet}.
-In graphical terms, it is the best-fitting horizontal line under squared-error loss.
-Linear regression allows that line to tilt by estimating a slope as well as an intercept.
-
-Unlike separate means at each acceleration time, a regression links estimates across
+Unlike separate means at each acceleration time,
+a regression links estimates across
 acceleration times through shared coefficients.
 Changing observations in one part of the x-range can change fitted values throughout the range.
 This pooling can stabilize estimates, but it can also hide abrupt changes
 or impose an unsuitable shape; a shared model is not automatically better.
 
+[Linear least-squares regression fits a straight line by minimizing the sum
+of squared vertical deviations from the observations to the line.]{.slide-bullet}
+There is a useful connection to the mean:
+[the mean is the constant that minimizes the sum of squared deviations]{.slide-bullet}.
+In graphical terms, it is [the best-fitting horizontal line under squared-error loss]{.slide-subbullet}.
+As an equation, we're predicting (or estimating) the value of each y value using a constant offset (which is the mean of all y-values).
+
+::: {.slide-text}
+
+$$
+\hat{y}_i = w_0 = \bar{y}
+$$
+
+:::
+
+[Linear regression allows that line to tilt by estimating a slope in addition to the intercept]{.slide-bullet}.
 For the straight-line fit, we estimate
 
 ::: {.slide-text}
