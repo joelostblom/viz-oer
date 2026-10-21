@@ -27,8 +27,16 @@ In @sec-summaries, we combined measures of central tendency with indications
 of how the observations vary.
 But the spread of the observations and the uncertainty in an estimated mean
 answer different questions.
+In @sec-trends, we used lines to summarize horsepower without displaying intervals.
+Here we group the cars by model year and origin, then add intervals to the annual means.
 For example, cars can have very different horsepower values even when
 we have enough observations to estimate their mean relatively precisely.
+
+| Display | What it describes |
+|:--|:--|
+| Mean ± one standard deviation (SD) | Spread of the individual observations around their mean |
+| Mean ± one standard error (SE) | Estimated sampling variability of the mean; not a 95% confidence interval |
+| 95% confidence interval (CI) for the mean | Uncertainty in the estimated population mean, using a stated interval method |
 
 A **confidence interval** describes uncertainty in an estimate.
 For a 95% confidence interval, the intended interpretation is that
@@ -37,14 +45,15 @@ about 95% of those intervals would contain the population quantity,
 provided the method's assumptions hold.
 It is not an interval containing 95% of the individual observations.
 
-Here we will use **bootstrap confidence intervals for the mean**.
+After first showing a standard-deviation band for comparison,
+we will use **bootstrap confidence intervals for the mean**.
 Bootstrapping resamples observations with replacement from the observed data,
 calculates the mean for each resample,
 and uses the resulting distribution of means to construct an interval.
 Our focus is how to display and interpret these intervals;
 the plotting functions will do the resampling for us.
 
-## From observations to confidence bands
+## From trend summaries to intervals
 
 We will use the [cars dataset from Vega](https://github.com/vega/vega-datasets/blob/main/data/cars.json),
 available here as a local CSV.
@@ -61,9 +70,10 @@ import altair as alt
 import pandas as pd
 
 cars = pd.read_csv('data/vega-cars.csv', parse_dates=['Year']).dropna(subset=['Horsepower'])
+cars['Year'] = cars['Year'].dt.year
 
 points = alt.Chart(cars).mark_point(opacity=0.3).encode(
-    x='Year:T',
+    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
     y='Horsepower:Q',
     color='Origin:N'
 )
@@ -78,16 +88,51 @@ points
 library(tidyverse)
 
 cars <- read_csv('data/vega-cars.csv') |>
-    drop_na(Horsepower)
+    drop_na(Horsepower) |>
+    mutate(Year = lubridate::year(Year))
 
 points <- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin)) +
-    geom_point(alpha = 0.3)
+    geom_point(alpha = 0.3) +
+    scale_x_continuous(breaks = seq(1970, 1982, by = 2))
 points
 ```
 
 :::
 
-These points show the variation among cars.
+### A band describing the spread of observations
+
+First, show the mean plus or minus one **sample standard deviation**
+for each combination of origin and year.
+This describes the spread of horsepower values, not uncertainty in the mean.
+It is not guaranteed to contain a particular percentage of observations.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: uncertainty-cars-sd-alt
+mean_line = points.mark_line().encode(y='mean(Horsepower):Q')
+points.mark_errorband(extent='stdev', opacity=0.3) + mean_line
+```
+
+### ggplot {.slide-skip}
+
+`mean_sdl` returns the mean plus or minus a multiple of the standard deviation.
+Its default multiplier is two, so we explicitly set `mult = 1` to match Altair.
+
+```{r}
+#| label: uncertainty-cars-sd-gg
+ggplot(cars, aes(x = Year, y = Horsepower, color = Origin, fill = Origin)) +
+    geom_ribbon(stat = 'summary', fun.data = mean_sdl,
+                fun.args = list(mult = 1), alpha = 0.3, color = NA) +
+    geom_line(stat = 'summary', fun = mean)
+```
+
+:::
+
+### A band describing uncertainty in the mean
+
 To summarize the uncertainty in the mean horsepower for each origin and year,
 we can draw a **confidence band**.
 At each year, the lower and upper edges show the endpoints of an interval;
@@ -149,7 +194,6 @@ We can add a line for the mean, using the same grouping as the band.
 
 ```{python}
 #| label: uncertainty-cars-band-mean-alt
-mean_line = points.mark_line().encode(y='mean(Horsepower):Q')
 band + mean_line
 ```
 
@@ -170,10 +214,93 @@ for the entire trajectory.
 Similarly, the connecting segments do not establish the mean or its uncertainty
 at unobserved times, as discussed in @sec-connections.
 
+These intervals summarize each year's observations independently;
+they are not confidence bands around a fitted regression or LOESS curve.
+
 The cars provide a convenient illustration of the plotting tools.
 Interpreting these intervals as uncertainty about a broader population would
 also require justifying how the cars were sampled and whether resampling
 individual rows is appropriate.
+
+## Confidence bands around fitted trends
+
+We can also show uncertainty around the fitted relationships from @sec-trends.
+Here we return to **horsepower versus acceleration time**, fitting a separate
+relationship for each origin. Acceleration time is measured in seconds to reach
+60 mph, so larger values indicate slower acceleration.
+
+Unlike the separate annual means above, a fitted relationship uses observations
+across x-values to estimate its curve.
+The confidence band should describe uncertainty in **that fitted curve**,
+using the same model as the line.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+Altair's built-in regression and LOESS transforms return fitted curves,
+but do not calculate their confidence bounds.
+We would need to calculate the fit and interval endpoints with a statistical
+library first, then draw the line and shaded area in Altair.
+For example, scikit-learn fits could be bootstrapped by repeatedly resampling
+the observations and refitting the model, but scikit-learn does not supply
+these confidence bands automatically.
+We use ggplot for the compact examples here.
+
+Adding `mark_errorband(extent='ci')` to the raw data would instead calculate
+separate bootstrap intervals at each acceleration time;
+those would not be confidence intervals for the fitted regression or LOESS curve.
+
+### ggplot {.slide-skip}
+
+For linear regression, `geom_smooth(method = 'lm')` can display both the fitted line
+and a confidence band. We explicitly set `se = TRUE` and `level = 0.95`,
+although these are the defaults.
+Despite the argument's name, `se = TRUE` enables a confidence band;
+it does not request a band of plus or minus one standard error.
+Mapping both `color` and `fill` to origin gives each line and its band matching colors.
+
+```{r}
+#| label: uncertainty-acceleration-lm-gg
+trend_points <- ggplot(
+    drop_na(cars, Acceleration),
+    aes(x = Acceleration, y = Horsepower, color = Origin, fill = Origin)
+) +
+    geom_point(alpha = 0.2) +
+    labs(x = 'Acceleration time (seconds)')
+
+trend_points + geom_smooth(method = 'lm', se = TRUE, level = 0.95)
+```
+
+The shaded region is a **pointwise 95% confidence interval for the fitted mean horsepower**.
+It is not a standard-deviation band or a prediction interval for individual cars.
+These intervals use the linear model's estimated standard errors and a t-distribution,
+rather than the groupwise bootstrap calculation used earlier.
+
+We can also show a confidence band around a LOESS curve.
+Here we use R's local quadratic, non-robust fit and a span of 0.75,
+making those defaults explicit.
+
+```{r}
+#| label: uncertainty-acceleration-loess-gg
+trend_points + geom_smooth(
+    method = 'loess', span = 0.75, se = TRUE, level = 0.95,
+    method.args = list(degree = 2, family = 'gaussian')
+)
+```
+
+For LOESS, ggplot uses an approximate pointwise confidence interval based on
+the smoother's estimated standard errors and a t-based approximation.
+The curve and band depend on the chosen span and fitting settings;
+the band does not account for uncertainty about which smoothing settings to choose.
+
+:::
+
+In both charts, the bands describe uncertainty in the fitted mean relationship,
+not the spread of the underlying observations. Keeping the points visible helps
+distinguish those two quantities.
+As with the annual-mean intervals, pointwise 95% coverage does not imply
+95% simultaneous coverage of the entire curve.
 
 ## Confidence intervals around individual estimates
 
@@ -261,7 +388,7 @@ ggplot(cars, aes(x = Horsepower, y = Origin)) +
                     fun.args = list(conf.int = 0.95))
 ```
 
-Alternatively, a faded violin can provide an overview of each distribution.
+As a ggplot-specific alternative, a faded violin can provide an overview of each distribution.
 The point here represents the **mean**, unlike the median often shown inside a violin.
 
 ```{r}

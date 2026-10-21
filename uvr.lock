@@ -1,4 +1,4 @@
-manifest_fingerprint = "sha256:e4f7ad1e13eb9297955826042befc9e862de994a33392b664e444c9025918f0f"
+manifest_fingerprint = "sha256:c019d563437f1d32c0c257d66fd0355deb5adbd91761023e34556eba1fb86dd3"
 
 [r]
 version = "4.6.1"
@@ -468,11 +468,11 @@ requires = [
 
 [[package]]
 name = "foreign"
-version = "0.8.91"
+version = "0.8.92"
 source = "cran"
-raw_version = "0.8-91"
-url = "https://cran.r-project.org/src/contrib/foreign_0.8-91.tar.gz"
-checksum = "md5:be5e18fcf6eb2576136683851cb04294"
+raw_version = "0.8-92"
+url = "https://cran.r-project.org/src/contrib/foreign_0.8-92.tar.gz"
+checksum = "md5:a73df67916d91f45f2cd8ceb5d5dfb8d"
 
 [[package]]
 name = "fs"
@@ -1090,13 +1090,15 @@ requires = [
 
 [[package]]
 name = "readxl"
-version = "1.5.0-4.1"
+version = "1.6.0"
 source = "cran"
-raw_version = "1.5.0.1"
-url = "https://cran.r-project.org/src/contrib/readxl_1.5.0.1.tar.gz"
-checksum = "md5:c29e07dbcae56f627b3db7ce48a5577b"
+raw_version = "1.6.0"
+url = "https://cran.r-project.org/src/contrib/readxl_1.6.0.tar.gz"
+checksum = "md5:1d3f34e0d3f5f639aaf4286dfc631024"
 requires = [
     "cellranger",
+    "cli",
+    "rlang",
     "tibble",
     "cpp11",
     "progress",
@@ -1272,6 +1274,21 @@ source = "cran"
 raw_version = "0.8-0"
 url = "https://cran.r-project.org/src/contrib/selectr_0.8-0.tar.gz"
 checksum = "md5:06a8ec7b306aec30a99f3654c60d5f59"
+
+[[package]]
+name = "slider"
+version = "0.3.3"
+source = "cran"
+raw_version = "0.3.3"
+url = "https://cran.r-project.org/src/contrib/slider_0.3.3.tar.gz"
+checksum = "md5:9701f0b358755e89274d0462fad33894"
+requires = [
+    "cli",
+    "rlang",
+    "vctrs",
+    "warp",
+    "vctrs",
+]
 
 [[package]]
 name = "stringi"
@@ -1519,6 +1536,14 @@ requires = [
     "progress",
     "tzdb",
 ]
+
+[[package]]
+name = "warp"
+version = "0.2.3"
+source = "cran"
+raw_version = "0.2.3"
+url = "https://cran.r-project.org/src/contrib/warp_0.2.3.tar.gz"
+checksum = "md5:b5603af0a2d1b62511f85f5574c747a8"
 
 [[package]]
 name = "withr"

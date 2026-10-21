@@ -230,8 +230,10 @@ def build_chapter(quarto, project, output_dir, chapter):
         # Decks are standalone renders. Resolve chapter/figure references back
         # to the reading view rather than leaving unresolved book crossrefs.
         references = {}
-        for stem in CHAPTER_ASSETS:
-            source = (project / f"{stem}.qmd").read_text(encoding="utf-8")
+        # Reading-view targets can exist even when they have no slide deck.
+        for source_path in sorted(project.glob("*.qmd")):
+            stem = source_path.stem
+            source = source_path.read_text(encoding="utf-8")
             source = re.sub(r"<!--.*?-->", "", source, flags=re.DOTALL)
             heading = re.search(r"^# (.+?)(?:\s+\{[^}]*\})?\s*$", source, re.MULTILINE)
             title = heading.group(1) if heading else stem
