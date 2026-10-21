@@ -59,6 +59,9 @@ Here we use lines to summarize a pattern rather than connect every observation.
 or multiple groups obscure it.]{.slide-bullet}
 Trendlines are also called fitted lines or lines of best fit.
 The choice of line determines which features of the data are emphasized.
+Here we focus on the summaries themselves and keep the observations visible.
+In @sec-uncertainty, we add intervals and distinguish the spread of observations
+from uncertainty in an estimated mean.
 
 We use automobile specifications from the Vega datasets collection,
 with missing horsepower observations omitted and the year represented numerically.
@@ -147,8 +150,14 @@ This weights each annual mean equally, rather than weighting years by their numb
 
 ### Calculating a rolling average
 
+:::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
 In Altair, `transform_window()` can average the previous, current, and next annual mean.
-The explicit sort ensures that these are neighboring years.
+The explicit sort ensures that these are neighboring observed years.
+The window uses two years at the endpoints and three in the interior.
+If a year is missing within a group, neighboring rows need not be consecutive calendar years.
 
 ```{python}
 #| label: trends-rolling-window-alt
@@ -166,13 +175,14 @@ alt.Chart(mean_per_year).transform_window(
 ```
 
 Pandas also provides a `rolling()` operation.
-By default, this version requires all three values, so its line omits the end years.
-That differs from the smaller windows used at the edges by the Altair example.
+Setting `min_periods=1` uses the available annual means at the endpoints,
+matching the Altair window above. Without it, pandas requires three values
+and omits the endpoint estimates.
 
 ```{python}
 #| label: trends-rolling-pandas-alt
 mean_per_year['rolling_hp'] = mean_per_year.groupby('Origin')['Horsepower'].transform(
-    lambda values: values.rolling(3, center=True).mean()
+    lambda values: values.rolling(3, center=True, min_periods=1).mean()
 )
 alt.Chart(mean_per_year).mark_line().encode(
     x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
@@ -182,6 +192,31 @@ alt.Chart(mean_per_year).mark_line().encode(
 ```
 
 See also [Altair's rolling-average example](https://altair-viz.github.io/gallery/scatter_with_rolling_mean.html).
+
+#### ggplot {.slide-skip}
+
+We can calculate the same centered window using the previous and next annual means.
+`na.rm = TRUE` uses the two available means at the endpoints.
+
+```{r}
+#| label: trends-rolling-window-gg
+mean_per_year <- cars |>
+    group_by(Origin, Year) |>
+    summarise(Horsepower = mean(Horsepower), .groups = 'drop') |>
+    arrange(Origin, Year) |>
+    group_by(Origin) |>
+    mutate(rolling_hp = rowMeans(
+        cbind(lag(Horsepower), Horsepower, lead(Horsepower)), na.rm = TRUE
+    )) |>
+    ungroup()
+
+ggplot(mean_per_year, aes(x = Year, y = rolling_hp, color = Origin)) +
+    geom_line() +
+    scale_x_continuous(breaks = seq(1970, 1982, by = 2)) +
+    labs(y = 'Mean horsepower (rolling window)')
+```
+
+::::
 
 :::
 
@@ -219,6 +254,9 @@ points + points.mark_line(size=3).transform_regression(
 ### ggplot {.slide-skip}
 
 Set the smoothing method to `lm` for a linear model.
+`se = FALSE` hides ggplot's default confidence band, matching the line-only
+Altair example. That default band describes uncertainty in the fitted mean,
+not the standard deviation of individual observations.
 
 ```{r}
 #| label: trends-linear-fit-gg
@@ -263,13 +301,14 @@ The animation builds up the red fitted curve from local fits.
 #| slide-show: both
 #| slide-title: A local trend
 points + points.mark_line(size=3).transform_loess(
-    'Year', 'Horsepower', groupby=['Origin']
+    'Year', 'Horsepower', groupby=['Origin'], bandwidth=0.5
 )
 ```
 
 `bandwidth` controls the fraction of observations included in each neighborhood.
 Larger fractions usually give a smoother, more general curve.
-The default is 0.3; a bandwidth of 1 uses all observations in each neighborhood,
+The default is 0.3; here we explicitly use 0.5 in both languages.
+A bandwidth of 1 uses all observations in each neighborhood,
 but is not generally identical to a single global linear regression.
 
 ```{python}
@@ -284,17 +323,21 @@ points + points.mark_line(size=3).transform_loess(
 ### ggplot {.slide-skip}
 
 For these small groups, `geom_smooth()` uses LOESS by default.
-We set the method explicitly here.
-Its default span is 0.75, whereas Altair's default bandwidth is 0.3;
-the two implementations need not produce identical curves.
-The shaded area is a pointwise 95% confidence interval for the fitted mean,
-not an interval expected to contain 95% of individual cars.
+We set the method and neighborhood fraction explicitly here,
+and hide the confidence band as in the Altair example.
+We also request local linear fits and robust fitting to more closely match
+Vega's LOESS implementation; R otherwise uses local quadratic fits by default.
+The implementations still need not produce identical curves,
+especially with repeated x-values such as the model years here.
 
 ```{r}
 #| label: trends-loess-gg
 #| slide-show: both
 #| slide-title: A local trend
-car_points + geom_smooth(method = 'loess')
+car_points + geom_smooth(
+    method = 'loess', span = 0.5, se = FALSE, linewidth = 1.2,
+    method.args = list(degree = 1, family = 'symmetric')
+)
 ```
 
 The `span` parameter changes the fraction of observations in each neighborhood.
@@ -303,22 +346,10 @@ The `span` parameter changes the fraction of observations in each neighborhood.
 #| label: trends-loess-span-gg
 #| slide-show: both
 #| slide-title: Control the amount of smoothing
-car_points + geom_smooth(method = 'loess', se = FALSE, linewidth = 1.2, span = 1)
-```
-
-Map `fill` to the grouping variable to color the confidence bands by origin.
-
-```{r}
-#| label: trends-loess-fill-gg
-car_points + geom_smooth(aes(fill = Origin), method = 'loess')
-```
-
-Or remove the confidence bands when the purpose is to show only the fitted curves.
-Uncertainty in fitted relationships is discussed further in the chapter on uncertainty.
-
-```{r}
-#| label: trends-loess-no-interval-gg
-car_points + geom_smooth(method = 'loess', se = FALSE, linewidth = 1.2)
+car_points + geom_smooth(
+    method = 'loess', span = 0.8, se = FALSE, linewidth = 1.2,
+    method.args = list(degree = 1, family = 'symmetric')
+)
 ```
 
 ::::
