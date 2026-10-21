@@ -46,6 +46,14 @@ These percentages describe the probability of winning, not the predicted share o
 
 :::
 
+::: {.slide-fragment}
+
+> When called upon to judge probability,
+people actually judge something else
+and believe they have judged probability -- Daniel Kahneman
+
+:::
+
 ::: {.callout-default .ex-prompt}
 
 ## Interpreting a probabilistic forecast {.content-visible when-format="revealjs"}
@@ -156,8 +164,8 @@ we have enough observations to estimate their mean relatively precisely.
 | Display | What it describes |
 |:--|:--|
 | Mean ± one standard deviation (SD) | Spread of the individual observations around their mean |
-| Mean ± one standard error (SE) | Estimated sampling variability of the mean; not a 95% confidence interval |
-| 95% confidence interval (CI) for the mean | Uncertainty in the estimated population mean, using a stated interval method |
+| Mean ± one standard error (SE) | Uncertainty in the estimated mean; approximately a 68% CI under a normal approximation |
+| 95% confidence interval (CI) for the mean | An interval targeting 95% coverage; often approximately mean ± 1.96 SE, or calculated using another interval method |
 
 :::
 
@@ -188,6 +196,14 @@ calculates the mean for each resample,
 and uses the resulting distribution of means to construct an interval.]{.slide-bullet}
 Our focus is how to display and interpret these intervals;
 the plotting functions will do the resampling for us.
+
+The standard error describes uncertainty in the estimated mean.
+When its sampling distribution is approximately normal—as is often the case for
+sufficiently large samples—mean ± one SE is approximately a 68% confidence interval,
+and mean ± two SE is approximately a 95% confidence interval.
+Bootstrapping estimates this uncertainty, but does not guarantee a normal sampling distribution.
+Increasing the number of bootstrap resamples reduces simulation noise;
+it does not increase the original sample size or remove skewness in the sampling distribution.
 
 ### Interval endpoints are not walls
 
@@ -546,10 +562,7 @@ making those defaults explicit.
 #| label: uncertainty-acceleration-loess-gg
 #| slide-show: both
 #| slide-title: LOESS with a confidence band
-trend_points + geom_smooth(
-    method = 'loess', span = 0.75, se = TRUE, level = 0.95,
-    method.args = list(degree = 2, family = 'gaussian')
-)
+trend_points + geom_smooth(method = 'loess')
 ```
 
 For LOESS, ggplot uses an approximate pointwise confidence interval based on
@@ -618,8 +631,7 @@ the intervals are horizontal.
 set.seed(531)
 
 ggplot(cars, aes(x = Horsepower, y = Origin)) +
-    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,
-                    fun.args = list(conf.int = 0.95))
+    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot)
 ```
 
 :::
@@ -657,8 +669,7 @@ set.seed(531)
 
 ggplot(cars, aes(x = Horsepower, y = Origin)) +
     geom_point(shape = '|', color = 'grey', alpha = 0.5, size = 5) +
-    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,
-                    fun.args = list(conf.int = 0.95))
+    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot)
 ```
 
 As a ggplot-specific alternative, a faded violin can provide an overview of each distribution.
@@ -672,8 +683,7 @@ set.seed(531)
 
 ggplot(cars, aes(x = Horsepower, y = Origin)) +
     geom_violin(color = NA, fill = 'steelblue', alpha = 0.4) +
-    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,
-                    fun.args = list(conf.int = 0.95))
+    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot)
 ```
 
 :::
