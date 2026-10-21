@@ -76,7 +76,7 @@ with missing horsepower observations omitted and the year represented numericall
 #| slide-show: both
 #| slide-title: A trend hidden among observations
 points = alt.Chart(cars).mark_point(opacity=0.3).encode(
-    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
+    x=alt.X('Acceleration:Q').scale(zero=False).axis(format='d'),
     y='Horsepower',
     color='Origin'
 )
@@ -130,7 +130,7 @@ to avoid a noisy line driven by individual observations
 (similar to how a histogram needs a binned axis instead of counting 
 the number of observations for every exact value).
 
-:::: {.panel-tabset group="language"}
+::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
@@ -150,7 +150,7 @@ points + points.mark_line().encode(y='mean(Horsepower)')
 car_points + geom_line(stat = 'summary', fun = 'mean')
 ```
 
-::::
+:::
 
 Each annual mean is estimated separately:
 changing the cars observed in one year changes that year's mean, but not the others.
@@ -161,13 +161,38 @@ not fitting a shared regression to all the cars.
 
 For a continuous x variable, we could instead divide its range into bins
 and calculate the mean response within each bin.
-This uses fixed, non-overlapping neighborhoods.
-A moving or rolling mean uses overlapping neighborhoods that move along x.
-Because there are several cars at each year, we first calculate the annual means
-and then smooth those means within each origin.
-This weights each annual mean equally, rather than weighting years by their number of cars.
 
-::: {.deep-dive}
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-yearly-binned-mean-alt
+#| slide-show: both
+#| slide-title: Summarize each year
+points + points.mark_line().encode(
+    x=alt.X('Acceleration').bin(step=5),
+    y='mean(Horsepower)'
+)
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: trends-yearly-binned-mean-gg
+#| slide-show: both
+#| slide-title: Summarize each year
+car_points + geom_line(stat = 'summary_bin', fun = 'mean', binwidth=5)
+```
+
+:::
+
+Binning uses fixed, non-overlapping neighborhoods.
+More commonly for trends lines we would use overlapping neighborhoods that move along the axis;
+this is commonly referred to as a moving or rolling mean.
+Here we sort the individual cars by year and average neighboring observations,
+separately for each origin. Each car included in a window receives equal weight.
+This is an observation-based window, not a fixed number of calendar years.
 
 ### Calculating a rolling mean
 
@@ -175,63 +200,44 @@ This weights each annual mean equally, rather than weighting years by their numb
 
 #### Altair {.slide-skip}
 
-In Altair, `transform_window()` can average the previous, current, and next annual mean.
-The explicit sort ensures that these are neighboring observed years.
-The window uses two years at the endpoints and three in the interior.
-If a year is missing within a group, neighboring rows need not be consecutive calendar years.
+`frame=[-20, 20]` starts with the preceding 20 observations, the current observation,
+and the following 20 observations in year order, within each origin.
+At the endpoints, it uses the available observations.
 
 ```{python}
 #| label: trends-rolling-window-alt
-mean_per_year = cars.groupby(['Origin', 'Year'])['Horsepower'].mean().reset_index()
-alt.Chart(mean_per_year).transform_window(
-    mean_hp='mean(Horsepower)',
-    frame=[-1, 1],
-    sort=[alt.SortField('Year')],
+alt.Chart(cars).transform_window(
+    rolling_hp='mean(Horsepower)',
+    frame=[-30, 30],
+    sort=[alt.SortField('Acceleration')],
     groupby=['Origin']
 ).mark_line().encode(
-    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
-    y='mean_hp:Q',
+    x=alt.X('Acceleration:Q').scale(zero=False).axis(format='d'),
+    y='rolling_hp:Q',
     color='Origin'
 )
 ```
-
-Pandas also provides a `rolling()` operation.
-Setting `min_periods=1` uses the available annual means at the endpoints,
-matching the Altair window above. Without it, pandas requires three values
-and omits the endpoint estimates.
-
-```{python}
-#| label: trends-rolling-pandas-alt
-mean_per_year['rolling_hp'] = mean_per_year.groupby('Origin')['Horsepower'].transform(
-    lambda values: values.rolling(3, center=True, min_periods=1).mean()
-)
-alt.Chart(mean_per_year).mark_line().encode(
-    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),
-    y='rolling_hp',
-    color='Origin'
-)
-```
-
-See also [Altair's rolling-average example](https://altair-viz.github.io/gallery/scatter_with_rolling_mean.html).
 
 #### ggplot {.slide-skip}
 
-We can calculate the same centered window using the previous and next annual means.
-`na.rm = TRUE` uses the two available means at the endpoints.
+There is no built-in way to plot a rolling mean in ggplot,
+so instead we calculate the means before plotting.
+For each row, we find the years at the window's endpoints and include all cars
+between those years.
 
 ```{r}
 #| label: trends-rolling-window-gg
-mean_per_year <- cars |>
-    group_by(Origin, Year) |>
-    summarise(Horsepower = mean(Horsepower), .groups = 'drop') |>
+rolling_cars <- cars |>
     arrange(Origin, Year) |>
     group_by(Origin) |>
-    mutate(rolling_hp = rowMeans(
-        cbind(lag(Horsepower), Horsepower, lead(Horsepower)), na.rm = TRUE
-    )) |>
+    mutate(rolling_hp = map_dbl(seq_along(Horsepower), function(i) {
+        first_year <- Year[max(1, i - 15)]
+        last_year <- Year[min(length(Year), i + 15)]
+        mean(Horsepower[Year >= first_year & Year <= last_year])
+    })) |>
     ungroup()
 
-ggplot(mean_per_year, aes(x = Year, y = rolling_hp, color = Origin)) +
+ggplot(rolling_cars, aes(x = Year, y = rolling_hp, color = Origin)) +
     geom_line() +
     scale_x_continuous(breaks = seq(1970, 1982, by = 2)) +
     labs(y = 'Mean horsepower (rolling window)')
