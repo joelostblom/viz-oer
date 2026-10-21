@@ -1313,113 +1313,157 @@
     ]
   },
   {
-    "objectID": "16_uncertainty.html",
-    "href": "16_uncertainty.html",
-    "title": "16  Uncertainty",
+    "objectID": "16_trends.html",
+    "href": "16_trends.html",
+    "title": "16  Trends",
     "section": "",
-    "text": "Material is being finalized before it is uploaded",
+    "text": "16.1 Why bother?\nIn Chapter 6, lines connected observations to show relationships and changes. Here we use lines to summarize a pattern rather than connect every observation. A trendline can make a general pattern easier to see when individual observations or multiple groups obscure it. Trendlines are also called fitted lines or lines of best fit. The choice of line determines which features of the data are emphasized. Here we focus on the summaries themselves and keep the observations visible. In Chapter 17, we add intervals and distinguish the spread of observations from uncertainty in an estimated mean.\nWe use automobile specifications from the Vega datasets collection, with missing horsepower observations omitted and the year represented numerically.",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Uncertainty</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
     ]
   },
   {
-    "objectID": "17_interactivity.html",
-    "href": "17_interactivity.html",
-    "title": "17  Interactivity",
-    "section": "",
-    "text": "Material is being finalized before it is uploaded",
-    "crumbs": [
-      "Extensions & applications",
-      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Interactivity</span>"
-    ]
-  },
-  {
-    "objectID": "18_trends.html",
-    "href": "18_trends.html",
-    "title": "18  Trends",
-    "section": "",
-    "text": "18.1 Why bother?\nIn Chapter 6, lines connected observations to show relationships and changes. Here we use lines to summarize a pattern rather than connect every observation. A trendline can make a general pattern easier to see when individual observations or multiple groups obscure it. Trendlines are also called fitted lines or lines of best fit. The choice of line determines which features of the data are emphasized.\nWe use automobile specifications from the Vega datasets collection, with missing horsepower observations omitted and the year represented numerically.",
-    "crumbs": [
-      "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
-    ]
-  },
-  {
-    "objectID": "18_trends.html#why-bother",
-    "href": "18_trends.html#why-bother",
-    "title": "18  Trends",
+    "objectID": "16_trends.html#why-bother",
+    "href": "16_trends.html#why-bother",
+    "title": "16  Trends",
     "section": "",
     "text": "Altairggplot\n\n\n\npoints = alt.Chart(cars).mark_point(opacity=0.3).encode(\n    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),\n    y='Horsepower',\n    color='Origin'\n)\npoints\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nConnecting every observation does not provide a useful summary of the trend.\n\npoints + points.mark_line()\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\n\ncar_points &lt;- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin)) +\n    geom_point(alpha = 0.3) +\n    scale_x_continuous(breaks = seq(1970, 1982, by = 2))\ncar_points\n\n\n\n\n\n\n\n\n\ncar_points + geom_line()",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
     ]
   },
   {
-    "objectID": "18_trends.html#means-and-rolling-averages",
-    "href": "18_trends.html#means-and-rolling-averages",
-    "title": "18  Trends",
-    "section": "18.2 Means and rolling averages",
-    "text": "18.2 Means and rolling averages\nA simple summary is the mean horsepower for each year and origin. This works here because each year has several observations. For a more continuous x variable, binning or smoothing may be needed to avoid a noisy line driven by individual observations.\n\nAltairggplot\n\n\n\npoints + points.mark_line().encode(y='mean(Horsepower)')\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\n\ncar_points + geom_line(stat = 'summary', fun = 'mean')\n\n\n\n\n\n\n\n\n\n\n\nA moving or rolling average uses a neighborhood of observations. Because there are several cars at each year, we first calculate the annual means and then smooth those means within each origin. This weights each annual mean equally, rather than weighting years by their number of cars.\n\n\n\n\n\n\nDeep-diveDeep dive\n\n\n\n\n\n\nCalculating a rolling average\nIn Altair, transform_window() can average the previous, current, and next annual mean. The explicit sort ensures that these are neighboring years.\n\nmean_per_year = cars.groupby(['Origin', 'Year'])['Horsepower'].mean().reset_index()\nalt.Chart(mean_per_year).transform_window(\n    mean_hp='mean(Horsepower)',\n    frame=[-1, 1],\n    sort=[alt.SortField('Year')],\n    groupby=['Origin']\n).mark_line().encode(\n    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),\n    y='mean_hp:Q',\n    color='Origin'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nPandas also provides a rolling() operation. By default, this version requires all three values, so its line omits the end years. That differs from the smaller windows used at the edges by the Altair example.\n\nmean_per_year['rolling_hp'] = mean_per_year.groupby('Origin')['Horsepower'].transform(\n    lambda values: values.rolling(3, center=True).mean()\n)\nalt.Chart(mean_per_year).mark_line().encode(\n    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),\n    y='rolling_hp',\n    color='Origin'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSee also Altair’s rolling-average example.",
+    "objectID": "16_trends.html#means-and-rolling-averages",
+    "href": "16_trends.html#means-and-rolling-averages",
+    "title": "16  Trends",
+    "section": "16.2 Means and rolling averages",
+    "text": "16.2 Means and rolling averages\nA simple summary is the mean horsepower for each year and origin. This works here because each year has several observations. For a more continuous x variable, binning or smoothing may be needed to avoid a noisy line driven by individual observations.\n\nAltairggplot\n\n\n\npoints + points.mark_line().encode(y='mean(Horsepower)')\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\n\ncar_points + geom_line(stat = 'summary', fun = 'mean')\n\n\n\n\n\n\n\n\n\n\n\nA moving or rolling average uses a neighborhood of observations. Because there are several cars at each year, we first calculate the annual means and then smooth those means within each origin. This weights each annual mean equally, rather than weighting years by their number of cars.\n\n\n\n\n\n\nDeep-diveDeep dive\n\n\n\n\n\n\nCalculating a rolling average\n\nAltairggplot\n\n\nIn Altair, transform_window() can average the previous, current, and next annual mean. The explicit sort ensures that these are neighboring observed years. The window uses two years at the endpoints and three in the interior. If a year is missing within a group, neighboring rows need not be consecutive calendar years.\n\nmean_per_year = cars.groupby(['Origin', 'Year'])['Horsepower'].mean().reset_index()\nalt.Chart(mean_per_year).transform_window(\n    mean_hp='mean(Horsepower)',\n    frame=[-1, 1],\n    sort=[alt.SortField('Year')],\n    groupby=['Origin']\n).mark_line().encode(\n    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),\n    y='mean_hp:Q',\n    color='Origin'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nPandas also provides a rolling() operation. Setting min_periods=1 uses the available annual means at the endpoints, matching the Altair window above. Without it, pandas requires three values and omits the endpoint estimates.\n\nmean_per_year['rolling_hp'] = mean_per_year.groupby('Origin')['Horsepower'].transform(\n    lambda values: values.rolling(3, center=True, min_periods=1).mean()\n)\nalt.Chart(mean_per_year).mark_line().encode(\n    x=alt.X('Year:Q').scale(zero=False).axis(format='d'),\n    y='rolling_hp',\n    color='Origin'\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nSee also Altair’s rolling-average example.\n\n\nWe can calculate the same centered window using the previous and next annual means. na.rm = TRUE uses the two available means at the endpoints.\n\nmean_per_year &lt;- cars |&gt;\n    group_by(Origin, Year) |&gt;\n    summarise(Horsepower = mean(Horsepower), .groups = 'drop') |&gt;\n    arrange(Origin, Year) |&gt;\n    group_by(Origin) |&gt;\n    mutate(rolling_hp = rowMeans(\n        cbind(lag(Horsepower), Horsepower, lead(Horsepower)), na.rm = TRUE\n    )) |&gt;\n    ungroup()\n\nggplot(mean_per_year, aes(x = Year, y = rolling_hp, color = Origin)) +\n    geom_line() +\n    scale_x_continuous(breaks = seq(1970, 1982, by = 2)) +\n    labs(y = 'Mean horsepower (rolling window)')",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
     ]
   },
   {
-    "objectID": "18_trends.html#regression-lines",
-    "href": "18_trends.html#regression-lines",
-    "title": "18  Trends",
-    "section": "18.3 Regression lines",
-    "text": "18.3 Regression lines\nAnother way to show a trend is regression. Linear least-squares regression fits a straight line by minimizing the sum of squared vertical deviations from the observations to the line.\n\nAltairggplot\n\n\n\npoints + points.mark_line(size=3).transform_regression(\n    'Year', 'Horsepower', groupby=['Origin']\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nRegression is not restricted to straight lines. For example, a polynomial of order two gives a quadratic fit.\n\npoints + points.mark_line(size=3).transform_regression(\n    'Year', 'Horsepower', groupby=['Origin'], method='poly', order=2\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nSet the smoothing method to lm for a linear model.\n\ncar_points + geom_smooth(method = 'lm', se = FALSE, linewidth = 1.2)\n\n\n\n\n\n\n\n\nThe formula can be changed to fit a polynomial.\n\ncar_points +\n    geom_smooth(method = 'lm', formula = y ~ poly(x, 2), se = FALSE, linewidth = 1.2)",
+    "objectID": "16_trends.html#regression-lines",
+    "href": "16_trends.html#regression-lines",
+    "title": "16  Trends",
+    "section": "16.3 Regression lines",
+    "text": "16.3 Regression lines\nAnother way to show a trend is regression. Linear least-squares regression fits a straight line by minimizing the sum of squared vertical deviations from the observations to the line.\n\nAltairggplot\n\n\n\npoints + points.mark_line(size=3).transform_regression(\n    'Year', 'Horsepower', groupby=['Origin']\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nRegression is not restricted to straight lines. For example, a polynomial of order two gives a quadratic fit.\n\npoints + points.mark_line(size=3).transform_regression(\n    'Year', 'Horsepower', groupby=['Origin'], method='poly', order=2\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nSet the smoothing method to lm for a linear model. se = FALSE hides ggplot’s default confidence band, matching the line-only Altair example. That default band describes uncertainty in the fitted mean, not the standard deviation of individual observations.\n\ncar_points + geom_smooth(method = 'lm', se = FALSE, linewidth = 1.2)\n\n\n\n\n\n\n\n\nThe formula can be changed to fit a polynomial.\n\ncar_points +\n    geom_smooth(method = 'lm', formula = y ~ poly(x, 2), se = FALSE, linewidth = 1.2)",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
     ]
   },
   {
-    "objectID": "18_trends.html#local-smoothing",
-    "href": "18_trends.html#local-smoothing",
-    "title": "18  Trends",
-    "section": "18.4 Local smoothing",
-    "text": "18.4 Local smoothing\nSometimes one equation is a poor description of the whole dataset. Local regression fits nearby observations in overlapping neighborhoods, allowing the trend to change across the x-axis. This is usually called LOESS (locally estimated scatterplot smoothing) or LOWESS (locally weighted scatterplot smoothing). The animation builds up the red fitted curve from local fits.\n\n\n\n\nA local regression curve is assembled by moving a fitting window across the observations. Animation by Rafael Irizarry, from Simply Statistics.\n\n\n\n\nAltairggplot\n\n\n\npoints + points.mark_line(size=3).transform_loess(\n    'Year', 'Horsepower', groupby=['Origin']\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nbandwidth controls the fraction of observations included in each neighborhood. Larger fractions usually give a smoother, more general curve. The default is 0.3; a bandwidth of 1 uses all observations in each neighborhood, but is not generally identical to a single global linear regression.\n\npoints + points.mark_line(size=3).transform_loess(\n    'Year', 'Horsepower', groupby=['Origin'], bandwidth=0.8\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nFor these small groups, geom_smooth() uses LOESS by default. We set the method explicitly here. Its default span is 0.75, whereas Altair’s default bandwidth is 0.3; the two implementations need not produce identical curves. The shaded area is a pointwise 95% confidence interval for the fitted mean, not an interval expected to contain 95% of individual cars.\n\ncar_points + geom_smooth(method = 'loess')\n\n\n\n\n\n\n\n\nThe span parameter changes the fraction of observations in each neighborhood.\n\ncar_points + geom_smooth(method = 'loess', se = FALSE, linewidth = 1.2, span = 1)\n\n\n\n\n\n\n\n\nMap fill to the grouping variable to color the confidence bands by origin.\n\ncar_points + geom_smooth(aes(fill = Origin), method = 'loess')\n\n\n\n\n\n\n\n\nOr remove the confidence bands when the purpose is to show only the fitted curves. Uncertainty in fitted relationships is discussed further in the chapter on uncertainty.\n\ncar_points + geom_smooth(method = 'loess', se = FALSE, linewidth = 1.2)\n\n\n\n\n\n\n\n\n\n\n\nThe following animations illustrate the qualitative effect of narrower and wider weighting neighborhoods in a different LOWESS implementation. Its Gaussian-width parameter, \\(\\sigma\\), is not the same parameter as Altair’s bandwidth or ggplot’s span.\n\n\n\n\nA narrower weighting neighborhood follows more local variation. Source: scikit-lego.\n\n\n\n\n\nA wider weighting neighborhood produces a smoother curve. Source: scikit-lego.",
+    "objectID": "16_trends.html#local-smoothing",
+    "href": "16_trends.html#local-smoothing",
+    "title": "16  Trends",
+    "section": "16.4 Local smoothing",
+    "text": "16.4 Local smoothing\nSometimes one equation is a poor description of the whole dataset. Local regression fits nearby observations in overlapping neighborhoods, allowing the trend to change across the x-axis. This is usually called LOESS (locally estimated scatterplot smoothing) or LOWESS (locally weighted scatterplot smoothing). The animation builds up the red fitted curve from local fits.\n\n\n\n\nA local regression curve is assembled by moving a fitting window across the observations. Animation by Rafael Irizarry, from Simply Statistics.\n\n\n\n\nAltairggplot\n\n\n\npoints + points.mark_line(size=3).transform_loess(\n    'Year', 'Horsepower', groupby=['Origin'], bandwidth=0.5\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nbandwidth controls the fraction of observations included in each neighborhood. Larger fractions usually give a smoother, more general curve. The default is 0.3; here we explicitly use 0.5 in both languages. A bandwidth of 1 uses all observations in each neighborhood, but is not generally identical to a single global linear regression.\n\npoints + points.mark_line(size=3).transform_loess(\n    'Year', 'Horsepower', groupby=['Origin'], bandwidth=0.8\n)\n\n\n\n\n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nFor these small groups, geom_smooth() uses LOESS by default. We set the method and neighborhood fraction explicitly here, and hide the confidence band as in the Altair example. We also request local linear fits and robust fitting to more closely match Vega’s LOESS implementation; R otherwise uses local quadratic fits by default. The implementations still need not produce identical curves, especially with repeated x-values such as the model years here.\n\ncar_points + geom_smooth(\n    method = 'loess', span = 0.5, se = FALSE, linewidth = 1.2,\n    method.args = list(degree = 1, family = 'symmetric')\n)\n\n\n\n\n\n\n\n\nThe span parameter changes the fraction of observations in each neighborhood.\n\ncar_points + geom_smooth(\n    method = 'loess', span = 0.8, se = FALSE, linewidth = 1.2,\n    method.args = list(degree = 1, family = 'symmetric')\n)\n\n\n\n\n\n\n\n\n\n\n\nThe following animations illustrate the qualitative effect of narrower and wider weighting neighborhoods in a different LOWESS implementation. Its Gaussian-width parameter, \\(\\sigma\\), is not the same parameter as Altair’s bandwidth or ggplot’s span.\n\n\n\n\nA narrower weighting neighborhood follows more local variation. Source: scikit-lego.\n\n\n\n\n\nA wider weighting neighborhood produces a smoother curve. Source: scikit-lego.",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
     ]
   },
   {
-    "objectID": "18_trends.html#compare-the-questions-answered-by-different-summaries",
-    "href": "18_trends.html#compare-the-questions-answered-by-different-summaries",
-    "title": "18  Trends",
-    "section": "18.5 Compare the questions answered by different summaries",
-    "text": "18.5 Compare the questions answered by different summaries\n\n\n\nMean-based summary\n\n\nLinear regression\n\n\nLocal smoothing\n\n\n\n\nThese comparison figures from the communication lecture show how the choice of summary changes the pattern a reader sees. Decide whether the audience needs year-specific averages, a global trend, or variation within the observed range.",
+    "objectID": "16_trends.html#compare-the-questions-answered-by-different-summaries",
+    "href": "16_trends.html#compare-the-questions-answered-by-different-summaries",
+    "title": "16  Trends",
+    "section": "16.5 Compare the questions answered by different summaries",
+    "text": "16.5 Compare the questions answered by different summaries\n\n\n\nMean-based summary\n\n\nLinear regression\n\n\nLocal smoothing\n\n\n\n\nThese comparison figures from the communication lecture show how the choice of summary changes the pattern a reader sees. Decide whether the audience needs year-specific averages, a global trend, or variation within the observed range.",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
     ]
   },
   {
-    "objectID": "18_trends.html#when-to-choose-which-trendline",
-    "href": "18_trends.html#when-to-choose-which-trendline",
-    "title": "18  Trends",
-    "section": "18.6 When to choose which trendline?",
-    "text": "18.6 When to choose which trendline?\n\n\nMeans and rolling averages are useful when the summarized values should have a straightforward interpretation. They can be particularly accessible to a general audience.\nRegression models are useful when a simple equation is a reasonable description of the relationship. Predictions beyond the observed range rely on that model continuing to hold, and become more uncertain as they move further from the data.\nLOESS is useful for describing patterns within the observed data without choosing one global equation. It often resembles the trend a reader would sketch by eye, but depends on the smoothing setting and is poorly suited to extrapolation.",
+    "objectID": "16_trends.html#when-to-choose-which-trendline",
+    "href": "16_trends.html#when-to-choose-which-trendline",
+    "title": "16  Trends",
+    "section": "16.6 When to choose which trendline?",
+    "text": "16.6 When to choose which trendline?\n\n\nMeans and rolling averages are useful when the summarized values should have a straightforward interpretation. They can be particularly accessible to a general audience.\nRegression models are useful when a simple equation is a reasonable description of the relationship. Predictions beyond the observed range rely on that model continuing to hold, and become more uncertain as they move further from the data.\nLOESS is useful for describing patterns within the observed data without choosing one global equation. It often resembles the trend a reader would sketch by eye, but depends on the smoothing setting and is poorly suited to extrapolation.",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
     ]
   },
   {
-    "objectID": "18_trends.html#further-reading",
-    "href": "18_trends.html#further-reading",
-    "title": "18  Trends",
-    "section": "18.7 Further reading",
-    "text": "18.7 Further reading\n\nVisualizing trends.",
+    "objectID": "16_trends.html#further-reading",
+    "href": "16_trends.html#further-reading",
+    "title": "16  Trends",
+    "section": "16.7 Further reading",
+    "text": "16.7 Further reading\n\nVisualizing trends.",
     "crumbs": [
       "Extensions & applications",
-      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Trends</span>"
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Trends</span>"
+    ]
+  },
+  {
+    "objectID": "17_uncertainty.html",
+    "href": "17_uncertainty.html",
+    "title": "17  Uncertainty",
+    "section": "",
+    "text": "17.1 Why bother?\nIn Chapter 7, we combined measures of central tendency with indications of how the observations vary. But the spread of the observations and the uncertainty in an estimated mean answer different questions. For example, cars can have very different horsepower values even when we have enough observations to estimate their mean relatively precisely.\nA confidence interval describes uncertainty in an estimate. For a 95% confidence interval, the intended interpretation is that if we repeatedly sampled data and constructed intervals in the same way, about 95% of those intervals would contain the population quantity, provided the method’s assumptions hold. It is not an interval containing 95% of the individual observations.\nHere we will use bootstrap confidence intervals for the mean. Bootstrapping resamples observations with replacement from the observed data, calculates the mean for each resample, and uses the resulting distribution of means to construct an interval. Our focus is how to display and interpret these intervals; the plotting functions will do the resampling for us.",
+    "crumbs": [
+      "Extensions & applications",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Uncertainty</span>"
+    ]
+  },
+  {
+    "objectID": "17_uncertainty.html#from-observations-to-confidence-bands",
+    "href": "17_uncertainty.html#from-observations-to-confidence-bands",
+    "title": "17  Uncertainty",
+    "section": "17.2 From observations to confidence bands",
+    "text": "17.2 From observations to confidence bands\nWe will use the cars dataset from Vega, available here as a local CSV. Each row describes a car, including its model year, horsepower, and origin. We omit rows with missing horsepower for these examples.\n\nAltairggplot\n\n\n\nimport altair as alt\nimport pandas as pd\n\ncars = pd.read_csv('data/vega-cars.csv', parse_dates=['Year']).dropna(subset=['Horsepower'])\n\npoints = alt.Chart(cars).mark_point(opacity=0.3).encode(\n    x='Year:T',\n    y='Horsepower:Q',\n    color='Origin:N'\n)\npoints\n\n\n\n\n  \n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\n\nlibrary(tidyverse)\n\ncars &lt;- read_csv('data/vega-cars.csv') |&gt;\n    drop_na(Horsepower)\n\npoints &lt;- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin)) +\n    geom_point(alpha = 0.3)\npoints\n\n\n\n\n\n\n\n\n\n\n\nThese points show the variation among cars. To summarize the uncertainty in the mean horsepower for each origin and year, we can draw a confidence band. At each year, the lower and upper edges show the endpoints of an interval; shading connects those intervals across years.\n\nAltairggplot\n\n\nmark_errorband() calculates and draws the interval. Setting extent='ci' requests a 95% bootstrap confidence interval for the mean, calculated separately for each combination of year and origin. The default extent is 'stderr', which instead shows the mean plus or minus one standard error. Use 'stdev' to show one standard deviation. These choices have different meanings, so specify the extent explicitly.\n\nband = points.mark_errorband(extent='ci', opacity=0.3)\nband\n\n\n\n\n  \n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nIn ggplot, we can create confidence bands with geom_ribbon(). Previously we passed summary functions such as mean to fun. Here we use fun.data, because a ribbon needs both a lower and an upper bound.\nThe mean_cl_boot function returns three values: y, ymin, and ymax. These are the mean and the lower and upper endpoints of its bootstrap confidence interval. The ribbon uses the two endpoints. This function requires the Hmisc package, which is included in the textbook’s R environment.\n\nset.seed(531)\n\nband &lt;- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin, fill = Origin)) +\n    geom_ribbon(stat = 'summary', fun.data = mean_cl_boot,\n                fun.args = list(conf.int = 0.95), alpha = 0.3, color = NA)\nband\n\n\n\n\n\n\n\n\ncolor = NA removes the ribbon’s boundary lines, leaving only the shaded area. The random seed makes the R bootstrap reproducible. Both libraries use bootstrap intervals, but their endpoints can differ slightly because the resamples are random and are generated separately.\n\n\n\n\nAdding the estimated mean\nA band shows the interval, but it is also helpful to show the estimate itself. We can add a line for the mean, using the same grouping as the band.\n\nAltairggplot\n\n\n\nmean_line = points.mark_line().encode(y='mean(Horsepower):Q')\nband + mean_line\n\n\n\n\n  \n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\n\nset.seed(531)\nband + geom_line(stat = 'summary', fun = mean)\n\n\n\n\n\n\n\n\n\n\n\nThese are pointwise intervals: each interval is calculated separately for one origin in one year. Connecting them does not turn them into a simultaneous 95% confidence band for the entire trajectory. Similarly, the connecting segments do not establish the mean or its uncertainty at unobserved times, as discussed in Chapter 6.\nThe cars provide a convenient illustration of the plotting tools. Interpreting these intervals as uncertainty about a broader population would also require justifying how the cars were sampled and whether resampling individual rows is appropriate.",
+    "crumbs": [
+      "Extensions & applications",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Uncertainty</span>"
+    ]
+  },
+  {
+    "objectID": "17_uncertainty.html#confidence-intervals-around-individual-estimates",
+    "href": "17_uncertainty.html#confidence-intervals-around-individual-estimates",
+    "title": "17  Uncertainty",
+    "section": "17.3 Confidence intervals around individual estimates",
+    "text": "17.3 Confidence intervals around individual estimates\nFor comparisons between categories, an interval around a point can be easier to read than a band. Here we pool the years and estimate mean horsepower separately for each origin. This answers a different question from the preceding year-by-year comparison.\n\nAltairggplot\n\n\nmark_errorbar() displays an interval around a single estimate. As with the band, extent='ci' requests a 95% bootstrap interval for the mean.\n\nerr_bars = alt.Chart(cars).mark_errorbar(\n    extent='ci', rule=alt.LineConfig(strokeWidth=2)\n).encode(\n    x='Horsepower:Q',\n    y='Origin:N'\n)\nerr_bars\n\n\n\n\n  \n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\nWe can add the mean as a point.\n\nmean_points = err_bars.mark_point(color='black', filled=True).encode(\n    x='mean(Horsepower):Q'\n)\nerr_bars + mean_points\n\n\n\n\n  \n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\ngeom_pointrange() displays both the mean and its interval. It uses all three values returned by mean_cl_boot. With horsepower on the x-axis and origin on the y-axis, the intervals are horizontal.\n\nset.seed(531)\n\nggplot(cars, aes(x = Horsepower, y = Origin)) +\n    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,\n                    fun.args = list(conf.int = 0.95))",
+    "crumbs": [
+      "Extensions & applications",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Uncertainty</span>"
+    ]
+  },
+  {
+    "objectID": "17_uncertainty.html#showing-the-observations-alongside-uncertainty",
+    "href": "17_uncertainty.html#showing-the-observations-alongside-uncertainty",
+    "title": "17  Uncertainty",
+    "section": "17.4 Showing the observations alongside uncertainty",
+    "text": "17.4 Showing the observations alongside uncertainty\nA mean and its confidence interval can still hide the distribution of the data. Adding faded marks for individual observations lets the reader distinguish the spread of the cars’ horsepower values from uncertainty in their mean.\n\nAltairggplot\n\n\nDraw the observations as light ticks first, so that the interval and mean remain visible on top.\n\nobservations = err_bars.mark_tick(color='lightgrey', opacity=0.5)\nobservations + err_bars + mean_points\n\n\n\n\n  \n  \n  \n  \n  \n\n\n  \n  \n\n\n\n\n\n\nWe can use a vertical bar as the point shape to create the same kind of display.\n\nset.seed(531)\n\nggplot(cars, aes(x = Horsepower, y = Origin)) +\n    geom_point(shape = '|', color = 'grey', alpha = 0.5, size = 5) +\n    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,\n                    fun.args = list(conf.int = 0.95))\n\n\n\n\n\n\n\n\nAlternatively, a faded violin can provide an overview of each distribution. The point here represents the mean, unlike the median often shown inside a violin.\n\nset.seed(531)\n\nggplot(cars, aes(x = Horsepower, y = Origin)) +\n    geom_violin(color = NA, fill = 'steelblue', alpha = 0.4) +\n    geom_pointrange(stat = 'summary', fun.data = mean_cl_boot,\n                    fun.args = list(conf.int = 0.95))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEx-promptExercise 1\n\n\n\n\n\n\nMost of the individual cars fall outside the confidence interval for their origin’s mean. Does this indicate that the interval was calculated incorrectly? What would you expect to happen to the interval if we collected more independent observations from the same population, with a similar spread of horsepower values?\n\n\n\n\n\n\nEx-hintHint\n\n\n\n\n\n\nIs the interval describing variation among individual cars, or uncertainty in the mean horsepower?\n\n\n\n\n\n\nEx-solutionSolution\n\n\n\n\n\n\nNo. A confidence interval for the mean is not intended to contain 95% of the cars. The ticks and violin show the spread of individual observations; the interval describes uncertainty in the estimated mean. With more independent observations and similar variability, we generally expect the confidence interval to become narrower, even though the spread of individual horsepower values remains similar.\n\n\n\n\n\n\n\n\n\n\n\n\nAlways identify what an interval represents in its caption or accompanying text. Standard deviations, standard errors, and confidence intervals can be drawn with the same marks, but they answer different questions.",
+    "crumbs": [
+      "Extensions & applications",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Uncertainty</span>"
+    ]
+  },
+  {
+    "objectID": "17_uncertainty.html#further-reading",
+    "href": "17_uncertainty.html#further-reading",
+    "title": "17  Uncertainty",
+    "section": "17.5 Further reading",
+    "text": "17.5 Further reading\n\nFundamentals of Data Visualization: Visualizing uncertainty.",
+    "crumbs": [
+      "Extensions & applications",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Uncertainty</span>"
+    ]
+  },
+  {
+    "objectID": "18_interactivity.html",
+    "href": "18_interactivity.html",
+    "title": "18  Interactivity",
+    "section": "",
+    "text": "Material is being finalized before it is uploaded",
+    "crumbs": [
+      "Extensions & applications",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>Interactivity</span>"
     ]
   },
   {
