@@ -93,6 +93,8 @@ car_points
 
 :::
 
+## Why bother {.content-visible when-format="revealjs"}
+
 [Connecting every observation without any aggregation does not provide a useful summary of the trend]{.slide-bullet}.
 
 ::: {.panel-tabset group="language"}
@@ -117,7 +119,7 @@ car_points + geom_line()
 
 ## Means
 
-[A simple summary is the mean horsepower at each recorded acceleration time and origin.]{.slide-bullet}
+[A simple summary is the mean horsepower at each acceleration time and origin.]{.slide-bullet}
 [Some acceleration times occur repeatedly, but others have very few observations,]{.slide-bullet}
 resulting in [a noisy appearance of the line with many spikes
 that makes it hard to see the overall trend]{.slide-subbullet}
@@ -217,7 +219,7 @@ alt.Chart(cars).transform_window(
     sort=[alt.SortField('Acceleration')],
     groupby=['Origin']
 ).mark_line().encode(
-    x=alt.X('Acceleration:Q').scale(zero=False).title('Acceleration time (seconds)'),
+    x=alt.X('Acceleration:Q'),
     y='rolling_hp:Q',
     color='Origin'
 )
@@ -236,17 +238,17 @@ all cars between those values, including boundary ties as in Altair.
 #| slide-title: Rolling means
 rolling_cars <- cars |>
     arrange(Origin, Acceleration) |>
-    group_by(Origin) |>
-    mutate(rolling_hp = map_dbl(seq_along(Horsepower), function(i) {
-        lower <- Acceleration[max(1, i - 30)]
-        upper <- Acceleration[min(length(Acceleration), i + 30)]
-        mean(Horsepower[Acceleration >= lower & Acceleration <= upper])
-    })) |>
-    ungroup()
-
+    mutate(
+        rolling_hp = slider::slide_dbl(
+            Horsepower,
+            mean,
+            .before = 30,
+            .after = 30
+        ),
+        .by = Origin
+    )
 ggplot(rolling_cars, aes(x = Acceleration, y = rolling_hp, color = Origin)) +
-    geom_line() +
-    labs(x = 'Acceleration time (seconds)', y = 'Mean horsepower (rolling window)')
+    geom_line()
 ```
 
 ::::
@@ -322,7 +324,7 @@ The first subscript in $x_{i1}$ identifies the observation; the second identifie
 #| label: trends-linear-fit-alt
 #| slide-show: both
 #| slide-title: A linear trend
-points + points.mark_line(size=3).transform_regression(
+points + points.mark_line().transform_regression(
     'Acceleration', 'Horsepower', groupby=['Origin']
 )
 ```
@@ -337,7 +339,7 @@ which we will instead talk about in @sec-uncertainty.
 #| label: trends-linear-fit-gg
 #| slide-show: both
 #| slide-title: A linear trend
-car_points + geom_smooth(method = 'lm', se = FALSE, linewidth = 1.2)
+car_points + geom_smooth(method = 'lm', se = FALSE)
 ```
 
 :::
@@ -371,7 +373,7 @@ even though its graph can be curved in the original feature space.]{.slide-bulle
 #| label: trends-polynomial-fit-alt
 #| slide-show: both
 #| slide-title: A polynomial trend
-points + points.mark_line(size=3).transform_regression(
+points + points.mark_line().transform_regression(
     'Acceleration', 'Horsepower', groupby=['Origin'], method='poly', order=2
 )
 ```
@@ -383,7 +385,7 @@ points + points.mark_line(size=3).transform_regression(
 #| slide-show: both
 #| slide-title: A polynomial trend
 car_points +
-    geom_smooth(method = 'lm', formula = y ~ poly(x, 2), se = FALSE, linewidth = 1.2)
+    geom_smooth(method = 'lm', formula = y ~ poly(x, 2), se = FALSE)
 ```
 
 :::
@@ -424,7 +426,7 @@ Altair fits linear regression locally in each neighborhood in `transform_loess`.
 #| label: trends-loess-alt
 #| slide-show: both
 #| slide-title: A local trend
-points + points.mark_line(size=3).transform_loess(
+points + points.mark_line().transform_loess(
     'Acceleration',
     'Horsepower',
     groupby=['Origin'],
@@ -450,27 +452,26 @@ car_points + geom_smooth(method = 'loess', se = FALSE)
 
 :::
 
-::: {.content-visible when-format="revealjs" .slide-visual slide-title="LOESS defaults differ"}
+::: {.deep-dive}
+
+## Choosing the smoothing neighborhood size
 
 | Setting | Altair | ggplot |
 |:--|:--|:--|
 | Local fit | Linear | Quadratic |
 | Neighborhood fraction | `bandwidth=0.3` | `span=0.75` |
 
-The examples start with each library's defaults. Changing the neighborhood fraction
+The examples start with each library's defaults.
+Changing the neighborhood fraction
 does not by itself make the fits equivalent.
 
-:::
-
-## Choosing a smoothing neighborhood {.content-visible when-format="revealjs"}
-
-[We can control the fraction of observations included in each neighborhood.
-Larger fractions usually give a smoother, more general curve.]{.slide-bullet}
+We can control the fraction of observations included in each neighborhood.
+Larger fractions usually give a smoother, more general curve.
 Note that even if we were to include all observations in each neighborhood,
-[this would not generally be identical to a single global linear regression
-since all observations do not have the same weight.]{.slide-bullet}
+this would not generally be identical to a single global linear regression
+since all observations do not have the same weight.
 
-::: {.panel-tabset group="language"}
+:::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
@@ -480,9 +481,7 @@ it is set to 0.3.
 
 ```{python}
 #| label: trends-loess-bandwidth-alt
-#| slide-show: both
-#| slide-title: Control the amount of smoothing
-points + points.mark_line(size=3).transform_loess(
+points + points.mark_line().transform_loess(
     'Acceleration', 'Horsepower', groupby=['Origin'], bandwidth=0.75
 )
 ```
@@ -496,28 +495,24 @@ it is set as 0.75.
 
 ```{r}
 #| label: trends-loess-span-gg
-#| slide-show: both
-#| slide-title: Control the amount of smoothing
 car_points + geom_smooth(
-    method = 'loess', span = 0.3, se = FALSE, linewidth = 1.2,
+    method = 'loess', span = 0.3, se = FALSE,
     method.args = list(degree = 1, family = 'symmetric')
 )
 ```
 
-:::
+::::
 
 The following animations illustrate the qualitative effect of narrower and wider
 weighting neighborhoods in a different LOWESS implementation.
 Its Gaussian-width parameter, $\sigma$, is not the same parameter as Altair's bandwidth
 or ggplot's span.
 
-:::: {.slide-visual slide-title="Local variation and smoothness" slide-layout="columns"}
-
 ![A narrower weighting neighborhood follows more local variation. Source: [scikit-lego](https://scikit-lego.netlify.app/linear-models.html).](img/lowess-small-bandwidth.gif)
 
 ![A wider weighting neighborhood produces a smoother curve. Source: [scikit-lego](https://scikit-lego.netlify.app/linear-models.html).](img/lowess-large-bandwidth.gif)
 
-::::
+:::
 
 ::: {.deep-dive}
 
@@ -580,11 +575,11 @@ The same kernels can therefore reveal a changing density and a constant response
 ::::
 :::
 
-### Why fit a local slope?
+### Why fit a local slope? {.slide-skip}
 
-[Near the left edge of an increasing trend, most available neighbors lie to the right.
-A rolling mean averages their higher responses and can overestimate the response at the target.]{.slide-bullet}
-[A local linear fit can account for the slope and evaluate the line at the target instead.]{.slide-bullet}
+Near the left edge of an increasing trend, most available neighbors lie to the right.
+A rolling mean averages their higher responses and can overestimate the response at the target.
+A local linear fit can account for the slope and evaluate the line at the target instead
 For observations lying exactly on a straight line, it recovers that line wherever
 the neighborhood contains enough distinct, positively weighted x-values.
 A local mean can also reproduce a straight trend in a symmetric neighborhood,
