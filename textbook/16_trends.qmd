@@ -37,9 +37,7 @@ execute:
 import altair as alt
 import pandas as pd
 
-alt.data_transformers.enable('vegafusion')
-cars = pd.read_csv('data/vega-cars.csv', parse_dates=['Year']).dropna(subset=['Horsepower'])
-cars['Year'] = cars['Year'].dt.year
+cars = pd.read_csv('data/vega-cars.csv').dropna(subset=['Acceleration', 'Horsepower'])
 ```
 
 ```{r}
@@ -48,8 +46,7 @@ cars['Year'] = cars['Year'].dt.year
 library(tidyverse)
 theme_set(theme_gray(base_size = 14))
 cars <- read_csv('data/vega-cars.csv', show_col_types = FALSE) |>
-    filter(!is.na(Horsepower)) |>
-    mutate(Year = lubridate::year(Year))
+    drop_na(Acceleration, Horsepower)
 ```
 
 ## Why bother?
@@ -65,7 +62,10 @@ In @sec-uncertainty, we add intervals and distinguish the spread of observations
 from uncertainty in an estimated mean.
 
 We use automobile specifications from the Vega datasets collection,
-with missing horsepower observations omitted and the year represented numerically.
+with missing acceleration or horsepower observations omitted.
+`Acceleration` records the time in seconds to accelerate from 0 to 60 mph:
+a larger value means the car takes longer to reach that speed.
+We examine how horsepower varies with this acceleration time, separately by origin.
 
 ::: {.panel-tabset group="language"}
 
@@ -75,8 +75,8 @@ with missing horsepower observations omitted and the year represented numericall
 #| label: trends-car-points-alt
 #| slide-show: both
 #| slide-title: A trend hidden among observations
-points = alt.Chart(cars).mark_point(opacity=0.3).encode(
-    x=alt.X('Acceleration:Q').scale(zero=False).axis(format='d'),
+points = alt.Chart(cars).mark_circle(opacity=0.2).encode(
+    x=alt.X('Acceleration:Q').scale(zero=False).title('Acceleration time (seconds)'),
     y='Horsepower',
     color='Origin'
 )
@@ -89,9 +89,9 @@ points
 #| label: trends-car-points-gg
 #| slide-show: both
 #| slide-title: A trend hidden among observations
-car_points <- ggplot(cars, aes(x = Year, y = Horsepower, color = Origin)) +
-    geom_point(alpha = 0.3) +
-    scale_x_continuous(breaks = seq(1970, 1982, by = 2))
+car_points <- ggplot(cars, aes(x = Acceleration, y = Horsepower, color = Origin)) +
+    geom_point(alpha = 0.2) +
+    labs(x = 'Acceleration time (seconds)')
 car_points
 ```
 
@@ -123,55 +123,58 @@ car_points + geom_line()
 
 ## Means and rolling means
 
-A simple summary is the mean horsepower for each year and origin.
-This works here because each year has several observations.
-For a more continuous x variable, binning or smoothing may be needed
-to avoid a noisy line driven by individual observations
-(similar to how a histogram needs a binned axis instead of counting 
-the number of observations for every exact value).
+[A simple summary is the mean horsepower at each recorded acceleration time and origin.]{.slide-bullet}
+[Some acceleration times occur repeatedly, but others have very few observations.]{.slide-bullet}
+For a continuous x variable like this, binning or smoothing can help
+avoid a noisy line driven by individual observations
+(similar to how a histogram uses a binned axis instead of counting
+the number of observations at every exact value).
 
 ::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
 ```{python}
-#| label: trends-yearly-mean-alt
+#| label: trends-exact-mean-alt
 #| slide-show: both
-#| slide-title: Summarize each year
+#| slide-title: Summarize each acceleration time
 points + points.mark_line().encode(y='mean(Horsepower)')
 ```
 
 ### ggplot {.slide-skip}
 
 ```{r}
-#| label: trends-yearly-mean-gg
+#| label: trends-exact-mean-gg
 #| slide-show: both
-#| slide-title: Summarize each year
+#| slide-title: Summarize each acceleration time
 car_points + geom_line(stat = 'summary', fun = 'mean')
 ```
 
 :::
 
-Each annual mean is estimated separately:
-changing the cars observed in one year changes that year's mean, but not the others.
-Connecting the means does not change those estimates.
-If we read the connecting segments as estimates between years,
-we are adding a **piecewise-linear interpolation rule**,
-not fitting a shared regression to all the cars.
+## Connecting estimates versus fitting a relationship {.content-visible when-format="revealjs"}
+
+[Each mean is estimated separately:
+changing the horsepower values at one acceleration time changes that mean, but not the others.]{.slide-bullet}
+[Connecting the means does not change those estimates.]{.slide-bullet}
+If we read the connecting segments as estimates between recorded acceleration times,
+we are adding a [**piecewise-linear interpolation rule**,
+not fitting a shared regression to all the cars]{.slide-bullet}.
 
 For a continuous x variable, we could instead divide its range into bins
 and calculate the mean response within each bin.
+Here we use five-second intervals of acceleration time.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
 ```{python}
-#| label: trends-yearly-binned-mean-alt
+#| label: trends-binned-mean-alt
 #| slide-show: both
-#| slide-title: Summarize each year
+#| slide-title: Average within acceleration bins
 points + points.mark_line().encode(
-    x=alt.X('Acceleration').bin(step=5),
+    x=alt.X('Acceleration:Q').bin(step=5).title('Acceleration time (seconds)'),
     y='mean(Horsepower)'
 )
 ```
@@ -179,20 +182,26 @@ points + points.mark_line().encode(
 ### ggplot {.slide-skip}
 
 ```{r}
-#| label: trends-yearly-binned-mean-gg
+#| label: trends-binned-mean-gg
 #| slide-show: both
-#| slide-title: Summarize each year
-car_points + geom_line(stat = 'summary_bin', fun = 'mean', binwidth=5)
+#| slide-title: Average within acceleration bins
+car_points + geom_line(stat = 'summary_bin', fun = mean,
+                       binwidth = 5, boundary = 0, closed = 'left')
 ```
+
+`boundary = 0` aligns the bins to multiples of five seconds, and `closed = 'left'`
+includes each lower boundary and excludes the upper boundary, matching Altair's bins.
 
 :::
 
-Binning uses fixed, non-overlapping neighborhoods.
+## From bins to moving windows {.content-visible when-format="revealjs"}
+
+[Binning uses fixed, non-overlapping neighborhoods.]{.slide-bullet}
 More commonly for trends lines we would use overlapping neighborhoods that move along the axis;
 this is commonly referred to as a moving or rolling mean.
-Here we sort the individual cars by year and average neighboring observations,
-separately for each origin. Each car included in a window receives equal weight.
-This is an observation-based window, not a fixed number of calendar years.
+[Here we sort the individual cars by acceleration time and average neighboring observations,
+separately for each origin.]{.slide-bullet} Each car included in a window receives equal weight.
+[This is an observation-based window, not a fixed interval of acceleration times.]{.slide-bullet}
 
 ### Calculating a rolling mean
 
@@ -200,19 +209,23 @@ This is an observation-based window, not a fixed number of calendar years.
 
 #### Altair {.slide-skip}
 
-`frame=[-20, 20]` starts with the preceding 20 observations, the current observation,
-and the following 20 observations in year order, within each origin.
+`frame=[-30, 30]` starts with the preceding 30 observations, the current observation,
+and the following 30 observations in acceleration-time order, within each origin.
 At the endpoints, it uses the available observations.
+By default, Altair expands window boundaries to include ties in the sorting variable,
+so a window can include more than 61 cars when acceleration times repeat.
 
 ```{python}
 #| label: trends-rolling-window-alt
+#| slide-show: both
+#| slide-title: A centered rolling mean
 alt.Chart(cars).transform_window(
     rolling_hp='mean(Horsepower)',
     frame=[-30, 30],
     sort=[alt.SortField('Acceleration')],
     groupby=['Origin']
 ).mark_line().encode(
-    x=alt.X('Acceleration:Q').scale(zero=False).axis(format='d'),
+    x=alt.X('Acceleration:Q').scale(zero=False).title('Acceleration time (seconds)'),
     y='rolling_hp:Q',
     color='Origin'
 )
@@ -222,38 +235,87 @@ alt.Chart(cars).transform_window(
 
 There is no built-in way to plot a rolling mean in ggplot,
 so instead we calculate the means before plotting.
-For each row, we find the years at the window's endpoints and include all cars
-between those years.
+For each row, we find the acceleration times at the window's endpoints and include
+all cars between those values, including boundary ties as in Altair.
 
 ```{r}
 #| label: trends-rolling-window-gg
+#| slide-show: output
+#| slide-title: A centered rolling mean
 rolling_cars <- cars |>
-    arrange(Origin, Year) |>
+    arrange(Origin, Acceleration) |>
     group_by(Origin) |>
     mutate(rolling_hp = map_dbl(seq_along(Horsepower), function(i) {
-        first_year <- Year[max(1, i - 15)]
-        last_year <- Year[min(length(Year), i + 15)]
-        mean(Horsepower[Year >= first_year & Year <= last_year])
+        lower <- Acceleration[max(1, i - 30)]
+        upper <- Acceleration[min(length(Acceleration), i + 30)]
+        mean(Horsepower[Acceleration >= lower & Acceleration <= upper])
     })) |>
     ungroup()
 
-ggplot(rolling_cars, aes(x = Year, y = rolling_hp, color = Origin)) +
+ggplot(rolling_cars, aes(x = Acceleration, y = rolling_hp, color = Origin)) +
     geom_line() +
-    scale_x_continuous(breaks = seq(1970, 1982, by = 2)) +
-    labs(y = 'Mean horsepower (rolling window)')
+    labs(x = 'Acceleration time (seconds)', y = 'Mean horsepower (rolling window)')
 ```
 
 ::::
+
+## Choosing a rolling window {.content-visible when-format="revealjs"}
+
+The width of 30 observations on either side is an illustrative starting point,
+not a generally optimal choice. Compare narrower and wider windows to see which
+features persist. A fixed observation count spans different ranges of acceleration times
+where cars are more or less densely represented, and represents different fractions
+of origins with different sample sizes.
+Repeated acceleration times can also receive different estimates as the row window moves,
+producing vertical segments when those estimates are connected at the same x-value.
+
+Three window types answer different questions:
+
+::: {.slide-bullet}
+
+- **Expanding** (`[None, 0]`, the default in Altair): average everything up to the current position in the sort order.
+  This estimates a cumulative level rather than a local trend.
+- **Trailing** (for example, `[-30, 0]`): use observations at or before the current position.
+  With a chronological sort, this is useful for monitoring as observations arrive.
+- **Centered** (`[-30, 30]`): use observations on both sides to describe a local pattern.
+  This is the closest of these choices to the neighborhood idea behind LOESS,
+  although LOESS selects nearby x-values and uses distance weights and local regression.
 
 :::
 
 ## Regression lines
 
 Another way to show a trend is regression.
-Linear least-squares regression fits a straight line by minimizing the sum
-of squared vertical deviations from the observations to the line.
+[Linear least-squares regression fits a straight line by minimizing the sum
+of squared vertical deviations from the observations to the line.]{.slide-bullet}
 
-:::: {.panel-tabset group="language"}
+There is a useful connection to the mean:
+[**the mean is the constant that minimizes the sum of squared deviations**]{.slide-bullet}.
+In graphical terms, it is the best-fitting horizontal line under squared-error loss.
+Linear regression allows that line to tilt by estimating a slope as well as an intercept.
+
+Unlike separate means at each acceleration time, a regression links estimates across
+acceleration times through shared coefficients.
+Changing observations in one part of the x-range can change fitted values throughout the range.
+This pooling can stabilize estimates, but it can also hide abrupt changes
+or impose an unsuitable shape; a shared model is not automatically better.
+
+For the straight-line fit, we estimate
+
+::: {.slide-text}
+
+$$
+\hat{y}_i = w_0 + x_{i1}w_1
+$$
+
+:::
+
+[where $i$ indexes cars, $x_{i1}$ is car $i$'s acceleration time in seconds,
+and $\hat{y}_i$ is its predicted mean horsepower.]{.slide-bullet}
+The fitted weights $w_0$ and $w_1$ are the intercept and slope.
+The first subscript in $x_{i1}$ identifies the observation; the second identifies the feature.
+
+::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
@@ -262,28 +324,15 @@ of squared vertical deviations from the observations to the line.
 #| slide-show: both
 #| slide-title: A linear trend
 points + points.mark_line(size=3).transform_regression(
-    'Year', 'Horsepower', groupby=['Origin']
-)
-```
-
-Regression is not restricted to straight lines.
-For example, a polynomial of order two gives a quadratic fit.
-
-```{python}
-#| label: trends-polynomial-fit-alt
-#| slide-show: both
-#| slide-title: A polynomial trend
-points + points.mark_line(size=3).transform_regression(
-    'Year', 'Horsepower', groupby=['Origin'], method='poly', order=2
+    'Acceleration', 'Horsepower', groupby=['Origin']
 )
 ```
 
 ### ggplot {.slide-skip}
 
 Set the smoothing method to `lm` for a linear model.
-`se = FALSE` hides ggplot's default confidence band, matching the line-only
-Altair example. That default band describes uncertainty in the fitted mean,
-not the standard deviation of individual observations.
+`se = FALSE` hides ggplot's default confidence band,
+which we will instead talk about in @sec-uncertainty.
 
 ```{r}
 #| label: trends-linear-fit-gg
@@ -292,7 +341,43 @@ not the standard deviation of individual observations.
 car_points + geom_smooth(method = 'lm', se = FALSE, linewidth = 1.2)
 ```
 
-The formula can be changed to fit a polynomial.
+:::
+
+## A quadratic model {.content-visible when-format="revealjs"}
+
+Regression is not restricted to straight lines.
+[For the degree-two polynomial below, we add a feature $x_{i2} = x_{i1}^2$:]{.slide-bullet}
+
+::: {.slide-text}
+
+$$
+\hat{y}_i = w_0 + x_{i1}w_1 + x_{i2}w_2
+$$
+
+:::
+
+The weight $w_2$ on squared acceleration time allows the relationship to curve
+rather than have a constant slope.
+Both examples estimate a separate set of coefficients for each origin by minimizing
+the sum of squared vertical residuals.
+[The quadratic fit is still a linear model in its weights $w_0$, $w_1$, and $w_2$,
+even though its graph can be curved in the original feature space.]{.slide-bullet}
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+
+```{python}
+#| label: trends-polynomial-fit-alt
+#| slide-show: both
+#| slide-title: A polynomial trend
+points + points.mark_line(size=3).transform_regression(
+    'Acceleration', 'Horsepower', groupby=['Origin'], method='poly', order=2
+)
+```
+
+### ggplot {.slide-skip}
 
 ```{r}
 #| label: trends-polynomial-fit-gg
@@ -302,7 +387,7 @@ car_points +
     geom_smooth(method = 'lm', formula = y ~ poly(x, 2), se = FALSE, linewidth = 1.2)
 ```
 
-::::
+:::
 
 ## Local smoothing
 
@@ -311,6 +396,12 @@ Sometimes one equation is a poor description of the whole dataset.
 allowing the trend to change across the x-axis.]{.slide-bullet}
 This is usually called *LOESS* (locally estimated scatterplot smoothing)
 or *LOWESS* (locally weighted scatterplot smoothing).
+[We can think of a rolling mean as **local constant regression**:
+at each target x-value, fit a horizontal line to nearby observations
+and retain its height as the estimate.]{.slide-bullet}
+[Local linear regression instead fits a line with a slope,
+then evaluates that line at the target x-value.]{.slide-bullet}
+Moving the neighborhood and repeating these fits produces the curve.
 The animation builds up the red fitted curve from local fits.
 
 ::: {.slide-visual slide-title="How local regression builds a curve"}
@@ -319,67 +410,102 @@ The animation builds up the red fitted curve from local fits.
 
 :::
 
-:::: {.panel-tabset group="language"}
+::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
+
+Altair fits linear regression locally in each neighborhood in `transform_loess`.
+<!-- TODO this should go in a deep dive -->
+<!-- There is also residual-based robust fitting -->
+<!-- that creates many fits iteratively -->
+<!-- and reduces the influence of observations that lie unusually far from an initial fitted trend -->
+<!-- maybe also talk about kernel weighting -->
 
 ```{python}
 #| label: trends-loess-alt
 #| slide-show: both
 #| slide-title: A local trend
 points + points.mark_line(size=3).transform_loess(
-    'Year', 'Horsepower', groupby=['Origin'], bandwidth=0.5
+    'Acceleration',
+    'Horsepower',
+    groupby=['Origin'],
 )
 ```
 
-`bandwidth` controls the fraction of observations included in each neighborhood.
-Larger fractions usually give a smoother, more general curve.
-The default is 0.3; here we explicitly use 0.5 in both languages.
-A bandwidth of 1 uses all observations in each neighborhood,
-but is not generally identical to a single global linear regression.
+### ggplot {.slide-skip}
+
+For computational efficiency,
+`geom_smooth()` automatically changes the method based on the number of data points.
+To ensure that we use LOESS,
+we therefore set it explicitly although it is the default for datasets
+up to 1000 observations per group.
+By default,
+ggplot fits quadratic regressions locally for each neighborhood.
+
+```{r}
+#| label: trends-loess-gg
+#| slide-show: both
+#| slide-title: A local trend
+car_points + geom_smooth(method = 'loess', se = FALSE)
+```
+
+:::
+
+::: {.content-visible when-format="revealjs" .slide-visual slide-title="LOESS defaults differ"}
+
+| Setting | Altair | ggplot |
+|:--|:--|:--|
+| Local fit | Linear | Quadratic |
+| Neighborhood fraction | `bandwidth=0.3` | `span=0.75` |
+
+The examples start with each library's defaults. Changing the neighborhood fraction
+does not by itself make the fits equivalent.
+
+:::
+
+## Choosing a smoothing neighborhood {.content-visible when-format="revealjs"}
+
+[We can control the fraction of observations included in each neighborhood.
+Larger fractions usually give a smoother, more general curve.]{.slide-bullet}
+Note that even if we were to include all observations in each neighborhood,
+[this would not generally be identical to a single global linear regression
+since all observations do not have the same weight.]{.slide-bullet}
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+The `bandwidth` parameter controls the fraction of observations included in each neighborhood.
+By default,
+it is set to 0.3.
 
 ```{python}
 #| label: trends-loess-bandwidth-alt
 #| slide-show: both
 #| slide-title: Control the amount of smoothing
 points + points.mark_line(size=3).transform_loess(
-    'Year', 'Horsepower', groupby=['Origin'], bandwidth=0.8
+    'Acceleration', 'Horsepower', groupby=['Origin'], bandwidth=0.75
 )
 ```
 
 ### ggplot {.slide-skip}
 
-For these small groups, `geom_smooth()` uses LOESS by default.
-We set the method and neighborhood fraction explicitly here,
-and hide the confidence band as in the Altair example.
-We also request local linear fits and robust fitting to more closely match
-Vega's LOESS implementation; R otherwise uses local quadratic fits by default.
-The implementations still need not produce identical curves,
-especially with repeated x-values such as the model years here.
-
-```{r}
-#| label: trends-loess-gg
-#| slide-show: both
-#| slide-title: A local trend
-car_points + geom_smooth(
-    method = 'loess', span = 0.5, se = FALSE, linewidth = 1.2,
-    method.args = list(degree = 1, family = 'symmetric')
-)
-```
 
 The `span` parameter changes the fraction of observations in each neighborhood.
+By default,
+it is set as 0.75.
 
 ```{r}
 #| label: trends-loess-span-gg
 #| slide-show: both
 #| slide-title: Control the amount of smoothing
 car_points + geom_smooth(
-    method = 'loess', span = 0.8, se = FALSE, linewidth = 1.2,
+    method = 'loess', span = 0.3, se = FALSE, linewidth = 1.2,
     method.args = list(degree = 1, family = 'symmetric')
 )
 ```
 
-::::
+:::
 
 The following animations illustrate the qualitative effect of narrower and wider
 weighting neighborhoods in a different LOWESS implementation.
@@ -394,40 +520,155 @@ or ggplot's span.
 
 ::::
 
+::: {.deep-dive}
+
+## Kernels connect density estimation and local regression
+
+In @sec-smoothed-distributions, kernels let observations contribute gradually
+to nearby locations rather than placing them entirely inside one fixed bin.
+[The same distance-based weighting idea can be used to estimate a relationship.]{.slide-bullet}
+
+At a target x-value, a **rectangular kernel** gives equal weight to observations
+inside a window and zero weight outside it.
+A **Gaussian kernel** gives the greatest weight to nearby observations,
+with smoothly decreasing weights at greater distances.
+Its weights are technically nonzero everywhere.
+The bandwidth controls the distance over which those weights decrease.
+
+What we do with the weights determines what we estimate:
+
+- **KDE:** add the kernel contributions and normalize to estimate the density of x.
+- **Local weighted mean:** average the corresponding y-values, dividing by the sum of the weights.
+- **Local linear regression:** use the weights to fit a nearby line, then evaluate it at the target.
+
+With rectangular weights, the local weighted mean is a moving-window average.
+With smoothly decreasing weights, it is often called a **kernel smoother**.
+A KDE needs only the x-values; regression also needs a response variable y.
+More observations near a location increase its estimated density,
+but do not by themselves increase its estimated mean response.
+
+LOESS commonly uses **tricube weights**, which decrease with distance
+and reach zero at the edge of a nearest-neighbor neighborhood.
+Its span specifies a fraction of observations,
+whereas a KDE bandwidth commonly specifies a distance in the variable's units.
+These settings therefore share an idea but are not directly interchangeable.
+Likewise, a rolling window of 61 rows is not a fixed interval of acceleration times
+when observations are unevenly spaced along the x-axis.
+
+:::: {.callout-default .ex-prompt}
+
+Suppose every car has exactly 100 horsepower, but many more cars have acceleration
+times near 15 seconds than near 10 or 20 seconds.
+Would a KDE of acceleration times and a local weighted mean of horsepower
+both have a peak near 15 seconds?
+
+::::: {.callout-default .ex-hint}
+
+One calculation estimates where the x-values are concentrated;
+the other averages the y-values associated with nearby x-values.
+
+:::::: {.callout-default .ex-solution}
+
+The KDE can have a peak where acceleration times are densely represented,
+depending on its bandwidth.
+The local weighted mean remains 100 wherever the total weight is positive:
+its weighted sum is 100 times the sum of its weights,
+so dividing by that sum returns 100.
+The same kernels can therefore reveal a changing density and a constant response.
+
+::::::
+:::::
+::::
+:::
+
+### Why fit a local slope?
+
+[Near the left edge of an increasing trend, most available neighbors lie to the right.
+A rolling mean averages their higher responses and can overestimate the response at the target.]{.slide-bullet}
+[A local linear fit can account for the slope and evaluate the line at the target instead.]{.slide-bullet}
+For observations lying exactly on a straight line, it recovers that line wherever
+the neighborhood contains enough distinct, positively weighted x-values.
+A local mean can also reproduce a straight trend in a symmetric neighborhood,
+but generally not at the boundaries or when the x-values are unevenly spaced.
+
+In our examples, the rolling mean and regression both use individual cars as observations,
+so densely represented acceleration ranges contribute more observations to their fits.
+The rolling mean uses a centered observation window, expanded for boundary ties, with equal weight per car;
+LOESS instead selects a fraction of nearby cars and weights them by distance.
+To isolate the effect of a local constant versus a local slope,
+we would need to use the same input observations, neighborhoods, and weights.
+
 ## Compare the questions answered by different summaries
 
-::: {.slide-visual}
+::: {.panel-tabset group="language"}
 
-:::: {.columns}
-::: {.column width="33%"}
-**Mean-based summary**
+### Altair {.slide-skip}
 
-![](img/communication-lecture/trend-mean.png){fig-alt="A scatterplot of automobile horsepower by year uses separate jagged mean-based lines for the three origins."}
+```{python}
+#| label: trends-comparison-alt
+#| echo: false
+#| slide-show: output
+mean_curve = points.mark_line().encode(
+    x=alt.X('Acceleration:Q').bin(step=5).title('Acceleration time (seconds)'),
+    y='mean(Horsepower)'
+)
+linear_curve = points.mark_line().transform_regression(
+    'Acceleration', 'Horsepower', groupby=['Origin']
+)
+local_curve = points.mark_line().transform_loess(
+    'Acceleration', 'Horsepower', groupby=['Origin'], bandwidth=0.5
+)
+points_dim = points.mark_circle(opacity=0.05)
+alt.hconcat(
+    (points_dim + mean_curve).properties(width=180, height=180, title='Binned means'),
+    (points_dim + linear_curve).properties(width=180, height=180, title='Linear regression'),
+    (points_dim + local_curve).properties(width=180, height=180, title='Local smoothing')
+).resolve_scale(x='shared', y='shared').configure_legend(orient='bottom')
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: trends-comparison-gg
+#| echo: false
+#| slide-show: output
+#| fig-width: 10
+#| fig-height: 3.5
+
+car_points_dim <- ggplot(cars, aes(x = Acceleration, y = Horsepower, color = Origin)) +
+    geom_point(alpha = 0.05) +
+    labs(x = 'Acceleration time (seconds)')
+mean_plot <- car_points_dim +
+    geom_line(stat = 'summary_bin', fun = mean,
+              binwidth = 5, boundary = 0, closed = 'left') +
+    labs(title = 'Binned means')
+linear_plot <- car_points_dim +
+    geom_smooth(method = 'lm', se = FALSE) +
+    labs(title = 'Linear regression')
+local_plot <- car_points_dim +
+    geom_smooth(method = 'loess', span = 0.5, se = FALSE,
+                method.args = list(degree = 1, family = 'symmetric')) +
+    labs(title = 'Local smoothing')
+patchwork::wrap_plots(mean_plot, linear_plot, local_plot, nrow = 1, guides = 'collect') &
+    theme(legend.position = 'bottom', text = element_text(size = 10))
+```
+
 :::
-::: {.column width="33%"}
-**Linear regression**
 
-![](img/communication-lecture/trend-linear-regression.png){fig-alt="The same automobile observations are summarized by a straight regression line for each origin."}
-:::
-::: {.column width="33%"}
-**Local smoothing**
+These figures show how the choice of summary changes the pattern a reader sees.
+Decide whether the audience needs averages within acceleration intervals,
+a global trend, or local variation within the observed range.
 
-![](img/communication-lecture/trend-loess.png){fig-alt="The same automobile observations are summarized by locally smoothed curves for each origin."}
-:::
-::::
-
-:::
-
-These comparison figures from the communication lecture show how the choice of
-summary changes the pattern a reader sees. Decide whether the audience needs
-year-specific averages, a global trend, or variation within the observed range.
+::: {.slide-visual slide-title="Comparing trend estimators"}
 
 | Summary | Neighborhood | What is fitted? |
 |:--|:--|:--|
-| Annual or binned mean | One year or fixed bin | A separate constant |
+| Exact-value or binned mean | One recorded acceleration time or fixed interval | A separate constant |
 | Rolling mean | Moving, overlapping window | A local constant |
 | Local linear regression | Nearby observations, usually distance-weighted | A local line |
 | Global linear regression | All observations in the fitted group | One shared line |
+
+:::
 
 [Trend estimators differ in which observations they use, how they weight them,
 and how flexible a function they fit.]{.slide-bullet}
@@ -437,13 +678,19 @@ and how flexible a function they fit.]{.slide-bullet}
 ::: {.slide-bullet}
 
 - **Means and rolling means** are useful when the summarized values should have
-  a straightforward interpretation. They can be particularly accessible to a general audience.
+  a straightforward interpretation. It is poorly suited to extrapolation beyond the data range
+  but can be particularly accessible to a general audience.
 - **Regression models** are useful when a simple equation is a reasonable description
-  of the relationship. Predictions beyond the observed range rely on that model continuing
-  to hold, and become more uncertain as they move further from the data.
+  of the relationship and it is advantageous to describe the relationship with a known equation.
+  Predictions beyond the observed range
+  are generally more accurate than for models fitted using a local neighborhood,
+  but they still rely on that the fitted equation hold beyong the observed range,
+  and become more uncertain as they move further from the data.
 - **LOESS** is useful for describing patterns within the observed data without choosing
   one global equation. It often resembles the trend a reader would sketch by eye,
-  but depends on the smoothing setting and is poorly suited to extrapolation.
+  and it generally usable for communication purposes although they are not as straightforward
+  to understand as a rolling mean.
+  It is poorly suited to extrapolation beyond the data range.
 
 :::
 
