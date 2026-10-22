@@ -94,7 +94,7 @@ car_points
 
 :::
 
-## From observations to summaries
+## Why bother? {.content-visible when-format="revealjs"}
 
 [Connecting every observation without any aggregation does not provide a useful summary of the trend]{.slide-bullet}.
 
@@ -118,6 +118,88 @@ car_points + geom_line()
 
 :::
 
+::::: {.callout-default .ex-prompt}
+
+The four panels below show the same cars on the same axis scales,
+but summarize the relationship in different ways.
+Before learning how to construct the lines, consider what each might be estimating.
+
+:::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-opening-comparison-alt
+#| echo: false
+#| slide-show: output
+comparison_points = points.mark_circle(opacity=0.3)
+comparison_mean = alt.Chart(cars).mark_rule(color='#4C78A8', size=2).encode(y='mean(Horsepower):Q')
+comparison_linear = points.mark_line().transform_regression('Acceleration', 'Horsepower')
+comparison_rolling = points.mark_line().transform_window(
+    rolling_hp='mean(Horsepower)', frame=[-30, 30],
+    sort=[alt.SortField('Acceleration')]
+).encode(y='rolling_hp:Q')
+comparison_local = points.mark_line().transform_loess(
+    'Acceleration', 'Horsepower', bandwidth=0.5
+)
+trend_comparison_alt = alt.vconcat(
+    alt.hconcat(
+        (comparison_points + comparison_mean).properties(width=250, height=170, title='A'),
+        (comparison_points + comparison_linear).properties(width=250, height=170, title='B')
+    ).resolve_scale(x='shared', y='shared'),
+    alt.hconcat(
+        (comparison_points + comparison_rolling).properties(width=250, height=170, title='C'),
+        (comparison_points + comparison_local).properties(width=250, height=170, title='D')
+    ).resolve_scale(x='shared', y='shared')
+).resolve_scale(x='shared', y='shared')
+trend_comparison_alt
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: trends-opening-comparison-gg
+#| echo: false
+#| slide-show: output
+#| fig-width: 8
+#| fig-height: 6
+comparison_points <- ggplot(cars, aes(x = Acceleration, y = Horsepower)) +
+    geom_point(alpha = 0.3) +
+    coord_cartesian(xlim = range(cars$Acceleration), ylim = c(0, max(cars$Horsepower)))
+comparison_rolling_cars <- cars |>
+    arrange(Acceleration) |>
+    mutate(rolling_hp = slider::slide_dbl(
+        Horsepower, mean, .before = 30, .after = 30
+    ))
+comparison_mean <- comparison_points +
+    geom_hline(yintercept = mean(cars$Horsepower), color = '#3366FF') + labs(title = 'A')
+comparison_linear <- comparison_points +
+    geom_smooth(method = 'lm', se = FALSE) + labs(title = 'B')
+comparison_rolling <- comparison_points +
+    geom_line(data = comparison_rolling_cars, color = '#3366FF', aes(y = rolling_hp)) + labs(title = 'C')
+comparison_local <- comparison_points +
+    geom_smooth(method = 'loess', span = 0.5, se = FALSE,
+                method.args = list(degree = 1, family = 'symmetric')) + labs(title = 'D')
+trend_comparison_gg <- patchwork::wrap_plots(
+    comparison_mean, comparison_linear, comparison_rolling, comparison_local, ncol = 2
+) & theme(text = element_text(size = 11))
+trend_comparison_gg
+```
+
+::::
+
+:::: {.callout-default .ex-hint}
+
+[Think about whether the prediction is constant, changes at a constant rate,
+or changes its behavior across the x-axis.]{.slide-bullet}
+
+::::
+
+Keep your proposed explanations in mind as you work through the chapter.
+We will revisit the same figure and identify the four methods in @sec-trend-summary-comparison.
+
+:::::
+
 ### Averaging at each exact value
 
 [A simple summary is the mean horsepower at each acceleration time.]{.slide-bullet}
@@ -132,7 +214,6 @@ that makes it hard to see the overall trend]{.slide-subbullet}
 ```{python}
 #| label: trends-exact-mean-alt
 #| slide-show: both
-#| slide-title: Mean at each acceleration time
 points + points.mark_line().encode(y='mean(Horsepower)')
 ```
 
@@ -141,7 +222,6 @@ points + points.mark_line().encode(y='mean(Horsepower)')
 ```{r}
 #| label: trends-exact-mean-gg
 #| slide-show: both
-#| slide-title: Mean at each acceleration time
 car_points + geom_line(stat = 'summary', fun = 'mean')
 ```
 
@@ -195,10 +275,10 @@ fit one model across the full range, or fit simple models within moving neighbor
 
 ## Fitting a global model
 
-Another way to summarize the data is to fit one shared equation across the observed range.
+Another way to summarize the data is to [fit one shared equation across the observed range]{.slide-bullet}.
 Here, a **model** is a rule that uses an input value to produce a predicted response.
-The simplest model returns the same prediction for every input.
-We will build up the flexibility of that equation in three steps:
+[The simplest model returns the same prediction for every input]{.slide-bullet}.
+[We will build up the flexibility of that equation in three steps]{.slide-bullet}:
 
 ::: {.slide-bullet}
 
@@ -209,9 +289,9 @@ We will build up the flexibility of that equation in three steps:
 :::
 
 We use least-squares fitting throughout this progression.
-Unlike separate means at each acceleration time,
+[Unlike separate means at each acceleration time,
 a regression links estimates across
-acceleration times through shared coefficients.
+acceleration times through shared coefficients]{.slide-bullet}.
 Changing observations in one part of the x-range can change fitted values throughout the range.
 This pooling can stabilize estimates, but it can also hide abrupt changes
 or impose an unsuitable shape; a shared model is not automatically better.
@@ -242,7 +322,6 @@ $$
 ```{python}
 #| label: trends-global-mean-alt
 #| slide-show: both
-#| slide-title: One prediction for every car
 global_mean = alt.Chart(cars).mark_rule().encode(y='mean(Horsepower):Q')
 points + global_mean
 ```
@@ -252,13 +331,12 @@ points + global_mean
 ```{r}
 #| label: trends-global-mean-gg
 #| slide-show: both
-#| slide-title: One prediction for every car
 car_points + geom_hline(yintercept = mean(cars$Horsepower))
 ```
 
 :::
 
-### Allow the line to tilt
+### Allow the model to tilt
 
 Can we improve the predictions by allowing them to depend on acceleration time?
 [Linear least-squares regression fits a straight line by minimizing the sum
@@ -308,7 +386,7 @@ car_points + geom_smooth(method = 'lm', se = FALSE)
 
 :::
 
-### Allow the relationship to curve
+### Allow the model to curve
 
 What if one constant slope does not capture the pattern?
 Regression is not restricted to straight lines.
@@ -362,8 +440,6 @@ Sometimes one equation is a poor description of the whole dataset.
 repeatedly to nearby observations.]{.slide-bullet}
 We will follow the same progression as before:
 start with a constant, then allow each local fit to tilt.
-
-### Let the neighborhood move
 
 [Binning uses fixed, non-overlapping neighborhoods.]{.slide-bullet}
 [A rolling mean instead averages observations within overlapping neighborhoods
@@ -458,7 +534,7 @@ LOESS (locally estimated scatterplot smoothing), also called LOWESS
 Nearby observations receive more influence, and the local fits can be linear or quadratic.
 The animation builds up the red fitted curve from local fits.
 
-::: {.slide-visual slide-title="How local regression builds a curve"}
+::: {.slide-fragment}
 
 ![A local regression curve is assembled by moving a fitting window across the observations. Animation by Rafael Irizarry, from [Simply Statistics](https://simplystatistics.org/posts/2017-08-08-code-for-my-educational-gifs/).](img/loess-local-regression.gif)
 
@@ -645,7 +721,11 @@ LOESS instead selects a fraction of nearby cars and weights them by distance.
 To isolate the effect of a local constant versus a local slope,
 we would need to use the same input observations, neighborhoods, and weights.
 
-## Compare the questions answered by different summaries
+## Compare the questions answered by different summaries {#sec-trend-summary-comparison}
+
+Return to the opening exercise. The same four panels now illustrate a progression
+from a global constant to a global line, and from a local constant to local regression.
+The top row uses all cars to fit one shared model; the bottom row uses moving neighborhoods.
 
 ::: {.panel-tabset group="language"}
 
@@ -655,22 +735,7 @@ we would need to use the same input observations, neighborhoods, and weights.
 #| label: trends-comparison-alt
 #| echo: false
 #| slide-show: output
-mean_curve = points.mark_line().encode(
-    x=alt.X('Acceleration:Q').bin(step=5).title('Acceleration time (seconds)'),
-    y='mean(Horsepower)'
-)
-linear_curve = points.mark_line().transform_regression(
-    'Acceleration', 'Horsepower'
-)
-local_curve = points.mark_line().transform_loess(
-    'Acceleration', 'Horsepower', bandwidth=0.5
-)
-points_dim = points.mark_circle(opacity=0.05)
-alt.hconcat(
-    (points_dim + mean_curve).properties(width=180, height=180, title='Binned means'),
-    (points_dim + linear_curve).properties(width=180, height=180, title='Linear regression'),
-    (points_dim + local_curve).properties(width=180, height=180, title='Local smoothing')
-).resolve_scale(x='shared', y='shared')
+trend_comparison_alt
 ```
 
 ### ggplot {.slide-skip}
@@ -679,44 +744,33 @@ alt.hconcat(
 #| label: trends-comparison-gg
 #| echo: false
 #| slide-show: output
-#| fig-width: 10
-#| fig-height: 3.5
-
-car_points_dim <- ggplot(cars, aes(x = Acceleration, y = Horsepower)) +
-    geom_point(alpha = 0.05) +
-    labs(x = 'Acceleration time (seconds)')
-mean_plot <- car_points_dim +
-    geom_line(stat = 'summary_bin', fun = mean,
-              binwidth = 5, boundary = 0, closed = 'left') +
-    labs(title = 'Binned means')
-linear_plot <- car_points_dim +
-    geom_smooth(method = 'lm', se = FALSE) +
-    labs(title = 'Linear regression')
-local_plot <- car_points_dim +
-    geom_smooth(method = 'loess', span = 0.5, se = FALSE,
-                method.args = list(degree = 1, family = 'symmetric')) +
-    labs(title = 'Local smoothing')
-patchwork::wrap_plots(mean_plot, linear_plot, local_plot, nrow = 1) &
-    theme(text = element_text(size = 10))
+#| fig-width: 8
+#| fig-height: 6
+trend_comparison_gg
 ```
 
 :::
 
-These figures show how the choice of summary changes the pattern a reader sees.
-Decide whether the audience needs averages within acceleration intervals,
-a global trend, or local variation within the observed range.
+Following more local variation is not automatically better:
+the useful summary depends on the question and on which features persist
+across reasonable modeling choices.
 
 ::: {.slide-visual slide-title="Comparing trend estimators"}
 
-| Summary | Neighborhood | What is fitted? |
+| Panel and summary | Observations used | What is fitted? |
 |:--|:--|:--|
-| Exact-value or binned mean | One recorded acceleration time or fixed interval | A separate constant |
-| Global mean | All observations | One shared constant |
-| Rolling mean | Moving, overlapping window | A local constant |
-| Local linear regression | Nearby observations, usually distance-weighted | A local line |
-| Global linear regression | All observations in the fitted group | One shared line |
+| **A: Overall mean** | All cars | One shared constant |
+| **B: Global linear regression** | All cars | One shared straight line |
+| **C: Rolling mean** | Moving, overlapping window | A local constant |
+| **D: Local smoothing regression (LOESS)** | Nearby cars, weighted by distance | A local line at each target |
 
 :::
+
+For this comparison, the rolling mean uses 30 observations on either side,
+with the boundary-tie handling described earlier for each library.
+Both LOESS examples use a neighborhood fraction of 0.5;
+the R fit explicitly uses local linear, robust fitting to more closely match Altair.
+The implementations can still give slightly different curves.
 
 [Trend estimators differ in which observations they use, how they weight them,
 and how flexible a function they fit.]{.slide-bullet}
