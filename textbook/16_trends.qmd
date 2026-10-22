@@ -64,7 +64,9 @@ We use automobile specifications from the Vega datasets collection,
 with missing acceleration or horsepower observations omitted.
 `Acceleration` records the time in seconds to accelerate from 0 to 60 mph:
 a larger value means the car takes longer to reach that speed.
-We examine how horsepower varies with this acceleration time, separately by origin.
+We first examine how horsepower varies with acceleration time across all cars,
+using one trendline. Near the end of the chapter, we compare this pooled relationship
+with separate fits by origin.
 
 ::: {.panel-tabset group="language"}
 
@@ -75,8 +77,7 @@ We examine how horsepower varies with this acceleration time, separately by orig
 #| slide-show: both
 points = alt.Chart(cars).mark_circle(opacity=0.2).encode(
     x=alt.X('Acceleration:Q').scale(zero=False),
-    y='Horsepower',
-    color='Origin'
+    y='Horsepower'
 )
 points
 ```
@@ -86,7 +87,7 @@ points
 ```{r}
 #| label: trends-car-points-gg
 #| slide-show: both
-car_points <- ggplot(cars, aes(x = Acceleration, y = Horsepower, color = Origin)) +
+car_points <- ggplot(cars, aes(x = Acceleration, y = Horsepower)) +
     geom_point(alpha = 0.2)
 car_points
 ```
@@ -119,7 +120,7 @@ car_points + geom_line()
 
 ## Means
 
-[A simple summary is the mean horsepower at each acceleration time and origin.]{.slide-bullet}
+[A simple summary is the mean horsepower at each acceleration time.]{.slide-bullet}
 [Some acceleration times occur repeatedly, but others have very few observations,]{.slide-bullet}
 resulting in [a noisy appearance of the line with many spikes
 that makes it hard to see the overall trend]{.slide-subbullet}
@@ -131,6 +132,7 @@ that makes it hard to see the overall trend]{.slide-subbullet}
 ```{python}
 #| label: trends-exact-mean-alt
 #| slide-show: both
+#| slide-title: Mean at each acceleration time
 points + points.mark_line().encode(y='mean(Horsepower)')
 ```
 
@@ -139,6 +141,7 @@ points + points.mark_line().encode(y='mean(Horsepower)')
 ```{r}
 #| label: trends-exact-mean-gg
 #| slide-show: both
+#| slide-title: Mean at each acceleration time
 car_points + geom_line(stat = 'summary', fun = 'mean')
 ```
 
@@ -192,8 +195,7 @@ If we instead use,
 produces a smoother curve]{.slide-bullet};
 this is [referred to as a moving or rolling mean]{.slide-subbullet}.
 Here we sort the individual cars
-by acceleration time and average neighboring observations,
-separately for each origin.
+by acceleration time and average neighboring observations across all origins.
 [Each car included in a window receives equal weight by default,
 but this could be adjusted]{.slide-bullet}
 
@@ -204,7 +206,7 @@ but this could be adjusted]{.slide-bullet}
 #### Altair {.slide-skip}
 
 `frame=[-30, 30]` starts with the preceding 30 observations, the current observation,
-and the following 30 observations in acceleration-time order, within each origin.
+and the following 30 observations in acceleration-time order.
 At the endpoints, it uses the available observations.
 By default, Altair expands window boundaries to include ties in the sorting variable,
 so a window can include more than 61 cars when acceleration times repeat.
@@ -216,12 +218,10 @@ so a window can include more than 61 cars when acceleration times repeat.
 alt.Chart(cars).transform_window(
     rolling_hp='mean(Horsepower)',
     frame=[-30, 30],
-    sort=[alt.SortField('Acceleration')],
-    groupby=['Origin']
+    sort=[alt.SortField('Acceleration')]
 ).mark_line().encode(
     x=alt.X('Acceleration:Q'),
-    y='rolling_hp:Q',
-    color='Origin'
+    y='rolling_hp:Q'
 )
 ```
 
@@ -229,25 +229,21 @@ alt.Chart(cars).transform_window(
 
 There is no built-in way to plot a rolling mean in ggplot,
 so instead we calculate the means before plotting.
-For each row, we find the acceleration times at the window's endpoints and include
-all cars between those values, including boundary ties as in Altair.
+`slider::slide_dbl()` averages the preceding 30 rows, the current row, and the following
+30 rows, using the available rows at the endpoints.
+Unlike Altair's default, this uses strict row boundaries rather than expanding for ties,
+so the curves can differ where acceleration times repeat.
 
 ```{r}
 #| label: trends-rolling-window-gg
 #| slide-show: both
 #| slide-title: Rolling means
 rolling_cars <- cars |>
-    arrange(Origin, Acceleration) |>
-    mutate(
-        rolling_hp = slider::slide_dbl(
-            Horsepower,
-            mean,
-            .before = 30,
-            .after = 30
-        ),
-        .by = Origin
-    )
-ggplot(rolling_cars, aes(x = Acceleration, y = rolling_hp, color = Origin)) +
+    arrange(Acceleration) |>
+    mutate(rolling_hp = slider::slide_dbl(
+        Horsepower, mean, .before = 30, .after = 30
+    ))
+ggplot(rolling_cars, aes(x = Acceleration, y = rolling_hp)) +
     geom_line()
 ```
 
@@ -258,8 +254,7 @@ ggplot(rolling_cars, aes(x = Acceleration, y = rolling_hp, color = Origin)) +
 The width of 30 observations on either side is an illustrative starting point,
 not a generally optimal choice. Compare narrower and wider windows to see which
 features persist. A fixed observation count spans different ranges of acceleration times
-where cars are more or less densely represented, and represents different fractions
-of origins with different sample sizes.
+where cars are more or less densely represented.
 Repeated acceleration times can also receive different estimates as the row window moves,
 producing vertical segments when those estimates are connected at the same x-value.
 
@@ -325,7 +320,7 @@ The first subscript in $x_{i1}$ identifies the observation; the second identifie
 #| slide-show: both
 #| slide-title: A linear trend
 points + points.mark_line().transform_regression(
-    'Acceleration', 'Horsepower', groupby=['Origin']
+    'Acceleration', 'Horsepower'
 )
 ```
 
@@ -359,7 +354,7 @@ $$
 
 The weight $w_2$ on squared acceleration time allows the relationship to curve
 rather than have a constant slope.
-Both examples estimate a separate set of coefficients for each origin by minimizing
+Both examples estimate one set of coefficients using all cars by minimizing
 the sum of squared vertical residuals.
 [The quadratic fit is still a linear model in its weights $w_0$, $w_1$, and $w_2$,
 even though its graph can be curved in the original feature space.]{.slide-bullet}
@@ -374,7 +369,7 @@ even though its graph can be curved in the original feature space.]{.slide-bulle
 #| slide-show: both
 #| slide-title: A polynomial trend
 points + points.mark_line().transform_regression(
-    'Acceleration', 'Horsepower', groupby=['Origin'], method='poly', order=2
+    'Acceleration', 'Horsepower', method='poly', order=2
 )
 ```
 
@@ -429,7 +424,6 @@ Altair fits linear regression locally in each neighborhood in `transform_loess`.
 points + points.mark_line().transform_loess(
     'Acceleration',
     'Horsepower',
-    groupby=['Origin'],
 )
 ```
 
@@ -482,7 +476,7 @@ it is set to 0.3.
 ```{python}
 #| label: trends-loess-bandwidth-alt
 points + points.mark_line().transform_loess(
-    'Acceleration', 'Horsepower', groupby=['Origin'], bandwidth=0.75
+    'Acceleration', 'Horsepower', bandwidth=0.75
 )
 ```
 
@@ -607,17 +601,17 @@ mean_curve = points.mark_line().encode(
     y='mean(Horsepower)'
 )
 linear_curve = points.mark_line().transform_regression(
-    'Acceleration', 'Horsepower', groupby=['Origin']
+    'Acceleration', 'Horsepower'
 )
 local_curve = points.mark_line().transform_loess(
-    'Acceleration', 'Horsepower', groupby=['Origin'], bandwidth=0.5
+    'Acceleration', 'Horsepower', bandwidth=0.5
 )
 points_dim = points.mark_circle(opacity=0.05)
 alt.hconcat(
     (points_dim + mean_curve).properties(width=180, height=180, title='Binned means'),
     (points_dim + linear_curve).properties(width=180, height=180, title='Linear regression'),
     (points_dim + local_curve).properties(width=180, height=180, title='Local smoothing')
-).resolve_scale(x='shared', y='shared').configure_legend(orient='bottom')
+).resolve_scale(x='shared', y='shared')
 ```
 
 ### ggplot {.slide-skip}
@@ -629,7 +623,7 @@ alt.hconcat(
 #| fig-width: 10
 #| fig-height: 3.5
 
-car_points_dim <- ggplot(cars, aes(x = Acceleration, y = Horsepower, color = Origin)) +
+car_points_dim <- ggplot(cars, aes(x = Acceleration, y = Horsepower)) +
     geom_point(alpha = 0.05) +
     labs(x = 'Acceleration time (seconds)')
 mean_plot <- car_points_dim +
@@ -643,8 +637,8 @@ local_plot <- car_points_dim +
     geom_smooth(method = 'loess', span = 0.5, se = FALSE,
                 method.args = list(degree = 1, family = 'symmetric')) +
     labs(title = 'Local smoothing')
-patchwork::wrap_plots(mean_plot, linear_plot, local_plot, nrow = 1, guides = 'collect') &
-    theme(legend.position = 'bottom', text = element_text(size = 10))
+patchwork::wrap_plots(mean_plot, linear_plot, local_plot, nrow = 1) &
+    theme(text = element_text(size = 10))
 ```
 
 :::
@@ -687,6 +681,57 @@ and how flexible a function they fit.]{.slide-bullet}
   It is poorly suited to extrapolation beyond the data range.
 
 :::
+
+## Extension: comparing trends within groups
+
+So far, each trend has summarized all cars together.
+[The pooled fit describes the overall relationship between acceleration time and horsepower.]{.slide-bullet}
+[Separate fits by origin ask whether that relationship also describes the cars within each group.]{.slide-bullet}
+As in @sec-groups, the overall pattern can reflect both differences within groups
+and differences between groups.
+
+In the following comparison, the colored lines are separate linear regressions
+for each origin, and the dashed black line is the pooled regression from earlier.
+Using the same fitting method lets us focus on the effect of grouping.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: trends-grouped-fit-alt
+#| slide-show: both
+#| slide-title: Pooled and within-origin trends
+grouped_points = points.encode(color='Origin:N')
+grouped_lines = grouped_points.mark_line().transform_regression(
+    'Acceleration', 'Horsepower', groupby=['Origin']
+)
+pooled_line = points.mark_line(color='black', strokeDash=[6, 4]).transform_regression(
+    'Acceleration', 'Horsepower'
+)
+grouped_points + grouped_lines + pooled_line
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: trends-grouped-fit-gg
+#| slide-show: both
+#| slide-title: Pooled and within-origin trends
+ggplot(cars, aes(x = Acceleration, y = Horsepower, color = Origin)) +
+    geom_point(alpha = 0.2) +
+    geom_smooth(method = 'lm', se = FALSE) +
+    geom_smooth(aes(group = 1), method = 'lm', se = FALSE,
+                color = 'black', linetype = 'dashed')
+```
+
+:::
+
+The pooled line need not coincide with any group's line.
+Ask whether the groups occupy different parts of the x-range and whether their
+slopes or fitted levels differ. The pooled and grouped fits answer different questions;
+choose according to the comparison you want to make, rather than automatically
+adding groups to every trend plot.
 
 ## Further reading {.slide-skip}
 
