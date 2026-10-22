@@ -270,9 +270,20 @@ Three window types answer different questions:
 
 :::
 
-## Regression lines
+## Fitting a global relationship
 
-Another way to show a trend is regression.
+Another way to summarize the data is to fit one shared equation across the observed range.
+We will build up the flexibility of that equation in three steps:
+
+::: {.slide-bullet}
+
+- **One mean for all observations:** give every car the same predicted horsepower.
+- **Allow the line to tilt:** let the prediction change with acceleration time.
+- **Allow the relationship to curve:** add a squared acceleration feature.
+
+:::
+
+We use least-squares fitting throughout this progression.
 Unlike separate means at each acceleration time,
 a regression links estimates across
 acceleration times through shared coefficients.
@@ -280,12 +291,16 @@ Changing observations in one part of the x-range can change fitted values throug
 This pooling can stabilize estimates, but it can also hide abrupt changes
 or impose an unsuitable shape; a shared model is not automatically better.
 
-[Linear least-squares regression fits a straight line by minimizing the sum
-of squared vertical deviations from the observations to the line.]{.slide-bullet}
-There is a useful connection to the mean:
-[the mean is the constant that minimizes the sum of squared deviations]{.slide-bullet}.
+### One mean for all observations
+
+If we had to predict every car's horsepower using the same value,
+which value would minimize the sum of squared errors?
+Unlike the earlier means at individual acceleration times, within bins, or within
+moving windows, this estimate uses all cars to make one prediction shared by every observation.
+
+[The mean is the constant that minimizes the sum of squared deviations]{.slide-bullet}.
 In graphical terms, it is [the best-fitting horizontal line under squared-error loss]{.slide-subbullet}.
-As an equation, we're predicting (or estimating) the value of each y value using a constant offset (which is the mean of all y-values).
+Here $i$ indexes cars, $\hat{y}_i$ is predicted horsepower, and $w_0$ is the fitted constant:
 
 ::: {.slide-text}
 
@@ -295,7 +310,36 @@ $$
 
 :::
 
+::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+```{python}
+#| label: trends-global-mean-alt
+#| slide-show: both
+#| slide-title: One prediction for every car
+global_mean = alt.Chart(cars).mark_rule().encode(y='mean(Horsepower):Q')
+points + global_mean
+```
+
+#### ggplot {.slide-skip}
+
+```{r}
+#| label: trends-global-mean-gg
+#| slide-show: both
+#| slide-title: One prediction for every car
+car_points + geom_hline(yintercept = mean(cars$Horsepower))
+```
+
+:::
+
+### Allow the line to tilt
+
+Can we improve the predictions by allowing them to depend on acceleration time?
+[Linear least-squares regression fits a straight line by minimizing the sum
+of squared vertical deviations from the observations to the line.]{.slide-bullet}
 [Linear regression allows that line to tilt by estimating a slope in addition to the intercept]{.slide-bullet}.
+The horizontal mean line is a special case where the slope is constrained to zero.
 For the straight-line fit, we estimate
 
 ::: {.slide-text}
@@ -313,7 +357,7 @@ The first subscript in $x_{i1}$ identifies the observation; the second identifie
 
 ::: {.panel-tabset group="language"}
 
-### Altair {.slide-skip}
+#### Altair {.slide-skip}
 
 ```{python}
 #| label: trends-linear-fit-alt
@@ -324,7 +368,7 @@ points + points.mark_line().transform_regression(
 )
 ```
 
-### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
 
 Set the smoothing method to `lm` for a linear model.
 `se = FALSE` hides ggplot's default confidence band,
@@ -339,8 +383,9 @@ car_points + geom_smooth(method = 'lm', se = FALSE)
 
 :::
 
-## A quadratic model {.content-visible when-format="revealjs"}
+### Allow the relationship to curve
 
+What if one constant slope does not capture the pattern?
 Regression is not restricted to straight lines.
 [For the degree-two polynomial below, we add a feature $x_{i2} = x_{i1}^2$:]{.slide-bullet}
 
@@ -354,14 +399,14 @@ $$
 
 The weight $w_2$ on squared acceleration time allows the relationship to curve
 rather than have a constant slope.
-Both examples estimate one set of coefficients using all cars by minimizing
+All three examples estimate their coefficients using all cars by minimizing
 the sum of squared vertical residuals.
 [The quadratic fit is still a linear model in its weights $w_0$, $w_1$, and $w_2$,
 even though its graph can be curved in the original feature space.]{.slide-bullet}
 
 ::: {.panel-tabset group="language"}
 
-### Altair {.slide-skip}
+#### Altair {.slide-skip}
 
 
 ```{python}
@@ -373,7 +418,7 @@ points + points.mark_line().transform_regression(
 )
 ```
 
-### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
 
 ```{r}
 #| label: trends-polynomial-fit-gg
@@ -581,7 +626,8 @@ but generally not at the boundaries or when the x-values are unevenly spaced.
 
 In our examples, the rolling mean and regression both use individual cars as observations,
 so densely represented acceleration ranges contribute more observations to their fits.
-The rolling mean uses a centered observation window, expanded for boundary ties, with equal weight per car;
+The rolling mean uses a centered observation window with equal weight per included car
+(with boundary ties expanded in the Altair example);
 LOESS instead selects a fraction of nearby cars and weights them by distance.
 To isolate the effect of a local constant versus a local slope,
 we would need to use the same input observations, neighborhoods, and weights.
