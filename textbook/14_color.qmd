@@ -1137,3 +1137,5 @@ stock_lines +
 - [Common color pitfalls](https://clauswilke.com/dataviz/color-pitfalls.html).
 - [Vega color schemes](https://vega.github.io/vega/docs/schemes/).
 - [R color palettes](https://github.com/EmilHvitfeldt/r-color-palettes).
+
+::::::::

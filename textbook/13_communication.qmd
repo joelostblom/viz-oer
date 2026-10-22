@@ -821,3 +821,5 @@ reversed_hex + scale_fill_continuous(transform = 'reverse')
 
 - [Figure titles and captions](https://clauswilke.com/dataviz/figure-titles-captions.html).
 - [Small axis labels](https://clauswilke.com/dataviz/small-axis-labels.html).
+
+::::::::

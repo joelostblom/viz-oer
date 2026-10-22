@@ -23,6 +23,11 @@ function Header(heading)
 end
 
 function Div(div)
+  if not quarto.doc.is_format("revealjs") and div.classes:includes("slide-skip") then
+    -- This container only controls slide selection. Keeping it around in the
+    -- reading view nests its sections inside a Div, hiding them from the ToC.
+    return div.content
+  end
   if quarto.doc.is_format("revealjs") and (div.classes:includes("deep-dive")
       or div.classes:includes("column-margin") or div.classes:includes("slide-skip")) then
     -- Drop the entire optional section before callout processing or selection,
