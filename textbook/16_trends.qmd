@@ -94,7 +94,7 @@ car_points
 
 :::
 
-## Why bother {.content-visible when-format="revealjs"}
+## From observations to summaries
 
 [Connecting every observation without any aggregation does not provide a useful summary of the trend]{.slide-bullet}.
 
@@ -118,7 +118,7 @@ car_points + geom_line()
 
 :::
 
-## Means
+### Averaging at each exact value
 
 [A simple summary is the mean horsepower at each acceleration time.]{.slide-bullet}
 [Some acceleration times occur repeatedly, but others have very few observations,]{.slide-bullet}
@@ -127,7 +127,7 @@ that makes it hard to see the overall trend]{.slide-subbullet}
 
 ::: {.panel-tabset group="language"}
 
-### Altair {.slide-skip}
+#### Altair {.slide-skip}
 
 ```{python}
 #| label: trends-exact-mean-alt
@@ -136,7 +136,7 @@ that makes it hard to see the overall trend]{.slide-subbullet}
 points + points.mark_line().encode(y='mean(Horsepower)')
 ```
 
-### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
 
 ```{r}
 #| label: trends-exact-mean-gg
@@ -147,23 +147,21 @@ car_points + geom_line(stat = 'summary', fun = 'mean')
 
 :::
 
-<!-- TODO move to regression section? -->
-<!-- If we read the connecting segments as estimates between recorded acceleration times, -->
-<!-- we are adding a [**piecewise-linear interpolation rule**, -->
-<!-- not fitting a shared regression to all the cars]{.slide-bullet}. -->
-<!-- [Each mean is estimated separately: -->
-<!-- changing the horsepower values at one acceleration time changes that mean, but not the others.]{.slide-bullet} -->
+Each mean is calculated separately from the observations at that acceleration time.
+Connecting the estimates helps us follow the pattern, but does not change the estimates
+or fit a shared model across the x-range.
 
 ### Binned means
 
 For a continuous x variable, we could instead [divide its range into bins
-and calculate the mean response within each bin]{.slide-bullet},
-similar to how a histogram uses a binned axis instead of counting
-the number of observations at every exact value.
+and calculate the mean response within each bin]{.slide-bullet}.
+A histogram uses these intervals to count observations;
+here we use them to average a response variable.
+The example below uses three-second acceleration intervals.
 
 ::: {.panel-tabset group="language"}
 
-### Altair {.slide-skip}
+#### Altair {.slide-skip}
 
 ```{python}
 #| label: trends-binned-mean-alt
@@ -174,9 +172,9 @@ points + points.mark_line().encode(
 )
 ```
 
-### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
 
-We use `stat = 'summary_bin'` to allow us to define a custom summary 
+We use `stat = 'summary_bin'` to allow us to define a custom summary
 function with the bin instead of counting the observations.
 
 ```{r}
@@ -187,92 +185,19 @@ car_points + geom_line(stat = 'summary_bin', fun = mean, binwidth = 3)
 
 :::
 
-### Rolling means
+Binned means give a first view of the pattern, but depend on the width and placement
+of the bins. Bins can contain very different numbers of cars,
+and a single mean hides any pattern within its interval.
+Connecting these summaries adds interpolation between them, not a fitted model for the whole dataset.
 
-[Binning uses fixed, non-overlapping neighborhoods.]{.slide-bullet}
-If we instead use,
-[overlapping neighborhoods that move along the axis
-produces a smoother curve]{.slide-bullet};
-this is [referred to as a moving or rolling mean]{.slide-subbullet}.
-Here we sort the individual cars
-by acceleration time and average neighboring observations across all origins.
-[Each car included in a window receives equal weight by default,
-but this could be adjusted]{.slide-bullet}
+We will now explore two ways to estimate the pattern more systematically:
+fit one model across the full range, or fit simple models within moving neighborhoods.
 
-### Calculating a rolling mean
-
-:::: {.panel-tabset group="language"}
-
-#### Altair {.slide-skip}
-
-`frame=[-30, 30]` starts with the preceding 30 observations, the current observation,
-and the following 30 observations in acceleration-time order.
-At the endpoints, it uses the available observations.
-By default, Altair expands window boundaries to include ties in the sorting variable,
-so a window can include more than 61 cars when acceleration times repeat.
-
-```{python}
-#| label: trends-rolling-window-alt
-#| slide-show: both
-#| slide-title: Rolling means
-alt.Chart(cars).transform_window(
-    rolling_hp='mean(Horsepower)',
-    frame=[-30, 30],
-    sort=[alt.SortField('Acceleration')]
-).mark_line().encode(
-    x=alt.X('Acceleration:Q'),
-    y='rolling_hp:Q'
-)
-```
-
-#### ggplot {.slide-skip}
-
-There is no built-in way to plot a rolling mean in ggplot,
-so instead we calculate the means before plotting.
-`slider::slide_dbl()` averages the preceding 30 rows, the current row, and the following
-30 rows, using the available rows at the endpoints.
-Unlike Altair's default, this uses strict row boundaries rather than expanding for ties,
-so the curves can differ where acceleration times repeat.
-
-```{r}
-#| label: trends-rolling-window-gg
-#| slide-show: both
-#| slide-title: Rolling means
-rolling_cars <- cars |>
-    arrange(Acceleration) |>
-    mutate(rolling_hp = slider::slide_dbl(
-        Horsepower, mean, .before = 30, .after = 30
-    ))
-ggplot(rolling_cars, aes(x = Acceleration, y = rolling_hp)) +
-    geom_line()
-```
-
-::::
-
-## Choosing a rolling window {.content-visible when-format="revealjs"}
-
-The width of 30 observations on either side is an illustrative starting point,
-not a generally optimal choice. Compare narrower and wider windows to see which
-features persist. A fixed observation count spans different ranges of acceleration times
-where cars are more or less densely represented.
-Repeated acceleration times can also receive different estimates as the row window moves,
-producing vertical segments when those estimates are connected at the same x-value.
-
-Three window types answer different questions:
-
-::: {.slide-bullet}
-
-- **Expanding** (`[None, 0]`, the default in Altair): average everything up to the current position in the sort order.
-  This estimates a cumulative level rather than a local trend.
-- **Trailing** (for example, `[-30, 0]`): use observations at or before the current position. Common in e.g. finance.
-  With a chronological sort, this is useful for monitoring as observations arrive.
-- **Centered** (`[-30, 30]`): use observations on both sides to describe a local pattern. Common in e.g. statistics.
-
-:::
-
-## Fitting a global relationship
+## Fitting a global model
 
 Another way to summarize the data is to fit one shared equation across the observed range.
+Here, a **model** is a rule that uses an input value to produce a predicted response.
+The simplest model returns the same prediction for every input.
 We will build up the flexibility of that equation in three steps:
 
 ::: {.slide-bullet}
@@ -295,8 +220,8 @@ or impose an unsuitable shape; a shared model is not automatically better.
 
 If we had to predict every car's horsepower using the same value,
 which value would minimize the sum of squared errors?
-Unlike the earlier means at individual acceleration times, within bins, or within
-moving windows, this estimate uses all cars to make one prediction shared by every observation.
+Unlike the earlier means at individual acceleration times or within bins,
+this estimate uses all cars to make one prediction shared by every observation.
 
 [The mean is the constant that minimizes the sum of squared deviations]{.slide-bullet}.
 In graphical terms, it is [the best-fitting horizontal line under squared-error loss]{.slide-subbullet}.
@@ -430,19 +355,107 @@ car_points +
 
 :::
 
-## Local smoothing
+## Fitting local models
 
 Sometimes one equation is a poor description of the whole dataset.
-[Local regression fits nearby observations in overlapping neighborhoods,
-allowing the trend to change across the x-axis.]{.slide-bullet}
-This is usually called *LOESS* (locally estimated scatterplot smoothing)
-or *LOWESS* (locally weighted scatterplot smoothing).
+[Instead of fitting one model across the full range, we can fit simple models
+repeatedly to nearby observations.]{.slide-bullet}
+We will follow the same progression as before:
+start with a constant, then allow each local fit to tilt.
+
+### Let the neighborhood move
+
+[Binning uses fixed, non-overlapping neighborhoods.]{.slide-bullet}
+[A rolling mean instead averages observations within overlapping neighborhoods
+that move along the axis.]{.slide-bullet}
 [We can think of a rolling mean as **local constant regression**:
 at each target x-value, fit a horizontal line to nearby observations
 and retain its height as the estimate.]{.slide-bullet}
+The resulting curve can bend even though each individual fit is horizontal,
+because the observations contributing to the estimate change as the neighborhood moves.
+
+Here we sort the individual cars by acceleration time and average neighboring
+observations across all origins. Each included car receives equal weight.
+Unlike fixed bins, the neighborhoods overlap;
+however, equal-weight windows can still produce jumps as observations enter or leave.
+
+:::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+`frame=[-30, 30]` starts with the preceding 30 observations, the current observation,
+and the following 30 observations in acceleration-time order.
+At the endpoints, it uses the available observations.
+By default, Altair expands window boundaries to include ties in the sorting variable,
+so a window can include more than 61 cars when acceleration times repeat.
+
+```{python}
+#| label: trends-rolling-window-alt
+#| slide-show: both
+#| slide-title: Rolling means as local constant fits
+alt.Chart(cars).transform_window(
+    rolling_hp='mean(Horsepower)',
+    frame=[-30, 30],
+    sort=[alt.SortField('Acceleration')]
+).mark_line().encode(
+    x=alt.X('Acceleration:Q'),
+    y='rolling_hp:Q'
+)
+```
+
+#### ggplot {.slide-skip}
+
+There is no built-in way to plot a rolling mean in ggplot,
+so instead we calculate the means before plotting.
+`slider::slide_dbl()` averages the preceding 30 rows, the current row, and the following
+30 rows, using the available rows at the endpoints.
+Unlike Altair's default, this uses strict row boundaries rather than expanding for ties,
+so the curves can differ where acceleration times repeat.
+
+```{r}
+#| label: trends-rolling-window-gg
+#| slide-show: both
+#| slide-title: Rolling means as local constant fits
+rolling_cars <- cars |>
+    arrange(Acceleration) |>
+    mutate(rolling_hp = slider::slide_dbl(
+        Horsepower, mean, .before = 30, .after = 30
+    ))
+ggplot(rolling_cars, aes(x = Acceleration, y = rolling_hp)) +
+    geom_line()
+```
+
+::::
+
+### Choosing a rolling window
+
+The width of 30 observations on either side is an illustrative starting point,
+not a generally optimal choice. Compare narrower and wider windows to see which
+features persist. A fixed observation count spans different ranges of acceleration times
+where cars are more or less densely represented.
+Repeated acceleration times can also receive different estimates as the row window moves,
+producing vertical segments when those estimates are connected at the same x-value.
+
+Three window types answer different questions:
+
+::: {.slide-bullet}
+
+- **Expanding** (`[None, 0]`, the default in Altair): average everything up to the current position in the sort order.
+  This estimates a cumulative level rather than a local trend.
+- **Trailing** (for example, `[-30, 0]`): use observations at or before the current position. Common in e.g. finance.
+  With a chronological sort, this is useful for monitoring as observations arrive.
+- **Centered** (`[-30, 30]`): use observations on both sides to describe a local pattern. Common in e.g. statistics.
+
+:::
+
+### Allow each local fit to tilt
+
 [Local linear regression instead fits a line with a slope,
 then evaluates that line at the target x-value.]{.slide-bullet}
 Moving the neighborhood and repeating these fits produces the curve.
+LOESS (locally estimated scatterplot smoothing), also called LOWESS
+(locally weighted scatterplot smoothing), uses local fits with distance-based weights.
+Nearby observations receive more influence, and the local fits can be linear or quadratic.
 The animation builds up the red fitted curve from local fits.
 
 ::: {.slide-visual slide-title="How local regression builds a curve"}
@@ -453,7 +466,7 @@ The animation builds up the red fitted curve from local fits.
 
 ::: {.panel-tabset group="language"}
 
-### Altair {.slide-skip}
+#### Altair {.slide-skip}
 
 Altair fits linear regression locally in each neighborhood in `transform_loess`.
 <!-- TODO this should go in a deep dive -->
@@ -472,7 +485,7 @@ points + points.mark_line().transform_loess(
 )
 ```
 
-### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
 
 For computational efficiency,
 `geom_smooth()` automatically changes the method based on the number of data points.
@@ -493,7 +506,7 @@ car_points + geom_smooth(method = 'loess', se = FALSE)
 
 ::: {.deep-dive}
 
-## Choosing the smoothing neighborhood size
+### Choosing the smoothing neighborhood size
 
 | Setting | Altair | ggplot |
 |:--|:--|:--|
@@ -512,7 +525,7 @@ since all observations do not have the same weight.
 
 :::: {.panel-tabset group="language"}
 
-### Altair {.slide-skip}
+#### Altair {.slide-skip}
 
 The `bandwidth` parameter controls the fraction of observations included in each neighborhood.
 By default,
@@ -525,7 +538,7 @@ points + points.mark_line().transform_loess(
 )
 ```
 
-### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
 
 
 The `span` parameter changes the fraction of observations in each neighborhood.
@@ -555,7 +568,7 @@ or ggplot's span.
 
 ::: {.deep-dive}
 
-## Kernels connect density estimation and local regression
+### Kernels connect density estimation and local regression
 
 In @sec-smoothed-distributions, kernels let observations contribute gradually
 to nearby locations rather than placing them entirely inside one fixed bin.
@@ -698,6 +711,7 @@ a global trend, or local variation within the observed range.
 | Summary | Neighborhood | What is fitted? |
 |:--|:--|:--|
 | Exact-value or binned mean | One recorded acceleration time or fixed interval | A separate constant |
+| Global mean | All observations | One shared constant |
 | Rolling mean | Moving, overlapping window | A local constant |
 | Local linear regression | Nearby observations, usually distance-weighted | A local line |
 | Global linear regression | All observations in the fitted group | One shared line |
