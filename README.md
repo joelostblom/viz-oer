@@ -208,6 +208,12 @@ The chapter uses lightweight annotations:
 - Other content after a heading becomes speaker notes for that slide.
 - `.deep-dive` blocks are excluded entirely from presentations, including their
   headings, selected content, and speaker notes. They remain in the textbook.
+  Their first direct heading is promoted into the collapsed title bar, for example
+  **Deep dive: Choosing bandwidth**, and removed from the expanded body. The title
+  preserves inline formatting and the heading's link anchor. A generic **Deep dive**
+  heading is skipped in favor of the next topic heading; blocks without a topic
+  heading keep the **Deep dive** label. Headings inside tabs or exercises do not
+  supply the title.
 - `.column-margin` blocks are likewise excluded entirely from presentations.
 - Add `.slide-skip` to a heading, for example `### Details {.slide-skip}`, to omit
   only that heading and its slide break. Following content uses the preceding
