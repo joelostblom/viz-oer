@@ -75,7 +75,7 @@ with separate fits by origin.
 ```{python}
 #| label: trends-car-points-alt
 #| slide-show: both
-points = alt.Chart(cars).mark_circle(opacity=0.2).encode(
+points = alt.Chart(cars).mark_circle(opacity=0.2, color='black').encode(
     x=alt.X('Acceleration:Q').scale(zero=False),
     y='Horsepower'
 )
@@ -88,7 +88,7 @@ points
 #| label: trends-car-points-gg
 #| slide-show: both
 car_points <- ggplot(cars, aes(x = Acceleration, y = Horsepower)) +
-    geom_point(alpha = 0.2)
+    geom_point(alpha = 0.2, color = 'black')
 car_points
 ```
 
@@ -383,6 +383,209 @@ which we will instead talk about in @sec-uncertainty.
 #| slide-title: A linear trend
 car_points + geom_smooth(method = 'lm', se = FALSE)
 ```
+
+:::
+
+#### Tilt the line around the sample means {.slide-skip}
+
+For ordinary least squares with an intercept, the fitted line passes through
+the point $(\bar{x}, \bar{y})$: mean acceleration time and mean horsepower.
+For any chosen slope $w_1$, the least-squares intercept is
+$w_0 = \bar{y} - w_1\bar{x}$.
+We can therefore think of moving from the constant model to a straight line
+as tilting the line around this fixed point.
+The intercept changes with the slope; the pivot is the sample means,
+not necessarily the visual midpoint of the x-axis.
+
+Use the slider below to change the slope.
+Start at zero to see the global mean line, then try negative and positive slopes.
+Watch how the equation changes while the line continues to pass through the diamond.
+
+```{python}
+#| label: trends-interactive-slope-alt
+#| echo: false
+#| slide-show: output
+#| slide-title: Tilt the line around the sample means
+mean_acceleration = float(cars['Acceleration'].mean())
+mean_horsepower = float(cars['Horsepower'].mean())
+acceleration_range = [float(cars['Acceleration'].min()), float(cars['Acceleration'].max())]
+
+slope = alt.param(
+    name='tilt_slope', value=0,
+    bind=alt.binding_range(min=-30, max=30, step=2, name='Slope w₁: ')
+)
+tilting_line = alt.Chart(pd.DataFrame({'Acceleration': acceleration_range})).transform_calculate(
+    Horsepower=f'{mean_horsepower} + tilt_slope * (datum.Acceleration - {mean_acceleration})'
+).mark_line(clip=True).encode(x='Acceleration:Q', y='Horsepower:Q')
+
+pivot_data = pd.DataFrame({'Acceleration': [mean_acceleration], 'Horsepower': [mean_horsepower]})
+pivot = alt.Chart(pivot_data).mark_point(shape='diamond', opacity=1, filled=True, size=150).encode(
+    x='Acceleration:Q', y='Horsepower:Q',
+    tooltip=[alt.Tooltip('Acceleration:Q', format='.2f'), alt.Tooltip('Horsepower:Q', format='.2f')]
+)
+pivot_label = pivot.mark_text(align='left', dx=10, dy=-12).encode(text=alt.value('Sample means'))
+equation = (
+    f"'ŷ = ' + format({mean_horsepower} - tilt_slope * {mean_acceleration}, '.1f')"
+    " + (tilt_slope < 0 ? ' − ' : ' + ') + format(abs(tilt_slope), '.1f') + ' × x'"
+)
+
+(points + tilting_line + pivot + pivot_label).encode(
+    x=alt.X('Acceleration:Q').scale(domain=acceleration_range, nice=False, zero=False)
+        .title('Acceleration time (seconds)'),
+    y=alt.Y('Horsepower:Q').scale(domain=[0, 250], nice=False).title('Horsepower')
+).add_params(slope).properties(
+    title=alt.TitleParams(
+        text=alt.ExprRef(expr=equation),
+        subtitle=[
+            'ŷ = predicted horsepower',
+            'x = acceleration time',
+        ]
+    )
+)
+```
+
+The slider explores candidate slopes, with the intercept adjusted for each one.
+They all pass through the sample means, but they do not fit the observations equally well.
+OLS chooses the slope that minimizes the sum of squared vertical residuals.
+The fixed axis limits make the change in tilt visible without rescaling the chart.
+
+::: {.deep-dive}
+
+#### Which is the "best" line?
+
+To be able to quantify how well a model "fits" the data,
+we need to quantify some type of metric
+that indicates how good the fit is.
+A common way of doing this is to use the distance from each observation
+to the model's prediction for an observation at that location.
+For each observation,
+the prediction error
+—also called a residual when comparing observed and fitted values—
+is the observed value (the point) minus the predicted value (the line).
+In the chart below,
+the orange segments show the magnitudes (i.e. the absolute value) of these discrepancies.
+
+There are different ways to combine these residuals into an overall error.
+An intuitive one might be to simply sum up all the magnitudes of the prediction errors,
+i.e. add the length orange lines together.
+This is a perfectly reasonable thing to do,
+but often the squared distance is used instead.
+Squaring gives large misses disproportionately more influence than taking the absolute distance
+(just like the mean vs the median).
+Squared error therefore encourages the model to avoid large misses,
+even if this means accepting several smaller ones.
+It also targets the mean
+(i.e. the mean is the best fit of all possible horizontal lines)
+and makes linear regression particularly convenient to fit using linear algebra
+since optimizing the squared error instead of the absolute error is more computationally efficient.
+Absolute error remains a valid alternative
+which targets the median and gives extreme residuals less influence.
+The choice should reflect what we want to estimate and which kinds of prediction errors matter.
+
+| Fitting objective                   | Error displayed below                                        | What large residuals contribute to the error             |
+|:------------------------------------|:-------------------------------------------------------------|:---------------------------------------------------------|
+| **Least absolute deviations (LAD)** | **Mean absolute error (MAE):** average of absolute residuals | A residual twice as large contributes twice as much      |
+| **Ordinary least squares (OLS)**    | **Mean squared error (MSE):** average of squared residuals   | A residual twice as large contributes four times as much |
+
+As you can see in the table,
+these error metrics are defined as averages,
+but we talked about sums of residuals above.
+Minimizing the sum or the mean of either kind of error
+gives the same fit for a fixed dataset:
+dividing by the number of observations only rescales the objective.
+Using means makes it easier to communicate how wrong the line is on average.
+To facilitate communication,
+we might also avoid MSE since results in really large numbers
+and squared units (e.g. squared horsepowers)
+and instead take the square root of the MSE,
+which is called the Root Mean Squared Error
+(notably similar to standard
+
+As in the preceding example, the slider changes the slope while the intercept
+adjusts to keep the line passing through this sample's means.
+The title shows the resulting equation, with MSE and MAE directly below it.
+This lets us compare the losses for the same candidate lines.
+However, note that a freely fitted LAD line need not pass through the sample means (or median),
+it could be shifted up or down
+(whereas the OLS line is guranteed to be rotated around the mean).
+
+```{python}
+#| label: trends-interactive-loss-alt
+#| echo: false
+loss_cars = cars.sample(n=18, random_state=5310).sort_values('Acceleration')
+loss_mean_x = float(loss_cars['Acceleration'].mean())
+loss_mean_y = float(loss_cars['Horsepower'].mean())
+loss_x_range = [float(loss_cars['Acceleration'].min()), float(loss_cars['Acceleration'].max())]
+
+loss_slope = alt.param(
+    name='loss_slope', value=0,
+    bind=alt.binding_range(min=-30, max=30, step=2, name='Slope w₁: ')
+)
+residual_data = alt.Chart(loss_cars).transform_calculate(
+    predicted=f'{loss_mean_y} + loss_slope * (datum.Acceleration - {loss_mean_x})'
+).transform_calculate(
+    residual='datum.Horsepower - datum.predicted'
+).transform_calculate(
+    absolute_error='abs(datum.residual)',
+    squared_error='datum.residual * datum.residual'
+)
+
+residual_rules = residual_data.mark_rule(color='#F5881F', strokeWidth=2, clip=True).encode(
+    x='Acceleration:Q', y='Horsepower:Q', y2='predicted:Q'
+)
+candidate_line = residual_data.mark_line(clip=True).encode(x='Acceleration:Q', y='predicted:Q')
+observed_cars = residual_data.mark_circle(size=75, opacity=1).encode(
+    x='Acceleration:Q', y='Horsepower:Q',
+    tooltip=[
+        'Name:N', alt.Tooltip('Acceleration:Q', title='Acceleration time (s)'),
+        alt.Tooltip('Horsepower:Q', title='Observed horsepower'),
+        alt.Tooltip('predicted:Q', title='Predicted horsepower', format='.1f'),
+        alt.Tooltip('residual:Q', title='Residual (horsepower)', format='.1f')
+    ]
+)
+residual_plot = (residual_rules + candidate_line + observed_cars).encode(
+    x=alt.X('Acceleration:Q').scale(domain=loss_x_range, nice=False, zero=False, padding=8)
+        .title('Acceleration time (seconds)'),
+    y=alt.Y(scale=alt.Scale(domain=[0, 250], nice=False)).title('Horsepower')
+)
+
+# Title expressions use the same residual calculation as the plotted rules.
+residual_terms = [
+    f'({float(y)} - ({loss_mean_y} + loss_slope * ({float(x)} - {loss_mean_x})))'
+    for x, y in zip(loss_cars['Acceleration'], loss_cars['Horsepower'])
+]
+mse_expression = '(' + ' + '.join(f'pow({term}, 2)' for term in residual_terms) + f') / {len(loss_cars)}'
+mae_expression = '(' + ' + '.join(f'abs({term})' for term in residual_terms) + f') / {len(loss_cars)}'
+loss_readout = (
+    f"'MSE: ' + format({mse_expression}, '.1f') + ' hp²     |     MAE: '"
+    f" + format({mae_expression}, '.1f') + ' hp'"
+)
+
+loss_equation = (
+    f"'ŷ = ' + format({loss_mean_y} - loss_slope * {loss_mean_x}, '.1f')"
+    " + (loss_slope < 0 ? ' − ' : ' + ') + format(abs(loss_slope), '.1f') + ' × x'"
+)
+residual_plot.add_params(loss_slope).properties(
+    # Avoid SVG clip-path ID collisions with other charts on the same page.
+    usermeta={'embedOptions': {'renderer': 'canvas'}},
+    title=alt.TitleParams(
+        text=alt.ExprRef(expr=f'[{loss_equation}, {loss_readout}]'),
+        fontSize=14, lineHeight=20
+    )
+)
+```
+
+Start with slope zero: the horizontal line is at the sample mean.
+Then adjust the slope: can you find a line with smaller MSE?
+Does the same candidate slope also give the smallest MAE?
+Watch how one long orange segment can dominate MSE even when many other segments are short.
+The axes remain fixed; at steep slopes, parts of the line and residual segments
+are clipped to the plotting area, but both error values include the full residuals.
+
+If we were free to move a horizontal line vertically, the height minimizing MSE
+would be the sample **mean**, and a height minimizing MAE would be a sample **median**.
+With both intercept and slope freely fitted, OLS targets a conditional mean relationship,
+while LAD, also called **median regression**, targets a conditional median relationship.
 
 :::
 
