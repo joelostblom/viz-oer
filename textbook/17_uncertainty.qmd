@@ -186,54 +186,57 @@ Choose the quantity that addresses the question and label it explicitly.
 A **confidence interval** describes uncertainty in an estimate.
 For a 95% confidence interval, the intended interpretation is that
 [if we repeatedly sampled data and constructed intervals in the same way,
-about 95% of those intervals would contain the population quantity,
-provided the method's assumptions hold]{.slide-bullet}.
-[It is not an interval containing 95% of the individual observations.]{.slide-bullet}
-
-For the intervals around separately estimated means below,
-we will use **bootstrap confidence intervals for the mean**.
-[Bootstrapping resamples observations with replacement from the observed data,
-calculates the mean for each resample,
-and uses the resulting distribution of means to construct an interval.]{.slide-bullet}
-The interactive example below shows the resampling process;
-later, we will use plotting functions that calculate these intervals for us.
+about 95% of those intervals would contain the population quantity]{.slide-bullet},
+provided the method's assumptions hold.
+Note that this is not the same as saying that the true population mean
+has a 95% chance to be contained within a single CI.
+The population mean is fixed,
+and it is our construction of the CI
+that varies depending on how our sample from the original population looks.
 
 The standard error describes uncertainty in the estimated mean.
 When its sampling distribution is approximately normal—as is often the case for
 sufficiently large samples—mean ± one SE is approximately a 68% confidence interval,
 and mean ± two SE is approximately a 95% confidence interval.
-Bootstrapping estimates this uncertainty, but does not guarantee a normal sampling distribution.
-Increasing the number of bootstrap resamples reduces simulation noise;
-it does not increase the original sample size or remove skewness in the sampling distribution.
+
+[It's common to compute the confidence interval and standard error using **bootstrapping**]{.slide-bullet}.
+The core idea in bootstrapping is that
+since we don't have access to data of the entire population
+and we cannot repeatedly collect new samples from that population,
+we treat the data we have as the closest approximation
+of the distribution of the population
+and draw new samples from our observed data
+to build a confidence interval for our population mean estimate.
+You can read more detail about this technique 
+and play around with an interactive chart in the deep dive below.
 
 ### Building a confidence interval by bootstrapping {.slide-skip}
 
-Suppose we have observed the horsepower of 20 cars and want to estimate the population mean.
-We cannot repeatedly collect new samples from that population with the data already in hand.
-Instead, the bootstrap treats the observed sample as an **empirical distribution**
-from which we can draw new samples.
-For this illustration, we first restrict the dataset to cars with **at most 120 horsepower**,
-then reproducibly select 20 cars. This keeps the display compact;
-the target is the mean for this restricted group, not the mean for all cars.
+[Bootstrapping resamples observations with replacement from the observed data,
+calculates the mean for each resample,
+and uses the resulting distribution of means to construct an interval.]{.slide-bullet}
+In the bootstrap distribution of means,
+a percentile range (e.g. 5th - 95th percentile) corresponds
+to the confidence interval of the population mean,
+whereas a standard deviation
+corresponds to the standard error of the population mean.
+
+As an example,
+where we suppose that our observed contains the horsepower of 20 cars
+and we want to estimate the population mean and its confidence interval.
+These are the steps we would follow to construct that interval via bootstrapping:
 
 1. **Resample with replacement:** draw 20 observations from the observed sample.
    A car can appear more than once, and others may not appear at all.
 2. **Calculate the resample's mean:** each resample contributes one value to the
    bootstrap distribution of means.
-3. **Repeat and take percentiles:** the 2.5th and 97.5th percentiles of the bootstrap
+3. **Repeat and take percentiles:** choose the middle fraction corresponding to the
+   desired confidence level. At 95%, the 2.5th and 97.5th percentiles of the bootstrap
    means form a **95% percentile-bootstrap confidence interval** for the population mean.
 
-Move the slider a few steps at a time to inspect individual resamples
-(or use its arrow keys to advance one resample at a time),
-then move toward 1,000 to build up the distribution.
-The three panels share one horsepower scale.
-Small dots in the first two panels show observations; repeated horsepower values stack vertically.
-The larger dot and orange horizontal interval at the top of the observed-sample panel
-summarize its mean and bootstrap confidence interval.
-The **solid black line** marks the current resample's mean in its panel and in the histogram;
-it changes as you select different resamples.
-The **dashed gray line** marks the original sample mean in the observed-sample panel and histogram;
-it stays fixed throughout the demonstration.
+You can see this process depicted graphically below,
+and play around with some of the parameters.
+
 
 ```{python}
 #| label: uncertainty-bootstrap-process-alt
@@ -252,13 +255,15 @@ bootstrap_sample = (
 )
 bootstrap_values = bootstrap_sample['Horsepower'].to_numpy()
 bootstrap_n = len(bootstrap_values)
-bootstrap_repetitions = 1000
+bootstrap_repetitions = 500
+bootstrap_confidence_levels = np.arange(50, 100)
+bootstrap_tail_probabilities = (1 - bootstrap_confidence_levels / 100) / 2
 bootstrap_rng = np.random.default_rng(531)
 bootstrap_indices = bootstrap_rng.integers(0, bootstrap_n, size=(bootstrap_repetitions, bootstrap_n))
 bootstrap_draws = bootstrap_values[bootstrap_indices]
 bootstrap_means = bootstrap_draws.mean(axis=1)
 bootstrap_intervals = np.array([
-    np.quantile(bootstrap_means[:k], [0.025, 0.975])
+    np.quantile(bootstrap_means[:k], [bootstrap_tail_probabilities, 1 - bootstrap_tail_probabilities])
     for k in range(1, bootstrap_repetitions + 1)
 ])
 bootstrap_history = pd.DataFrame({
@@ -266,8 +271,8 @@ bootstrap_history = pd.DataFrame({
     'draws': bootstrap_draws.tolist(),
     'observations': (bootstrap_indices + 1).tolist(),
     'mean': bootstrap_means,
-    'lower': bootstrap_intervals[:, 0],
-    'upper': bootstrap_intervals[:, 1]
+    'lower_bounds': bootstrap_intervals[:, 0, :].tolist(),
+    'upper_bounds': bootstrap_intervals[:, 1, :].tolist()
 })
 bootstrap_original = pd.DataFrame({
     'Observation': np.arange(1, bootstrap_n + 1), 'Horsepower': bootstrap_values
@@ -280,19 +285,26 @@ bootstrap_axis_ticks = list(range(int(np.ceil(bootstrap_hp_limits[0] / 10) * 10)
 bootstrap_stack_max = max(np.unique(draw, return_counts=True)[1].max() for draw in bootstrap_draws)
 
 bootstrap_step = alt.param(
-    name='bootstrap_step', value=1,
+    name='bootstrap_step', value=5,
     bind=alt.binding_range(min=1, max=bootstrap_repetitions, step=1, name='Resamples accumulated: ')
+)
+bootstrap_confidence = alt.param(
+    name='bootstrap_confidence', value=95,
+    bind=alt.binding_range(min=50, max=99, step=1, name='Confidence level (%): ')
 )
 bootstrap_show_ci = alt.param(
     name='bootstrap_show_ci', value=True,
-    bind=alt.binding_checkbox(name='Show 95% percentile interval: ')
+    bind=alt.binding_checkbox(name='Show interval: ')
 )
 bootstrap_source = alt.Chart(alt.Data(name='bootstrap_history'))
-bootstrap_current = bootstrap_source.transform_filter(alt.datum.resample == bootstrap_step)
-bootstrap_reference = alt.Chart(pd.DataFrame({'mean': [bootstrap_sample_mean]})).mark_rule(
-    color='grey', strokeDash=[5, 3], strokeWidth=2
+bootstrap_current = bootstrap_source.transform_filter(alt.datum.resample == bootstrap_step).transform_calculate(
+    lower='datum.lower_bounds[bootstrap_confidence - 50]',
+    upper='datum.upper_bounds[bootstrap_confidence - 50]'
+)
+bootstrap_reference = alt.Chart(pd.DataFrame({'mean': [bootstrap_sample_mean]})).mark_point(
+    color='black', size=150, opacity=1, shape='diamond', filled=True, stroke='white', strokeWidth=1
 ).encode(
-    x=alt.X('mean:Q').title('Horsepower'),
+    x=alt.X('mean:Q').title('Horsepower'), y=alt.value(12),
     tooltip=[alt.Tooltip('mean:Q', title='Original sample mean', format='.2f')]
 )
 
@@ -310,24 +322,19 @@ bootstrap_resample_dots = bootstrap_current.transform_flatten(
 ).transform_window(
     stack='row_number()', groupby=['Horsepower'], sort=[alt.SortField('Observation')]
 ).mark_circle(size=45, opacity=1).encode(**bootstrap_dot_encoding)
-bootstrap_current_mean = bootstrap_current.mark_rule(color='black').encode(
-    x=alt.X('mean:Q').title('Horsepower'),
-    tooltip=[alt.Tooltip('mean:Q', title='Current resample mean', format='.2f')]
-)
-
-bootstrap_resample_panel = (bootstrap_resample_dots + bootstrap_current_mean).properties(
-    width=510, height=90,
-    title=alt.TitleParams(text=alt.ExprRef(expr=
-        "'2. Resample #' + bootstrap_step + ' (20 draws); mean = '"
-        " + format(data('bootstrap_history')[bootstrap_step - 1].mean, '.1f') + ' hp'"))
+bootstrap_current_mean = bootstrap_current.mark_point(
+    color='grey', size=150, opacity=1, shape='diamond', filled=True, stroke='white', strokeWidth=1
+).encode(
+    x=alt.X('mean:Q').title('Horsepower'), y=alt.value(12),
+    tooltip=[alt.Tooltip('mean:Q', title='Resample mean', format='.2f')]
 )
 
 bootstrap_histogram = bootstrap_source.transform_filter(
     alt.datum.resample <= bootstrap_step
 ).mark_bar().encode(
     x=alt.X('mean:Q').bin(step=1).scale(domain=bootstrap_hp_limits, nice=False, zero=False)
-        .axis(values=bootstrap_axis_ticks).title('Bootstrap mean horsepower'),
-    y=alt.Y('count():Q').title('Resamples').scale(domain=[0, 150]),
+        .axis(values=bootstrap_axis_ticks).title('Horsepower'),
+    y=alt.Y('count():Q').title('Resamples').scale(domain=[0, 80]),
     tooltip=[alt.Tooltip('mean:Q', bin=alt.Bin(step=1), title='Mean interval'),
              alt.Tooltip('count():Q', title='Resamples')]
 )
@@ -336,7 +343,9 @@ bootstrap_ci_area = bootstrap_ci.mark_rect(color='#F5881F', opacity=0.15).encode
     x='lower:Q', x2='upper:Q', y=alt.value(0), y2=alt.value(180)
 )
 bootstrap_ci_edges = bootstrap_ci.transform_fold(['lower', 'upper'], as_=['bound', 'endpoint']).transform_calculate(
-    percentile="datum.bound === 'lower' ? '2.5th percentile' : '97.5th percentile'"
+    percentile_number="datum.bound === 'lower' ? (100 - bootstrap_confidence) / 2 : (100 + bootstrap_confidence) / 2"
+).transform_calculate(
+    percentile="'Percentile ' + format(datum.percentile_number, '.3~g')"
 ).mark_rule(
     color='#F5881F', strokeDash=[4, 3], strokeWidth=2
 ).encode(x='endpoint:Q', tooltip=[alt.Tooltip('percentile:N'), alt.Tooltip('endpoint:Q', format='.2f')])
@@ -345,99 +354,117 @@ bootstrap_percentile_labels = bootstrap_ci_edges.mark_text(
     align=alt.ExprRef(expr="datum.bound === 'lower' ? 'right' : 'left'"),
     dx=alt.ExprRef(expr="datum.bound === 'lower' ? -4 : 4")
 ).encode(y=alt.value(76), text='percentile:N')
-bootstrap_ci_label = bootstrap_ci.mark_text(
+bootstrap_ci_label = bootstrap_ci.transform_calculate(
+    label="'Middle ' + bootstrap_confidence + '% of bootstrap means'"
+).mark_text(
     color='#F5881F', align='left', baseline='top', fontSize=11
 ).encode(
-    x=alt.value(8), y=alt.value(8), text=alt.value('Middle 95% of bootstrap means')
+    x=alt.value(8), y=alt.value(40), text='label:N'
 )
-bootstrap_interval_values = bootstrap_ci.transform_calculate(
-    label="'[' + format(datum.lower, '.1f') + ', ' + format(datum.upper, '.1f') + '] hp'"
-).mark_text(color='#F5881F', align='left', baseline='top', fontSize=11).encode(
+bootstrap_interval_values = bootstrap_ci_edges.transform_calculate(
+    label="format(datum.endpoint, '.1f') + ' hp'"
+).mark_text(
+    color='#F5881F', baseline='middle', fontSize=10,
+    align=alt.ExprRef(expr="datum.bound === 'lower' ? 'right' : 'left'"),
+    dx=alt.ExprRef(expr="datum.bound === 'lower' ? -4 : 4")
+).encode(y=alt.value(12), text='label:N')
+bootstrap_percentile_values = bootstrap_interval_values.mark_text(
+    color='#F5881F', baseline='top', fontSize=10,
+    align=alt.ExprRef(expr="datum.bound === 'lower' ? 'right' : 'left'"),
+    dx=alt.ExprRef(expr="datum.bound === 'lower' ? -4 : 4")
+).encode(y=alt.value(90))
+bootstrap_current_label = bootstrap_current.transform_calculate(
+    label="'Resample mean: ' + format(datum.mean, '.1f') + ' hp'"
+).mark_text(color='grey', align='left', baseline='top', fontSize=11).encode(
     x=alt.value(8), y=alt.value(24), text='label:N'
 )
 bootstrap_original_label = bootstrap_reference.transform_calculate(
     label="'Original mean: ' + format(datum.mean, '.1f') + ' hp'"
-).mark_text(color='grey', align='left', baseline='top', fontSize=11).encode(
-    x=alt.value(8), y=alt.value(40), text='label:N'
-)
-bootstrap_current_label = bootstrap_current.transform_calculate(
-    label="'Resample mean: ' + format(datum.mean, '.1f') + ' hp'"
 ).mark_text(color='black', align='left', baseline='top', fontSize=11).encode(
-    x=alt.value(8), y=alt.value(56), text='label:N'
+    x=alt.value(8), y=alt.value(8), text='label:N'
 )
+
 bootstrap_distribution_panel = (
     bootstrap_ci_area + bootstrap_histogram + bootstrap_ci_edges
-    + bootstrap_reference.encode(x=alt.X('mean:Q').title('Bootstrap mean horsepower'))
-    + bootstrap_current_mean.encode(x=alt.X('mean:Q').title('Bootstrap mean horsepower'))
-    + bootstrap_ci_label + bootstrap_interval_values + bootstrap_original_label + bootstrap_current_label
-    + bootstrap_percentile_labels
+    + bootstrap_reference.encode(x=alt.X('mean:Q').title('Horsepower'), y=alt.value(8))
+    + bootstrap_current_mean.encode(x=alt.X('mean:Q').title('Horsepower'), y=alt.value(24))
+    + bootstrap_ci_label + bootstrap_original_label + bootstrap_current_label
+    + bootstrap_percentile_labels + bootstrap_percentile_values
 ).properties(
     width=510, height=180,
-    title=alt.TitleParams(text=alt.ExprRef(expr=
-        "'3. Distribution of ' + bootstrap_step + ' bootstrap means'"))
+    title=alt.TitleParams(
+        text=alt.ExprRef(expr="'3. Distribution of ' + bootstrap_step + ' bootstrap means'"),
+        subtitle='The percentiles of the bootrap',
+        anchor='start',
+        frame='group',
+    )
 )
 bootstrap_summary_interval = bootstrap_ci.mark_rule(color='#F5881F', strokeWidth=3).encode(
     x='lower:Q', x2='upper:Q', y=alt.value(12),
-    tooltip=[alt.Tooltip('lower:Q', title='2.5th percentile', format='.2f'),
-             alt.Tooltip('upper:Q', title='97.5th percentile', format='.2f')]
+    tooltip=[alt.Tooltip('lower:Q', title='Lower percentile endpoint', format='.2f'),
+             alt.Tooltip('upper:Q', title='Upper percentile endpoint', format='.2f')]
 )
-bootstrap_summary_point = bootstrap_reference.mark_circle(size=90, opacity=1, color='grey').encode(
-    y=alt.value(12), tooltip=[alt.Tooltip('mean:Q', title='Original sample mean', format='.2f')]
-)
-bootstrap_summary_label = bootstrap_ci_label.encode(
-    y=alt.value(28), text=alt.value('95% bootstrap CI for population mean')
+bootstrap_summary_point = bootstrap_reference
+bootstrap_summary_label = bootstrap_ci_label.transform_calculate(
+    summary_label="bootstrap_confidence + '% CI for population mean'"
+).encode(
+    y=alt.value(28), text='summary_label:N'
 )
 bootstrap_original_panel = (
-    bootstrap_original_dots + bootstrap_reference + bootstrap_summary_interval + bootstrap_summary_point
-    + bootstrap_summary_label + bootstrap_interval_values.encode(y=alt.value(44))
+    bootstrap_original_dots + bootstrap_summary_interval + bootstrap_summary_point
+    + bootstrap_summary_label + bootstrap_original_label + bootstrap_interval_values
 ).encode(
     x=alt.X().scale(domain=bootstrap_hp_limits, nice=False, zero=False)
         .axis(values=bootstrap_axis_ticks).title('Horsepower')
-).properties(width=510, height=90, title='1. Observed data (20 cars), mean, and 95% CI')
+).properties(
+    width=510, height=90,
+    title=alt.TitleParams(
+        text="1. Observed data (20 cars)",
+        anchor='start',
+        frame='group',
+    )
+)
+bootstrap_resample_panel = (bootstrap_resample_dots + bootstrap_current_mean + bootstrap_current_label.encode(y=alt.value(8))).properties(
+    width=510, height=90,
+    title=alt.TitleParams(
+        text=alt.ExprRef(expr= "'2. Resample #' + bootstrap_step"),
+        subtitle='20 draws with replacement from the original data',
+        anchor='start',
+        frame='group',
+
+)
+)
 
 alt.vconcat(
     bootstrap_original_panel,
     bootstrap_resample_panel,
     bootstrap_distribution_panel,
     spacing=20
-).resolve_scale(x='shared').add_params(bootstrap_step, bootstrap_show_ci).properties(
+).resolve_scale(x='shared').add_params(bootstrap_step, bootstrap_confidence, bootstrap_show_ci).properties(
     datasets={'bootstrap_history': bootstrap_history.to_dict('records')},
     usermeta={'embedOptions': {'renderer': 'canvas'}}
 )
 ```
 
-**Show 95% percentile interval** is enabled by default and can be switched off.
-The orange region and dashed boundaries mark the middle 95% of the bootstrap means
-currently included in the histogram.
-The endpoints are calculated from the means themselves, not from the histogram's bin boundaries.
-
 The bootstrap distribution describes how the estimated mean varies when we resample
 the observed data. We use it to approximate how the sample mean would vary if we could
 repeatedly collect new samples from the population.
-In the **percentile-bootstrap method**, we take the 2.5th and 97.5th percentiles of
-these bootstrap means and use **those same endpoints** as an approximate 95% confidence
-interval for the population mean. The orange region below shows the percentile calculation;
-the orange bar above shows the resulting confidence interval, with matching numerical endpoints.
-The interval contains approximately 95% of the bootstrap means, not 95% of the observed cars;
-its intended confidence coverage depends on the bootstrap approximation being appropriate.
+At the default 95% level in the **percentile-bootstrap method**, we take the 2.5th
+and 97.5th percentiles of these bootstrap means and use **those same endpoints** as an approximate 95% confidence
+interval for the population mean.
+Similarly the standard error of the mean corresponds to a range that is one standard deviation
+down and up from the mean of the bootstrap distribution.
+Since the 
 
-The first panel combines the observed values with the same interval as a horizontal error bar
-and a larger dot at the **original sample mean**. All three panels have the same width
-and aligned horsepower axes.
-The dot stays fixed as resamples accumulate; the interval endpoints update.
-This is the usual point-estimate-and-interval summary, not a point at the current resample's mean
-or at the midpoint of the interval. The dot remains visible when the interval is switched off.
-Inside the histogram, orange text identifies the middle 95% and its percentile boundaries;
-in the observed-data panel, it identifies the confidence interval for the population mean.
-Gray text identifies the original sample mean, and black text identifies the current
-resample's mean, matching the respective marks.
-The interval is available from the first resample, but its endpoints are unstable
-when based on very few means. With just one resample, both percentiles equal that
-resample's mean, so the interval has zero width; this does not indicate certainty
-about the population mean. Continue accumulating resamples to see the calculation stabilize.
+Bootstrapping estimates this uncertainty, but does not guarantee a normal sampling distribution.
+Increasing the number of bootstrap resamples reduces simulation noise;
+it does not increase the original sample size or remove skewness in the sampling distribution.
+
+
+
 
 Notice that every resample still contains **20 observations**, even when the histogram
-contains 1,000 means. Increasing the number of resamples makes the bootstrap calculation
+contains 500 means. Increasing the number of resamples makes the bootstrap calculation
 more stable; it does not add new information to the original sample.
 The slider reveals a fixed sequence of resamples generated with a random seed,
 so returning to the same position gives the same result.
@@ -445,7 +472,8 @@ so returning to the same position gives the same result.
 ::: {.callout-default .ex-prompt}
 
 Why can a car appear several times in one resample?
-Does the orange interval contain 95% of the individual cars' horsepower values?
+At the 95% setting, does the orange interval contain 95% of the individual cars' horsepower values?
+Keeping the number of resamples fixed, what happens when you increase the confidence level?
 
 :::: {.callout-default .ex-solution}
 
@@ -453,10 +481,12 @@ Sampling with replacement makes every observed car available for every draw,
 including cars already selected in that resample.
 The orange interval summarizes uncertainty in the **mean**, using percentiles of
 the bootstrap means; it is not an interval for individual cars.
-We call it a 95% percentile-bootstrap confidence interval because it aims for
+At the default setting, we call it a 95% percentile-bootstrap confidence interval because it aims for
 95% repeated-sampling coverage of the population mean.
 Actual coverage depends on the sampling assumptions and how well the observed sample
 represents the population; taking these percentiles does not guarantee exact 95% coverage.
+Increasing the selected confidence level moves the percentile endpoints farther
+into the tails, widening the interval without changing the sample or its mean.
 
 ::::
 :::
