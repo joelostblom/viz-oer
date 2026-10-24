@@ -239,10 +239,21 @@ and play around with some of the parameters.
 
 
 ```{python}
-#| label: uncertainty-bootstrap-process-alt
+#| label: fig-ci-bootstrap-interactive
 #| echo: false
 #| slide-show: output
 #| slide-title: Build a confidence interval by bootstrapping
+#| fig-cap: >
+#|    Interactive chart for construction CI via bootstrapping. 
+#|    After clicking a slider you can either drag with the pointer
+#|    or use the arrow keys to step through the values.
+#|    The slider reveals a fixed sequence of resamples generated with a random seed,
+#|    so returning to the same position gives the same result.
+#|    Notice that every resample still contains **20 observations**,
+#|    even when the histogram contains 500 means.
+#|    Increasing the number of resamples makes the bootstrap calculation
+#|    more stable; it does not add new information to the original sample.
+
 import altair as alt
 import numpy as np
 import pandas as pd
@@ -331,7 +342,7 @@ bootstrap_current_mean = bootstrap_current.mark_point(
 
 bootstrap_histogram = bootstrap_source.transform_filter(
     alt.datum.resample <= bootstrap_step
-).mark_bar().encode(
+).mark_bar(color='grey').encode(
     x=alt.X('mean:Q').bin(step=1).scale(domain=bootstrap_hp_limits, nice=False, zero=False)
         .axis(values=bootstrap_axis_ticks).title('Horsepower'),
     y=alt.Y('count():Q').title('Resamples').scale(domain=[0, 80]),
@@ -384,8 +395,15 @@ bootstrap_original_label = bootstrap_reference.transform_calculate(
     x=alt.value(8), y=alt.value(8), text='label:N'
 )
 
+# bootstrap_current_mean = bootstrap_current.mark_point(
+#     color='grey', size=150, opacity=1, shape='diamond', filled=True, stroke='white', strokeWidth=1
+# ).encode(
+#     x=alt.X('mean:Q').title('Horsepower'), y=alt.value(12),
+#     tooltip=[alt.Tooltip('mean:Q', title='Resample mean', format='.2f')]
+# )
 bootstrap_distribution_panel = (
-    bootstrap_ci_area + bootstrap_histogram + bootstrap_ci_edges
+    bootstrap_current_mean.mark_rule(color='grey', strokeDash=[2, 2]).encode(y=alt.value(24), y2=alt.value('height'))
+    + bootstrap_ci_area + bootstrap_histogram + bootstrap_ci_edges
     + bootstrap_reference.encode(x=alt.X('mean:Q').title('Horsepower'), y=alt.value(8))
     + bootstrap_current_mean.encode(x=alt.X('mean:Q').title('Horsepower'), y=alt.value(24))
     + bootstrap_ci_label + bootstrap_original_label + bootstrap_current_label
@@ -449,25 +467,19 @@ alt.vconcat(
 The bootstrap distribution describes how the estimated mean varies when we resample
 the observed data. We use it to approximate how the sample mean would vary if we could
 repeatedly collect new samples from the population.
-At the default 95% level in the **percentile-bootstrap method**, we take the 2.5th
-and 97.5th percentiles of these bootstrap means and use **those same endpoints** as an approximate 95% confidence
+At the default 95% level in the **percentile-bootstrap method**,
+we take the 2.5th and 97.5th percentiles of these bootstrap means
+and use **those same endpoints** as an approximate 95% confidence
 interval for the population mean.
-Similarly the standard error of the mean corresponds to a range that is one standard deviation
+Similarly,
+the standard error of the mean
+corresponds to a range that is one standard deviation
 down and up from the mean of the bootstrap distribution.
-Since the 
-
-Bootstrapping estimates this uncertainty, but does not guarantee a normal sampling distribution.
-Increasing the number of bootstrap resamples reduces simulation noise;
-it does not increase the original sample size or remove skewness in the sampling distribution.
-
-
-
-
-Notice that every resample still contains **20 observations**, even when the histogram
-contains 500 means. Increasing the number of resamples makes the bootstrap calculation
-more stable; it does not add new information to the original sample.
-The slider reveals a fixed sequence of resamples generated with a random seed,
-so returning to the same position gives the same result.
+When the distribution of bootstrap means is roughtly normal
+(which it is increasingly likely to be the bigger our boostrap sample is
+as per the central limit theory),
+the standard error covers a similar range as the 68% confidence interval
+(since the mean ± one standard deviation covers roughtly the middle 68% of a normal distribution).
 
 ::: {.callout-default .ex-prompt}
 
