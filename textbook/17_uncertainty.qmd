@@ -183,8 +183,12 @@ Choose the quantity that addresses the question and label it explicitly.
 
 ## Interpreting confidence intervals {.content-visible when-format="revealjs"}
 
-A **confidence interval** describes uncertainty in an estimate.
-For a 95% confidence interval, the intended interpretation is that
+A **confidence interval** describes uncertainty in an estimate,
+in this case the population mean.
+The interval gives a range of population estimates
+reasonably compatible with the observed data.
+For a 95% confidence interval,
+the precise interpretation is that
 [if we repeatedly sampled data and constructed intervals in the same way,
 about 95% of those intervals would contain the population quantity]{.slide-bullet},
 provided the method's assumptions hold.
@@ -192,7 +196,8 @@ Note that this is not the same as saying that the true population mean
 has a 95% chance to be contained within a single CI.
 The population mean is fixed,
 and it is our construction of the CI
-that varies depending on how our sample from the original population looks.
+that varies depending on the values in our observed data
+(i.e. our sample from the entire population).
 
 The standard error describes uncertainty in the estimated mean.
 When its sampling distribution is approximately normal—as is often the case for
@@ -200,7 +205,10 @@ sufficiently large samples—mean ± one SE is approximately a 68% confidence in
 and mean ± two SE is approximately a 95% confidence interval.
 
 [It's common to compute the confidence interval and standard error using **bootstrapping**]{.slide-bullet}.
-The core idea in bootstrapping is that
+Bootstrapping is a procedure
+for estimating the distribution of an estimator (such as the mean)
+by resampling the observed data.
+The underlying idea in bootstrapping is that
 since we don't have access to data of the entire population
 and we cannot repeatedly collect new samples from that population,
 we treat the data we have as the closest approximation
@@ -210,17 +218,24 @@ to build a confidence interval for our population mean estimate.
 You can read more detail about this technique 
 and play around with an interactive chart in the deep dive below.
 
+::: {.deep-dive}
+
 ### Building a confidence interval by bootstrapping {.slide-skip}
 
-[Bootstrapping resamples observations with replacement from the observed data,
+[The bootstrapping technique resamples observations
+with replacement from the observed data,
 calculates the mean for each resample,
 and uses the resulting distribution of means to construct an interval.]{.slide-bullet}
-The percentile-bootstrap method uses a range of bootstrap means
+We refer to each generated dataset as a **bootstrap resample**,
+and its mean as the **bootstrap resample mean** or just **resample mean** for short.
+Together, these estimates form the **bootstrap distribution of the mean**.
+The percentile-bootstrap method uses a range of resample means
 to construct a confidence interval for the population mean:
-for example, the 5th–95th percentile interval gives a nominal 90% confidence interval.
-The standard deviation of the bootstrap means instead estimates the
-**standard error of the sample mean (SEM)**.
-That width can be displayed on the bootstrap distribution or around the original sample mean.
+for example, the 5th–95th percentile interval of the resample mean distribution
+gives a nominal 90% confidence interval.
+The standard deviation of the resampled means
+can similarly be used to construct the
+standard error of the sample mean (SEM).
 
 As an example,
 suppose that our observed sample contains the horsepower of 20 cars
@@ -230,28 +245,13 @@ These are the steps we would follow to construct that interval via bootstrapping
 1. **Resample with replacement:** draw 20 observations from the observed sample.
    A car can appear more than once, and others may not appear at all.
 2. **Calculate the resample's mean:** each resample contributes one value to the
-   bootstrap distribution of means.
+   distribution of resample means.
 3. **Repeat and take percentiles:** choose the middle fraction corresponding to the
-   desired confidence level. At 95%, the 2.5th and 97.5th percentiles of the bootstrap
+   desired confidence level. At 95%, the 2.5th and 97.5th percentiles of the resample
    means form a **95% percentile-bootstrap confidence interval** for the population mean.
 
 You can see this process depicted graphically below,
 and play around with some of the parameters.
-For this illustration, we select 20 cars after restricting the dataset to
-at most 120 horsepower; our target is the mean for this restricted group.
-
-Use **Interval display** to switch between two views:
-
-- **Percentile CI:** the confidence-level slider selects the middle fraction of the
-  bootstrap means. The same endpoints appear as a CI around the original estimate.
-- **SD / SE:** the SD/SE multiplier selects how many standard deviations to extend
-  on either side of the mean of the bootstrap means. The observed-data panel uses
-  the same width around the original sample mean, labeled as estimated SEs.
-
-The confidence slider applies to percentile mode, and the multiplier applies to SD/SE mode.
-The two intervals in SD/SE mode can have different centers:
-the average of a finite set of bootstrap means need not exactly equal the original sample mean.
-
 
 ```{python}
 #| label: fig-ci-bootstrap-interactive
@@ -406,8 +406,8 @@ bootstrap_percentile_labels = bootstrap_ci_edges.mark_text(
     dx=alt.ExprRef(expr="datum.bound === 'lower' ? -4 : 4")
 ).encode(y=alt.value(76), text='boundary_label:N')
 bootstrap_ci_label = bootstrap_ci.transform_calculate(
-    label="bootstrap_interval_mode === 'percentile' ? 'Middle ' + bootstrap_confidence + '% of bootstrap means' : "
-          "'Bootstrap mean ± ' + format(bootstrap_sd_multiplier, '.2~g') + ' SD'"
+    label="bootstrap_interval_mode === 'percentile' ? 'Middle ' + bootstrap_confidence + '% of resample means' : "
+          "'Mean of resample means ± ' + format(bootstrap_sd_multiplier, '.2~g') + ' SD'"
 ).mark_text(
     color='#F5881F', align='left', baseline='top', fontSize=11
 ).encode(
@@ -445,12 +445,12 @@ bootstrap_center = bootstrap_ci.transform_filter("bootstrap_interval_mode === 's
 #     color='#F5881F', shape='diamond', filled=True, size=100, opacity=1, stroke='white', strokeWidth=1
 # ).encode(
 #     x='bootstrap_center:Q', y=alt.value(46),
-#     tooltip=[alt.Tooltip('bootstrap_center:Q', title='Mean of bootstrap means', format='.2f')]
+#     tooltip=[alt.Tooltip('bootstrap_center:Q', title='Mean of resample means', format='.2f')]
 # )
 bootstrap_distribution_subtitle = bootstrap_current.transform_calculate(
     subtitle="bootstrap_interval_mode === 'percentile' ? 'Percentile endpoints in this chart = Confidence interval of the mean in the first chart' : "
              "(bootstrap_step < 2 ? 'SD / SE requires at least two resamples' : "
-             "'Mean ± SD range in this chart = Estimated SEM in the first chart' )"
+             "'SD of resample means = estimated SEM in the first chart' )"
 ).mark_text(align='left', baseline='bottom', fontSize=11, fontWeight='normal').encode(
     x=alt.value(0), y=alt.value(-8), text='subtitle:N'
 )
@@ -533,50 +533,15 @@ The bootstrap distribution describes how the estimated mean varies when we resam
 the observed data. We use it to approximate how the sample mean would vary if we could
 repeatedly collect new samples from the population.
 At the default 95% level in the **percentile-bootstrap method**,
-we take the 2.5th and 97.5th percentiles of these bootstrap means
+we take the 2.5th and 97.5th percentiles of these resample means
 and use **those same endpoints** as an approximate 95% confidence
 interval for the population mean.
-In **SD / SE** mode, the standard deviation of the accumulated bootstrap means
+In **SD / SE** mode, the standard deviation of the accumulated resample means
 estimates the standard error of the original sample mean.
-For a multiplier of one, the histogram highlights its mean ± one bootstrap SD,
-while the original-data panel shows the original sample mean ± one estimated SE.
-The orange diamond in the histogram marks the mean of the bootstrap means.
-Both intervals have the same width, but their centers can differ with
-a finite number of resamples. With only one resample, the bootstrap SD is undefined,
-so the SD/SE intervals are hidden until at least two resamples are available.
-
 A one-SE interval is approximately a 68% confidence interval when the estimator's
-sampling distribution is approximately normal and bias is small; it is not generally
-identical to the middle 68% percentile interval.
-The central limit theorem concerns increasing the number of observations contributing
-to each mean, under suitable sampling assumptions. Increasing the number of bootstrap
-repetitions makes the calculation more stable, but each resample here still contains
-20 observations, so moving that slider does not guarantee normality.
-Changing the multiplier changes the displayed width, not the estimated SE itself.
+sampling distribution is approximately normal and bias is small
+(which is increasingly likely as the sample size grews larger as per the central limit theorem).
 
-::: {.callout-default .ex-prompt}
-
-Why can a car appear several times in one resample?
-In percentile-CI mode at 95%, does the orange interval contain 95% of the individual cars' horsepower values?
-Keeping the number of resamples fixed, what happens when you increase the confidence level
-in percentile mode, or the multiplier in SD/SE mode?
-
-:::: {.callout-default .ex-solution}
-
-Sampling with replacement makes every observed car available for every draw,
-including cars already selected in that resample.
-The orange interval summarizes uncertainty in the **mean**, using percentiles of
-the bootstrap means; it is not an interval for individual cars.
-At the default setting, we call it a 95% percentile-bootstrap confidence interval because it aims for
-95% repeated-sampling coverage of the population mean.
-Actual coverage depends on the sampling assumptions and how well the observed sample
-represents the population; taking these percentiles does not guarantee exact 95% coverage.
-Increasing the selected confidence level moves the percentile endpoints farther
-into the tails, widening the interval without changing the sample or its mean.
-Increasing the SD/SE multiplier also widens the displayed intervals,
-but does not change the bootstrap SD or the estimated SEM.
-
-::::
 :::
 
 ### Interval endpoints are not walls
