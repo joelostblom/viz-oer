@@ -215,14 +215,15 @@ and play around with an interactive chart in the deep dive below.
 [Bootstrapping resamples observations with replacement from the observed data,
 calculates the mean for each resample,
 and uses the resulting distribution of means to construct an interval.]{.slide-bullet}
-In the bootstrap distribution of means,
-a percentile range (e.g. 5th - 95th percentile) corresponds
-to the confidence interval of the population mean,
-whereas a standard deviation
-corresponds to the standard error of the population mean.
+The percentile-bootstrap method uses a range of bootstrap means
+to construct a confidence interval for the population mean:
+for example, the 5th–95th percentile interval gives a nominal 90% confidence interval.
+The standard deviation of the bootstrap means instead estimates the
+**standard error of the sample mean (SEM)**.
+That width can be displayed on the bootstrap distribution or around the original sample mean.
 
 As an example,
-where we suppose that our observed contains the horsepower of 20 cars
+suppose that our observed sample contains the horsepower of 20 cars
 and we want to estimate the population mean and its confidence interval.
 These are the steps we would follow to construct that interval via bootstrapping:
 
@@ -236,6 +237,20 @@ These are the steps we would follow to construct that interval via bootstrapping
 
 You can see this process depicted graphically below,
 and play around with some of the parameters.
+For this illustration, we select 20 cars after restricting the dataset to
+at most 120 horsepower; our target is the mean for this restricted group.
+
+Use **Interval display** to switch between two views:
+
+- **Percentile CI:** the confidence-level slider selects the middle fraction of the
+  bootstrap means. The same endpoints appear as a CI around the original estimate.
+- **SD / SE:** the SD/SE multiplier selects how many standard deviations to extend
+  on either side of the mean of the bootstrap means. The observed-data panel uses
+  the same width around the original sample mean, labeled as estimated SEs.
+
+The confidence slider applies to percentile mode, and the multiplier applies to SD/SE mode.
+The two intervals in SD/SE mode can have different centers:
+the average of a finite set of bootstrap means need not exactly equal the original sample mean.
 
 
 ```{python}
@@ -244,12 +259,12 @@ and play around with some of the parameters.
 #| slide-show: output
 #| slide-title: Build a confidence interval by bootstrapping
 #| fig-cap: >
-#|    Interactive chart for construction CI via bootstrapping. 
+#|    Interactive chart for construction CI via bootstrapping.
 #|    After clicking a slider you can either drag with the pointer
 #|    or use the arrow keys to step through the values.
 #|    The slider reveals a fixed sequence of resamples generated with a random seed,
 #|    so returning to the same position gives the same result.
-#|    Notice that every resample still contains **20 observations**,
+#|    Notice that every resample still contains 20 observations,
 #|    even when the histogram contains 500 means.
 #|    Increasing the number of resamples makes the bootstrap calculation
 #|    more stable; it does not add new information to the original sample.
@@ -277,11 +292,18 @@ bootstrap_intervals = np.array([
     np.quantile(bootstrap_means[:k], [bootstrap_tail_probabilities, 1 - bootstrap_tail_probabilities])
     for k in range(1, bootstrap_repetitions + 1)
 ])
+bootstrap_centers = np.cumsum(bootstrap_means) / np.arange(1, bootstrap_repetitions + 1)
+bootstrap_sds = [
+    float(np.std(bootstrap_means[:k], ddof=1)) if k > 1 else None
+    for k in range(1, bootstrap_repetitions + 1)
+]
 bootstrap_history = pd.DataFrame({
     'resample': np.arange(1, bootstrap_repetitions + 1),
     'draws': bootstrap_draws.tolist(),
     'observations': (bootstrap_indices + 1).tolist(),
     'mean': bootstrap_means,
+    'bootstrap_center': bootstrap_centers,
+    'bootstrap_sd': pd.Series(bootstrap_sds, dtype=object),
     'lower_bounds': bootstrap_intervals[:, 0, :].tolist(),
     'upper_bounds': bootstrap_intervals[:, 1, :].tolist()
 })
@@ -296,12 +318,21 @@ bootstrap_axis_ticks = list(range(int(np.ceil(bootstrap_hp_limits[0] / 10) * 10)
 bootstrap_stack_max = max(np.unique(draw, return_counts=True)[1].max() for draw in bootstrap_draws)
 
 bootstrap_step = alt.param(
-    name='bootstrap_step', value=5,
+    name='bootstrap_step', value=250,
     bind=alt.binding_range(min=1, max=bootstrap_repetitions, step=1, name='Resamples accumulated: ')
 )
 bootstrap_confidence = alt.param(
     name='bootstrap_confidence', value=95,
-    bind=alt.binding_range(min=50, max=99, step=1, name='Confidence level (%): ')
+    bind=alt.binding_range(min=50, max=99, step=1, name='CI confidence (%): ')
+)
+bootstrap_interval_mode = alt.param(
+    name='bootstrap_interval_mode', value='percentile',
+    bind=alt.binding_select(options=['percentile', 'se'], labels=['Percentile CI', 'SD / SE'],
+                            name='Interval display: ')
+)
+bootstrap_sd_multiplier = alt.param(
+    name='bootstrap_sd_multiplier', value=1,
+    bind=alt.binding_range(min=0.5, max=3, step=0.1, name='SD/SE multiplier: ')
 )
 bootstrap_show_ci = alt.param(
     name='bootstrap_show_ci', value=True,
@@ -309,8 +340,14 @@ bootstrap_show_ci = alt.param(
 )
 bootstrap_source = alt.Chart(alt.Data(name='bootstrap_history'))
 bootstrap_current = bootstrap_source.transform_filter(alt.datum.resample == bootstrap_step).transform_calculate(
-    lower='datum.lower_bounds[bootstrap_confidence - 50]',
-    upper='datum.upper_bounds[bootstrap_confidence - 50]'
+    lower="bootstrap_interval_mode === 'percentile' ? datum.lower_bounds[bootstrap_confidence - 50] : "
+          "(isValid(datum.bootstrap_sd) ? datum.bootstrap_center - bootstrap_sd_multiplier * datum.bootstrap_sd : null)",
+    upper="bootstrap_interval_mode === 'percentile' ? datum.upper_bounds[bootstrap_confidence - 50] : "
+          "(isValid(datum.bootstrap_sd) ? datum.bootstrap_center + bootstrap_sd_multiplier * datum.bootstrap_sd : null)",
+    estimate_lower="bootstrap_interval_mode === 'percentile' ? datum.lower_bounds[bootstrap_confidence - 50] : "
+                   f"(isValid(datum.bootstrap_sd) ? {bootstrap_sample_mean} - bootstrap_sd_multiplier * datum.bootstrap_sd : null)",
+    estimate_upper="bootstrap_interval_mode === 'percentile' ? datum.upper_bounds[bootstrap_confidence - 50] : "
+                   f"(isValid(datum.bootstrap_sd) ? {bootstrap_sample_mean} + bootstrap_sd_multiplier * datum.bootstrap_sd : null)"
 )
 bootstrap_reference = alt.Chart(pd.DataFrame({'mean': [bootstrap_sample_mean]})).mark_point(
     color='black', size=150, opacity=1, shape='diamond', filled=True, stroke='white', strokeWidth=1
@@ -349,41 +386,50 @@ bootstrap_histogram = bootstrap_source.transform_filter(
     tooltip=[alt.Tooltip('mean:Q', bin=alt.Bin(step=1), title='Mean interval'),
              alt.Tooltip('count():Q', title='Resamples')]
 )
-bootstrap_ci = bootstrap_current.transform_filter('bootstrap_show_ci')
+bootstrap_ci = bootstrap_current.transform_filter(
+    "bootstrap_show_ci && (bootstrap_interval_mode === 'percentile' || isValid(datum.bootstrap_sd))"
+)
 bootstrap_ci_area = bootstrap_ci.mark_rect(color='#F5881F', opacity=0.15).encode(
     x='lower:Q', x2='upper:Q', y=alt.value(0), y2=alt.value(180)
 )
 bootstrap_ci_edges = bootstrap_ci.transform_fold(['lower', 'upper'], as_=['bound', 'endpoint']).transform_calculate(
     percentile_number="datum.bound === 'lower' ? (100 - bootstrap_confidence) / 2 : (100 + bootstrap_confidence) / 2"
 ).transform_calculate(
-    percentile="'Percentile ' + format(datum.percentile_number, '.3~g')"
+    boundary_label="bootstrap_interval_mode === 'percentile' ? 'Percentile ' + format(datum.percentile_number, '.3~g') : "
+                   "(datum.bound === 'lower' ? '−' : '+') + format(bootstrap_sd_multiplier, '.2~g') + ' SD'"
 ).mark_rule(
     color='#F5881F', strokeDash=[4, 3], strokeWidth=2
-).encode(x='endpoint:Q', tooltip=[alt.Tooltip('percentile:N'), alt.Tooltip('endpoint:Q', format='.2f')])
+).encode(x='endpoint:Q', tooltip=[alt.Tooltip('boundary_label:N', title='Interval boundary'), alt.Tooltip('endpoint:Q', format='.2f')])
 bootstrap_percentile_labels = bootstrap_ci_edges.mark_text(
     color='#F5881F', baseline='top', fontSize=10,
     align=alt.ExprRef(expr="datum.bound === 'lower' ? 'right' : 'left'"),
     dx=alt.ExprRef(expr="datum.bound === 'lower' ? -4 : 4")
-).encode(y=alt.value(76), text='percentile:N')
+).encode(y=alt.value(76), text='boundary_label:N')
 bootstrap_ci_label = bootstrap_ci.transform_calculate(
-    label="'Middle ' + bootstrap_confidence + '% of bootstrap means'"
+    label="bootstrap_interval_mode === 'percentile' ? 'Middle ' + bootstrap_confidence + '% of bootstrap means' : "
+          "'Bootstrap mean ± ' + format(bootstrap_sd_multiplier, '.2~g') + ' SD'"
 ).mark_text(
     color='#F5881F', align='left', baseline='top', fontSize=11
 ).encode(
     x=alt.value(8), y=alt.value(40), text='label:N'
 )
-bootstrap_interval_values = bootstrap_ci_edges.transform_calculate(
+bootstrap_interval_values = bootstrap_ci.transform_fold(
+    ['estimate_lower', 'estimate_upper'], as_=['bound', 'endpoint']
+).transform_calculate(
+    bound="datum.bound === 'estimate_lower' ? 'lower' : 'upper'",
     label="format(datum.endpoint, '.1f') + ' hp'"
 ).mark_text(
     color='#F5881F', baseline='middle', fontSize=10,
     align=alt.ExprRef(expr="datum.bound === 'lower' ? 'right' : 'left'"),
     dx=alt.ExprRef(expr="datum.bound === 'lower' ? -4 : 4")
-).encode(y=alt.value(12), text='label:N')
-bootstrap_percentile_values = bootstrap_interval_values.mark_text(
+).encode(x='endpoint:Q', y=alt.value(12), text='label:N')
+bootstrap_percentile_values = bootstrap_ci_edges.transform_calculate(
+    label="format(datum.endpoint, '.1f') + ' hp'"
+).mark_text(
     color='#F5881F', baseline='top', fontSize=10,
     align=alt.ExprRef(expr="datum.bound === 'lower' ? 'right' : 'left'"),
     dx=alt.ExprRef(expr="datum.bound === 'lower' ? -4 : 4")
-).encode(y=alt.value(90))
+).encode(y=alt.value(90), text='label:N')
 bootstrap_current_label = bootstrap_current.transform_calculate(
     label="'Resample mean: ' + format(datum.mean, '.1f') + ' hp'"
 ).mark_text(color='grey', align='left', baseline='top', fontSize=11).encode(
@@ -393,6 +439,20 @@ bootstrap_original_label = bootstrap_reference.transform_calculate(
     label="'Original mean: ' + format(datum.mean, '.1f') + ' hp'"
 ).mark_text(color='black', align='left', baseline='top', fontSize=11).encode(
     x=alt.value(8), y=alt.value(8), text='label:N'
+)
+bootstrap_center = bootstrap_ci.transform_filter("bootstrap_interval_mode === 'se'")
+# bootstrap_center_point = bootstrap_center.mark_point(
+#     color='#F5881F', shape='diamond', filled=True, size=100, opacity=1, stroke='white', strokeWidth=1
+# ).encode(
+#     x='bootstrap_center:Q', y=alt.value(46),
+#     tooltip=[alt.Tooltip('bootstrap_center:Q', title='Mean of bootstrap means', format='.2f')]
+# )
+bootstrap_distribution_subtitle = bootstrap_current.transform_calculate(
+    subtitle="bootstrap_interval_mode === 'percentile' ? 'Percentile endpoints in this chart = Confidence interval of the mean in the first chart' : "
+             "(bootstrap_step < 2 ? 'SD / SE requires at least two resamples' : "
+             "'Mean ± SD range in this chart = Estimated SEM in the first chart' )"
+).mark_text(align='left', baseline='bottom', fontSize=11, fontWeight='normal').encode(
+    x=alt.value(0), y=alt.value(-8), text='subtitle:N'
 )
 
 # bootstrap_current_mean = bootstrap_current.mark_point(
@@ -408,23 +468,26 @@ bootstrap_distribution_panel = (
     + bootstrap_current_mean.encode(x=alt.X('mean:Q').title('Horsepower'), y=alt.value(24))
     + bootstrap_ci_label + bootstrap_original_label + bootstrap_current_label
     + bootstrap_percentile_labels + bootstrap_percentile_values
+    #+ bootstrap_center_point
+    + bootstrap_distribution_subtitle
 ).properties(
     width=510, height=180,
     title=alt.TitleParams(
-        text=alt.ExprRef(expr="'3. Distribution of ' + bootstrap_step + ' bootstrap means'"),
-        subtitle='The percentiles of the bootrap',
+        text=alt.ExprRef(expr="'3. Distribution of ' + bootstrap_step + ' resample means'"),
+        offset=4,
         anchor='start',
         frame='group',
     )
 )
 bootstrap_summary_interval = bootstrap_ci.mark_rule(color='#F5881F', strokeWidth=3).encode(
-    x='lower:Q', x2='upper:Q', y=alt.value(12),
-    tooltip=[alt.Tooltip('lower:Q', title='Lower percentile endpoint', format='.2f'),
-             alt.Tooltip('upper:Q', title='Upper percentile endpoint', format='.2f')]
+    x='estimate_lower:Q', x2='estimate_upper:Q', y=alt.value(12),
+    tooltip=[alt.Tooltip('estimate_lower:Q', title='Lower interval endpoint', format='.2f'),
+             alt.Tooltip('estimate_upper:Q', title='Upper interval endpoint', format='.2f')]
 )
 bootstrap_summary_point = bootstrap_reference
 bootstrap_summary_label = bootstrap_ci_label.transform_calculate(
-    summary_label="bootstrap_confidence + '% CI for population mean'"
+    summary_label="bootstrap_interval_mode === 'percentile' ? bootstrap_confidence + '% CI for population mean' : "
+                  "'Original mean ± ' + format(bootstrap_sd_multiplier, '.2~g') + ' estimated SE'"
 ).encode(
     y=alt.value(28), text='summary_label:N'
 )
@@ -458,7 +521,9 @@ alt.vconcat(
     bootstrap_resample_panel,
     bootstrap_distribution_panel,
     spacing=20
-).resolve_scale(x='shared').add_params(bootstrap_step, bootstrap_confidence, bootstrap_show_ci).properties(
+).resolve_scale(x='shared').add_params(
+    bootstrap_step, bootstrap_interval_mode, bootstrap_confidence, bootstrap_sd_multiplier, bootstrap_show_ci
+).properties(
     datasets={'bootstrap_history': bootstrap_history.to_dict('records')},
     usermeta={'embedOptions': {'renderer': 'canvas'}}
 )
@@ -471,21 +536,30 @@ At the default 95% level in the **percentile-bootstrap method**,
 we take the 2.5th and 97.5th percentiles of these bootstrap means
 and use **those same endpoints** as an approximate 95% confidence
 interval for the population mean.
-Similarly,
-the standard error of the mean
-corresponds to a range that is one standard deviation
-down and up from the mean of the bootstrap distribution.
-When the distribution of bootstrap means is roughtly normal
-(which it is increasingly likely to be the bigger our boostrap sample is
-as per the central limit theory),
-the standard error covers a similar range as the 68% confidence interval
-(since the mean ± one standard deviation covers roughtly the middle 68% of a normal distribution).
+In **SD / SE** mode, the standard deviation of the accumulated bootstrap means
+estimates the standard error of the original sample mean.
+For a multiplier of one, the histogram highlights its mean ± one bootstrap SD,
+while the original-data panel shows the original sample mean ± one estimated SE.
+The orange diamond in the histogram marks the mean of the bootstrap means.
+Both intervals have the same width, but their centers can differ with
+a finite number of resamples. With only one resample, the bootstrap SD is undefined,
+so the SD/SE intervals are hidden until at least two resamples are available.
+
+A one-SE interval is approximately a 68% confidence interval when the estimator's
+sampling distribution is approximately normal and bias is small; it is not generally
+identical to the middle 68% percentile interval.
+The central limit theorem concerns increasing the number of observations contributing
+to each mean, under suitable sampling assumptions. Increasing the number of bootstrap
+repetitions makes the calculation more stable, but each resample here still contains
+20 observations, so moving that slider does not guarantee normality.
+Changing the multiplier changes the displayed width, not the estimated SE itself.
 
 ::: {.callout-default .ex-prompt}
 
 Why can a car appear several times in one resample?
-At the 95% setting, does the orange interval contain 95% of the individual cars' horsepower values?
-Keeping the number of resamples fixed, what happens when you increase the confidence level?
+In percentile-CI mode at 95%, does the orange interval contain 95% of the individual cars' horsepower values?
+Keeping the number of resamples fixed, what happens when you increase the confidence level
+in percentile mode, or the multiplier in SD/SE mode?
 
 :::: {.callout-default .ex-solution}
 
@@ -499,6 +573,8 @@ Actual coverage depends on the sampling assumptions and how well the observed sa
 represents the population; taking these percentiles does not guarantee exact 95% coverage.
 Increasing the selected confidence level moves the percentile endpoints farther
 into the tails, widening the interval without changing the sample or its mean.
+Increasing the SD/SE multiplier also widens the displayed intervals,
+but does not change the bootstrap SD or the estimated SEM.
 
 ::::
 :::

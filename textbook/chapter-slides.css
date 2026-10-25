@@ -511,6 +511,12 @@
   align-items: flex-start;
 }
 
+/* Leave room for both interval modes and their controls beneath the bootstrap plot. */
+.reveal #fig-ci-bootstrap-interactive-altair-viz .vega-bindings {
+  font-size: 20px;
+  line-height: 1.35;
+}
+
 .reveal figcaption,
 .reveal caption {
   display: none;
