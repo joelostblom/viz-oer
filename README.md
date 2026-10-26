@@ -36,9 +36,9 @@ static exports, and offline HTML export with Altair's `inline=True` and R's
 to run explicitly, so rendering the book does not create export files in the source tree.
 It precedes Interactivity so its layout and offline-export techniques can be reused there.
 Chapter 20, **Geospatial**, adapts the DSCI 532 geoviz notebook: GeoJSON and
-GeoPandas, projections, choropleths, proportional symbols, linked map selections,
-standalone Dash examples, and live Plotly maps in R. Its boundary and table
-snapshots, Plotly geographic assets, and original lecture figures are stored
+GeoPandas, projections, choropleths, proportional symbols, and linked map selections.
+Altair and live Plotly R examples share language tabs and use the same data.
+Its boundary and table snapshots, Plotly geographic assets, and lecture slides are stored
 locally; provenance and regeneration instructions are in
 `textbook/data/geospatial-data.md`.
 

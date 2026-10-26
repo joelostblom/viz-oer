@@ -213,13 +213,28 @@ when a reader asks for them.
 
 #### Altair {.slide-skip}
 
-A tooltip is simply an encoding channel in Altair.
+Enabling the tooltip of a mark,
+includes all mapped encodings
+in the text that pops up when hovering a point in the chart.
+
+```{python}
+#| label: interaction-tooltip-all-alt
+alt.Chart(cars).mark_circle(tooltip=True).encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color='Origin',
+)
+```
+
+Modifying the tooltip
+involves passing a dataframe column to the tooltip encoding channel instead.
 
 ```{python}
 #| label: interaction-tooltip-single-alt
 alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
+    color='Origin',
     tooltip='Name'
 )
 ```
@@ -233,26 +248,42 @@ passed as a list.
 alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
+    color='Origin',
     tooltip=['Name', 'Origin']
 )
 ```
 
+[The Altair documentation](https://altair-viz.github.io/case_studies/numpy-tooltip-images.html)
+also has examples
+of how to show images in the tooltip.
+
 #### ggplot {.slide-skip}
 
-`ggplotly()` uses the `text` aesthetic for custom tooltip content.
-Here the same cars and measurements are shown as in the Altair examples.
+By default,
+the tooltip includes all mapped aesthetics
+in the text that pops up when hovering a point in the chart.
+
+```{r}
+car_tooltip_plot <- ggplot(cars, aes(x = Horsepower, y = Miles_per_Gallon, color = Origin)) +
+    geom_point()
+ggplotly(car_tooltip_plot)
+```
+
+`ggplotly()` uses the `text` aesthetic from ggplot for custom tooltip content,
+so we must first map a dataframe column to `text` in ggplot
 
 ```{r}
 #| label: interaction-ggplotly
-ggplotly(car_plot, tooltip = 'text')
+ggplotly(car_tooltip_plot + aes(text = Name), tooltip = 'text')
 ```
 
-Include origin as well as the name using a line break in the tooltip text.
+Including multiple fields involves
+manually pasting together columns with newlines
+in ggplot.
 
 ```{r}
 #| label: interaction-tooltip-multiple-gg
-car_details <- car_plot + aes(text = paste(Name, Origin, sep = '<br>'))
-ggplotly(car_details, tooltip = 'text')
+ggplotly(car_tooltip_plot + aes(text = paste(Name, Origin, sep = '<br>')), tooltip = 'text')
 ```
 
 :::
@@ -384,63 +415,238 @@ plot_ly(hover_keys, x = ~n, y = ~Origin, color = ~Origin, type = 'bar', orientat
 
 :::
 
-### Filtering rather than highlighting
+### Coordinating selected observations across views
 
-Highlighting changes emphasis without changing the observations used in the view.
-Filtering restricts which observations enter a layer or calculation.
-We introduce this distinction before the controls, because the same control can drive either effect.
+Referencing the same selection in several views lets us compare the selected observations
+across different encodings. This is **linked brushing**.
+It is one use of coordination; the earlier overview/detail example instead coordinated scale domains.
+
+#### Linked scatterplots
 
 ::: {.panel-tabset group="language"}
 
-#### Altair {.slide-skip}
+##### Altair {.slide-skip}
 
-This slider controls an upper horsepower threshold.
-The left panel dims cars above it; the right panel removes them from the view.
-Both use the same predicate, but only the right panel filters its input data.
+The first view shows fuel economy and the second weight, both against horsepower.
+Brush either view and inspect those cars in the other.
 
 ```{python}
-#| label: interaction-highlight-versus-filter-alt
-hp_cutoff = alt.param(
-    name='hp_cutoff', value=100,
-    bind=alt.binding_range(name='Horsepower at most: ', min=40, max=230, step=5)
-)
-car_scatter = alt.Chart(cars).mark_circle().encode(
+#| label: interaction-linked-global-alt
+brush = alt.selection_interval()
+linked_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
+    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
 ).add_params(brush)
-highlighted = car_scatter.encode(
-    opacity=alt.condition(alt.datum.Horsepower <= hp_cutoff, alt.value(0.9), alt.value(0.1))
-).properties(width=250, height=220, title='Highlight')
-filtered = car_scatter.transform_filter(alt.datum.Horsepower <= hp_cutoff).properties(
-    width=250, height=220, title='Filter'
-)
-(highlighted | filtered).resolve_scale(x='shared', y='shared').add_params(hp_cutoff)
+linked_points | linked_points.encode(y='Weight_in_lbs:Q')
 ```
 
-#### ggplot {.slide-skip}
+##### ggplot {.slide-skip}
 
-Crosstalk provides client-side filter controls for HTML widgets.
-Here a range slider filters the same cars by horsepower; unlike the Altair upper-cutoff
-control, it lets the reader choose both endpoints.
-The data is wrapped in `SharedData`, and the filter and plot refer to that same object.
+Both ggplots use the same `highlight_key()` object, so their car identifiers link the marks.
+Use the selection tool in either panel. This widget will also serve as an example of
+a self-contained R dashboard to export later in the section.
 
 ```{r}
-#| label: interaction-filter-gg
-# Character keys keep Crosstalk controls and Plotly's row identifiers consistent.
-filter_cars <- crosstalk::SharedData$new(cars, key = ~as.character(car_id), group = 'car-horsepower-filter')
-filter_plot <- ggplot(filter_cars, aes(Horsepower, Miles_per_Gallon, text = Name)) + geom_point()
+#| label: interaction-linked-brush-gg
+linked_cars <- highlight_key(cars, ~car_id, group = 'linked-car-views')
+linked_plot <- ggplot(linked_cars,
+                      aes(Horsepower, Miles_per_Gallon, color = Origin, text = Name)) + geom_point()
+linked_mpg <- ggplotly(linked_plot, tooltip = 'text')
+linked_weight <- ggplotly(linked_plot + aes(y = Weight_in_lbs), tooltip = 'text') |>
+    style(showlegend = FALSE)
+car_dashboard <- subplot(linked_mpg, linked_weight, shareX = TRUE, titleX = TRUE, titleY = TRUE) |>
+    layout(dragmode = 'select') |>
+    highlight(on = 'plotly_selected', off = 'plotly_doubleclick', opacityDim = 0.15)
+car_dashboard
+```
+
+:::
+
+#### Combining selections
+
+Altair's default `resolve='global'` maintains one brush: drawing in the other panel replaces it.
+With `resolve='union'`, each panel can retain its brush and observations selected in
+**either** view are highlighted.
+
+```{python}
+#| label: interaction-linked-union-alt
+brush = alt.selection_interval(resolve='union')
+linked_points = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
+).add_params(brush)
+linked_points | linked_points.encode(y='Weight_in_lbs')
+```
+
+With `resolve='intersect'`, observations must satisfy all participating brushes.
+These are specific Altair selection-resolution options; the R example above uses
+one shared selection rather than implementing these per-view combinations.
+
+```{python}
+#| label: interaction-linked-intersection-alt
+brush = alt.selection_interval(resolve='intersect')
+linked_points = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
+).add_params(brush)
+linked_points | linked_points.encode(y='Weight_in_lbs')
+```
+
+#### Linking views with different encodings
+
+Linking is based on data values or identifiers, not a requirement that both charts
+use the same visual channels. An origin selected in a bar chart can also identify cars in a scatterplot.
+
+::: {.panel-tabset group="language"}
+
+##### Altair {.slide-skip}
+
+```{python}
+#| label: interaction-linked-bars-alt
+brush = alt.selection_interval()
+click = alt.selection_point(fields=['Origin'])
+selected_points = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color=alt.condition(brush, 'Origin', alt.value('lightgray')),
+    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+).add_params(brush)
+bars = alt.Chart(cars, height=80).mark_bar().encode(
+    x='count()', y='Origin:N', color='Origin:N',
+    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+).add_params(click)
+selected_points & bars
+```
+
+A shared legend can provide the origin selection instead of the bars.
+
+```{python}
+#| label: interaction-linked-legend-alt
+brush = alt.selection_interval()
+legend = alt.selection_point(fields=['Origin'], bind='legend')
+selected_points = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
+).add_params(brush)
+bars = alt.Chart(cars, height=80).mark_bar().encode(
+    x='count()',
+    y='Origin',
+    color='Origin',
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+)
+(selected_points & bars).add_params(legend)
+```
+
+##### ggplot {.slide-skip}
+
+These panels show the same cars and origin counts.
+Suppress duplicate legend entries in the bars and toggle matching legend groups together.
+This coordinates trace visibility; it does not turn the precomputed ggplot counts
+into a statistic that responds to arbitrary point selections.
+
+```{r}
+#| label: interaction-plotly-shared-legend
+count_plot <- ggplot(cars, aes(y = Origin, fill = Origin)) + geom_bar(width = 0.6)
+count_widget <- ggplotly(count_plot) |> style(showlegend = FALSE)
+car_legend_plot <- car_plot + aes(color = Origin)
+car_legend_widget <- ggplotly(car_legend_plot, tooltip = 'text')
+subplot(count_widget, car_legend_widget, widths = c(0.3, 0.7), titleX = TRUE, titleY = TRUE) |>
+    layout(legend = list(groupclick = 'togglegroup'))
+```
+
+:::
+
+
+### Filtering observations
+
+Highlighting changes the visual emphasis
+without changing the observations used in the view.
+Filtering restricts which observations enter a layer or calculation.
+We introduce this distinction before the controls, because the same control can drive either effect.
+
+An interactive query can change not just which marks appear, but the values being summarized.
+The summary must be calculated from the filtered observations in the browser.
+
+::: {.panel-tabset group="language"}
+
+##### Altair {.slide-skip}
+
+The brush filters the bar chart's input before counting, so the bars show the number
+of selected cars in each origin. The legend still controls only opacity.
+
+```{python}
+#| label: interaction-filter-alt
+brush = alt.selection_interval()
+legend = alt.selection_point(fields=['Origin'], bind='legend')
+selected_points = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+).add_params(brush)
+bars = alt.Chart(cars, height=80).transform_filter(brush).mark_bar().encode(
+    x='count()', y='Origin:N', color='Origin:N',
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+)
+(selected_points & bars).add_params(legend)
+```
+
+##### ggplot {.slide-skip}
+
+For this R example we use a horsepower filter to drive both views.
+Plotly's native histogram trace counts the filtered rows in the browser.
+This differs from converting a ggplot bar chart whose counts were already calculated in R.
+
+```{r}
+#| label: interaction-filter-counts-gg
+count_cars <- crosstalk::SharedData$new(cars, key = ~as.character(car_id), group = 'car-filter-counts')
+count_scatter <- plot_ly(count_cars, x = ~Horsepower, y = ~Miles_per_Gallon,
+                         color = ~Origin, text = ~Name, type = 'scatter', mode = 'markers')
+dynamic_counts <- plot_ly(count_cars, y = ~Origin, color = ~Origin, type = 'histogram',
+                          showlegend = FALSE)
 htmltools::tagList(
-    crosstalk::filter_slider('car-hp-filter', 'Horsepower range', filter_cars, ~Horsepower, step = 5),
-    ggplotly(filter_plot, tooltip = 'text')
+    crosstalk::filter_slider('car-count-hp-filter', 'Horsepower range', count_cars, ~Horsepower, step = 5),
+    subplot(count_scatter, dynamic_counts, nrows = 2, heights = c(0.75, 0.25), titleX = TRUE)
 )
 ```
 
 :::
 
-A pandas or dplyr filter performed before rendering cannot respond to a reader's later actions.
-These dynamic queries run in the browser. Also distinguish filtering raw observations
-from merely hiding an already-computed trace: hiding a trace does not automatically
-recalculate every statistical summary that contributed to the figure.
+```{python}
+search_input = alt.param(
+    value='',
+    bind=alt.binding(
+        input='search',
+        placeholder="Car model",
+        name='Search ',
+    )
+)
+search_matches = alt.expr.test(alt.expr.regexp(search_input, "i"), alt.datum.Name)
+
+alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    tooltip='Name',
+    opacity=alt.when(search_matches).then(alt.value(.9)).otherwise(alt.value(0.05)),
+).add_params(search_input)
+```
+
+```{r}
+searchable_cars <- highlight_key(cars, ~Name)
+
+p <- ggplot(
+    searchable_cars,
+    aes(Horsepower, Miles_per_Gallon, text = Name)
+) +
+    geom_point()
+
+ggplotly(p, tooltip = 'text') |>
+    highlight(selectize = TRUE, opacityDim = 0.05)
+```
 
 ### Moving through time
 
@@ -495,43 +701,52 @@ ggplotly(gap_plot, tooltip = 'text')
 Playback emphasizes movement; choosing a frame lets the reader stop and inspect it.
 For comparing several years at once, small multiples may be easier than relying on memory.
 
-### Selecting through widgets and legends
+### Driving selections from legends
 
-Widgets are input mechanisms, not a separate analytical purpose.
-A dropdown, radio button, slider, legend, or plotted mark can define a selection;
-the specification determines whether it reveals, highlights, or filters observations.
-
-#### A legend as a control
+A legend can be used instead of another chart
+as the input element that drives the selection.
 
 ::: {.panel-tabset group="language"}
 
-##### Altair {.slide-skip}
+#### Altair {.slide-skip}
 
 Click a legend entry, or Shift-click several, to highlight origins.
+In this example,
+we bind the legend to an opacity condition,
+but it could also have been used to filter the data.
 
 ```{python}
 #| label: interaction-legend-alt
 legend = alt.selection_point(name='origin_legend', fields=['Origin'], bind='legend')
 
-car_scatter.encode(
-    color='Origin:N', opacity=alt.condition(legend, alt.value(0.9), alt.value(0.1))
+alt.Chart(cars).mark_circle().encode(
+    color='Origin',
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.1))
 ).add_params(legend)
 ```
 
-##### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
 
-Plotly legends are interactive by default. Clicking an entry hides or shows that
-origin's trace, rather than dimming other origins as in the Altair example.
-The input mechanism is similar, but the visual response differs.
+Plotly legends are interactive by default.
+Clicking an entry highlights that group
+and make the other points invisible.
 
 ```{r}
 #| label: interaction-legend-gg
-car_legend_plot <- car_plot + aes(color = Origin)
-car_legend_widget <- ggplotly(car_legend_plot, tooltip = 'text')
-car_legend_widget
+car_legend_plot <- ggplot(cars, aes(x = Horsepower, y = Miles_per_Gallon, color = Origin)) +
+    geom_point()
+ggplotly(car_legend_plot)
 ```
 
 :::
+
+### Driving selections from widgets
+
+Widgets are another type of input mechanisms
+that can drive a selection.
+A dropdown, radio button, slider, legend, or plotted mark can define a selection;
+and then the chart can respond with highlighting or filtering observations,
+just like with non-widget selections.
 
 #### Movie data for category and numeric controls
 
@@ -750,186 +965,6 @@ The basic Altair bindings include dropdowns, radio buttons, sliders, and checkbo
 For multiple selected categories, point selections on a plot or legend can be useful.
 For an interval, a brush can also show where observations are concentrated,
 as the plot-based controls below demonstrate.
-
-### Coordinating selected observations across views
-
-Referencing the same selection in several views lets us compare the selected observations
-across different encodings. This is **linked brushing**.
-It is one use of coordination; the earlier overview/detail example instead coordinated scale domains.
-
-#### Linked scatterplots
-
-::: {.panel-tabset group="language"}
-
-##### Altair {.slide-skip}
-
-The first view shows fuel economy and the second weight, both against horsepower.
-Brush either view and inspect those cars in the other.
-
-```{python}
-#| label: interaction-linked-global-alt
-brush = alt.selection_interval(name='linked_global_brush')
-linked_points = car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
-).properties(width=250, height=220).add_params(brush)
-linked_points | linked_points.encode(y='Weight_in_lbs:Q')
-```
-
-##### ggplot {.slide-skip}
-
-Both ggplots use the same `highlight_key()` object, so their car identifiers link the marks.
-Use the selection tool in either panel. This widget will also serve as an example of
-a self-contained R dashboard to export later in the section.
-
-```{r}
-#| label: interaction-linked-brush-gg
-linked_cars <- highlight_key(cars, ~car_id, group = 'linked-car-views')
-linked_plot <- ggplot(linked_cars,
-                      aes(Horsepower, Miles_per_Gallon, color = Origin, text = Name)) + geom_point()
-linked_mpg <- ggplotly(linked_plot, tooltip = 'text')
-linked_weight <- ggplotly(linked_plot + aes(y = Weight_in_lbs), tooltip = 'text') |>
-    style(showlegend = FALSE)
-car_dashboard <- subplot(linked_mpg, linked_weight, shareX = TRUE, titleX = TRUE, titleY = TRUE) |>
-    layout(dragmode = 'select') |>
-    highlight(on = 'plotly_selected', off = 'plotly_doubleclick', opacityDim = 0.15)
-car_dashboard
-```
-
-:::
-
-#### Combining selections
-
-Altair's default `resolve='global'` maintains one brush: drawing in the other panel replaces it.
-With `resolve='union'`, each panel can retain its brush and observations selected in
-**either** view are highlighted.
-
-```{python}
-#| label: interaction-linked-union-alt
-brush = alt.selection_interval(name='linked_union_brush', resolve='union')
-linked_points = car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
-).properties(width=250, height=220).add_params(brush)
-linked_points | linked_points.encode(y='Weight_in_lbs:Q')
-```
-
-With `resolve='intersect'`, observations must satisfy all participating brushes.
-These are specific Altair selection-resolution options; the R example above uses
-one shared selection rather than implementing these per-view combinations.
-
-```{python}
-#| label: interaction-linked-intersection-alt
-brush = alt.selection_interval(name='linked_intersection_brush', resolve='intersect')
-linked_points = car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
-).properties(width=250, height=220).add_params(brush)
-linked_points | linked_points.encode(y='Weight_in_lbs:Q')
-```
-
-#### Linking views with different encodings
-
-Linking is based on data values or identifiers, not a requirement that both charts
-use the same visual channels. An origin selected in a bar chart can also identify cars in a scatterplot.
-
-::: {.panel-tabset group="language"}
-
-##### Altair {.slide-skip}
-
-```{python}
-#| label: interaction-linked-bars-alt
-brush = alt.selection_interval(name='linked_bar_brush')
-click = alt.selection_point(name='linked_origin_click', fields=['Origin'])
-selected_points = car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
-    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
-).add_params(brush)
-bars = alt.Chart(cars).mark_bar().encode(
-    x='count()', y='Origin:N', color='Origin:N',
-    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
-).properties(height=80).add_params(click)
-selected_points & bars
-```
-
-A shared legend can provide the origin selection instead of the bars.
-
-```{python}
-#| label: interaction-linked-legend-alt
-brush = alt.selection_interval(name='legend_brush')
-legend = alt.selection_point(name='linked_origin_legend', fields=['Origin'], bind='legend')
-selected_points = car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
-).add_params(brush)
-bars = alt.Chart(cars).mark_bar().encode(
-    x='count()', y='Origin:N', color='Origin:N',
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
-).properties(height=80)
-(selected_points & bars).add_params(legend)
-```
-
-##### ggplot {.slide-skip}
-
-These panels show the same cars and origin counts.
-Suppress duplicate legend entries in the bars and toggle matching legend groups together.
-This coordinates trace visibility; it does not turn the precomputed ggplot counts
-into a statistic that responds to arbitrary point selections.
-
-```{r}
-#| label: interaction-plotly-shared-legend
-count_plot <- ggplot(cars, aes(y = Origin, fill = Origin)) + geom_bar(width = 0.6)
-count_widget <- ggplotly(count_plot) |> style(showlegend = FALSE)
-subplot(count_widget, car_legend_widget, widths = c(0.3, 0.7), titleX = TRUE, titleY = TRUE) |>
-    layout(legend = list(groupclick = 'togglegroup'))
-```
-
-:::
-
-#### Recomputing a summary after filtering
-
-An interactive query can change not just which marks appear, but the values being summarized.
-The summary must be calculated from the filtered observations in the browser.
-
-::: {.panel-tabset group="language"}
-
-##### Altair {.slide-skip}
-
-The brush filters the bar chart's input before counting, so the bars show the number
-of selected cars in each origin. The legend still controls only opacity.
-
-```{python}
-#| label: interaction-filter-alt
-brush = alt.selection_interval(name='filter_brush')
-legend = alt.selection_point(name='filter_origin_legend', fields=['Origin'], bind='legend')
-selected_points = car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
-).add_params(brush)
-bars = alt.Chart(cars).transform_filter(brush).mark_bar().encode(
-    x='count()', y='Origin:N', color='Origin:N',
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
-).properties(height=80)
-(selected_points & bars).add_params(legend)
-```
-
-##### ggplot {.slide-skip}
-
-For this R example we use a horsepower filter to drive both views.
-Plotly's native histogram trace counts the filtered rows in the browser.
-This differs from converting a ggplot bar chart whose counts were already calculated in R.
-
-```{r}
-#| label: interaction-filter-counts-gg
-count_cars <- crosstalk::SharedData$new(cars, key = ~as.character(car_id), group = 'car-filter-counts')
-count_scatter <- plot_ly(count_cars, x = ~Horsepower, y = ~Miles_per_Gallon,
-                         color = ~Origin, text = ~Name, type = 'scatter', mode = 'markers')
-dynamic_counts <- plot_ly(count_cars, y = ~Origin, color = ~Origin, type = 'histogram',
-                          showlegend = FALSE)
-htmltools::tagList(
-    crosstalk::filter_slider('car-count-hp-filter', 'Horsepower range', count_cars, ~Horsepower, step = 5),
-    subplot(count_scatter, dynamic_counts, nrows = 2, heights = c(0.75, 0.25), titleX = TRUE)
-)
-```
-
-:::
 
 #### Let a plot act as a control
 
