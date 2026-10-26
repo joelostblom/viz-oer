@@ -366,7 +366,7 @@ alt.Chart(cars).mark_circle().encode(
 ).add_params(brush)
 ```
 To add a response to the condition,
-we can define a condition via `alt.condition(test, if_true, if_false)`,
+we can define a condition via `alt.when(test).then(if_true).otherwise(if_false)`,
 where the "test" condition would be if the brush is over a point or not.
 In the example below, we let the selected cars retain their origin colors
 while other cars become light gray.
@@ -382,7 +382,7 @@ brush = alt.selection_interval()
 alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
-    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
+    color=alt.when(brush).then('Origin').otherwise(alt.value('lightgray'))
 ).add_params(brush)
 ```
 
@@ -426,7 +426,7 @@ Click a bar; Shift-click to select several origins.
 click = alt.selection_point(fields=['Origin'])
 alt.Chart(cars).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N',
-    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+    opacity=alt.when(click).then(alt.value(0.9)).otherwise(alt.value(0.2))
 ).add_params(click)
 ```
 
@@ -440,7 +440,7 @@ Changing the event to `mouseover` lets hovering drive the selection instead.
 hover = alt.selection_point(fields=['Origin'], on='mouseover', toggle=False)
 alt.Chart(cars).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N',
-    opacity=alt.condition(hover, alt.value(0.9), alt.value(0.2))
+    opacity=alt.when(hover).then(alt.value(0.9)).otherwise(alt.value(0.2))
 ).add_params(hover)
 ```
 
@@ -493,7 +493,7 @@ brush = alt.selection_interval()
 linked_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
-    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
+    color=alt.when(brush).then('Origin').otherwise(alt.value('lightgray'))
 ).add_params(brush)
 linked_points | linked_points.encode(y='Weight_in_lbs:Q')
 ```
@@ -535,10 +535,12 @@ brush = alt.selection_interval(resolve='union')
 linked_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
-    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
+    color=alt.when(brush).then('Origin').otherwise(alt.value('lightgray'))
 ).add_params(brush)
 linked_points | linked_points.encode(y='Weight_in_lbs')
 ```
+
+#### Combining selections {.content-visible when-format="revealjs"}
 
 [With `resolve='intersect'`, observations must satisfy all participating brushes.]{.slide-bullet}
 These are specific Altair selection-resolution options; the R example above uses
@@ -551,15 +553,16 @@ brush = alt.selection_interval(resolve='intersect')
 linked_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
-    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
+    color=alt.when(brush).then('Origin').otherwise(alt.value('lightgray'))
 ).add_params(brush)
 linked_points | linked_points.encode(y='Weight_in_lbs')
 ```
 
 #### Linking views with different encodings
 
-[Linking is based on data values or identifiers, not a requirement that both charts
-use the same visual channels.]{.slide-bullet} An origin selected in a bar chart can also identify cars in a scatterplot.
+Linking is based on data values or identifiers, not a requirement that both charts
+use the same visual channels.
+An origin selected in a bar chart can also identify cars in a scatterplot.
 
 ::: {.panel-tabset group="language"}
 
@@ -573,37 +576,37 @@ click = alt.selection_point(fields=['Origin'])
 selected_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
-    color=alt.condition(brush, 'Origin', alt.value('lightgray')),
-    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+    color=alt.when(brush).then('Origin').otherwise(alt.value('lightgray')),
+    opacity=alt.when(click).then(alt.value(0.9)).otherwise(alt.value(0.2))
 ).add_params(brush)
 bars = alt.Chart(cars, height=80).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N',
-    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+    opacity=alt.when(click).then(alt.value(0.9)).otherwise(alt.value(0.2))
 ).add_params(click)
 selected_points & bars
 ```
 
-A shared legend can provide the origin selection instead of the bars.
+<!-- A shared legend can provide the origin selection instead of the bars. -->
 
-```{python}
-#| label: interaction-linked-legend-alt
-#| slide-show: both
-#| slide-title: Coordinate views through a shared legend
-brush = alt.selection_interval()
-legend = alt.selection_point(fields=['Origin'], bind='legend')
-selected_points = alt.Chart(cars).mark_circle().encode(
-    x='Horsepower',
-    y='Miles_per_Gallon',
-    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
-).add_params(brush)
-bars = alt.Chart(cars, height=80).mark_bar().encode(
-    x='count()',
-    y='Origin',
-    color='Origin',
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
-)
-(selected_points & bars).add_params(legend)
-```
+<!-- ```{python} -->
+<!-- #| label: interaction-linked-legend-alt -->
+<!-- #| slide-show: both -->
+<!-- #| slide-title: Coordinate views through a shared legend -->
+<!-- brush = alt.selection_interval() -->
+<!-- legend = alt.selection_point(fields=['Origin'], bind='legend') -->
+<!-- selected_points = alt.Chart(cars).mark_circle().encode( -->
+<!--     x='Horsepower', -->
+<!--     y='Miles_per_Gallon', -->
+<!--     color=alt.when(brush).then('Origin').otherwise(alt.value('lightgray')) -->
+<!-- ).add_params(brush) -->
+<!-- bars = alt.Chart(cars, height=80).mark_bar().encode( -->
+<!--     x='count()', -->
+<!--     y='Origin', -->
+<!--     color='Origin', -->
+<!--     opacity=alt.when(legend).then(alt.value(0.9)).otherwise(alt.value(0.2)) -->
+<!-- ) -->
+<!-- (selected_points & bars).add_params(legend) -->
+<!-- ``` -->
 
 ##### ggplot {.slide-skip}
 
@@ -649,18 +652,15 @@ of selected cars in each origin. The legend still controls only opacity.
 #| slide-show: both
 #| slide-title: Recount the observations selected by the brush
 brush = alt.selection_interval()
-legend = alt.selection_point(fields=['Origin'], bind='legend')
 selected_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+    color=alt.when(brush).then('Origin:N').otherwise(alt.value('lightgray'))
 ).add_params(brush)
 bars = alt.Chart(cars, height=80).transform_filter(brush).mark_bar().encode(
-    x='count()', y='Origin:N', color='Origin:N',
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+    x='count()', y='Origin:N', color='Origin:N'
 )
-(selected_points & bars).add_params(legend)
+selected_points & bars
 ```
 
 ##### ggplot {.slide-skip}
@@ -709,7 +709,7 @@ alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
     color='Origin',
-    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.1))
+    opacity=alt.when(legend).then(alt.value(0.9)).otherwise(alt.value(0.1))
 ).add_params(legend)
 ```
 
@@ -797,7 +797,7 @@ A legend selection works for genres too, but many genre colors make the view bus
 #| slide-show: both
 select_genre = alt.selection_point(fields=['Major_Genre'], bind='legend')
 movie_points.encode(
-    color='Major_Genre:N', opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
+    color='Major_Genre:N', opacity=alt.when(select_genre).then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).add_params(select_genre)
 ```
 
@@ -808,10 +808,10 @@ A dropdown can select a genre without assigning a color to every category.
 #| slide-show: both
 #| slide-title: Bind a selection to a dropdown
 genres = sorted(movies['Major_Genre'].dropna().unique())
-dropdown = alt.binding_select(options=genres)
+dropdown = alt.binding_select(name='Genre: ',options=genres)
 select_genre = alt.selection_point(fields=['Major_Genre'], bind=dropdown)
 movie_points.encode(
-    opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
+    opacity=alt.when(select_genre).then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).add_params(select_genre)
 ```
 
@@ -827,7 +827,7 @@ select_genre = alt.selection_point(
     value=[{'Major_Genre': 'Comedy'}]
 )
 movie_points.encode(
-    opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
+    opacity=alt.when(select_genre).then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).add_params(select_genre)
 ```
 
@@ -849,7 +849,7 @@ select_genre_and_mpaa = alt.selection_point(
     value=[{'Major_Genre': 'Comedy', 'MPAA_Rating': 'PG-13'}]
 )
 movie_points.encode(
-    opacity=alt.condition(select_genre_and_mpaa, alt.value(0.7), alt.value(0.1))
+    opacity=alt.when(select_genre_and_mpaa).then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).add_params(select_genre_and_mpaa)
 ```
 
@@ -862,7 +862,7 @@ Using a new shared-data group keeps this example independent of other widgets on
 
 ```{r}
 #| label: interaction-movie-controls-gg
-#| slide-show: output
+#| slide-show: both
 movie_categories <- crosstalk::SharedData$new(movies, key = ~as.character(movie_id), group = 'movie-category-controls')
 movie_category_plot <- ggplot(movie_categories,
                              aes(Rotten_Tomatoes_Rating, IMDB_Rating, text = Title)) + geom_point()
@@ -894,7 +894,7 @@ select_rating = alt.selection_point(
     value=[{'Rotten_Tomatoes_Rating': 50}]
 )
 movie_points.encode(
-    opacity=alt.condition(select_rating, alt.value(0.7), alt.value(0.1))
+    opacity=alt.when(select_rating).then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).add_params(select_rating)
 ```
 
@@ -910,8 +910,8 @@ rating_cutoff = alt.param(
     bind=alt.binding_range(name='Tomatometer below: ', min=0, max=100, step=1)
 )
 movie_points.encode(
-    opacity=alt.condition(alt.datum.Rotten_Tomatoes_Rating < rating_cutoff,
-                          alt.value(0.7), alt.value(0.1))
+    opacity=alt.when(alt.datum.Rotten_Tomatoes_Rating < rating_cutoff)
+        .then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).add_params(rating_cutoff)
 ```
 
@@ -926,8 +926,8 @@ rating_cutoff = alt.param(
     bind=alt.binding_range(name='Tomatometer below: ', min=10, max=60, step=5)
 )
 movie_points.encode(
-    opacity=alt.condition(alt.datum.Rotten_Tomatoes_Rating < rating_cutoff,
-                          alt.value(0.7), alt.value(0.1))
+    opacity=alt.when(alt.datum.Rotten_Tomatoes_Rating < rating_cutoff)
+        .then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).add_params(rating_cutoff)
 ```
 
@@ -952,7 +952,7 @@ the frames with a slider rather than playing them automatically.
 
 ```{python}
 #| label: interaction-year-frames-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Moving through time with a year slider
 gap = pd.read_csv('data/vega-gapminder.csv')
 frame_year = alt.param(
@@ -973,21 +973,21 @@ alt.Chart(gap).transform_filter(alt.datum.year == frame_year).mark_circle(opacit
 Plotly interprets `frame` as the frame variable and `ids` as the identity to track
 between frames. Use Play or choose a year on its slider.
 
-```{r}
-#| label: interaction-plotly-animation
-# |out.height: 500px
-# |out.width: 600px
-#| slide-show: both
-#| slide-title: Moving through time with animation
-gap <- readr::read_csv('data/vega-gapminder.csv')
-gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
-    geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
-    scale_x_continuous(limits = c(0, 9)) +
-    scale_y_continuous(limits = c(20, 90)) +
-    scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) +
-    labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population')
-ggplotly(gap_plot, tooltip = 'text')
-```
+<!-- ```{r} -->
+<!-- #| label: interaction-plotly-animation -->
+<!-- # |out.height: 500px -->
+<!-- # |out.width: 600px -->
+<!-- #| slide-show: both -->
+<!-- #| slide-title: Moving through time with animation -->
+<!-- gap <- readr::read_csv('data/vega-gapminder.csv') -->
+<!-- gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) + -->
+<!--     geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) + -->
+<!--     scale_x_continuous(limits = c(0, 9)) + -->
+<!--     scale_y_continuous(limits = c(20, 90)) + -->
+<!--     scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) + -->
+<!--     labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population') -->
+<!-- ggplotly(gap_plot, tooltip = 'text') -->
+<!-- ``` -->
 
 
 `frame` and `ids` are Plotly extensions, not ordinary static ggplot aesthetics.
@@ -1094,7 +1094,7 @@ category_legend = alt.Chart(movies_clean, title='Genre and rating').mark_circle(
     x=alt.X('MPAA_Rating:N').sort(['G', 'PG', 'PG-13', 'R']).title(''),
     y=alt.Y('Major_Genre:N').title('').axis(orient='right'),
     size=alt.Size('count()').legend(None), color=alt.Color('Major_Genre:N').legend(None),
-    opacity=alt.condition(select_categories, alt.value(1), alt.value(0.2))
+    opacity=alt.when(select_categories).then(alt.value(1)).otherwise(alt.value(0.2))
 ).properties(width=130, height=140).add_params(select_categories)
 year_control = alt.Chart(movies_clean, title='Production year').mark_bar().encode(
     x=alt.X('year(Release_Date):T').title('').axis(grid=False), y=alt.Y('count()').title('').axis(None)
@@ -1105,7 +1105,8 @@ runtime_control = alt.Chart(movies_clean, title='Running time').mark_bar().encod
 scatter = alt.Chart(movies_clean).mark_circle().encode(
     x='Rotten_Tomatoes_Rating:Q', y='IMDB_Rating:Q', color=alt.Color('Major_Genre:N').legend(None),
     tooltip='Title:N',
-    opacity=alt.condition(select_categories & select_year & select_runtime, alt.value(0.7), alt.value(0.1))
+    opacity=alt.when(select_categories & select_year & select_runtime)
+        .then(alt.value(0.7)).otherwise(alt.value(0.1))
 ).properties(width=300, height=300)
 movie_dashboard = (scatter | (year_control & runtime_control & category_legend)).configure_view(stroke=None)
 movie_dashboard.properties(usermeta={'embedOptions': {'renderer': 'canvas'}})
@@ -1179,8 +1180,8 @@ measurement = alt.param(
     bind=alt.binding_select(name='Y variable: ', options=['Miles_per_Gallon', 'Weight_in_lbs', 'Acceleration'])
 )
 alt.Chart(cars).transform_calculate(measurement='datum[car_measurement]').mark_circle().encode(
-    x='Horsepower:Q', y=alt.Y('measurement:Q').title('Selected measurement'),
-    color='Origin:N', tooltip=['Name:N', 'Origin:N', 'measurement:Q']
+    x='Horsepower', y=alt.Y('measurement:Q').title('Selected measurement'),
+    color='Origin:N', tooltip=['Name', 'Origin', 'measurement:Q']
 ).add_params(measurement).properties(
     title=alt.TitleParams(text=alt.ExprRef(expr="'Horsepower versus ' + car_measurement"))
 )
@@ -1220,9 +1221,9 @@ layout(metric_plot,
 
 ### Changing a calculation or display parameter
 
-We have already used this kind of interaction in earlier chapters:
+We have [already used this kind of interaction in earlier chapters:
 changing histogram bin width, changing a candidate line's slope in @sec-trends,
-and changing the confidence level or interval multiplier in @sec-uncertainty.
+and changing the confidence level or interval multiplier in @sec-uncertainty]{.slide-bullet}.
 [Those controls change a calculation or representation, not which observed cases are of interest.]{.slide-bullet}
 
 [Before adding a control, ask what it should change: the viewing window, the selection,
