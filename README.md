@@ -38,9 +38,7 @@ It precedes Interactivity so its layout and offline-export techniques can be reu
 Chapter 20, **Geospatial**, adapts the DSCI 532 geoviz notebook: GeoJSON and
 GeoPandas, projections, choropleths, proportional symbols, and linked map selections.
 Altair and live Plotly R examples share language tabs and use the same data.
-Its boundary and table snapshots, Plotly geographic assets, and lecture slides are stored
-locally; provenance and regeneration instructions are in
-`textbook/data/geospatial-data.md`.
+Its boundary and table snapshots and Plotly geographic assets are stored locally.
 
 ### GitHub Actions publishing
 
@@ -166,8 +164,7 @@ Color's original images, animation, source credits, and extraction manifest are
 in `textbook/img/color-lecture/`; regenerate them with
 `textbook/src/export_color_figures.py` and the color lecture ODP.
 The examples read local Vega dataset snapshots rather than downloading data
-during rendering. Their provenance and regeneration command are in
-`textbook/data/communication-color-data.md`. The R examples require `hexbin` and
+during rendering. The R examples require `hexbin` and
 `ggthemes`, both recorded in `uvr.toml` and `uvr.lock`. The LOESS animations are
 local, attributed files under `textbook/img/`.
 

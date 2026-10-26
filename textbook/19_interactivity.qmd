@@ -1280,5 +1280,3 @@ rmarkdown::pandoc_self_contained_html('movie-explorer.html', 'movie-explorer-off
 - [Interactive Dynamics for Visual Analysis](https://idl.uw.edu/papers/interactive-dynamics), Heer and Shneiderman.
 - [Scented Widgets: Improving Navigation Cues with Embedded Visualizations](https://idl.uw.edu/papers/scented-widgets), Willett, Heer, and Agrawala.
 - [Telling a story and making a point](https://clauswilke.com/dataviz/telling-a-story.html).
-- [Paired-comparison lecture recording](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/Ed8Vfw1Jf39ErXwJPau9-30BqMYiV5-Bpoy8DaVKiPfgWg?e=ZxToLS),
-  with related textbook discussion in @sec-connections.

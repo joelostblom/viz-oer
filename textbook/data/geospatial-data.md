@@ -47,17 +47,13 @@ Country maps use Natural Earth's historical GDP/population attributes, not a
 separate GDP snapshot. Both language versions use the 2021 Canadian population
 counts and 2012 US election results.
 
-## Browser geometry and lecture figures
+## Browser geometry
 
 `plotly-geo/world_110m.json` and `plotly-geo/usa_110m.json` are the TopoJSON files
 from <https://cdn.plot.ly/world_110m.json> and
 <https://cdn.plot.ly/usa_110m.json>. The R examples set
 `config(topojsonURL = 'data/plotly-geo/')` to use these local files rather than
 requesting geography from the CDN.
-
-`lecture-material/slides-geoviz.pdf` is a copy of the original notebook's
-accompanying `slides-lec4.pdf`. R examples are executable Plotly HTML widgets
-alongside their Altair counterparts rather than screenshots.
 
 ## Recreating the snapshots
 
@@ -68,14 +64,13 @@ uv run python textbook/src/data_processing/prepare_geospatial_data.py
 ```
 
 This refreshes Natural Earth and Vega data and Plotly's supporting TopoJSON.
-To also recover the original population/election tables and slides, provide the
+To also recover the original population/election tables, provide the
 instructor notebook:
 
 ```sh
 uv run python textbook/src/data_processing/prepare_geospatial_data.py --lecture /path/to/lectures/4-geoviz.ipynb
 ```
 
-The slides must be beside that notebook as `slides-lec4.pdf`. Importing reads
-saved chart specifications, not truncated dataframe previews or changing live
+Importing reads saved chart specifications, not truncated dataframe previews or changing live
 web tables. The importer checks the Canadian population total and the US
 electoral-vote totals before writing the snapshots.

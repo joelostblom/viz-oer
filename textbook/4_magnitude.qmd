@@ -2,8 +2,6 @@
 chapter-slides: slides/4_magnitude.html
 fig-width: 5
 fig-height: 3.75
-resources:
-  - slides-lec2.pdf
 ---
 
 # Magnitude {#sec-magnitude}

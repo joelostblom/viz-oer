@@ -1,5 +1,4 @@
 ---
-chapter-slides: slides/12a_exploratory-data-analysis.html
 fig-width: 6
 fig-height: 4
 resources:

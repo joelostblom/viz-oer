@@ -1,16 +1,15 @@
-"""Prepare local map data and optionally import the original geoviz lecture assets.
+"""Prepare local map data and optionally import the original geoviz lecture data.
 
 Run from the repository root with ``uv run python
 textbook/src/data_processing/prepare_geospatial_data.py``. Pass ``--lecture``
-with the original 4-geoviz.ipynb to recover its population/election snapshots
-and accompanying slides. Ordinary book renders use only the checked-in files
+with the original 4-geoviz.ipynb to recover its population/election snapshots.
+Ordinary book renders use only the checked-in files
 and never run this download script.
 """
 
 import argparse
 import json
 import re
-import shutil
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from urllib.request import urlopen
@@ -82,9 +81,6 @@ def import_lecture(path):
     assert election["electoral_votes"].sum() == 538
     assert election.groupby("winning_party")["electoral_votes"].sum().to_dict() == {"Dem": 332, "Rep": 206}
     election.sort_values("name").to_csv(DATA / "geospatial-us-election-2012.csv", index=False)
-
-    shutil.copy2(path.with_name("slides-lec4.pdf"), TEXTBOOK / "lecture-material" / "slides-geoviz.pdf")
-
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)

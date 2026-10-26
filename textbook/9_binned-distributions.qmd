@@ -3,7 +3,6 @@ chapter-slides: slides/9_binned-distributions.html
 fig-height: 2.5
 fig-width: 4
 resources:
-  - slides-lec3.pdf
   - data/movies.csv
   - data/london_marathon_finish_times.csv
 ---

@@ -50,7 +50,6 @@ CHAPTER_ASSETS = {
     "12_joint-distributions": (
         "data/movies.csv",
         "data/diamonds-carat-price.csv",
-        "data/diamonds-carat-price.md",
     ),
     "13_communication": ("data/diamonds-carat-price.csv",),
     "14_color": (
@@ -60,10 +59,7 @@ CHAPTER_ASSETS = {
         "data/vega-stocks.csv",
     ),
     "16_trends": ("data/vega-cars.csv",),
-    "17_uncertainty": (
-        "data/vega-cars.csv",
-        "img/uncertainty-lecture/README.md",
-    ),
+    "17_uncertainty": ("data/vega-cars.csv",),
     "19_interactivity": (
         "data/vega-cars.csv",
         "data/vega-sp500.csv",

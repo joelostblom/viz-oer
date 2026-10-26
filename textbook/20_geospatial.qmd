@@ -40,8 +40,7 @@ encodings is therefore part of answering the question, not just decorating a cha
 
 We will combine the layout techniques from @sec-figure-composition with the
 selections and linked views from @sec-interactivity. The examples use local
-snapshots of the lecture's data; their dates and sources are documented in
-[the data notes](data/geospatial-data.md).
+data snapshots.
 
 ## GeoJSON: geometry alongside attributes
 

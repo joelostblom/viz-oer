@@ -1,8 +1,6 @@
 ---
 fig-width: 5
 fig-height: 3.75
-resources:
-  - slides-lec3.pdf
 number-sections: false
 ---
 
@@ -102,9 +100,7 @@ ggplot(gm2018, aes(x = child_mortality, y = life_expectancy, size = population))
 
 This [short article on kernel bandwidth selection in density estimation](https://aakinshin.net/posts/kde-bw/) is insightful and goes beyond the main chapters on distributions.
 
-## Plots from slides
-
-This is how the distribution plots in the [original lecture slides](slides-lec3.pdf) were created.
+## Distribution examples
 
 ```{python}
 #| label: slide-distribution-examples

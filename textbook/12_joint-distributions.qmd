@@ -5,7 +5,6 @@ fig-height: 4
 resources:
   - data/movies.csv
   - data/diamonds-carat-price.csv
-  - data/diamonds-carat-price.md
 ---
 
 # Joint distributions {#sec-joint-distributions}
