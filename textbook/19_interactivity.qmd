@@ -1250,7 +1250,6 @@ to assemble and share them as offline explorers.
 #| eval: false
 #| label: interaction-export-alt
 #| slide-show: code
-#| slide-title: Save a self-contained interactive figure
 movie_dashboard.save('movie-explorer-offline.html', inline=True)
 ```
 
@@ -1263,7 +1262,6 @@ includes the movie filters as well as the plot.
 #| eval: false
 #| label: interaction-export-gg
 #| slide-show: code
-#| slide-title: Save a self-contained interactive figure
 htmlwidgets::saveWidget(car_dashboard, 'car-dashboard-offline.html', selfcontained = TRUE)
 movie_page <- htmltools::tagList(
     htmltools::tags$head(htmltools::tags$title('Movie explorer')), movie_explorer
