@@ -110,6 +110,13 @@ html.tabset-scroll-stabilizing body {
   align-items: flex-start;
 }
 
+/* Keep Vega's native input fields readable in either book theme. */
+.vega-embed .vega-bind input {
+  color-scheme: light;
+  background-color: #fff;
+  color: #212529;
+}
+
 /* Space for native chart controls above horizontal scrollbars. */
 .vega-bindings:has(input[type="range"]) {
   /* Keep overlay scrollbars clear of slider tracks in narrow chart outputs. */
