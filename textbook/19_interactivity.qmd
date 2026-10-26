@@ -147,6 +147,8 @@ and add it to the chart.
 You can click and drag in the chart (also called "brushing")
 to create the selection rectangle (a "brush"),
 but it is not yet linked to any functionality.
+`encodings=['x']` means that our brush is only selecting
+on the x-axis (i.e. the height of the brush is constant).
 
 ```{python}
 #| label: interaction-overview-detail-alt
@@ -181,129 +183,58 @@ we cannot reuse what we learned in @sec-figure-composition
 to compose together the navigation overview and the detailed chart.
 Instead,
 plotly has a function named `rangeslider()`
-that supplies an overview with draggable handles.
-Change the selected range to navigate the larger time-series view.
+that supplies an overview with draggable handles
+used to create a selection (also called a "brush").
+`hovermode = 'x'` means that our brush is only selecting
+on the x-axis (i.e. the height of the brush is constant).
 
 ```{r}
 #| label: interaction-plotly-rangeslider
+#| out.height: 300px
 sp500 <- readr::read_csv('data/vega-sp500.csv')
 
 sp500_plot <- ggplot(sp500, aes(x = date, y = price)) + geom_area()
-ggplotly(sp500_plot, dynamicTicks = TRUE) |>
+ggplotly(sp500_plot, dynamicTicks=TRUE) |>
     rangeslider() |>
     layout(hovermode = 'x')
 ```
 
 :::
 
-### Moving through time
+## Tooltips
 
-We can also navigate a sequence of data states.
-Both examples use the same local Gapminder snapshot: country fertility, life expectancy,
-and population from 1955 to 2005. A year control chooses the observations to display;
-the x- and y-scales remain fixed so that frame changes are comparable.
-
-::: {.panel-tabset group="language"}
-
-#### Altair {.slide-skip}
-
-A scalar parameter stores the chosen year. This example lets the reader scrub through
-the frames with a slider rather than playing them automatically.
-
-```{python}
-#| label: interaction-year-frames-alt
-gap = pd.read_csv('data/vega-gapminder.csv')
-frame_year = alt.param(
-    name='gapminder_year', value=int(gap['year'].min()),
-    bind=alt.binding_range(name='Year: ', min=int(gap['year'].min()),
-                           max=int(gap['year'].max()), step=5)
-)
-alt.Chart(gap).transform_filter(alt.datum.year == frame_year).mark_circle(opacity=0.7).encode(
-    x=alt.X('fertility:Q').scale(domain=[0, 9]).title('Children per woman'),
-    y=alt.Y('life_expect:Q').scale(domain=[20, 90]).title('Life expectancy (years)'),
-    size=alt.Size('pop:Q').scale(domain=[0, float(gap['pop'].max())], range=[10, 600]).title('Population'),
-    tooltip=['country:N', 'year:O', 'fertility:Q', 'life_expect:Q']
-).add_params(frame_year)
-```
-
-#### ggplot {.slide-skip}
-
-Plotly interprets `frame` as the frame variable and `ids` as the identity to track
-between frames. Use Play or choose a year on its slider.
-
-```{r}
-#| label: interaction-plotly-animation
-gap <- readr::read_csv('data/vega-gapminder.csv')
-gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
-    geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
-    scale_x_continuous(limits = c(0, 9)) +
-    scale_y_continuous(limits = c(20, 90)) +
-    scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) +
-    labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population')
-ggplotly(gap_plot, tooltip = 'text')
-```
-
-:::
-
-`frame` and `ids` are Plotly extensions, not ordinary static ggplot aesthetics.
-Playback emphasizes movement; choosing a frame lets the reader stop and inspect it.
-For comparing several years at once, small multiples may be easier than relying on memory.
-
-## Selecting data
-
-A selection identifies observations of interest. Its effect is a separate choice:
-
-| Response | What changes? |
-|:--|:--|
-| Details on demand | Reveal attributes or labels for selected observations |
-| Highlighting | Change selected marks' appearance while retaining the other observations |
-| Filtering | Restrict the observations entering a view, layer, or calculation |
-| Linked responses | Apply the selection to other views of the same or related data |
-
-In that sense, a tooltip is like selectively revealing labels in place.
-We group it with selection here rather than navigation.
-However, revealing a label is not the same operation as filtering the observations
-used to calculate a mean or count. It helps to specify **what is being selected or filtered**.
-
-The implementation follows a common pattern:
-**user action → selection or parameter state → visual or data response**.
-A click, brush, dropdown, or slider can supply the input; none of these dictates the response.
-
-### Details on demand
+Tooltips is an effective way to supply
+additional information when a data point is hovered.
+This can prevent overlaoding a visualization with text labels
+while still providing these details on demand
+when a reader asks for them.
 
 ::: {.panel-tabset group="language"}
 
 #### Altair {.slide-skip}
 
-Hover over a point to inspect its name. A tooltip can contain one field or several.
+A tooltip is simply an encoding channel in Altair.
 
 ```{python}
 #| label: interaction-tooltip-single-alt
-car_scatter = alt.Chart(cars).mark_circle().encode(
-    x='Horsepower:Q', y='Miles_per_Gallon:Q'
+alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    tooltip='Name'
 )
-car_scatter.encode(tooltip='Name:N')
 ```
+
+In contrast to most other encoding channels,
+a tooltip can contain multiple fields,
+passed as a list.
 
 ```{python}
 #| label: interaction-tooltip-multiple-alt
-car_scatter.encode(tooltip=['Name:N', 'Origin:N'])
-```
-
-We can make the selection-and-response structure explicit by showing an in-place
-label for the hovered car. The filter affects only the **text layer**;
-all points remain in the scatterplot.
-
-```{python}
-#| label: interaction-hover-label-alt
-hovered_car = alt.selection_point(
-    name='hovered_car', on='pointerover', clear='pointerout',
-    nearest=True, empty=False
+alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    tooltip=['Name', 'Origin']
 )
-labels = car_scatter.mark_text(align='left', dx=6, dy=-6).encode(
-    text='Name:N'
-).transform_filter(hovered_car)
-car_scatter.add_params(hovered_car) + labels
 ```
 
 #### ggplot {.slide-skip}
@@ -326,43 +257,54 @@ ggplotly(car_details, tooltip = 'text')
 
 :::
 
-Tooltips are convenient for details on demand, but an essential explanation should
-remain available without requiring the reader to hover over the right mark.
+<!-- TODO add drilldown through something like select of filter to show bar segements? -->
 
-### Defining selections and highlighting observations
+## Creating and responding to selections
 
-An interval selection is often called a **brush**.
-Drawing the rectangle defines a selection, but we still need to specify what it changes.
+A selection identifies observations of interest in a chart,
+and can then trigger an effect such as highlighting or filtering of that data.
+We already saw how to set up a chart's scale domain
+to respond to a selections range,
+and here we will see a few other ways to respond to selections as well.
+
+### Highlighting observations
+
+Highlighting observations means that all data is retained in the chart
+but the visual styling of the selected observations
+differ from that of the unselected ones.
 
 ::: {.panel-tabset group="language"}
 
 #### Altair {.slide-skip}
 
+Let's start by creating an empty brush again.
+Drag'n drop to see the brush selection rectangle.
+
 ```{python}
 #| label: interaction-brush-alt
-brush = alt.selection_interval(name='car_brush')
-car_scatter.add_params(brush)
+brush = alt.selection_interval()
+alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color='Origin'
+).add_params(brush)
 ```
-
-`alt.condition(test, if_true, if_false)` lets the selected cars retain their origin
-colors while other cars become light gray. Empty selections match all observations
-by default. Double-click to clear the brush.
+To add a response to the condition,
+we can define a condition via `alt.condition(test, if_true, if_false)`,
+where the "test" condition would be if the brush is over a point or not.
+In the example below, we let the selected cars retain their origin colors
+while other cars become light gray.
+Note that empty selections match all observations
+by default.
 
 ```{python}
 #| label: interaction-brush-highlight-alt
-brush = alt.selection_interval(name='car_highlight_brush')
-car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
-).add_params(brush)
-```
 
-Limit the brush to x to choose a horsepower interval regardless of fuel economy.
-
-```{python}
-#| label: interaction-x-brush-alt
-brush = alt.selection_interval(name='horsepower_brush', encodings=['x'])
-car_scatter.encode(
-    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
+brush = alt.selection_interval()
+alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color=alt.condition(brush, 'Origin', alt.value('lightgray'))
 ).add_params(brush)
 ```
 
@@ -462,6 +404,10 @@ hp_cutoff = alt.param(
     name='hp_cutoff', value=100,
     bind=alt.binding_range(name='Horsepower at most: ', min=40, max=230, step=5)
 )
+car_scatter = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+).add_params(brush)
 highlighted = car_scatter.encode(
     opacity=alt.condition(alt.datum.Horsepower <= hp_cutoff, alt.value(0.9), alt.value(0.1))
 ).properties(width=250, height=220, title='Highlight')
@@ -496,6 +442,59 @@ These dynamic queries run in the browser. Also distinguish filtering raw observa
 from merely hiding an already-computed trace: hiding a trace does not automatically
 recalculate every statistical summary that contributed to the figure.
 
+### Moving through time
+
+We can use filtering to navigate through a sequence of data states.
+Both examples use the same local Gapminder snapshot: country fertility, life expectancy,
+and population from 1955 to 2005. A year control chooses the observations to display;
+the x- and y-scales remain fixed so that frame changes are comparable.
+
+::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+A scalar parameter stores the chosen year. This example lets the reader scrub through
+the frames with a slider rather than playing them automatically.
+
+```{python}
+#| label: interaction-year-frames-alt
+gap = pd.read_csv('data/vega-gapminder.csv')
+frame_year = alt.param(
+    name='gapminder_year', value=int(gap['year'].min()),
+    bind=alt.binding_range(name='Year: ', min=int(gap['year'].min()),
+                           max=int(gap['year'].max()), step=5)
+)
+alt.Chart(gap).transform_filter(alt.datum.year == frame_year).mark_circle(opacity=0.7).encode(
+    x=alt.X('fertility:Q').scale(domain=[0, 9]).title('Children per woman'),
+    y=alt.Y('life_expect:Q').scale(domain=[20, 90]).title('Life expectancy (years)'),
+    size=alt.Size('pop:Q').scale(domain=[0, float(gap['pop'].max())], range=[10, 600]).title('Population'),
+    tooltip=['country:N', 'year:O', 'fertility:Q', 'life_expect:Q']
+).add_params(frame_year)
+```
+
+#### ggplot {.slide-skip}
+
+Plotly interprets `frame` as the frame variable and `ids` as the identity to track
+between frames. Use Play or choose a year on its slider.
+
+```{r}
+#| label: interaction-plotly-animation
+gap <- readr::read_csv('data/vega-gapminder.csv')
+gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
+    geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
+    scale_x_continuous(limits = c(0, 9)) +
+    scale_y_continuous(limits = c(20, 90)) +
+    scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) +
+    labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population')
+ggplotly(gap_plot, tooltip = 'text')
+```
+
+:::
+
+`frame` and `ids` are Plotly extensions, not ordinary static ggplot aesthetics.
+Playback emphasizes movement; choosing a frame lets the reader stop and inspect it.
+For comparing several years at once, small multiples may be easier than relying on memory.
+
 ### Selecting through widgets and legends
 
 Widgets are input mechanisms, not a separate analytical purpose.
@@ -513,6 +512,7 @@ Click a legend entry, or Shift-click several, to highlight origins.
 ```{python}
 #| label: interaction-legend-alt
 legend = alt.selection_point(name='origin_legend', fields=['Origin'], bind='legend')
+
 car_scatter.encode(
     color='Origin:N', opacity=alt.condition(legend, alt.value(0.9), alt.value(0.1))
 ).add_params(legend)
