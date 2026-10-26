@@ -1,3 +1,717 @@
+---
+fig-width: 7
+fig-height: 4
+resources:
+  - data/vega-cars.csv
+  - data/vega-sp500.csv
+  - data/vega-movies-interactivity.csv
+  - data/interactivity-data.md
+  - lecture-material/slides-lec8.pdf
+execute:
+  message: false
+  warning: false
+---
+
 # Interactivity {#sec-interactivity}
 
-*Material is being finalized before it is uploaded*
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+:::: {.slide-outcomes}
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Use** tooltips, panning, zooming, and selections to explore a chart.
+2. **Link** selections across views and **distinguish** highlighting from filtering.
+3. **Bind** selections and parameters to legends, dropdowns, radio buttons, and sliders.
+4. **Create** live R widgets with Plotly, including linked legends, range sliders, animations, and dropdowns.
+5. **Explain** which interactions run in the browser and remain available when a figure is shared.
+
+:::
+::::
+
+## Why bother?
+
+An interactive figure lets readers ask questions that a static view cannot answer all at once.
+They might inspect a particular observation, zoom into a region, compare selected groups,
+or use one view to choose what appears in another.
+This can help us explore data ourselves and let others explore a figure without writing code.
+
+Altair describes interactions as part of the Vega-Lite specification.
+The examples here run **client-side**, in the reader's browser:
+they continue to work after the Python session that created them has ended.
+Plotly's R HTML widgets can also provide browser-side interactions.
+Other applications, such as dashboards that run Python or R callbacks when a control changes,
+require a running server. The distinction is where the calculation happens, not whether
+the result looks like a dashboard.
+
+See @sec-figure-composition for arranging panels and exporting interactive HTML,
+including files that work offline.
+
+## A grammar of interactivity in Altair
+
+We start with the cars dataset, keeping the same complete observations across the
+horsepower, fuel-economy, and weight views.
+All datasets in this chapter are read locally so the embedded charts contain their data.
+
+```{python}
+#| label: interaction-cars-setup
+import altair as alt
+import pandas as pd
+
+interaction_transformer = alt.data_transformers.enable('default')
+cars = pd.read_csv('data/vega-cars.csv').dropna(
+    subset=['Horsepower', 'Miles_per_Gallon', 'Weight_in_lbs', 'Origin']
+)
+car_scatter = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower:Q', y='Miles_per_Gallon:Q'
+)
+```
+
+### Tooltips
+
+Hover over a point to inspect its car name.
+
+```{python}
+#| label: interaction-tooltip-single-alt
+car_scatter.encode(tooltip='Name:N')
+```
+
+Pass a list to include several fields. Tooltips provide details on demand,
+but essential explanations should remain visible without hovering.
+
+```{python}
+#| label: interaction-tooltip-multiple-alt
+car_scatter.encode(tooltip=['Name:N', 'Origin:N'])
+```
+
+### Panning and zooming
+
+`.interactive()` binds an interval selection to the position scales.
+Scroll over the plot to zoom and drag to pan; double-click to reset.
+
+```{python}
+#| label: interaction-pan-zoom-alt
+car_scatter.encode(tooltip=['Name:N', 'Origin:N']).interactive()
+```
+
+### Interval selections
+
+An interval selection lets us drag a rectangle around observations.
+This is often called a **brush**. The rectangle defines a selection,
+but we must also specify what that selection should change.
+
+```{python}
+#| label: interaction-brush-alt
+brush = alt.selection_interval(name='car_brush')
+car_scatter.add_params(brush)
+```
+
+### Highlighting selected observations
+
+`alt.condition()` chooses an encoding based on a predicate:
+`alt.condition(test, if_true, if_false)`.
+Here selected cars retain their origin colors, while unselected cars become light gray.
+An empty selection matches all observations by default. Double-click to clear a brush.
+
+```{python}
+#| label: interaction-brush-highlight-alt
+brush = alt.selection_interval(name='car_highlight_brush')
+car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
+).add_params(brush)
+```
+
+Limit the selection to x to choose a horsepower interval regardless of fuel economy.
+
+```{python}
+#| label: interaction-x-brush-alt
+brush = alt.selection_interval(name='horsepower_brush', encodings=['x'])
+car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
+).add_params(brush)
+```
+
+### Linking selections across views
+
+Referencing the same selection parameter in several views lets us highlight the same
+observations across different encodings. This is **linked brushing**.
+The first plot below uses fuel economy on y; the second uses weight.
+Brush either view and inspect where those cars lie in the other.
+
+```{python}
+#| label: interaction-linked-global-alt
+brush = alt.selection_interval(name='linked_global_brush')
+linked_points = car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
+).properties(width=250, height=220).add_params(brush)
+linked_points | linked_points.encode(y='Weight_in_lbs:Q')
+```
+
+The default `resolve='global'` maintains one brush: drawing in the other panel replaces it.
+With `resolve='union'`, each panel can retain its brush, and observations selected in
+**either** view are highlighted.
+
+```{python}
+#| label: interaction-linked-union-alt
+brush = alt.selection_interval(name='linked_union_brush', resolve='union')
+linked_points = car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
+).properties(width=250, height=220).add_params(brush)
+linked_points | linked_points.encode(y='Weight_in_lbs:Q')
+```
+
+With `resolve='intersect'`, observations must satisfy the brushes in all participating views.
+Try selecting a fuel-economy range and a weight range that overlap for only a few cars.
+
+```{python}
+#| label: interaction-linked-intersection-alt
+brush = alt.selection_interval(name='linked_intersection_brush', resolve='intersect')
+linked_points = car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
+).properties(width=250, height=220).add_params(brush)
+linked_points | linked_points.encode(y='Weight_in_lbs:Q')
+```
+
+### Click and hover selections
+
+A point selection chooses discrete values rather than an interval.
+Click a bar below to change its opacity. Hold Shift while clicking to select several origins.
+For now, the bar selection and the scatterplot brush are independent.
+
+```{python}
+#| label: interaction-click-alt
+brush = alt.selection_interval(name='independent_brush')
+click = alt.selection_point(name='origin_click', fields=['Origin'])
+selected_points = car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray'))
+).add_params(brush)
+bars = alt.Chart(cars).mark_bar().encode(
+    x='count()', y='Origin:N', color='Origin:N',
+    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+).properties(height=80).add_params(click)
+selected_points & bars
+```
+
+Change the event to `mouseover` to select a bar by hovering instead.
+Here `toggle=False` keeps one hovered origin selected at a time.
+
+```{python}
+#| label: interaction-hover-alt
+hover = alt.selection_point(name='origin_hover', fields=['Origin'], on='mouseover', toggle=False)
+alt.Chart(cars).mark_bar().encode(
+    x='count()', y='Origin:N', color='Origin:N',
+    opacity=alt.condition(hover, alt.value(0.9), alt.value(0.2))
+).add_params(hover)
+```
+
+### Linking views with different encodings
+
+To make the bar selection affect the scatterplot, use the same point-selection
+predicate in the scatterplot's opacity encoding.
+Selecting the field `Origin` expresses which category should match across the views,
+even though origin is on the bar chart's y-axis and neither scatterplot position axis.
+
+```{python}
+#| label: interaction-linked-bars-alt
+brush = alt.selection_interval(name='linked_bar_brush')
+click = alt.selection_point(name='linked_origin_click', fields=['Origin'])
+selected_points = car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
+    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+).add_params(brush)
+bars = alt.Chart(cars).mark_bar().encode(
+    x='count()', y='Origin:N', color='Origin:N',
+    opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
+).properties(height=80).add_params(click)
+selected_points & bars
+```
+
+### Legend selections
+
+We can bind the origin selection to the legend instead of the bars.
+Add it to the composed chart because both panels use the shared legend.
+Click a legend entry, or Shift-click several, to compare selected origins.
+
+```{python}
+#| label: interaction-legend-alt
+brush = alt.selection_interval(name='legend_brush')
+legend = alt.selection_point(name='origin_legend', fields=['Origin'], bind='legend')
+selected_points = car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+).add_params(brush)
+bars = alt.Chart(cars).mark_bar().encode(
+    x='count()', y='Origin:N', color='Origin:N',
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+).properties(height=80)
+(selected_points & bars).add_params(legend)
+```
+
+### Filtering rather than highlighting
+
+Opacity changes leave all observations in the chart and in any calculated summaries.
+`transform_filter()` instead removes observations from the downstream calculation.
+Here the bars recount only the cars inside the brush. This is a **dynamic query**.
+The filtering runs in the browser; a pandas filter performed before rendering
+would not respond to the reader moving the brush.
+
+```{python}
+#| label: interaction-filter-alt
+brush = alt.selection_interval(name='filter_brush')
+legend = alt.selection_point(name='filter_origin_legend', fields=['Origin'], bind='legend')
+selected_points = car_scatter.encode(
+    color=alt.condition(brush, 'Origin:N', alt.value('lightgray')),
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+).add_params(brush)
+bars = alt.Chart(cars).transform_filter(brush).mark_bar().encode(
+    x='count()', y='Origin:N', color='Origin:N',
+    opacity=alt.condition(legend, alt.value(0.9), alt.value(0.2))
+).properties(height=80)
+(selected_points & bars).add_params(legend)
+```
+
+The brush changes the bar counts; the legend selection only changes opacity.
+These are separate decisions in the specification.
+
+### Overview and detail through scale domains
+
+A selection can also control a scale domain.
+Drag an x-interval in the lower S&P 500 overview to choose the time range shown above.
+The overview retains the full time series, providing context for the detail view.
+
+```{python}
+#| label: interaction-overview-detail-alt
+sp500 = pd.read_csv('data/vega-sp500.csv', parse_dates=['date'])
+base = alt.Chart(sp500, width=550).mark_area().encode(x='date:T', y='price:Q')
+brush = alt.selection_interval(name='sp500_brush', encodings=['x'])
+lower = base.properties(height=60).add_params(brush)
+upper = base.encode(x=alt.X('date:T').scale(domain=brush)).properties(height=220)
+(upper & lower).properties(usermeta={'embedOptions': {'renderer': 'canvas'}})
+```
+
+## Interactive ggplots with Plotly
+
+Plotly is a separate visualization library that can convert many ggplots into
+interactive **HTML widgets** using `ggplotly()`.
+The examples below are live in this HTML textbook: hover, zoom, click legends,
+and use their controls directly. A static screenshot or PDF cannot preserve those interactions.
+
+### Tooltips, zooming, and clickable legends
+
+We use mammal sleep data from ggplot2. Unknown diet classifications are labeled explicitly.
+The `text` aesthetic supplies the animal names used in the tooltips.
+
+```{r}
+#| label: interaction-ggplotly
+library(tidyverse)
+library(plotly)
+
+sleep_data <- msleep |>
+    drop_na(bodywt, sleep_total) |>
+    mutate(vore = replace_na(vore, 'Unknown'))
+sleep_plot <- ggplot(sleep_data, aes(x = bodywt, y = sleep_total, color = vore, text = name)) +
+    geom_point() +
+    scale_x_log10() +
+    ggthemes::scale_color_tableau()
+sleep_widget <- ggplotly(sleep_plot, tooltip = 'text')
+sleep_widget
+```
+
+Hover for names, click a legend entry to hide or show its group, and drag to zoom.
+The toolbar provides additional modes, including rectangular and lasso selections.
+Double-click the plot to reset the axes.
+
+### Sharing legend interactions across panels
+
+`subplot()` combines Plotly views. These two views use the same diet groups.
+We suppress the duplicate legend entries from the bar chart and request group-wise
+legend toggling, so clicking one legend entry affects that diet group in both panels.
+
+```{r}
+#| label: interaction-plotly-shared-legend
+count_plot <- ggplot(sleep_data, aes(y = vore, fill = vore)) +
+    geom_bar(width = 0.6) + ggthemes::scale_fill_tableau()
+count_widget <- ggplotly(count_plot) |> style(showlegend = FALSE)
+subplot(count_widget, sleep_widget, widths = c(0.3, 0.7), titleX = TRUE, titleY = TRUE) |>
+    layout(dragmode = 'select', legend = list(groupclick = 'togglegroup'))
+```
+
+Shared legend groups do not automatically create linked point brushing.
+Plotly also provides [client-side highlighting](https://plotly-r.com/client-side-linking.html)
+for linking individual observations with shared keys.
+
+### A range slider
+
+Plotly's `rangeslider()` adds a small overview for navigating a larger time-series plot.
+Drag its handles or the selected range to change the time interval above.
+This example uses the proportions of US births named Sam or Alex, grouped by sex.
+
+```{r}
+#| label: interaction-plotly-rangeslider
+nms <- babynames::babynames |> filter(name %in% c('Sam', 'Alex'))
+range_plot <- ggplot(nms, aes(year, prop, color = sex, linetype = name)) +
+    geom_line()
+ggplotly(range_plot, dynamicTicks = TRUE) |>
+    rangeslider() |>
+    layout(hovermode = 'x')
+```
+
+### Animation frames
+
+The `frame` aesthetic identifies which observations belong in each animation frame.
+`ids = country` links a country's mark across frames.
+Use Play or select a year on the animation slider.
+
+```{r}
+#| label: interaction-plotly-animation
+gap_plot <- ggplot(gapminder::gapminder, aes(gdpPercap, lifeExp, color = continent)) +
+    geom_point(aes(size = pop, frame = year, ids = country)) +
+    scale_x_log10()
+ggplotly(gap_plot)
+```
+
+`frame` and `ids` are interpreted by Plotly rather than ordinary static ggplot rendering.
+When comparing changes, consider whether animation or a set of static panels better
+supports the reader's task: animation emphasizes movement, while panels support
+side-by-side comparisons without relying on memory.
+
+### Dropdowns in Plotly
+
+Plotly dropdowns can update trace visibility, marker properties, and layouts.
+They do not use Altair's selection-and-filter grammar; a dynamic query may require
+preparing traces or using other Plotly features.
+Here we prepare three measurements for each cylinder group and use a dropdown
+to choose which measurement appears on y.
+
+```{r}
+#| label: interaction-plotly-dropdown
+dropdown_data <- mtcars |> rownames_to_column('car') |> mutate(cyl = factor(cyl))
+metrics <- c('hp', 'mpg', 'qsec')
+metric_plot <- plot_ly(dropdown_data, x = ~car, color = ~cyl)
+for (metric in metrics) {
+    metric_plot <- add_trace(
+        metric_plot, y = dropdown_data[[metric]], type = 'scatter', mode = 'markers',
+        meta = metric, visible = metric == 'hp'
+    )
+}
+metric_plot <- plotly_build(metric_plot)
+trace_metrics <- vapply(metric_plot$x$data, function(trace) unique(trace$meta), character(1))
+buttons <- lapply(metrics, function(metric) list(
+    method = 'update', label = metric,
+    args = list(list(visible = trace_metrics == metric), list(yaxis = list(title = metric)))
+))
+layout(metric_plot,
+       updatemenus = list(list(type = 'dropdown', active = 0, buttons = buttons)),
+       yaxis = list(title = 'hp'), legend = list(title = list(text = 'Cylinders')))
+```
+
+Each measurement has three traces because color splits it into cylinder groups.
+The visibility mask therefore covers all nine traces, not just three measurements.
+The dropdown also changes the axis title so that the selected variable remains clear.
+See Plotly's [dropdown](https://plotly.com/r/dropdowns/) and
+[slider](https://plotly.com/r/sliders/) documentation for more control options.
+
+## Widgets and data-driven controls in Altair
+
+Traditional widgets and plots can both define selections.
+We will explore that connection using movie ratings.
+This is the full Vega movies snapshot rather than the smaller distribution-example
+dataset used in earlier chapters. We remove rows missing the fields needed by these views.
+
+```{python}
+#| label: interaction-movies-setup
+movies = (
+    pd.read_csv('data/vega-movies-interactivity.csv', parse_dates=['Release_Date'])
+    .drop(columns=['US_DVD_Sales', 'Director', 'Source', 'Creative_Type'])
+    .dropna(subset=['Running_Time_min', 'Major_Genre', 'Rotten_Tomatoes_Rating',
+                    'IMDB_Rating', 'MPAA_Rating', 'Release_Date'])
+    .assign(Release_Year=lambda df: df['Release_Date'].dt.year,
+            Title=lambda df: df['Title'].astype(str))
+    .reset_index(drop=True)
+)
+movies.head()
+```
+
+```{python}
+#| label: interaction-movies-info
+movies.info()
+```
+
+```{python}
+#| label: interaction-movies-base
+movie_points = alt.Chart(movies).mark_circle().encode(
+    x='Rotten_Tomatoes_Rating:Q', y='IMDB_Rating:Q', tooltip='Title:N'
+)
+```
+
+### A legend as a selection widget
+
+```{python}
+#| label: interaction-movie-legend-alt
+select_genre = alt.selection_point(name='movie_genre_legend', fields=['Major_Genre'], bind='legend')
+movie_points.encode(
+    color='Major_Genre:N',
+    opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
+).add_params(select_genre)
+```
+
+With many genres, the colors and legend become busy.
+A dropdown can select a genre without assigning a different color to every category.
+
+### Dropdowns and initial values
+
+`alt.binding_select()` supplies the available choices.
+The selection matches the chosen value of `Major_Genre`.
+
+```{python}
+#| label: interaction-movie-dropdown-alt
+genres = sorted(movies['Major_Genre'].unique())
+dropdown = alt.binding_select(options=genres)
+select_genre = alt.selection_point(name='movie_genre_dropdown', fields=['Major_Genre'], bind=dropdown)
+movie_points.encode(
+    opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
+).add_params(select_genre)
+```
+
+Give the widget a readable label and specify an initial selection.
+This version starts with Comedy selected.
+
+```{python}
+#| label: interaction-movie-dropdown-default-alt
+dropdown = alt.binding_select(name='Genre: ', options=genres)
+select_genre = alt.selection_point(
+    name='movie_genre_default', fields=['Major_Genre'], bind=dropdown,
+    value=[{'Major_Genre': 'Comedy'}]
+)
+movie_points.encode(
+    opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
+).add_params(select_genre)
+```
+
+### Combining a dropdown and radio buttons
+
+Bind different fields of one point selection to different controls.
+Use a meaningful order for the age ratings; alphabetical order is not their conceptual order.
+Here a film must match both the selected genre and rating to be highlighted.
+
+```{python}
+#| label: interaction-movie-radio-alt
+mpaa_ratings = ['G', 'PG', 'PG-13', 'R', 'Not Rated']
+select_genre_and_mpaa = alt.selection_point(
+    name='movie_genre_and_rating', fields=['Major_Genre', 'MPAA_Rating'],
+    bind={
+        'Major_Genre': alt.binding_select(name='Genre: ', options=genres),
+        'MPAA_Rating': alt.binding_radio(name='MPAA rating: ', options=mpaa_ratings)
+    },
+    value=[{'Major_Genre': 'Comedy', 'MPAA_Rating': 'PG-13'}]
+)
+movie_points.encode(
+    opacity=alt.condition(select_genre_and_mpaa, alt.value(0.7), alt.value(0.1))
+).add_params(select_genre_and_mpaa)
+```
+
+### Sliders: equality versus a threshold
+
+A point selection bound to a slider matches an **exact field value**.
+That can be useful, but often we want observations below or above a threshold instead.
+
+```{python}
+#| label: interaction-rating-equality-alt
+select_rating = alt.selection_point(
+    name='movie_rating_equal', fields=['Rotten_Tomatoes_Rating'],
+    bind=alt.binding_range(name='Tomatometer: ', min=0, max=100, step=1),
+    value=[{'Rotten_Tomatoes_Rating': 50}]
+)
+movie_points.encode(
+    opacity=alt.condition(select_rating, alt.value(0.7), alt.value(0.1))
+).add_params(select_rating)
+```
+
+For a threshold, a scalar parameter is simpler than a point selection.
+`alt.datum` refers to fields of the current observation inside an expression.
+The expression below compares each film's rating to the slider value.
+
+```{python}
+#| label: interaction-rating-threshold-alt
+rating_cutoff = alt.param(
+    name='rating_cutoff', value=50,
+    bind=alt.binding_range(name='Tomatometer below: ', min=0, max=100, step=1)
+)
+movie_points.encode(
+    opacity=alt.condition(alt.datum.Rotten_Tomatoes_Rating < rating_cutoff,
+                          alt.value(0.7), alt.value(0.1))
+).add_params(rating_cutoff)
+```
+
+The control's range, step, and starting value are separate choices.
+For example, this version examines cutoffs between 10 and 60 in steps of five,
+starting at 15.
+
+```{python}
+#| label: interaction-rating-slider-settings-alt
+rating_cutoff = alt.param(
+    name='rating_cutoff_steps', value=15,
+    bind=alt.binding_range(name='Tomatometer below: ', min=10, max=60, step=5)
+)
+movie_points.encode(
+    opacity=alt.condition(alt.datum.Rotten_Tomatoes_Rating < rating_cutoff,
+                          alt.value(0.7), alt.value(0.1))
+).add_params(rating_cutoff)
+```
+
+### Selecting release years
+
+We can use the same pattern to highlight movies released before a selected year.
+This still highlights rather than removes the remaining movies.
+
+```{python}
+#| label: interaction-year-slider-alt
+year_cutoff = alt.param(
+    name='movie_year_cutoff', value=2000,
+    bind=alt.binding_range(name='Released before: ', step=1,
+                           min=int(movies['Release_Year'].min()), max=int(movies['Release_Year'].max()))
+)
+movie_points.encode(
+    opacity=alt.condition(alt.datum.Release_Year < year_cutoff, alt.value(0.7), alt.value(0.1))
+).add_params(year_cutoff)
+```
+
+A slider shows the range but not where most observations lie.
+It also makes the snapshot's suspicious future release years visible:
+for example, historical films can appear in the 2030s. Those values warrant checking
+against the source data; changing an axis format alone cannot correct a date.
+
+### Let a plot act as the widget
+
+A bar chart can show the distribution of releases while serving as the control.
+First, click a year to highlight matching movies.
+
+```{python}
+#| label: interaction-year-click-alt
+select_year = alt.selection_point(
+    name='movie_year_click', fields=['Release_Year'], value=[{'Release_Year': 2000}]
+)
+year_bars = alt.Chart(movies).mark_bar().encode(
+    x=alt.X('Release_Year:Q').axis(format='d'), y='count()'
+).properties(height=60).add_params(select_year)
+scatter = movie_points.encode(
+    opacity=alt.condition(select_year, alt.value(0.7), alt.value(0.1))
+)
+scatter & year_bars
+```
+
+Now replace the point selection with an x-only interval selection.
+Dragging across the bars chooses a range rather than one year.
+Using the `year` time unit on the date field gives a temporal year axis.
+
+```{python}
+#| label: interaction-year-interval-alt
+select_year = alt.selection_interval(name='movie_year_interval', encodings=['x'])
+year_bars = alt.Chart(movies).mark_bar().encode(
+    x='year(Release_Date):T', y='count()'
+).properties(height=60).add_params(select_year)
+scatter = movie_points.encode(
+    opacity=alt.condition(select_year, alt.value(0.7), alt.value(0.1))
+)
+scatter & year_bars
+```
+
+The basic Altair bindings include dropdowns, radio buttons, sliders, and checkboxes.
+For multi-selection, use point selections on a plot or legend; for a range,
+an interval brush often communicates more context than two separate scalar sliders.
+
+### A compact plot-based control
+
+We can make the year selector smaller and remove nonessential axis and border details.
+Here we restrict the display to 1995–2029 to focus the example.
+This explicit subset is not a correction of the suspicious release dates.
+
+```{python}
+#| label: interaction-compact-year-alt
+movies_fewer_years = movies.query('1994 < Release_Year < 2030')
+select_year = alt.selection_interval(name='compact_movie_year', encodings=['x'])
+year_bars = alt.Chart(movies_fewer_years).mark_bar().encode(
+    x=alt.X('year(Release_Date):T').title('').axis(grid=False),
+    y=alt.Y('count()').title('').axis(None)
+).properties(height=20, width=100).add_params(select_year)
+scatter = alt.Chart(movies_fewer_years).mark_circle().encode(
+    x='Rotten_Tomatoes_Rating:Q', y='IMDB_Rating:Q', tooltip='Title:N',
+    opacity=alt.condition(select_year, alt.value(0.7), alt.value(0.1))
+)
+(scatter & year_bars).configure_view(stroke=None)
+```
+
+Is the lower plot still a chart, or is it now a widget?
+It both displays data and defines a selection. Its role matters more than its appearance.
+
+### A multidimensional legend
+
+A legend need not encode just one variable.
+The following control shows genre and age rating by position and combination count by size.
+It works alongside year and runtime brushes.
+An observation must satisfy **all three** selections to be highlighted;
+`&` combines the selection predicates here, whereas `&` between charts stacks panels.
+
+```{python}
+#| label: interaction-multidimensional-alt
+top_genres = movies_fewer_years['Major_Genre'].value_counts().head(5).index
+movies_clean = movies_fewer_years.query(
+    "Major_Genre in @top_genres and MPAA_Rating in ['G', 'PG', 'PG-13', 'R']"
+)
+select_categories = alt.selection_point(
+    name='dashboard_categories', fields=['Major_Genre', 'MPAA_Rating'], nearest=True
+)
+select_year = alt.selection_interval(name='dashboard_year', encodings=['x'])
+select_runtime = alt.selection_interval(name='dashboard_runtime', encodings=['x'])
+
+category_legend = alt.Chart(movies_clean, title='Genre and rating').mark_circle().encode(
+    x=alt.X('MPAA_Rating:N').sort(['G', 'PG', 'PG-13', 'R']).title(''),
+    y=alt.Y('Major_Genre:N').title('').axis(orient='right'),
+    size=alt.Size('count()').legend(None),
+    color=alt.Color('Major_Genre:N').legend(None),
+    opacity=alt.condition(select_categories, alt.value(1), alt.value(0.2))
+).properties(width=130, height=140).add_params(select_categories)
+year_control = alt.Chart(movies_clean, title='Production year').mark_bar().encode(
+    x=alt.X('year(Release_Date):T').title('').axis(grid=False),
+    y=alt.Y('count()').title('').axis(None)
+).properties(width=130, height=35).add_params(select_year)
+runtime_control = alt.Chart(movies_clean, title='Running time').mark_bar().encode(
+    x=alt.X('Running_Time_min:Q').title('').axis(grid=False),
+    y=alt.Y('count()').title('').axis(None)
+).properties(width=130, height=35).add_params(select_runtime)
+scatter = alt.Chart(movies_clean).mark_circle().encode(
+    x='Rotten_Tomatoes_Rating:Q', y='IMDB_Rating:Q',
+    color=alt.Color('Major_Genre:N').legend(None), tooltip='Title:N',
+    opacity=alt.condition(select_categories & select_year & select_runtime,
+                          alt.value(0.7), alt.value(0.1))
+).properties(width=300, height=300)
+movie_dashboard = (scatter | (year_control & runtime_control & category_legend)).configure_view(stroke=None)
+movie_dashboard.properties(usermeta={'embedOptions': {'renderer': 'canvas'}})
+```
+
+Empty selections match all observations, so readers can start with any control.
+Double-click a brush to clear it, or Shift-click category combinations to select more than one.
+The controls themselves summarize the fixed `movies_clean` subset; this example
+changes the scatterplot's highlighting rather than recomputing all the control distributions.
+
+The result still runs entirely in the browser and can be shared as an HTML file:
+
+```{python}
+#| eval: false
+movie_dashboard.save('chart-widgets.html', inline=True)
+```
+
+Complex layouts are not always necessary during quick exploration,
+but can be useful when preparing a figure for someone else to explore.
+See @sec-figure-composition for the distinction between default HTML export and
+offline, self-contained export.
+
+## Further reading
+
+- [Altair: interactive charts](https://altair-viz.github.io/user_guide/interactions/index.html).
+- [Altair: bindings and widgets](https://altair-viz.github.io/user_guide/interactions/bindings_widgets.html).
+- [Plotly: ggplot2 integration](https://plotly.com/ggplot2/getting-started/).
+- [Plotly for R: client-side linking](https://plotly-r.com/client-side-linking.html).
+- [Telling a story and making a point](https://clauswilke.com/dataviz/telling-a-story.html).
+- [Original lecture slides](lecture-material/slides-lec8.pdf).
+- [Paired-comparison lecture recording](https://ubcca-my.sharepoint.com/:v:/g/personal/joel_ostblom_ubc_ca/Ed8Vfw1Jf39ErXwJPau9-30BqMYiV5-Bpoy8DaVKiPfgWg?e=ZxToLS),
+  with related textbook discussion in @sec-connections.
