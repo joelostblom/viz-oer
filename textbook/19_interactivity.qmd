@@ -365,6 +365,7 @@ alt.Chart(cars).mark_circle().encode(
     color='Origin'
 ).add_params(brush)
 ```
+
 To add a response to the condition,
 we can define a condition via `alt.when(test).then(if_true).otherwise(if_false)`,
 where the "test" condition would be if the brush is over a point or not.
