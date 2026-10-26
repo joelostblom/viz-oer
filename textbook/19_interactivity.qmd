@@ -38,28 +38,29 @@ They might examine a particular region, inspect an observation, compare selected
 or change which variable is displayed. Interactivity can help us explore data ourselves
 and let others explore a figure without writing code.
 
-We organize the chapter around those purposes rather than around particular widgets:
-
-- **Navigating views:** change where or when we look.
-- **Selecting data:** choose observations of interest, then decide whether to reveal details,
-  highlight them, or filter a view. Several views can respond to the same selection.
-- **Changing encodings and parameters:** change the representation or calculation itself.
-
-The examples run **client-side**, in the browser. They keep working after the Python
-or R session that created them has ended. We will use the composition and self-contained
-HTML export techniques from @sec-figure-composition to assemble and share them as offline explorers.
-Applications that call Python or R functions on a server when a control changes are different:
-those callbacks need a running backend. A dashboard-like layout does not by itself require one.
-
 ## Navigating views
 
-Navigation changes the viewing window or the state we are examining.
-Zooming in can reveal detail without removing observations from the underlying data
-or recalculating a summary on a smaller dataset.
 
 ### Panning and zooming
 
-Panning and zooming is useful when there is additional detail
+Panning and zooming is useful
+changes the viewing window or the state we are examining.
+This is useful
+when there is additional detail
+that cannot be seen in a chart's
+initial view,
+but might be of interest to the reader.
+While it would be possible
+to present a single static zoomed in view of the chart,
+it would quickly become unwieldley
+to show multiple zoom levels in separate panels.
+
+This basic type of interaction
+also illustrates a key features of interactivity,
+it enables the audience of the visualization 
+to activiley explore the data an ask questions of their own;
+including questions that the chart creator
+might not have thought of including in a static chart.
 
 ::: {.panel-tabset group="language"}
 
@@ -98,7 +99,10 @@ It would be sufficient to just use the `ggplotly`
 function and its toolbar to access most functionality,
 but here we show how to enable
 zooming and panning by default without having to click in the panel.
-Double-click to reset the axes.
+You will also notice that there is a tooltip enabled by default,
+more on that later.
+Click the little house icon in the toolbar
+to reset the axes.
 
 ```{r}
 #| label: interaction-pan-zoom-gg
@@ -114,41 +118,76 @@ ggplotly(car_plot) |>
     config(scrollZoom = TRUE)
 ```
 
+Note that while plotly provides many useful interactive feature to ggplot
+its API does not aim to implement a grammar of interactivity,
+but follows a more traditional design approach,
+so the code we learn here will look slightly 
+different from the ggplot code we have used so far.
+
 :::
 
 ### Overview and detail
 
-An overview keeps the full range visible while another panel shows a chosen region.
-Both examples below use the same S&P 500 time series.
-This is **coordination between views for navigation**, rather than linked highlighting
-of selected observations. Coordination is useful for several purposes, even though
-we will discuss most of our linked-view examples under selecting data.
+Another helpful interaction tool
+it to use one chart as a navigation overview
+for another chart that displays more detail.
+The example below
+shows how a time series can be examples below use the same S&P 500 time series.
+Drag an x-interval in the lower overview to set the upper panel's scale domain.
 
 ::: {.panel-tabset group="language"}
 
 #### Altair {.slide-skip}
 
-Drag an x-interval in the lower overview to set the upper panel's scale domain.
-The layout operators come from @sec-figure-composition.
+We are using the layout operators from @sec-figure-composition
+to compose a view of the navigation overview
+togeher with the more detailed chart.
+Here we first define a selection
+and add it to the chart.
+You can click and drag in the chart (also called "brushing")
+to create the selection rectangle (a "brush"),
+but it is not yet linked to any functionality.
 
 ```{python}
 #| label: interaction-overview-detail-alt
 sp500 = pd.read_csv('data/vega-sp500.csv', parse_dates=['date'])
-base = alt.Chart(sp500, width=550).mark_area().encode(x='date:T', y='price:Q')
+
+overview = alt.Chart(sp500, height=50).mark_area().encode(x='date:T', y='price:Q')
 brush = alt.selection_interval(name='sp500_brush', encodings=['x'])
-lower = base.properties(height=60).add_params(brush)
-upper = base.encode(x=alt.X('date:T').scale(domain=brush)).properties(height=220)
-(upper & lower).properties(usermeta={'embedOptions': {'renderer': 'canvas'}})
+overview.add_params(brush)
 ```
+To make another chart respond 
+based on the selection we make with the brush,
+we set the domain of our detailed chart's scale
+to the brush's endpoints.
+Now brushing in the lower overview chart
+will change the scale min and max
+of the detailed upper chart:
+
+```{python}
+details = alt.Chart(sp500, height=120).mark_area().encode(
+    x=alt.X('date:T').scale(domain=brush),
+    y='price'
+)
+details & overview.add_params(brush)
+```
+Not that we can also scroll when hovering over the brush
+to expand and shrink the selection.
 
 #### ggplot {.slide-skip}
 
-Plotly's `rangeslider()` supplies an overview with draggable handles.
+Due to the lack of a grammar of interactivity,
+we cannot reuse what we learned in @sec-figure-composition
+to compose together the navigation overview and the detailed chart.
+Instead,
+plotly has a function named `rangeslider()`
+that supplies an overview with draggable handles.
 Change the selected range to navigate the larger time-series view.
 
 ```{r}
 #| label: interaction-plotly-rangeslider
 sp500 <- readr::read_csv('data/vega-sp500.csv')
+
 sp500_plot <- ggplot(sp500, aes(x = date, y = price)) + geom_area()
 ggplotly(sp500_plot, dynamicTicks = TRUE) |>
     rangeslider() |>
@@ -173,9 +212,7 @@ the frames with a slider rather than playing them automatically.
 
 ```{python}
 #| label: interaction-year-frames-alt
-gap = pd.read_csv('data/vega-gapminder.csv').dropna(
-    subset=['country', 'year', 'fertility', 'life_expect', 'pop']
-)
+gap = pd.read_csv('data/vega-gapminder.csv')
 frame_year = alt.param(
     name='gapminder_year', value=int(gap['year'].min()),
     bind=alt.binding_range(name='Year: ', min=int(gap['year'].min()),
@@ -196,8 +233,7 @@ between frames. Use Play or choose a year on its slider.
 
 ```{r}
 #| label: interaction-plotly-animation
-gap <- readr::read_csv('data/vega-gapminder.csv') |>
-    dplyr::drop_na(country, year, fertility, life_expect, pop)
+gap <- readr::read_csv('data/vega-gapminder.csv')
 gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
     geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
     scale_x_continuous(limits = c(0, 9)) +
@@ -243,6 +279,9 @@ Hover over a point to inspect its name. A tooltip can contain one field or sever
 
 ```{python}
 #| label: interaction-tooltip-single-alt
+car_scatter = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower:Q', y='Miles_per_Gallon:Q'
+)
 car_scatter.encode(tooltip='Name:N')
 ```
 
@@ -335,6 +374,7 @@ selected observations should be emphasized. The original observations remain vis
 
 ```{r}
 #| label: interaction-brush-highlight-gg
+cars <- cars |> mutate(car_id = dplyr::row_number())
 highlight_cars <- highlight_key(cars, ~car_id, group = 'single-car-highlight')
 highlight_plot <- ggplot(highlight_cars,
                         aes(x = Horsepower, y = Miles_per_Gallon, color = Origin, text = Name)) +
@@ -385,7 +425,7 @@ These bars use the same origin counts as the Altair examples.
 
 ```{r}
 #| label: interaction-click-gg
-origin_keys <- cars |> count(Origin) |>
+origin_keys <- cars |> dplyr::count(Origin) |>
     highlight_key(~Origin, group = 'origin-count-selection')
 origin_bars <- plot_ly(origin_keys, x = ~n, y = ~Origin, color = ~Origin,
                        type = 'bar', orientation = 'h')
@@ -394,7 +434,7 @@ origin_bars |> highlight(on = 'plotly_click', off = 'plotly_doubleclick', opacit
 
 ```{r}
 #| label: interaction-hover-gg
-hover_keys <- cars |> count(Origin) |>
+hover_keys <- cars |> dplyr::count(Origin) |>
     highlight_key(~Origin, group = 'origin-count-hover')
 plot_ly(hover_keys, x = ~n, y = ~Origin, color = ~Origin, type = 'bar', orientation = 'h') |>
     highlight(on = 'plotly_hover', off = 'plotly_doubleclick', opacityDim = 0.2)
@@ -509,8 +549,6 @@ inspecting a year control can expose this issue, but changing axis formatting ca
 movies = (
     pd.read_csv('data/vega-movies-interactivity.csv', parse_dates=['Release_Date'])
     .drop(columns=['US_DVD_Sales', 'Director', 'Source', 'Creative_Type'])
-    .dropna(subset=['Running_Time_min', 'Major_Genre', 'Rotten_Tomatoes_Rating',
-                    'IMDB_Rating', 'MPAA_Rating', 'Release_Date'])
     .assign(Release_Year=lambda df: df['Release_Date'].dt.year,
             Title=lambda df: df['Title'].fillna('Untitled').astype(str))
     .reset_index(drop=True)
@@ -531,12 +569,11 @@ movies.info()
 
 ```{r}
 #| label: interaction-movies-setup-gg
-movies <- read_csv('data/vega-movies-interactivity.csv') |>
+movies <- readr::read_csv('data/vega-movies-interactivity.csv') |>
     dplyr::select(-c(US_DVD_Sales, Director, Source, Creative_Type)) |>
-    dplyr::drop_na(Running_Time_min, Major_Genre, Rotten_Tomatoes_Rating,
-            IMDB_Rating, MPAA_Rating, Release_Date) |>
     dplyr::mutate(Release_Year = lubridate::year(Release_Date),
-           Title = replace_na(Title, 'Untitled'), movie_id = row_number())
+          # Title = replace_na(Title, 'Untitled'),
+           movie_id = dplyr::row_number())
 head(movies)
 ```
 
@@ -562,7 +599,7 @@ A dropdown can select a genre without assigning a color to every category.
 
 ```{python}
 #| label: interaction-movie-dropdown-alt
-genres = sorted(movies['Major_Genre'].unique())
+genres = sorted(movies['Major_Genre'].dropna().unique())
 dropdown = alt.binding_select(options=genres)
 select_genre = alt.selection_point(name='movie_genre_dropdown', fields=['Major_Genre'], bind=dropdown)
 movie_points.encode(
@@ -1009,9 +1046,9 @@ All active conditions must be satisfied.
 
 ```{r}
 #| label: interaction-movie-explorer-gg
-movies_fewer_years <- movies |> filter(Release_Year > 1994, Release_Year < 2030)
-top_genres <- movies_fewer_years |> count(Major_Genre, sort = TRUE) |>
-    slice_head(n = 5) |> pull(Major_Genre)
+movies_fewer_years <- movies |> dplyr::filter(Release_Year > 1994, Release_Year < 2030)
+top_genres <- movies_fewer_years |> dplyr::count(Major_Genre, sort = TRUE) |>
+    dplyr::slice_head(n = 5) |> dplyr::pull(Major_Genre)
 movies_clean <- movies_fewer_years |>
     filter(Major_Genre %in% top_genres, MPAA_Rating %in% c('G', 'PG', 'PG-13', 'R'))
 explorer_movies <- crosstalk::SharedData$new(movies_clean, key = ~as.character(movie_id), group = 'movie-explorer')
