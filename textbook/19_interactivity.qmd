@@ -155,7 +155,7 @@ on the x-axis (i.e. the height of the brush is constant).
 sp500 = pd.read_csv('data/vega-sp500.csv', parse_dates=['date'])
 
 overview = alt.Chart(sp500, height=50).mark_area().encode(x='date:T', y='price:Q')
-brush = alt.selection_interval(name='sp500_brush', encodings=['x'])
+brush = alt.selection_interval(encodings=['x'])
 overview.add_params(brush)
 ```
 To make another chart respond 
@@ -372,7 +372,7 @@ Click a bar; Shift-click to select several origins.
 
 ```{python}
 #| label: interaction-click-alt
-click = alt.selection_point(name='origin_click', fields=['Origin'])
+click = alt.selection_point(fields=['Origin'])
 alt.Chart(cars).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N',
     opacity=alt.condition(click, alt.value(0.9), alt.value(0.2))
@@ -384,7 +384,7 @@ Changing the event to `mouseover` lets hovering drive the selection instead.
 
 ```{python}
 #| label: interaction-hover-alt
-hover = alt.selection_point(name='origin_hover', fields=['Origin'], on='mouseover', toggle=False)
+hover = alt.selection_point(fields=['Origin'], on='mouseover', toggle=False)
 alt.Chart(cars).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N',
     opacity=alt.condition(hover, alt.value(0.9), alt.value(0.2))
@@ -717,9 +717,11 @@ but it could also have been used to filter the data.
 
 ```{python}
 #| label: interaction-legend-alt
-legend = alt.selection_point(name='origin_legend', fields=['Origin'], bind='legend')
+legend = alt.selection_point(fields=['Origin'], bind='legend')
 
 alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
     color='Origin',
     opacity=alt.condition(legend, alt.value(0.9), alt.value(0.1))
 ).add_params(legend)
@@ -804,7 +806,7 @@ A legend selection works for genres too, but many genre colors make the view bus
 
 ```{python}
 #| label: interaction-movie-legend-alt
-select_genre = alt.selection_point(name='movie_genre_legend', fields=['Major_Genre'], bind='legend')
+select_genre = alt.selection_point(fields=['Major_Genre'], bind='legend')
 movie_points.encode(
     color='Major_Genre:N', opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
 ).add_params(select_genre)
@@ -816,7 +818,7 @@ A dropdown can select a genre without assigning a color to every category.
 #| label: interaction-movie-dropdown-alt
 genres = sorted(movies['Major_Genre'].dropna().unique())
 dropdown = alt.binding_select(options=genres)
-select_genre = alt.selection_point(name='movie_genre_dropdown', fields=['Major_Genre'], bind=dropdown)
+select_genre = alt.selection_point(fields=['Major_Genre'], bind=dropdown)
 movie_points.encode(
     opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
 ).add_params(select_genre)
@@ -827,7 +829,7 @@ Give the control a readable label and specify an initial value to make the start
 ```{python}
 #| label: interaction-movie-dropdown-default-alt
 select_genre = alt.selection_point(
-    name='movie_genre_default', fields=['Major_Genre'],
+    fields=['Major_Genre'],
     bind=alt.binding_select(name='Genre: ', options=genres),
     value=[{'Major_Genre': 'Comedy'}]
 )
@@ -844,7 +846,7 @@ The age ratings use their conceptual order rather than alphabetical order.
 #| label: interaction-movie-radio-alt
 mpaa_ratings = ['G', 'PG', 'PG-13', 'R', 'Not Rated']
 select_genre_and_mpaa = alt.selection_point(
-    name='movie_genre_and_rating', fields=['Major_Genre', 'MPAA_Rating'],
+    fields=['Major_Genre', 'MPAA_Rating'],
     bind={
         'Major_Genre': alt.binding_select(name='Genre: ', options=genres),
         'MPAA_Rating': alt.binding_radio(name='MPAA rating: ', options=mpaa_ratings)
@@ -889,7 +891,7 @@ A point selection bound to a slider matches an **exact value**.
 ```{python}
 #| label: interaction-rating-equality-alt
 select_rating = alt.selection_point(
-    name='movie_rating_equal', fields=['Rotten_Tomatoes_Rating'],
+    fields=['Rotten_Tomatoes_Rating'],
     bind=alt.binding_range(name='Tomatometer: ', min=0, max=100, step=1),
     value=[{'Rotten_Tomatoes_Rating': 50}]
 )
@@ -904,7 +906,7 @@ the current observation inside an expression.
 ```{python}
 #| label: interaction-rating-threshold-alt
 rating_cutoff = alt.param(
-    name='rating_cutoff', value=50,
+    value=50,
     bind=alt.binding_range(name='Tomatometer below: ', min=0, max=100, step=1)
 )
 movie_points.encode(
@@ -918,7 +920,7 @@ Range, step, and initial value are separate choices.
 ```{python}
 #| label: interaction-rating-slider-settings-alt
 rating_cutoff = alt.param(
-    name='rating_cutoff_steps', value=15,
+    value=15,
     bind=alt.binding_range(name='Tomatometer below: ', min=10, max=60, step=5)
 )
 movie_points.encode(
@@ -1039,15 +1041,16 @@ A movie must satisfy all three selection predicates to be highlighted.
 
 ```{python}
 #| label: interaction-multidimensional-alt
+movies_fewer_years = movies.query('1994 < Release_Year < 2030') 
 top_genres = movies_fewer_years['Major_Genre'].value_counts().head(5).index
 movies_clean = movies_fewer_years.query(
     "Major_Genre in @top_genres and MPAA_Rating in ['G', 'PG', 'PG-13', 'R']"
 )
 select_categories = alt.selection_point(
-    name='dashboard_categories', fields=['Major_Genre', 'MPAA_Rating'], nearest=True
+    fields=['Major_Genre', 'MPAA_Rating'], nearest=True
 )
-select_year = alt.selection_interval(name='dashboard_year', encodings=['x'])
-select_runtime = alt.selection_interval(name='dashboard_runtime', encodings=['x'])
+select_year = alt.selection_interval(encodings=['x'])
+select_runtime = alt.selection_interval(encodings=['x'])
 category_legend = alt.Chart(movies_clean, title='Genre and rating').mark_circle().encode(
     x=alt.X('MPAA_Rating:N').sort(['G', 'PG', 'PG-13', 'R']).title(''),
     y=alt.Y('Major_Genre:N').title('').axis(orient='right'),
@@ -1075,7 +1078,8 @@ The controls summarize the fixed subset; they do not recompute each other's dist
 
 ##### ggplot {.slide-skip}
 
-Crosstalk combines standard controls over the same fields and movies.
+This same idea is not possible to express in plotly,
+but crosstalk can combine standard controls over the same fields and movies.
 Here the controls **filter** the plot rather than fading nonmatching points.
 All active conditions must be satisfied.
 
@@ -1157,7 +1161,7 @@ column's value for each car. The observations remain the same.
 ```{python}
 #| label: interaction-variable-dropdown-alt
 measurement = alt.param(
-    name='car_measurement', value='Miles_per_Gallon',
+    value='Miles_per_Gallon',
     bind=alt.binding_select(name='Y variable: ', options=['Miles_per_Gallon', 'Weight_in_lbs', 'Acceleration'])
 )
 alt.Chart(cars).transform_calculate(measurement='datum[car_measurement]').mark_circle().encode(
