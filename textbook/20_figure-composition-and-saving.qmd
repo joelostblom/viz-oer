@@ -1,0 +1,497 @@
+---
+fig-width: 7
+fig-height: 4
+resources:
+  - data/vega-cars.csv
+execute:
+  message: false
+  warning: false
+---
+
+# Figure composition and saving {#sec-figure-composition}
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+:::: {.slide-outcomes}
+::: {.callout-note title="Learning outcomes & Chapter summary"}
+
+1. **Compose** plots into horizontal, vertical, and nested layouts.
+2. **Choose** panel sizes, shared axes, titles, and labels to support comparisons.
+3. **Save** figures in suitable static or interactive formats, including self-contained offline HTML.
+
+:::
+::::
+
+## Why bother?
+
+A single plot may not answer every part of a question.
+Combining complementary views can show a relationship alongside its distributions,
+or let readers compare how the same response relates to different predictors.
+The layout should make those comparisons easier, rather than simply fit more plots onto a page.
+
+After composing a figure, we also need to choose how to share it.
+A PNG is convenient in a document, a vector image stays sharp when resized,
+and an HTML file can preserve the interactions introduced in @sec-interactivity.
+
+## Preparing complementary panels
+
+We will reuse the cars dataset. We keep observations with recorded fuel economy,
+horsepower, and weight so that both panels show the same cars.
+If a variable is shared between panels, placing it on the same axis makes
+the relationships easier to compare. Here, weight stays on the y-axis.
+The short titles identify panels while we experiment with layouts;
+for a communication figure, a title explaining the message may be more useful.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+```{python}
+#| label: composition-panels-alt
+import altair as alt
+import pandas as pd
+
+cars = pd.read_csv('data/vega-cars.csv').dropna(
+    subset=['Miles_per_Gallon', 'Horsepower', 'Weight_in_lbs', 'Origin']
+)
+mpg_weight = alt.Chart(cars, title='Fuel economy and weight').mark_point().encode(
+    x='Miles_per_Gallon:Q', y='Weight_in_lbs:Q', color='Origin:N'
+)
+hp_weight = alt.Chart(cars, title='Horsepower and weight').mark_point().encode(
+    x='Horsepower:Q', y='Weight_in_lbs:Q', color='Origin:N'
+)
+mpg_weight
+```
+
+```{python}
+#| label: composition-horsepower-alt
+hp_weight
+```
+
+### ggplot {.slide-skip}
+
+```{r}
+#| label: composition-panels-gg
+library(tidyverse)
+library(patchwork)
+
+cars <- read_csv('data/vega-cars.csv') |>
+    drop_na(Miles_per_Gallon, Horsepower, Weight_in_lbs, Origin)
+mpg_weight <- ggplot(cars, aes(x = Miles_per_Gallon, y = Weight_in_lbs, color = Origin)) +
+    geom_point() + labs(title = 'Fuel economy and weight')
+hp_weight <- ggplot(cars, aes(x = Horsepower, y = Weight_in_lbs, color = Origin)) +
+    geom_point() + labs(title = 'Horsepower and weight')
+mpg_weight
+```
+
+```{r}
+#| label: composition-horsepower-gg
+hp_weight
+```
+
+:::
+
+## Arranging panels horizontally and vertically
+
+### Side-by-side panels
+
+::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+Use the pipe operator, `|`, for horizontal concatenation.
+Set the dimensions of the individual panels before composing them.
+Here the two x-axes represent different measurements, but the y-axis represents
+weight in both panels, so we explicitly share its scale.
+
+```{python}
+#| label: composition-horizontal-alt
+mpg_weight = mpg_weight.properties(width=250, height=220)
+hp_weight = hp_weight.properties(width=250, height=220)
+(mpg_weight | hp_weight).resolve_scale(y='shared')
+```
+
+#### ggplot {.slide-skip}
+
+**patchwork** composes ggplot objects with layout operators.
+As in Altair, `|` places panels side by side.
+
+```{r}
+#| label: composition-horizontal-gg
+#| fig-width: 9
+mpg_weight | hp_weight
+```
+
+Patchwork aligns panel geometry automatically, but each ggplot retains its own scales.
+These panels use the same cars and y-variable, so their default y-ranges agree.
+When data or scale settings differ, specify common limits if direct comparison requires them.
+
+:::
+
+### Stacked panels
+
+::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+Use `&` for vertical concatenation.
+
+```{python}
+#| label: composition-vertical-alt
+mpg_weight & hp_weight
+```
+
+#### ggplot {.slide-skip}
+
+Use `/` to stack panels vertically. This differs from Altair's `&` operator.
+
+```{r}
+#| label: composition-vertical-gg
+#| fig-width: 5
+#| fig-height: 7
+mpg_weight / hp_weight
+```
+
+In patchwork, `&` instead applies a setting to every panel. For example,
+`(mpg_weight / hp_weight) & theme(legend.position = 'none')` hides both legends.
+
+:::
+
+### Overall titles and panel labels
+
+::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+Parentheses make it clear that `properties()` applies to the composed figure,
+not just the second panel.
+
+```{python}
+#| label: composition-overall-title-alt
+(mpg_weight | hp_weight).properties(title='Two views of vehicle weight')
+```
+
+The functions `alt.hconcat()` and `alt.vconcat()` are alternatives to `|` and `&`.
+For example, the following also adds an overall title:
+
+```{python}
+#| eval: false
+alt.hconcat(mpg_weight, hp_weight, title='Two views of vehicle weight')
+```
+
+#### ggplot {.slide-skip}
+
+`plot_annotation(tag_levels = 'A')` adds automatic panel tags A, B, and so on.
+Use `tag_levels = list(c('A', 'B'))` to supply an explicit sequence of tags.
+
+```{r}
+#| label: composition-labels-gg
+#| fig-width: 9
+(mpg_weight | hp_weight) + plot_annotation(tag_levels = 'A')
+```
+
+The same function adds an overall title to the composed figure.
+Here we also collect the matching legends into a single guide.
+
+```{r}
+#| label: composition-overall-title-gg
+#| fig-width: 9
+(mpg_weight | hp_weight) +
+    plot_layout(guides = 'collect') +
+    plot_annotation(
+        title = 'Two views of vehicle weight',
+        tag_levels = 'A',
+        theme = theme(plot.title = element_text(face = 'bold'))
+    )
+```
+
+`guides = 'collect'` consolidates matching legends. It does not make different
+color scales equivalent, so check that shared colors retain the same meaning.
+
+:::
+
+## Unequal widths and nested layouts
+
+Complementary panels do not always need equal space.
+A scatterplot may need a wide plotting area, while a categorical count chart
+can remain readable in a narrower panel.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+A short histogram can show the distribution of fuel economy,
+and a narrow strip of ticks can show weights within each origin.
+
+```{python}
+#| label: composition-marginal-histogram-alt
+mpg_hist = alt.Chart(cars).mark_bar().encode(
+    x=alt.X('Miles_per_Gallon:Q').bin(), y='count()'
+).properties(width=250, height=80)
+mpg_hist
+```
+
+```{python}
+#| label: composition-marginal-ticks-alt
+weight_ticks = alt.Chart(cars).mark_tick().encode(
+    x='Origin:N', y='Weight_in_lbs:Q', color='Origin:N'
+).properties(width=90, height=220)
+mpg_weight | weight_ticks
+```
+
+Combining operators without parentheses may produce a different arrangement than intended.
+Python evaluates `&` before `|`, so this puts the histogram above the scatterplot
+and then places the tick plot alongside that entire column:
+
+```{python}
+#| label: composition-operator-precedence-alt
+mpg_hist & mpg_weight | weight_ticks
+```
+
+Parentheses can instead group the scatterplot and ticks into the bottom row:
+
+```{python}
+#| label: composition-nested-alt
+mpg_hist & (mpg_weight | weight_ticks)
+```
+
+Check which axes should align when arranging marginal distributions.
+The histogram's x-variable matches the scatterplot's x-variable,
+and the tick plot's y-variable matches the scatterplot's y-variable.
+Sharing a variable does not make every possible arrangement equally easy to read.
+
+### ggplot {.slide-skip}
+
+First create a count chart of origins. This is a categorical summary of the same cars,
+rather than a marginal distribution of either scatterplot axis.
+
+```{r}
+#| label: composition-origin-count-gg
+origin_count <- ggplot(cars, aes(x = Origin)) + geom_bar()
+origin_count
+```
+
+An equally wide panel can give a three-category count chart more space than it needs.
+`plot_layout(widths = c(3, 1))` allocates three times as much panel width to the scatterplot.
+Axes, titles, and legends need additional space, so the full plot widths need not
+have exactly that ratio.
+
+```{r}
+#| label: composition-equal-widths-gg
+#| fig-width: 9
+mpg_weight | origin_count
+```
+
+```{r}
+#| label: composition-relative-widths-gg
+#| fig-width: 9
+(mpg_weight | origin_count) + plot_layout(widths = c(3, 1))
+```
+
+Here the scatterplot legend falls between the panels.
+Reordering them keeps that legend at the outside edge:
+
+```{r}
+#| label: composition-reordered-panels-gg
+#| fig-width: 9
+(origin_count | mpg_weight) + plot_layout(widths = c(1, 3))
+```
+
+We can also nest layouts with parentheses and control the relative heights of rows.
+This deliberately repeats the count plot to make the layout structure easy to see.
+Automatic tags continue through the nested panels.
+
+```{r}
+#| label: composition-nested-gg
+#| fig-width: 6
+#| fig-height: 7
+top_row <- origin_count | origin_count
+nested_figure <- (top_row / mpg_weight) +
+    plot_layout(heights = c(1, 2)) +
+    plot_annotation(title = 'Vehicle weight and sample composition', tag_levels = 'A')
+nested_figure
+```
+
+:::
+
+## Choosing an output format
+
+| Format | Useful for | What to consider |
+|:--|:--|:--|
+| PNG | Slides, documents, previews | Raster image: enlarging it reveals pixels; choose sufficient resolution |
+| SVG or PDF | Resizable diagrams and publication figures | Vector output stays sharp, but dense plots can create large files |
+| HTML | Interactive charts | Preserves supported browser interactions; decide whether dependencies and data must work offline |
+| Vega-Lite JSON | Storing or reusing an Altair specification | Describes the chart; needs a compatible renderer to display it |
+
+Saving a static image preserves the displayed view, not its tooltips, selections,
+or controls. Exporting a notebook or book page is also different from saving an
+individual figure.
+
+## Saving static figures
+
+The following save commands are intended to be run when you want to create files;
+they are not executed automatically while rendering this chapter.
+
+::: {.panel-tabset group="language"}
+
+### Altair {.slide-skip}
+
+The filename extension selects the output format.
+PNG, SVG, and PDF export use **vl-convert-python**, included in the textbook environment
+through Altair's optional dependencies.
+
+```{python}
+#| eval: false
+mpg_weight.save('mpg_weight.png')
+mpg_weight.save('mpg_weight.svg')
+mpg_weight.save('mpg_weight.pdf')
+```
+
+`scale_factor` scales the exported image dimensions. For example, this produces
+three times as many pixels along each dimension of a PNG:
+
+```{python}
+#| eval: false
+mpg_weight.save('mpg_weight-hires.png', scale_factor=3)
+```
+
+Altair also offers `ppi` for specifying PNG pixel density.
+The chart's width and height determine its layout; exporting more pixels does not
+automatically make small labels proportionally larger within the figure.
+
+```{python}
+#| eval: false
+mpg_weight.save('mpg_weight-print.png', ppi=300)
+mpg_weight.save('mpg_weight.json')
+```
+
+### ggplot {.slide-skip}
+
+`ggsave()` can save the most recent plot when its `plot` argument is omitted.
+Passing the object explicitly avoids accidentally exporting a different plot.
+Specify physical size and pixel density when preparing a raster image.
+
+```{r}
+#| eval: false
+ggsave('mpg_weight-r.png', plot = mpg_weight, width = 6, height = 4, units = 'in', dpi = 300)
+```
+
+At six by four inches, 300 dpi produces a 1,800 by 1,200 pixel image.
+Using 96 dpi at the same size gives fewer pixels, not a higher-resolution image.
+Vector formats do not use dpi to determine the resolution of their vector elements.
+SVG export uses the **svglite** package.
+
+```{r}
+#| eval: false
+ggsave('mpg_weight-r.pdf', plot = mpg_weight, width = 6, height = 4)
+ggsave('mpg_weight-r.svg', plot = mpg_weight, width = 6, height = 4)
+```
+
+The `plot` argument can also be a composed patchwork figure:
+
+```{r}
+#| eval: false
+ggsave('vehicle-layout.svg', plot = nested_figure, width = 6, height = 7)
+```
+
+:::
+
+## Saving interactive figures, including offline HTML
+
+### Altair: include both the data and JavaScript
+
+This chart has tooltips and supports panning and zooming.
+Its data comes from a local dataframe, so Altair embeds the values in the specification.
+
+```{python}
+#| label: composition-export-interactive-alt
+interactive_cars = mpg_weight.encode(
+    tooltip=['Name:N', 'Origin:N', 'Horsepower:Q', 'Miles_per_Gallon:Q']
+).interactive()
+interactive_cars
+```
+
+Saving HTML preserves these client-side interactions: the recipient does not need
+a running Python process or Jupyter session.
+However, the default HTML export loads JavaScript libraries from an online CDN.
+
+```{python}
+#| eval: false
+interactive_cars.save('cars-interactive.html')
+```
+
+For an HTML file that can be opened **without an internet connection**, use
+[`inline=True`](https://altair-viz.github.io/user_guide/saving_charts.html#offline-html-support).
+It bundles the JavaScript dependencies into the file, making it larger but self-contained
+for this dataframe-based example.
+
+```{python}
+#| eval: false
+interactive_cars.save('cars-interactive-offline.html', inline=True)
+```
+
+`inline=True` bundles the rendering libraries; it does not automatically download
+arbitrary externally referenced datasets, map tiles, or images.
+For example, a chart built with a data URL may still need the network to retrieve
+its data. Load the data into a dataframe before constructing the chart, as we do here,
+and check the exported file with the network disabled.
+
+You can send the resulting HTML file as an attachment or host it on a static website
+such as GitHub Pages. Naming it `index.html` makes it the usual landing page for its directory.
+The lecture's [Altair demos](https://joelostblom.github.io/altair-demos/)
+provide examples of this kind of sharing.
+For integration into a larger report, `interactive_cars.to_html(inline=True)` returns
+the HTML as a string instead of writing a file.
+
+### R: save the HTML widget
+
+Plotly charts from @sec-interactivity are HTML widgets, not ordinary static ggplot objects.
+Use `htmlwidgets::saveWidget()` to preserve their interactivity.
+
+```{r}
+#| eval: false
+interactive_cars_r <- plotly::ggplotly(mpg_weight)
+htmlwidgets::saveWidget(interactive_cars_r, 'cars-interactive-r.html', selfcontained = TRUE)
+```
+
+`selfcontained = TRUE` bundles local widget dependencies into one HTML file,
+using Pandoc. It is suitable for this chart, whose data is included in the widget.
+As with Altair, externally requested resources such as online map tiles still need
+their own offline solution. For a multi-file export, use `selfcontained = FALSE`
+and distribute the accompanying dependency directory together with the HTML.
+
+## Notebook display formats and static previews
+
+A notebook can store several representations of one output, such as a Vega-Lite
+specification, HTML, and a PNG. The viewer chooses which representation it can display.
+GitHub's notebook viewer does not run arbitrary interactive JavaScript, so a chart
+that works in JupyterLab may need a static fallback there.
+
+In a compatible Jupyter frontend, Altair's MIME renderer supplies a Vega-Lite
+representation that the frontend can render and may save with a PNG fallback:
+
+```{python}
+#| eval: false
+alt.renderers.enable('mimetype')
+```
+
+Run the plotting cells again and save the notebook so the outputs are stored.
+The frontend must support the chart's Vega-Lite version; the Python MIME bundle
+alone does not guarantee that a PNG has been stored.
+For an explicitly static notebook output, use the PNG renderer instead:
+
+```{python}
+#| eval: false
+alt.renderers.enable('png')
+mpg_weight
+```
+
+Return to interactive HTML display with `alt.renderers.enable('default')`.
+A PNG fallback is a static preview; sharing the HTML export preserves interactive
+exploration. Notebook display settings and exported-file formats are separate choices.
+
+## Further reading
+
+- [Altair: layered and multi-view charts](https://altair-viz.github.io/user_guide/compound_charts.html).
+- [Altair: saving charts](https://altair-viz.github.io/user_guide/saving_charts.html).
+- [patchwork: assembling plots](https://patchwork.data-imaginist.com/articles/guides/assembly.html).

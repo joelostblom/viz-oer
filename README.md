@@ -14,7 +14,7 @@ From the repository root:
 ```sh
 make preview  # Start the live preview
 make book     # Render the textbook
-make slides   # Render the chapter key and developed decks (1–14 and 18)
+make slides   # Render the chapter key and registered chapter decks
 ```
 
 Preview and book builds use the shared `activate-uvr` recipe fragment to activate the
@@ -27,6 +27,14 @@ uv run quarto preview textbook
 ```
 
 Press Ctrl+C to stop the preview.
+
+Chapter 18, **Interactivity**, includes live Plotly HTML widgets in its R examples
+(tooltips, linked legends, range selection, animation, and dropdowns).
+Chapter 20, **Figure composition and saving**, covers Altair and patchwork,
+static exports, and offline HTML export with Altair's `inline=True` and R's
+`htmlwidgets::saveWidget(..., selfcontained = TRUE)`. Its save commands are examples
+to run explicitly, so rendering the book does not create export files in the source tree.
+The Geospatial placeholder is chapter 19, immediately before Figure composition and saving.
 
 ### GitHub Actions publishing
 
@@ -84,7 +92,7 @@ Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
 The slide decks retain their separate dark presentation theme.
 
-The chapter key and developed chapters (1–14 and 18) open as ordinary textbook pages. Their small **Present slides**
+The chapter key and chapters with registered decks (1–14, 16, and 17) open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
@@ -121,12 +129,12 @@ both Anscombe tables, the Altair chart, and the Datasaurus animation. Chapter 2
 also includes the exercise dataset, declarative/imperative charts and pseudocode,
 arithmetic code examples and grammar implementations.
 
-Chapters 3–14 and 18 have first-draft decks covering their key principles, selected
+Chapters 3–14, 16, and 17 have first-draft decks covering their key principles, selected
 exercise visuals, diagrams/animations, and Altair/ggplot examples. Short examples
 show source and output together; longer examples show the chart with explanations
 in speaker notes. Language variants share interactive tabs, with their selected
 content paired step by step when examples have descriptive slide titles.
-Deep dives and margin notes are excluded. Chapters 15–17 and 19 are not yet registered
+Deep dives and margin notes are excluded. Chapters 15 and 18–20 are not yet registered
 for slide builds.
 
 Material from the DSCI 531 communication and color lectures is organized into
@@ -141,9 +149,9 @@ animation from the color lecture ODP, with short comments about perception,
 palette types, accessibility, and color associations. Its slideshow uses that
 new image material; the original prose and programming sections are reading-only.
 Those sections cover palettes, highlights, annotations, and direct labeling.
-Chapter 18, **Trends**, follows Interactivity
-and covers means, rolling averages, regression, and local smoothing. Geospatial
-is chapter 19.
+Chapter 16, **Trends**, covers means, rolling averages, regression, and local smoothing.
+Uncertainty and Interactivity follow as chapters 17 and 18; Geospatial is chapter 19,
+followed by Figure composition and saving as chapter 20.
 The ODP's trendline-comparison figures are included in Trends, while its
 overplotting figures are omitted. Original figure assets, their source manifest,
 and regeneration instructions are in `textbook/img/communication-lecture/`;

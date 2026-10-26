@@ -42,6 +42,7 @@ book:
         - 17_uncertainty.qmd
         - 18_interactivity.qmd
         - 19_geospatial.qmd
+        - 20_figure-composition-and-saving.qmd
     # - 99_misc.qmd
 
 filters:
