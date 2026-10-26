@@ -616,91 +616,6 @@ htmltools::tagList(
 
 :::
 
-```{python}
-search_input = alt.param(
-    value='',
-    bind=alt.binding(
-        input='search',
-        placeholder="Car model",
-        name='Search ',
-    )
-)
-search_matches = alt.expr.test(alt.expr.regexp(search_input, "i"), alt.datum.Name)
-
-alt.Chart(cars).mark_circle().encode(
-    x='Horsepower',
-    y='Miles_per_Gallon',
-    tooltip='Name',
-    opacity=alt.when(search_matches).then(alt.value(.9)).otherwise(alt.value(0.05)),
-).add_params(search_input)
-```
-
-```{r}
-searchable_cars <- highlight_key(cars, ~Name)
-
-p <- ggplot(
-    searchable_cars,
-    aes(Horsepower, Miles_per_Gallon, text = Name)
-) +
-    geom_point()
-
-ggplotly(p, tooltip = 'text') |>
-    highlight(selectize = TRUE, opacityDim = 0.05)
-```
-
-### Moving through time
-
-We can use filtering to navigate through a sequence of data states.
-Both examples use the same local Gapminder snapshot: country fertility, life expectancy,
-and population from 1955 to 2005. A year control chooses the observations to display;
-the x- and y-scales remain fixed so that frame changes are comparable.
-
-::: {.panel-tabset group="language"}
-
-#### Altair {.slide-skip}
-
-A scalar parameter stores the chosen year. This example lets the reader scrub through
-the frames with a slider rather than playing them automatically.
-
-```{python}
-#| label: interaction-year-frames-alt
-gap = pd.read_csv('data/vega-gapminder.csv')
-frame_year = alt.param(
-    name='gapminder_year', value=int(gap['year'].min()),
-    bind=alt.binding_range(name='Year: ', min=int(gap['year'].min()),
-                           max=int(gap['year'].max()), step=5)
-)
-alt.Chart(gap).transform_filter(alt.datum.year == frame_year).mark_circle(opacity=0.7).encode(
-    x=alt.X('fertility:Q').scale(domain=[0, 9]).title('Children per woman'),
-    y=alt.Y('life_expect:Q').scale(domain=[20, 90]).title('Life expectancy (years)'),
-    size=alt.Size('pop:Q').scale(domain=[0, float(gap['pop'].max())], range=[10, 600]).title('Population'),
-    tooltip=['country:N', 'year:O', 'fertility:Q', 'life_expect:Q']
-).add_params(frame_year)
-```
-
-#### ggplot {.slide-skip}
-
-Plotly interprets `frame` as the frame variable and `ids` as the identity to track
-between frames. Use Play or choose a year on its slider.
-
-```{r}
-#| label: interaction-plotly-animation
-gap <- readr::read_csv('data/vega-gapminder.csv')
-gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
-    geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
-    scale_x_continuous(limits = c(0, 9)) +
-    scale_y_continuous(limits = c(20, 90)) +
-    scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) +
-    labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population')
-ggplotly(gap_plot, tooltip = 'text')
-```
-
-:::
-
-`frame` and `ids` are Plotly extensions, not ordinary static ggplot aesthetics.
-Playback emphasizes movement; choosing a frame lets the reader stop and inspect it.
-For comparing several years at once, small multiples may be easier than relying on memory.
-
 ### Driving selections from legends
 
 A legend can be used instead of another chart
@@ -929,22 +844,63 @@ movie_points.encode(
 ).add_params(rating_cutoff)
 ```
 
+:::
+
 The same pattern can select movies released before a chosen year.
 This highlights matches rather than removing the remaining movies.
 
+#### Moving through time
+
+We can use filtering to navigate through a sequence of data states.
+Both examples use the same local Gapminder snapshot: country fertility, life expectancy,
+and population from 1955 to 2005. A year control chooses the observations to display;
+the x- and y-scales remain fixed so that frame changes are comparable.
+
+::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+A scalar parameter stores the chosen year. This example lets the reader scrub through
+the frames with a slider rather than playing them automatically.
+
 ```{python}
-#| label: interaction-year-slider-alt
-year_cutoff = alt.param(
-    name='movie_year_cutoff', value=2000,
-    bind=alt.binding_range(name='Released before: ', step=1,
-                           min=int(movies['Release_Year'].min()), max=int(movies['Release_Year'].max()))
+#| label: interaction-year-frames-alt
+gap = pd.read_csv('data/vega-gapminder.csv')
+frame_year = alt.param(
+    value=int(gap['year'].min()),
+    bind=alt.binding_range(name='Year: ', min=int(gap['year'].min()),
+                           max=int(gap['year'].max()), step=5)
 )
-movie_points.encode(
-    opacity=alt.condition(alt.datum.Release_Year < year_cutoff, alt.value(0.7), alt.value(0.1))
-).add_params(year_cutoff)
+alt.Chart(gap).transform_filter(alt.datum.year == frame_year).mark_circle(opacity=0.7).encode(
+    x=alt.X('fertility:Q').scale(domain=[0, 9]).title('Children per woman'),
+    y=alt.Y('life_expect:Q').scale(domain=[20, 90]).title('Life expectancy (years)'),
+    size=alt.Size('pop:Q').scale(domain=[0, float(gap['pop'].max())], range=[10, 600]).title('Population'),
+    tooltip=['country:N', 'year:O', 'fertility:Q', 'life_expect:Q']
+).add_params(frame_year)
 ```
 
-##### ggplot {.slide-skip}
+#### ggplot {.slide-skip}
+
+Plotly interprets `frame` as the frame variable and `ids` as the identity to track
+between frames. Use Play or choose a year on its slider.
+
+```{r}
+#| label: interaction-plotly-animation
+gap <- readr::read_csv('data/vega-gapminder.csv')
+gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
+    geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
+    scale_x_continuous(limits = c(0, 9)) +
+    scale_y_continuous(limits = c(20, 90)) +
+    scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) +
+    labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population')
+ggplotly(gap_plot, tooltip = 'text')
+```
+
+
+`frame` and `ids` are Plotly extensions, not ordinary static ggplot aesthetics.
+Playback emphasizes movement; choosing a frame lets the reader stop and inspect it.
+For comparing several years at once, small multiples may be easier than relying on memory.
+
 
 A range control selects both endpoints. Here it filters the same movie ratings,
 illustrating another response to a numeric selection.
@@ -963,74 +919,56 @@ htmltools::tagList(
 
 :::
 
-The basic Altair bindings include dropdowns, radio buttons, sliders, and checkboxes.
-For multiple selected categories, point selections on a plot or legend can be useful.
-For an interval, a brush can also show where observations are concentrated,
-as the plot-based controls below demonstrate.
-
-#### Let a plot act as a control
-
-A year slider tells us the range but not where most movies lie.
-A bar chart can supply that context while defining the selection.
-First, click a year to highlight matching movies.
-
-```{python}
-#| label: interaction-year-click-alt
-select_year = alt.selection_point(
-    name='movie_year_click', fields=['Release_Year'], value=[{'Release_Year': 2000}]
-)
-year_bars = alt.Chart(movies).mark_bar().encode(
-    x=alt.X('Release_Year:Q').axis(format='d'), y='count()'
-).properties(height=60).add_params(select_year)
-scatter = movie_points.encode(
-    opacity=alt.condition(select_year, alt.value(0.7), alt.value(0.1))
-)
-scatter & year_bars
-```
-
-Replacing the point selection with an x-only interval allows a range of years.
-The `year` time unit provides a temporal year axis.
-
-```{python}
-#| label: interaction-year-interval-alt
-select_year = alt.selection_interval(name='movie_year_interval', encodings=['x'])
-year_bars = alt.Chart(movies).mark_bar().encode(
-    x='year(Release_Date):T', y='count()'
-).properties(height=60).add_params(select_year)
-scatter = movie_points.encode(
-    opacity=alt.condition(select_year, alt.value(0.7), alt.value(0.1))
-)
-scatter & year_bars
-```
-
-Make it compact by removing nonessential axes and borders.
-This example explicitly restricts the display to 1995–2029; it does not correct the source dates.
-
-```{python}
-#| label: interaction-compact-year-alt
-movies_fewer_years = movies.query('1994 < Release_Year < 2030')
-select_year = alt.selection_interval(name='compact_movie_year', encodings=['x'])
-year_bars = alt.Chart(movies_fewer_years).mark_bar().encode(
-    x=alt.X('year(Release_Date):T').title('').axis(grid=False),
-    y=alt.Y('count()').title('').axis(None)
-).properties(height=20, width=100).add_params(select_year)
-scatter = alt.Chart(movies_fewer_years).mark_circle().encode(
-    x='Rotten_Tomatoes_Rating:Q', y='IMDB_Rating:Q', tooltip='Title:N',
-    opacity=alt.condition(select_year, alt.value(0.7), alt.value(0.1))
-)
-(scatter & year_bars).configure_view(stroke=None)
-```
-
-The lower plot is both a visualization and an input control.
-This connects to *scented widgets*: controls enhanced with information about the data
-to help readers decide what to explore.
-
-#### Putting selections together
-
-The final explorer combines genre, age rating, year, and runtime.
-The two languages use the same focused movie subset, but different controls and responses.
+#### Building a search widget
 
 ::: {.panel-tabset group="language"}
+
+#### Altair {.slide-skip}
+
+```{python}
+search_input = alt.param(
+    value='',
+    bind=alt.binding(
+        input='search',
+        placeholder="Car model",
+        name='Search ',
+    )
+)
+search_matches = alt.expr.test(alt.expr.regexp(search_input, "i"), alt.datum.Name)
+
+alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    tooltip='Name',
+    opacity=alt.when(search_matches).then(alt.value(.9)).otherwise(alt.value(0.05)),
+).add_params(search_input)
+```
+
+#### ggplot {.slide-skip}
+
+```{r}
+searchable_cars <- highlight_key(cars, ~Name)
+
+p <- ggplot(
+    searchable_cars,
+    aes(Horsepower, Miles_per_Gallon, text = Name)
+) +
+    geom_point()
+
+ggplotly(p, tooltip = 'text') |>
+    highlight(selectize = TRUE, opacityDim = 0.05)
+```
+
+:::
+
+::: {.deep-dive}
+
+#### A widget or a chart?
+
+We could design charts as more small, more informative widgets
+by removing elements from the charts and styling them accordingly.
+
+:::: {.panel-tabset group="language"}
 
 ##### Altair {.slide-skip}
 
@@ -1109,35 +1047,7 @@ movie_explorer <- htmltools::tagList(movie_controls, ggplotly(explorer_plot, too
 movie_explorer
 ```
 
-:::
-
-These are client-side explorers. Using the export techniques from @sec-figure-composition,
-we can save them for offline use; the commands below are run explicitly when we want files.
-
-::: {.panel-tabset group="language"}
-
-##### Altair {.slide-skip}
-
-```{python}
-#| eval: false
-movie_dashboard.save('movie-explorer-offline.html', inline=True)
-```
-
-##### ggplot {.slide-skip}
-
-Save the linked Plotly widget directly, or save and bundle the HTML container that
-includes the movie filters as well as the plot.
-
-```{r}
-#| eval: false
-htmlwidgets::saveWidget(car_dashboard, 'car-dashboard-offline.html', selfcontained = TRUE)
-movie_page <- htmltools::tagList(
-    htmltools::tags$head(htmltools::tags$title('Movie explorer')), movie_explorer
-)
-htmltools::save_html(movie_page, 'movie-explorer.html', libdir = 'movie-explorer_files')
-rmarkdown::pandoc_self_contained_html('movie-explorer.html', 'movie-explorer-offline-r.html')
-```
-
+::::
 :::
 
 ## Changing encodings and parameters
@@ -1213,6 +1123,43 @@ Before adding a control, ask what it should change: the viewing window, the sele
 the observations entering a calculation, the encoding, or the calculation's parameters.
 Then choose a gesture or widget that makes that effect understandable.
 Keep reset behavior and the current state clear so readers can tell what they are looking at.
+
+## Saving and sharing interactive visualizations
+
+All the examples in this chapter run **client-side**, in the browser.
+That means that they don't require a server that keeps running in the background
+and the examples work after the Python or R session that created them has ended. 
+This also means that we can share them without someone else
+without the need for that person to know how to use R or Python.
+We will use the composition and self-contained
+HTML export techniques from @sec-figure-composition
+to assemble and share them as offline explorers.
+
+::: {.panel-tabset group="language"}
+
+##### Altair {.slide-skip}
+
+```{python}
+#| eval: false
+movie_dashboard.save('movie-explorer-offline.html', inline=True)
+```
+
+##### ggplot {.slide-skip}
+
+Save the linked Plotly widget directly, or save and bundle the HTML container that
+includes the movie filters as well as the plot.
+
+```{r}
+#| eval: false
+htmlwidgets::saveWidget(car_dashboard, 'car-dashboard-offline.html', selfcontained = TRUE)
+movie_page <- htmltools::tagList(
+    htmltools::tags$head(htmltools::tags$title('Movie explorer')), movie_explorer
+)
+htmltools::save_html(movie_page, 'movie-explorer.html', libdir = 'movie-explorer_files')
+rmarkdown::pandoc_self_contained_html('movie-explorer.html', 'movie-explorer-offline-r.html')
+```
+
+:::
 
 ## Further reading
 
