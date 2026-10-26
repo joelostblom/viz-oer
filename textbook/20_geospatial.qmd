@@ -5,9 +5,6 @@ resources:
   - data/geospatial-canada-population-2021.csv
   - data/geospatial-us-election-2012.csv
   - data/geospatial-earthquakes.csv
-  - data/plotly-geo/
-  - data/geospatial-data.md
-  - lecture-material/slides-geoviz.pdf
 execute:
   message: false
   warning: false
@@ -45,9 +42,6 @@ We will combine the layout techniques from @sec-figure-composition with the
 selections and linked views from @sec-interactivity. The examples use local
 snapshots of the lecture's data; their dates and sources are documented in
 [the data notes](data/geospatial-data.md).
-
-The [original geospatial lecture slides](lecture-material/slides-geoviz.pdf)
-provide additional projection and cartogram comparisons.
 
 ## GeoJSON: geometry alongside attributes
 
@@ -1300,4 +1294,4 @@ that a circle mark will be clipped behind the globe.
 - [GeoPandas: interactive mapping](https://geopandas.org/en/stable/docs/user_guide/interactive_mapping.html).
 - [Plotly for R: maps](https://plotly-r.com/maps.html).
 - [Plotly for R: custom GeoJSON choropleths](https://plotly.com/r/choropleth-maps/).
-- [Natural Earth downloads](https://www.naturalearthdata.com/downloads/) and [local data provenance](data/geospatial-data.md).
+- [Natural Earth downloads](https://www.naturalearthdata.com/downloads/).

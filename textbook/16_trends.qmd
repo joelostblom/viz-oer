@@ -4,7 +4,6 @@ fig-width: 6
 fig-height: 4
 resources:
   - data/vega-cars.csv
-  - data/communication-color-data.md
 execute:
   message: false
   warning: false

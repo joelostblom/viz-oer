@@ -52,21 +52,14 @@ CHAPTER_ASSETS = {
         "data/diamonds-carat-price.csv",
         "data/diamonds-carat-price.md",
     ),
-    "13_communication": (
-        "data/diamonds-carat-price.csv",
-        "data/communication-color-data.md",
-    ),
+    "13_communication": ("data/diamonds-carat-price.csv",),
     "14_color": (
         "data/vega-iris.csv",
         "data/vega-gapminder.csv",
         "data/vega-wheat.csv",
         "data/vega-stocks.csv",
-        "data/communication-color-data.md",
     ),
-    "16_trends": (
-        "data/vega-cars.csv",
-        "data/communication-color-data.md",
-    ),
+    "16_trends": ("data/vega-cars.csv",),
     "17_uncertainty": (
         "data/vega-cars.csv",
         "img/uncertainty-lecture/README.md",
@@ -76,13 +69,7 @@ CHAPTER_ASSETS = {
         "data/vega-sp500.csv",
         "data/vega-gapminder.csv",
         "data/vega-movies-interactivity.csv",
-        "data/interactivity-data.md",
-        "lecture-material/slides-lec8.pdf",
     ),
-    # "12a_exploratory-data-analysis": (
-    #     "data/seattle-weather-sensor.csv", "data/seattle-weather-complete.csv",
-    #     "data/seattle-weather-eda.md",
-    # ),
 }
 SHARED_ASSETS = (
     "illustrative-chart-actions.lua",

@@ -5,7 +5,6 @@ fig-height: 4
 resources:
   - data/seattle-weather-sensor.csv
   - data/seattle-weather-complete.csv
-  - data/seattle-weather-eda.md
   - utils.py
   - utils.R
 ---

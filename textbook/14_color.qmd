@@ -15,7 +15,6 @@ resources:
   - data/vega-gapminder.csv
   - data/vega-wheat.csv
   - data/vega-stocks.csv
-  - data/communication-color-data.md
 execute:
   message: false
   warning: false
