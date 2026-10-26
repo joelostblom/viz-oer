@@ -98,7 +98,7 @@ Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
 The slide decks retain their separate dark presentation theme.
 
-The chapter key and chapters with registered decks (1–14, 16, and 17) open as ordinary textbook pages. Their small **Present slides**
+The chapter key and chapters with registered decks (1–14, 16, 17, and 19) open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker

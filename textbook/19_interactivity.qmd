@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/19_interactivity.html
 resources:
   - data/vega-cars.csv
   - data/vega-sp500.csv
@@ -33,12 +34,12 @@ knitr:
 
 ## Why bother?
 
-An interactive figure lets readers ask questions that a static view cannot answer all at once.
+[An interactive figure lets readers ask questions that a static view cannot answer all at once.]{.slide-bullet}
 They might examine a particular region, inspect an observation, compare selected groups,
-or change which variable is displayed. Interactivity can help us explore data ourselves
-and let others explore a figure without writing code.
+or change which variable is displayed. [Interactivity can help us explore data ourselves
+and let others explore a figure without writing code.]{.slide-bullet}
 
-## Navigating views
+## Navigating views {.slide-skip}
 
 
 ### Panning and zooming
@@ -78,6 +79,8 @@ Scroll over the plot to zoom and drag to pan; double-click to reset.
 
 ```{python}
 #| label: interaction-pan-zoom-alt
+#| slide-show: both
+#| slide-title: Panning and zooming
 import altair as alt
 import pandas as pd
 
@@ -106,6 +109,8 @@ to reset the axes.
 
 ```{r}
 #| label: interaction-pan-zoom-gg
+#| slide-show: output
+#| slide-title: Panning and zooming
 library(ggplot2)
 library(plotly)
 
@@ -152,6 +157,8 @@ on the x-axis (i.e. the height of the brush is constant).
 
 ```{python}
 #| label: interaction-overview-detail-alt
+#| slide-show: both
+#| slide-title: Creating an overview brush
 sp500 = pd.read_csv('data/vega-sp500.csv', parse_dates=['date'])
 
 overview = alt.Chart(sp500, height=50).mark_area().encode(x='date:T', y='price:Q')
@@ -167,6 +174,9 @@ will change the scale min and max
 of the detailed upper chart:
 
 ```{python}
+#| label: interaction-overview-linked-alt
+#| slide-show: both
+#| slide-title: Let the brush set the detail view's domain
 details = alt.Chart(sp500, height=120).mark_area().encode(
     x=alt.X('date:T').scale(domain=brush),
     y='price'
@@ -190,6 +200,8 @@ on the x-axis (i.e. the height of the brush is constant).
 
 ```{r}
 #| label: interaction-plotly-rangeslider
+#| slide-show: both
+#| slide-title: Overview and detail
 #| out.height: 300px
 sp500 <- readr::read_csv('data/vega-sp500.csv')
 
@@ -219,6 +231,8 @@ in the text that pops up when hovering a point in the chart.
 
 ```{python}
 #| label: interaction-tooltip-all-alt
+#| slide-show: both
+#| slide-title: Tooltips from mapped encodings
 alt.Chart(cars).mark_circle(tooltip=True).encode(
     x='Horsepower',
     y='Miles_per_Gallon',
@@ -231,6 +245,8 @@ involves passing a dataframe column to the tooltip encoding channel instead.
 
 ```{python}
 #| label: interaction-tooltip-single-alt
+#| slide-show: both
+#| slide-title: Choosing tooltip content
 alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
@@ -245,6 +261,8 @@ passed as a list.
 
 ```{python}
 #| label: interaction-tooltip-multiple-alt
+#| slide-show: both
+#| slide-title: Showing several fields in a tooltip
 alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
     y='Miles_per_Gallon',
@@ -264,6 +282,9 @@ the tooltip includes all mapped aesthetics
 in the text that pops up when hovering a point in the chart.
 
 ```{r}
+#| label: interaction-tooltip-all-gg
+#| slide-show: both
+#| slide-title: Tooltips from mapped encodings
 car_tooltip_plot <- ggplot(cars, aes(x = Horsepower, y = Miles_per_Gallon, color = Origin)) +
     geom_point()
 ggplotly(car_tooltip_plot)
@@ -274,6 +295,8 @@ so we must first map a dataframe column to `text` in ggplot
 
 ```{r}
 #| label: interaction-ggplotly
+#| slide-show: both
+#| slide-title: Choosing tooltip content
 ggplotly(car_tooltip_plot + aes(text = Name), tooltip = 'text')
 ```
 
@@ -283,6 +306,8 @@ in ggplot.
 
 ```{r}
 #| label: interaction-tooltip-multiple-gg
+#| slide-show: both
+#| slide-title: Showing several fields in a tooltip
 ggplotly(car_tooltip_plot + aes(text = paste(Name, Origin, sep = '<br>')), tooltip = 'text')
 ```
 
@@ -292,17 +317,17 @@ ggplotly(car_tooltip_plot + aes(text = paste(Name, Origin, sep = '<br>')), toolt
 
 ## Creating and responding to selections
 
-A selection identifies observations of interest in a chart,
-and can then trigger an effect such as highlighting or filtering of that data.
+[A selection identifies observations of interest in a chart,
+and can then trigger an effect such as highlighting or filtering of that data.]{.slide-bullet}
 We already saw how to set up a chart's scale domain
 to respond to a selections range,
 and here we will see a few other ways to respond to selections as well.
 
 ### Highlighting observations
 
-Highlighting observations means that all data is retained in the chart
+[Highlighting observations means that all data is retained in the chart
 but the visual styling of the selected observations
-differ from that of the unselected ones.
+differ from that of the unselected ones.]{.slide-bullet}
 
 ::: {.panel-tabset group="language"}
 
@@ -313,6 +338,8 @@ Drag'n drop to see the brush selection rectangle.
 
 ```{python}
 #| label: interaction-brush-alt
+#| slide-show: both
+#| slide-title: Defining a selection
 brush = alt.selection_interval()
 alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
@@ -330,6 +357,8 @@ by default.
 
 ```{python}
 #| label: interaction-brush-highlight-alt
+#| slide-show: both
+#| slide-title: Responding to a selection with color
 
 brush = alt.selection_interval()
 alt.Chart(cars).mark_circle().encode(
@@ -347,6 +376,8 @@ selected observations should be emphasized. The original observations remain vis
 
 ```{r}
 #| label: interaction-brush-highlight-gg
+#| slide-show: both
+#| slide-title: Defining and highlighting a selection
 cars <- cars |> mutate(car_id = dplyr::row_number())
 highlight_cars <- highlight_key(cars, ~car_id, group = 'single-car-highlight')
 highlight_plot <- ggplot(highlight_cars,
@@ -361,7 +392,7 @@ ggplotly(highlight_plot, tooltip = 'text') |>
 
 #### Click and hover selections
 
-A point selection chooses discrete items or values rather than a continuous interval.
+[A point selection chooses discrete items or values rather than a continuous interval.]{.slide-bullet}
 Here we select origins by interacting with bars representing their counts.
 
 ::: {.panel-tabset group="language"}
@@ -372,6 +403,8 @@ Click a bar; Shift-click to select several origins.
 
 ```{python}
 #| label: interaction-click-alt
+#| slide-show: both
+#| slide-title: Click to select origins
 click = alt.selection_point(fields=['Origin'])
 alt.Chart(cars).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N',
@@ -384,6 +417,8 @@ Changing the event to `mouseover` lets hovering drive the selection instead.
 
 ```{python}
 #| label: interaction-hover-alt
+#| slide-show: both
+#| slide-title: Hover to select origins
 hover = alt.selection_point(fields=['Origin'], on='mouseover', toggle=False)
 alt.Chart(cars).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N',
@@ -398,6 +433,8 @@ These bars use the same origin counts as the Altair examples.
 
 ```{r}
 #| label: interaction-click-gg
+#| slide-show: both
+#| slide-title: Click to select origins
 origin_keys <- cars |> dplyr::count(Origin) |>
     highlight_key(~Origin, group = 'origin-count-selection')
 origin_bars <- plot_ly(origin_keys, x = ~n, y = ~Origin, color = ~Origin,
@@ -407,6 +444,8 @@ origin_bars |> highlight(on = 'plotly_click', off = 'plotly_doubleclick', opacit
 
 ```{r}
 #| label: interaction-hover-gg
+#| slide-show: both
+#| slide-title: Hover to select origins
 hover_keys <- cars |> dplyr::count(Origin) |>
     highlight_key(~Origin, group = 'origin-count-hover')
 plot_ly(hover_keys, x = ~n, y = ~Origin, color = ~Origin, type = 'bar', orientation = 'h') |>
@@ -417,8 +456,8 @@ plot_ly(hover_keys, x = ~n, y = ~Origin, color = ~Origin, type = 'bar', orientat
 
 ### Coordinating selected observations across views
 
-Referencing the same selection in several views lets us compare the selected observations
-across different encodings. This is **linked brushing**.
+[Referencing the same selection in several views lets us compare the selected observations
+across different encodings. This is **linked brushing**.]{.slide-bullet}
 It is one use of coordination; the earlier overview/detail example instead coordinated scale domains.
 
 #### Linked scatterplots
@@ -432,6 +471,8 @@ Brush either view and inspect those cars in the other.
 
 ```{python}
 #| label: interaction-linked-global-alt
+#| slide-show: both
+#| slide-title: One selection across two scatterplots
 brush = alt.selection_interval()
 linked_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
@@ -449,6 +490,8 @@ a self-contained R dashboard to export later in the section.
 
 ```{r}
 #| label: interaction-linked-brush-gg
+#| slide-show: output
+#| slide-title: One selection across two scatterplots
 linked_cars <- highlight_key(cars, ~car_id, group = 'linked-car-views')
 linked_plot <- ggplot(linked_cars,
                       aes(Horsepower, Miles_per_Gallon, color = Origin, text = Name)) + geom_point()
@@ -466,11 +509,13 @@ car_dashboard
 #### Combining selections
 
 Altair's default `resolve='global'` maintains one brush: drawing in the other panel replaces it.
-With `resolve='union'`, each panel can retain its brush and observations selected in
-**either** view are highlighted.
+[With `resolve='union'`, each panel can retain its brush and observations selected in
+**either** view are highlighted.]{.slide-bullet}
 
 ```{python}
 #| label: interaction-linked-union-alt
+#| slide-show: both
+#| slide-title: Union — selected in either view
 brush = alt.selection_interval(resolve='union')
 linked_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
@@ -480,12 +525,14 @@ linked_points = alt.Chart(cars).mark_circle().encode(
 linked_points | linked_points.encode(y='Weight_in_lbs')
 ```
 
-With `resolve='intersect'`, observations must satisfy all participating brushes.
+[With `resolve='intersect'`, observations must satisfy all participating brushes.]{.slide-bullet}
 These are specific Altair selection-resolution options; the R example above uses
 one shared selection rather than implementing these per-view combinations.
 
 ```{python}
 #| label: interaction-linked-intersection-alt
+#| slide-show: both
+#| slide-title: Intersection — selected in both views
 brush = alt.selection_interval(resolve='intersect')
 linked_points = alt.Chart(cars).mark_circle().encode(
     x='Horsepower',
@@ -497,8 +544,8 @@ linked_points | linked_points.encode(y='Weight_in_lbs')
 
 #### Linking views with different encodings
 
-Linking is based on data values or identifiers, not a requirement that both charts
-use the same visual channels. An origin selected in a bar chart can also identify cars in a scatterplot.
+[Linking is based on data values or identifiers, not a requirement that both charts
+use the same visual channels.]{.slide-bullet} An origin selected in a bar chart can also identify cars in a scatterplot.
 
 ::: {.panel-tabset group="language"}
 
@@ -506,6 +553,8 @@ use the same visual channels. An origin selected in a bar chart can also identif
 
 ```{python}
 #| label: interaction-linked-bars-alt
+#| slide-show: output
+#| slide-title: Linking views with different encodings
 brush = alt.selection_interval()
 click = alt.selection_point(fields=['Origin'])
 selected_points = alt.Chart(cars).mark_circle().encode(
@@ -525,6 +574,8 @@ A shared legend can provide the origin selection instead of the bars.
 
 ```{python}
 #| label: interaction-linked-legend-alt
+#| slide-show: output
+#| slide-title: Coordinate views through a shared legend
 brush = alt.selection_interval()
 legend = alt.selection_point(fields=['Origin'], bind='legend')
 selected_points = alt.Chart(cars).mark_circle().encode(
@@ -550,6 +601,8 @@ into a statistic that responds to arbitrary point selections.
 
 ```{r}
 #| label: interaction-plotly-shared-legend
+#| slide-show: both
+#| slide-title: Coordinate views through a shared legend
 count_plot <- ggplot(cars, aes(y = Origin, fill = Origin)) + geom_bar(width = 0.6)
 count_widget <- ggplotly(count_plot) |> style(showlegend = FALSE)
 car_legend_plot <- car_plot + aes(color = Origin)
@@ -563,9 +616,9 @@ subplot(count_widget, car_legend_widget, widths = c(0.3, 0.7), titleX = TRUE, ti
 
 ### Filtering observations
 
-Highlighting changes the visual emphasis
-without changing the observations used in the view.
-Filtering restricts which observations enter a layer or calculation.
+[Highlighting changes the visual emphasis
+without changing the observations used in the view.]{.slide-bullet}
+[Filtering restricts which observations enter a layer or calculation.]{.slide-bullet}
 We introduce this distinction before the controls, because the same control can drive either effect.
 
 An interactive query can change not just which marks appear, but the values being summarized.
@@ -580,6 +633,8 @@ of selected cars in each origin. The legend still controls only opacity.
 
 ```{python}
 #| label: interaction-filter-alt
+#| slide-show: output
+#| slide-title: Recount the observations selected by the brush
 brush = alt.selection_interval()
 legend = alt.selection_point(fields=['Origin'], bind='legend')
 selected_points = alt.Chart(cars).mark_circle().encode(
@@ -603,6 +658,8 @@ This differs from converting a ggplot bar chart whose counts were already calcul
 
 ```{r}
 #| label: interaction-filter-counts-gg
+#| slide-show: output
+#| slide-title: Recount the observations selected by the filter
 count_cars <- crosstalk::SharedData$new(cars, key = ~as.character(car_id), group = 'car-filter-counts')
 count_scatter <- plot_ly(count_cars, x = ~Horsepower, y = ~Miles_per_Gallon,
                          color = ~Origin, text = ~Name, type = 'scatter', mode = 'markers')
@@ -618,8 +675,8 @@ htmltools::tagList(
 
 ### Driving selections from legends
 
-A legend can be used instead of another chart
-as the input element that drives the selection.
+[A legend can be used instead of another chart
+as the input element that drives the selection.]{.slide-bullet}
 
 ::: {.panel-tabset group="language"}
 
@@ -632,6 +689,8 @@ but it could also have been used to filter the data.
 
 ```{python}
 #| label: interaction-legend-alt
+#| slide-show: both
+#| slide-title: Driving selections from legends
 legend = alt.selection_point(fields=['Origin'], bind='legend')
 
 alt.Chart(cars).mark_circle().encode(
@@ -650,6 +709,8 @@ and make the other points invisible.
 
 ```{r}
 #| label: interaction-legend-gg
+#| slide-show: both
+#| slide-title: Driving selections from legends
 car_legend_plot <- ggplot(cars, aes(x = Horsepower, y = Miles_per_Gallon, color = Origin)) +
     geom_point()
 ggplotly(car_legend_plot)
@@ -661,11 +722,11 @@ ggplotly(car_legend_plot)
 
 Widgets are another type of input mechanisms
 that can drive a selection.
-A dropdown, radio button, slider, legend, or plotted mark can define a selection;
+[A dropdown, radio button, slider, legend, or plotted mark can define a selection;
 and then the chart can respond with highlighting or filtering observations,
-just like with non-widget selections.
+just like with non-widget selections.]{.slide-bullet}
 
-#### Movie data for category and numeric controls
+#### Movie data for category and numeric controls {.slide-skip}
 
 We use the full Vega movies snapshot here, rather than the smaller distribution-example dataset.
 Both languages apply the same missing-value filters and create a unique row identifier.
@@ -721,6 +782,8 @@ A legend selection works for genres too, but many genre colors make the view bus
 
 ```{python}
 #| label: interaction-movie-legend-alt
+#| slide-show: both
+#| slide-title: Selecting a movie genre
 select_genre = alt.selection_point(fields=['Major_Genre'], bind='legend')
 movie_points.encode(
     color='Major_Genre:N', opacity=alt.condition(select_genre, alt.value(0.7), alt.value(0.1))
@@ -731,6 +794,8 @@ A dropdown can select a genre without assigning a color to every category.
 
 ```{python}
 #| label: interaction-movie-dropdown-alt
+#| slide-show: both
+#| slide-title: Bind a selection to a dropdown
 genres = sorted(movies['Major_Genre'].dropna().unique())
 dropdown = alt.binding_select(options=genres)
 select_genre = alt.selection_point(fields=['Major_Genre'], bind=dropdown)
@@ -743,6 +808,8 @@ Give the control a readable label and specify an initial value to make the start
 
 ```{python}
 #| label: interaction-movie-dropdown-default-alt
+#| slide-show: both
+#| slide-title: Labels and initial values
 select_genre = alt.selection_point(
     fields=['Major_Genre'],
     bind=alt.binding_select(name='Genre: ', options=genres),
@@ -759,6 +826,8 @@ The age ratings use their conceptual order rather than alphabetical order.
 
 ```{python}
 #| label: interaction-movie-radio-alt
+#| slide-show: both
+#| slide-title: Combine genre and rating controls
 mpaa_ratings = ['G', 'PG', 'PG-13', 'R', 'Not Rated']
 select_genre_and_mpaa = alt.selection_point(
     fields=['Major_Genre', 'MPAA_Rating'],
@@ -782,6 +851,8 @@ Using a new shared-data group keeps this example independent of other widgets on
 
 ```{r}
 #| label: interaction-movie-controls-gg
+#| slide-show: output
+#| slide-title: Filter movies with category controls
 movie_categories <- crosstalk::SharedData$new(movies, key = ~as.character(movie_id), group = 'movie-category-controls')
 movie_category_plot <- ggplot(movie_categories,
                              aes(Rotten_Tomatoes_Rating, IMDB_Rating, text = Title)) + geom_point()
@@ -805,6 +876,8 @@ A point selection bound to a slider matches an **exact value**.
 
 ```{python}
 #| label: interaction-rating-equality-alt
+#| slide-show: both
+#| slide-title: A slider selecting an exact value
 select_rating = alt.selection_point(
     fields=['Rotten_Tomatoes_Rating'],
     bind=alt.binding_range(name='Tomatometer: ', min=0, max=100, step=1),
@@ -820,6 +893,8 @@ the current observation inside an expression.
 
 ```{python}
 #| label: interaction-rating-threshold-alt
+#| slide-show: both
+#| slide-title: A slider defining a threshold
 rating_cutoff = alt.param(
     value=50,
     bind=alt.binding_range(name='Tomatometer below: ', min=0, max=100, step=1)
@@ -834,6 +909,8 @@ Range, step, and initial value are separate choices.
 
 ```{python}
 #| label: interaction-rating-slider-settings-alt
+#| slide-show: both
+#| slide-title: Range, step, and initial value
 rating_cutoff = alt.param(
     value=15,
     bind=alt.binding_range(name='Tomatometer below: ', min=10, max=60, step=5)
@@ -865,6 +942,8 @@ the frames with a slider rather than playing them automatically.
 
 ```{python}
 #| label: interaction-year-frames-alt
+#| slide-show: output
+#| slide-title: Moving through time with a year slider
 gap = pd.read_csv('data/vega-gapminder.csv')
 frame_year = alt.param(
     value=int(gap['year'].min()),
@@ -886,6 +965,8 @@ between frames. Use Play or choose a year on its slider.
 
 ```{r}
 #| label: interaction-plotly-animation
+#| slide-show: both
+#| slide-title: Moving through time with animation
 gap <- readr::read_csv('data/vega-gapminder.csv')
 gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
     geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
@@ -907,6 +988,8 @@ illustrating another response to a numeric selection.
 
 ```{r}
 #| label: interaction-movie-slider-gg
+#| slide-show: both
+#| slide-title: Filtering a numeric range
 movie_ratings <- crosstalk::SharedData$new(movies, key = ~as.character(movie_id), group = 'movie-rating-range')
 movie_rating_plot <- ggplot(movie_ratings,
                            aes(Rotten_Tomatoes_Rating, IMDB_Rating, text = Title)) + geom_point()
@@ -926,6 +1009,9 @@ htmltools::tagList(
 #### Altair {.slide-skip}
 
 ```{python}
+#| label: interaction-search-alt
+#| slide-show: output
+#| slide-title: Building a search widget
 search_input = alt.param(
     value='',
     bind=alt.binding(
@@ -947,6 +1033,9 @@ alt.Chart(cars).mark_circle().encode(
 #### ggplot {.slide-skip}
 
 ```{r}
+#| label: interaction-search-gg
+#| slide-show: output
+#| slide-title: Building a search widget
 searchable_cars <- highlight_key(cars, ~Name)
 
 p <- ggplot(
@@ -1053,8 +1142,8 @@ movie_explorer
 ## Changing encodings and parameters
 
 Interactivity can also change the question or representation rather than select observations.
-Choosing a genre asks which movies to emphasize; choosing a y-variable asks which
-measurement to display. The same dropdown mechanism can implement either task.
+[Choosing a genre asks which movies to emphasize; choosing a y-variable asks which
+measurement to display.]{.slide-bullet} The same dropdown mechanism can implement either task.
 
 ### Choosing the displayed variable
 
@@ -1070,6 +1159,8 @@ column's value for each car. The observations remain the same.
 
 ```{python}
 #| label: interaction-variable-dropdown-alt
+#| slide-show: output
+#| slide-title: Choose the measurement on the y-axis
 measurement = alt.param(
     value='Miles_per_Gallon',
     name='car_measurement',
@@ -1092,6 +1183,8 @@ all nine traces rather than assuming one trace per variable.
 
 ```{r}
 #| label: interaction-plotly-dropdown
+#| slide-show: output
+#| slide-title: Choose the measurement on the y-axis
 metrics <- c('Miles_per_Gallon', 'Weight_in_lbs', 'Acceleration')
 metric_plot <- plot_ly(cars, x = ~Horsepower, color = ~Origin, text = ~Name)
 for (metric in metrics) {
@@ -1118,18 +1211,18 @@ layout(metric_plot,
 We have already used this kind of interaction in earlier chapters:
 changing histogram bin width, changing a candidate line's slope in @sec-trends,
 and changing the confidence level or interval multiplier in @sec-uncertainty.
-Those controls change a calculation or representation, not which observed cases are of interest.
+[Those controls change a calculation or representation, not which observed cases are of interest.]{.slide-bullet}
 
-Before adding a control, ask what it should change: the viewing window, the selection,
-the observations entering a calculation, the encoding, or the calculation's parameters.
+[Before adding a control, ask what it should change: the viewing window, the selection,
+the observations entering a calculation, the encoding, or the calculation's parameters.]{.slide-bullet}
 Then choose a gesture or widget that makes that effect understandable.
 Keep reset behavior and the current state clear so readers can tell what they are looking at.
 
 ## Saving and sharing interactive visualizations
 
-All the examples in this chapter run **client-side**, in the browser.
+[All the examples in this chapter run **client-side**, in the browser.]{.slide-bullet}
 That means that they don't require a server that keeps running in the background
-and the examples work after the Python or R session that created them has ended. 
+and [the examples work after the Python or R session that created them has ended.]{.slide-bullet}
 This also means that we can share them without someone else
 without the need for that person to know how to use R or Python.
 We will use the composition and self-contained
@@ -1142,6 +1235,9 @@ to assemble and share them as offline explorers.
 
 ```{python}
 #| eval: false
+#| label: interaction-export-alt
+#| slide-show: code
+#| slide-title: Save a self-contained interactive figure
 movie_dashboard.save('movie-explorer-offline.html', inline=True)
 ```
 
@@ -1152,6 +1248,9 @@ includes the movie filters as well as the plot.
 
 ```{r}
 #| eval: false
+#| label: interaction-export-gg
+#| slide-show: code
+#| slide-title: Save a self-contained interactive figure
 htmlwidgets::saveWidget(car_dashboard, 'car-dashboard-offline.html', selfcontained = TRUE)
 movie_page <- htmltools::tagList(
     htmltools::tags$head(htmltools::tags$title('Movie explorer')), movie_explorer
@@ -1162,7 +1261,7 @@ rmarkdown::pandoc_self_contained_html('movie-explorer.html', 'movie-explorer-off
 
 :::
 
-## Further reading
+## Further reading {.slide-skip}
 
 - [Altair: interactive charts](https://altair-viz.github.io/user_guide/interactions/index.html).
 - [Altair: bindings and widgets](https://altair-viz.github.io/user_guide/interactions/bindings_widgets.html).
