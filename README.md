@@ -28,13 +28,14 @@ uv run quarto preview textbook
 
 Press Ctrl+C to stop the preview.
 
-Chapter 18, **Interactivity**, includes live Plotly HTML widgets in its R examples
+Chapter 19, **Interactivity**, includes live Plotly HTML widgets in its R examples
 (tooltips, linked legends, range selection, animation, and dropdowns).
-Chapter 20, **Figure composition and saving**, covers Altair and patchwork,
+Chapter 18, **Figure composition and saving**, covers Altair and patchwork,
 static exports, and offline HTML export with Altair's `inline=True` and R's
 `htmlwidgets::saveWidget(..., selfcontained = TRUE)`. Its save commands are examples
 to run explicitly, so rendering the book does not create export files in the source tree.
-The Geospatial placeholder is chapter 19, immediately before Figure composition and saving.
+It precedes Interactivity so its layout and offline-export techniques can be reused there.
+The Geospatial placeholder follows as chapter 20.
 
 ### GitHub Actions publishing
 
@@ -150,8 +151,8 @@ palette types, accessibility, and color associations. Its slideshow uses that
 new image material; the original prose and programming sections are reading-only.
 Those sections cover palettes, highlights, annotations, and direct labeling.
 Chapter 16, **Trends**, covers means, rolling averages, regression, and local smoothing.
-Uncertainty and Interactivity follow as chapters 17 and 18; Geospatial is chapter 19,
-followed by Figure composition and saving as chapter 20.
+Uncertainty is chapter 17, followed by Figure composition and saving (18),
+Interactivity (19), and Geospatial (20).
 The ODP's trendline-comparison figures are included in Trends, while its
 overplotting figures are omitted. Original figure assets, their source manifest,
 and regeneration instructions are in `textbook/img/communication-lecture/`;
