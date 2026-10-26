@@ -1072,6 +1072,7 @@ column's value for each car. The observations remain the same.
 #| label: interaction-variable-dropdown-alt
 measurement = alt.param(
     value='Miles_per_Gallon',
+    name='car_measurement',
     bind=alt.binding_select(name='Y variable: ', options=['Miles_per_Gallon', 'Weight_in_lbs', 'Acceleration'])
 )
 alt.Chart(cars).transform_calculate(measurement='datum[car_measurement]').mark_circle().encode(
