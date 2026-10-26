@@ -7,7 +7,11 @@ requires-python = ">=3.14"
 dependencies = [
     "altair[all] @ git+https://github.com/vega/altair.git@feat/to_html-should-work-as_save_html",
     "altair_ally>=0.2.1",
+    "folium>=0.20",
+    "geopandas>=1.1",
     "jupyter-cache>=1.0.1",
+    "mapclassify>=2.10",
+    "matplotlib>=3.10",
     "pandas>=3.0.5",
     "polars>=1.44.2",
     "rpy2>=3.6.7",
