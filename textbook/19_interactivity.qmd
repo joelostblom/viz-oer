@@ -977,8 +977,8 @@ between frames. Use Play or choose a year on its slider.
 
 ```{r}
 #| label: interaction-plotly-animation
-# |out.height: 500px
-# |out.width: 600px
+#| out.height: 500px
+#| out.width: 600px
 #| slide-show: both
 #| slide-title: Moving through time with animation
 gap <- readr::read_csv('data/vega-gapminder.csv')
