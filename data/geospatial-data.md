@@ -25,6 +25,13 @@ Both files use WGS84 longitude/latitude (`EPSG:4326`); coordinates are rounded t
 five decimal places while retaining the source ring winding. Natural Earth data
 are public domain: <https://www.naturalearthdata.com/about/terms-of-use/>.
 
+These files are prepared GeoJSON copies of the zipped shapefile downloads
+linked above. Natural Earth also distributes GeoJSON exports through its
+project repository: <https://github.com/nvkelso/natural-earth-vector/tree/master/geojson>.
+Our preparation selects attributes and simplifies the regional geometry for
+these examples; the local files are not byte-for-byte copies of those repository
+exports. GeoPandas can also read the source shapefiles directly.
+
 ## Tables
 
 - `geospatial-canada-population-2021.csv`: the 13 regional population counts
@@ -47,17 +54,13 @@ Country maps use Natural Earth's historical GDP/population attributes, not a
 separate GDP snapshot. Both language versions use the 2021 Canadian population
 counts and 2012 US election results.
 
-## Browser geometry and lecture figures
+## Browser geometry
 
 `plotly-geo/world_110m.json` and `plotly-geo/usa_110m.json` are the TopoJSON files
 from <https://cdn.plot.ly/world_110m.json> and
 <https://cdn.plot.ly/usa_110m.json>. The R examples set
 `config(topojsonURL = 'data/plotly-geo/')` to use these local files rather than
 requesting geography from the CDN.
-
-`lecture-material/slides-geoviz.pdf` is a copy of the original notebook's
-accompanying `slides-lec4.pdf`. R examples are executable Plotly HTML widgets
-alongside their Altair counterparts rather than screenshots.
 
 ## Recreating the snapshots
 
@@ -68,14 +71,13 @@ uv run python textbook/src/data_processing/prepare_geospatial_data.py
 ```
 
 This refreshes Natural Earth and Vega data and Plotly's supporting TopoJSON.
-To also recover the original population/election tables and slides, provide the
+To also recover the original population/election tables, provide the
 instructor notebook:
 
 ```sh
 uv run python textbook/src/data_processing/prepare_geospatial_data.py --lecture /path/to/lectures/4-geoviz.ipynb
 ```
 
-The slides must be beside that notebook as `slides-lec4.pdf`. Importing reads
-saved chart specifications, not truncated dataframe previews or changing live
+Importing reads saved chart specifications, not truncated dataframe previews or changing live
 web tables. The importer checks the Canadian population total and the US
 electoral-vote totals before writing the snapshots.
