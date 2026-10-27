@@ -616,6 +616,7 @@ into a statistic that responds to arbitrary point selections.
 
 ```{r}
 #| label: interaction-plotly-shared-legend
+#| out.width: 600px
 #| slide-show: both
 #| slide-title: Coordinate views through a shared legend
 count_plot <- ggplot(cars, aes(y = Origin, fill = Origin)) + geom_bar(width = 0.6)
@@ -956,14 +957,16 @@ the frames with a slider rather than playing them automatically.
 gap = pd.read_csv('data/vega-gapminder.csv')
 frame_year = alt.param(
     value=int(gap['year'].min()),
-    bind=alt.binding_range(name='Year: ', min=int(gap['year'].min()),
-                           max=int(gap['year'].max()), step=5)
+    bind=alt.binding_range(
+        name='Year: ', min=int(gap['year'].min()),
+        max=int(gap['year'].max()), step=5
+    )
 )
 alt.Chart(gap).transform_filter(alt.datum.year == frame_year).mark_circle(opacity=0.7).encode(
-    x=alt.X('fertility:Q').scale(domain=[0, 9]).title('Children per woman'),
-    y=alt.Y('life_expect:Q').scale(domain=[20, 90]).title('Life expectancy (years)'),
-    size=alt.Size('pop:Q').scale(domain=[0, float(gap['pop'].max())], range=[10, 600]).title('Population'),
-    tooltip=['country:N', 'year:O', 'fertility:Q', 'life_expect:Q']
+    x=alt.X('fertility').scale(domain=[0, 9]).title('Children per woman'),
+    y=alt.Y('life_expect').scale(domain=[20, 90]).title('Life expectancy (years)'),
+    size=alt.Size('pop').scale(domain=[0, float(gap['pop'].max())], range=[10, 600]).title('Population'),
+    tooltip=['country', 'year:O', 'fertility', 'life_expect']
 ).add_params(frame_year)
 ```
 
@@ -972,44 +975,41 @@ alt.Chart(gap).transform_filter(alt.datum.year == frame_year).mark_circle(opacit
 Plotly interprets `frame` as the frame variable and `ids` as the identity to track
 between frames. Use Play or choose a year on its slider.
 
-<!-- ```{r} -->
-<!-- #| label: interaction-plotly-animation -->
-<!-- # |out.height: 500px -->
-<!-- # |out.width: 600px -->
-<!-- #| slide-show: both -->
-<!-- #| slide-title: Moving through time with animation -->
-<!-- gap <- readr::read_csv('data/vega-gapminder.csv') -->
-<!-- gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) + -->
-<!--     geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) + -->
-<!--     scale_x_continuous(limits = c(0, 9)) + -->
-<!--     scale_y_continuous(limits = c(20, 90)) + -->
-<!--     scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) + -->
-<!--     labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population') -->
-<!-- ggplotly(gap_plot, tooltip = 'text') -->
-<!-- ``` -->
-
+```{r}
+#| label: interaction-plotly-animation
+# |out.height: 500px
+# |out.width: 600px
+#| slide-show: both
+#| slide-title: Moving through time with animation
+gap <- readr::read_csv('data/vega-gapminder.csv')
+gap_plot <- ggplot(gap, aes(x = fertility, y = life_expect)) +
+    geom_point(aes(size = pop, frame = year, ids = country, text = country), alpha = 0.7) +
+    scale_x_continuous(limits = c(0, 9)) +
+    scale_y_continuous(limits = c(20, 90)) +
+    scale_size_area(max_size = 12, limits = c(0, max(gap$pop))) +
+    labs(x = 'Children per woman', y = 'Life expectancy (years)', size = 'Population')
+ggplotly(gap_plot, tooltip = 'text')
+```
 
 `frame` and `ids` are Plotly extensions, not ordinary static ggplot aesthetics.
 Playback emphasizes movement; choosing a frame lets the reader stop and inspect it.
-For comparing several years at once, small multiples may be easier than relying on memory.
 
+<!-- A range control selects both endpoints. Here it filters the same movie ratings, -->
+<!-- illustrating another response to a numeric selection. -->
 
-A range control selects both endpoints. Here it filters the same movie ratings,
-illustrating another response to a numeric selection.
-
-```{r}
-#| label: interaction-movie-slider-gg
-#| slide-show: both
-#| slide-title: Filtering a numeric range
-movie_ratings <- crosstalk::SharedData$new(movies, key = ~as.character(movie_id), group = 'movie-rating-range')
-movie_rating_plot <- ggplot(movie_ratings,
-                           aes(Rotten_Tomatoes_Rating, IMDB_Rating, text = Title)) + geom_point()
-htmltools::tagList(
-    crosstalk::filter_slider('movie-rating-range-filter', 'Tomatometer range',
-                            movie_ratings, ~Rotten_Tomatoes_Rating, step = 1),
-    ggplotly(movie_rating_plot, tooltip = 'text')
-)
-```
+<!-- ```{r} -->
+<!-- #| label: interaction-movie-slider-gg -->
+<!-- #| slide-show: both -->
+<!-- #| slide-title: Filtering a numeric range -->
+<!-- movie_ratings <- crosstalk::SharedData$new(movies, key = ~as.character(movie_id), group = 'movie-rating-range') -->
+<!-- movie_rating_plot <- ggplot(movie_ratings, -->
+<!--                            aes(Rotten_Tomatoes_Rating, IMDB_Rating, text = Title)) + geom_point() -->
+<!-- htmltools::tagList( -->
+<!--     crosstalk::filter_slider('movie-rating-range-filter', 'Tomatometer range', -->
+<!--                             movie_ratings, ~Rotten_Tomatoes_Rating, step = 1), -->
+<!--     ggplotly(movie_rating_plot, tooltip = 'text') -->
+<!-- ) -->
+<!-- ``` -->
 
 :::
 
