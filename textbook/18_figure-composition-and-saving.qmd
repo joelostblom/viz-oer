@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/18_figure-composition-and-saving.html
 fig-width: 7
 fig-height: 4
 resources:
@@ -24,22 +25,22 @@ execute:
 
 ## Why bother?
 
-A single plot may not answer every part of a question.
+[A single plot may not answer every part of a question.]{.slide-bullet}
 Combining complementary views can show a relationship alongside its distributions,
 or let readers compare how the same response relates to different predictors.
-The layout should make those comparisons easier, rather than simply fit more plots onto a page.
+[The layout should make those comparisons easier, rather than simply fit more plots onto a page.]{.slide-bullet}
 
 After composing a figure, we also need to choose how to share it.
-A PNG is convenient in a document, a vector image stays sharp when resized,
-and an HTML file can preserve browser interactions.
+[A PNG is convenient in a document, a vector image stays sharp when resized,
+and an HTML file can preserve browser interactions.]{.slide-bullet}
 We introduce the export workflow here, then develop the interactions themselves in @sec-interactivity.
 
 ## Preparing complementary panels
 
 We will reuse the cars dataset. We keep observations with recorded fuel economy,
 horsepower, and weight so that both panels show the same cars.
-If a variable is shared between panels, placing it on the same axis makes
-the relationships easier to compare. Here, weight stays on the y-axis.
+[If a variable is shared between panels, placing it on the same axis makes
+the relationships easier to compare.]{.slide-bullet} Here, weight stays on the y-axis.
 The short titles identify panels while we experiment with layouts;
 for a communication figure, a title explaining the message may be more useful.
 
@@ -49,6 +50,8 @@ for a communication figure, a title explaining the message may be more useful.
 
 ```{python}
 #| label: composition-panels-alt
+#| slide-show: output
+#| slide-title: Fuel economy and weight
 import altair as alt
 import pandas as pd
 
@@ -66,6 +69,8 @@ mpg_weight
 
 ```{python}
 #| label: composition-horsepower-alt
+#| slide-show: output
+#| slide-title: Horsepower and weight
 hp_weight
 ```
 
@@ -73,6 +78,8 @@ hp_weight
 
 ```{r}
 #| label: composition-panels-gg
+#| slide-show: output
+#| slide-title: Fuel economy and weight
 library(tidyverse)
 library(patchwork)
 
@@ -87,12 +94,14 @@ mpg_weight
 
 ```{r}
 #| label: composition-horsepower-gg
+#| slide-show: output
+#| slide-title: Horsepower and weight
 hp_weight
 ```
 
 :::
 
-## Arranging panels horizontally and vertically
+## Arranging panels horizontally and vertically {.slide-skip}
 
 ### Side-by-side panels
 
@@ -107,6 +116,8 @@ weight in both panels, so we explicitly share its scale.
 
 ```{python}
 #| label: composition-horizontal-alt
+#| slide-show: both
+#| slide-title: Side-by-side panels
 mpg_weight = mpg_weight.properties(width=250, height=220)
 hp_weight = hp_weight.properties(width=250, height=220)
 (mpg_weight | hp_weight).resolve_scale(y='shared')
@@ -119,6 +130,8 @@ As in Altair, `|` places panels side by side.
 
 ```{r}
 #| label: composition-horizontal-gg
+#| slide-show: both
+#| slide-title: Side-by-side panels
 #| fig-width: 9
 mpg_weight | hp_weight
 ```
@@ -139,6 +152,8 @@ Use `&` for vertical concatenation.
 
 ```{python}
 #| label: composition-vertical-alt
+#| slide-show: both
+#| slide-title: Stacked panels
 mpg_weight & hp_weight
 ```
 
@@ -148,6 +163,8 @@ Use `/` to stack panels vertically. This differs from Altair's `&` operator.
 
 ```{r}
 #| label: composition-vertical-gg
+#| slide-show: both
+#| slide-title: Stacked panels
 #| fig-width: 5
 #| fig-height: 7
 mpg_weight / hp_weight
@@ -169,6 +186,8 @@ not just the second panel.
 
 ```{python}
 #| label: composition-overall-title-alt
+#| slide-show: both
+#| slide-title: Overall titles and panel labels
 (mpg_weight | hp_weight).properties(title='Two views of vehicle weight')
 ```
 
@@ -177,6 +196,9 @@ For example, the following also adds an overall title:
 
 ```{python}
 #| eval: false
+#| label: composition-concat-function-alt
+#| slide-show: code
+#| slide-title: Annotating a composed figure
 alt.hconcat(mpg_weight, hp_weight, title='Two views of vehicle weight')
 ```
 
@@ -187,6 +209,8 @@ Use `tag_levels = list(c('A', 'B'))` to supply an explicit sequence of tags.
 
 ```{r}
 #| label: composition-labels-gg
+#| slide-show: both
+#| slide-title: Overall titles and panel labels
 #| fig-width: 9
 (mpg_weight | hp_weight) + plot_annotation(tag_levels = 'A')
 ```
@@ -196,6 +220,8 @@ Here we also collect the matching legends into a single guide.
 
 ```{r}
 #| label: composition-overall-title-gg
+#| slide-show: both
+#| slide-title: Annotating a composed figure
 #| fig-width: 9
 (mpg_weight | hp_weight) +
     plot_layout(guides = 'collect') +
@@ -213,7 +239,7 @@ color scales equivalent, so check that shared colors retain the same meaning.
 
 ## Unequal widths and nested layouts
 
-Complementary panels do not always need equal space.
+[Complementary panels do not always need equal space.]{.slide-bullet}
 A scatterplot may need a wide plotting area, while a categorical count chart
 can remain readable in a narrower panel.
 
@@ -226,6 +252,8 @@ and a narrow strip of ticks can show weights within each origin.
 
 ```{python}
 #| label: composition-marginal-histogram-alt
+#| slide-show: both
+#| slide-title: Preparing a complementary summary panel
 mpg_hist = alt.Chart(cars).mark_bar().encode(
     x=alt.X('Miles_per_Gallon:Q').bin(), y='count()'
 ).properties(width=250, height=80)
@@ -234,6 +262,8 @@ mpg_hist
 
 ```{python}
 #| label: composition-marginal-ticks-alt
+#| slide-show: both
+#| slide-title: Allocating space to different panels
 weight_ticks = alt.Chart(cars).mark_tick().encode(
     x='Origin:N', y='Weight_in_lbs:Q', color='Origin:N'
 ).properties(width=90, height=220)
@@ -246,6 +276,8 @@ and then places the tick plot alongside that entire column:
 
 ```{python}
 #| label: composition-operator-precedence-alt
+#| slide-show: both
+#| slide-title: Controlling the layout
 mpg_hist & mpg_weight | weight_ticks
 ```
 
@@ -253,6 +285,8 @@ Parentheses can instead group the scatterplot and ticks into the bottom row:
 
 ```{python}
 #| label: composition-nested-alt
+#| slide-show: both
+#| slide-title: Grouping and arranging panels
 mpg_hist & (mpg_weight | weight_ticks)
 ```
 
@@ -268,6 +302,8 @@ rather than a marginal distribution of either scatterplot axis.
 
 ```{r}
 #| label: composition-origin-count-gg
+#| slide-show: both
+#| slide-title: Preparing a complementary summary panel
 origin_count <- ggplot(cars, aes(x = Origin)) + geom_bar()
 origin_count
 ```
@@ -279,12 +315,16 @@ have exactly that ratio.
 
 ```{r}
 #| label: composition-equal-widths-gg
+#| slide-show: both
+#| slide-title: Allocating space to different panels
 #| fig-width: 9
 mpg_weight | origin_count
 ```
 
 ```{r}
 #| label: composition-relative-widths-gg
+#| slide-show: both
+#| slide-title: Controlling the layout
 #| fig-width: 9
 (mpg_weight | origin_count) + plot_layout(widths = c(3, 1))
 ```
@@ -294,6 +334,8 @@ Reordering them keeps that legend at the outside edge:
 
 ```{r}
 #| label: composition-reordered-panels-gg
+#| slide-show: both
+#| slide-title: Grouping and arranging panels
 #| fig-width: 9
 (origin_count | mpg_weight) + plot_layout(widths = c(1, 3))
 ```
@@ -304,6 +346,8 @@ Automatic tags continue through the nested panels.
 
 ```{r}
 #| label: composition-nested-gg
+#| slide-show: both
+#| slide-title: Nested layouts with relative row heights
 #| fig-width: 6
 #| fig-height: 7
 top_row <- origin_count | origin_count
@@ -317,6 +361,8 @@ nested_figure
 
 ## Choosing an output format
 
+::: {.slide-visual}
+
 | Format | Useful for | What to consider |
 |:--|:--|:--|
 | PNG | Slides, documents, previews | Raster image: enlarging it reveals pixels; choose sufficient resolution |
@@ -324,9 +370,13 @@ nested_figure
 | HTML | Interactive charts | Preserves supported browser interactions; decide whether dependencies and data must work offline |
 | Vega-Lite JSON | Storing or reusing an Altair specification | Describes the chart; needs a compatible renderer to display it |
 
-Saving a static image preserves the displayed view, not its tooltips, selections,
-or controls. Exporting a notebook or book page is also different from saving an
-individual figure.
+:::
+
+## What does the export preserve? {.content-visible when-format="revealjs"}
+
+[Saving a static image preserves the displayed view, not its tooltips, selections,
+or controls.]{.slide-bullet} [Exporting a notebook or book page is also different from saving an
+individual figure.]{.slide-bullet}
 
 ## Saving static figures
 
@@ -343,6 +393,9 @@ through Altair's optional dependencies.
 
 ```{python}
 #| eval: false
+#| label: composition-save-formats-alt
+#| slide-show: code
+#| slide-title: Saving a static figure
 mpg_weight.save('mpg_weight.png')
 mpg_weight.save('mpg_weight.svg')
 mpg_weight.save('mpg_weight.pdf')
@@ -353,6 +406,9 @@ three times as many pixels along each dimension of a PNG:
 
 ```{python}
 #| eval: false
+#| label: composition-save-resolution-alt
+#| slide-show: code
+#| slide-title: Resolution and vector output
 mpg_weight.save('mpg_weight-hires.png', scale_factor=3)
 ```
 
@@ -362,6 +418,9 @@ automatically make small labels proportionally larger within the figure.
 
 ```{python}
 #| eval: false
+#| label: composition-save-spec-alt
+#| slide-show: code
+#| slide-title: Saving specifications and composed figures
 mpg_weight.save('mpg_weight-print.png', ppi=300)
 mpg_weight.save('mpg_weight.json')
 ```
@@ -374,6 +433,9 @@ Specify physical size and pixel density when preparing a raster image.
 
 ```{r}
 #| eval: false
+#| label: composition-save-raster-gg
+#| slide-show: code
+#| slide-title: Saving a static figure
 ggsave('mpg_weight-r.png', plot = mpg_weight, width = 6, height = 4, units = 'in', dpi = 300)
 ```
 
@@ -384,6 +446,9 @@ SVG export uses the **svglite** package.
 
 ```{r}
 #| eval: false
+#| label: composition-save-vector-gg
+#| slide-show: code
+#| slide-title: Resolution and vector output
 ggsave('mpg_weight-r.pdf', plot = mpg_weight, width = 6, height = 4)
 ggsave('mpg_weight-r.svg', plot = mpg_weight, width = 6, height = 4)
 ```
@@ -392,50 +457,65 @@ The `plot` argument can also be a composed patchwork figure:
 
 ```{r}
 #| eval: false
+#| label: composition-save-layout-gg
+#| slide-show: code
+#| slide-title: Saving specifications and composed figures
 ggsave('vehicle-layout.svg', plot = nested_figure, width = 6, height = 7)
 ```
 
 :::
 
-## Saving interactive figures, including offline HTML
+## Saving interactive figures, including offline HTML {.slide-skip}
 
-### Altair: include both the data and JavaScript
+### Altair: include both the data and JavaScript {.slide-skip}
 
 This chart has tooltips and supports panning and zooming.
 Its data comes from a local dataframe, so Altair embeds the values in the specification.
 
 ```{python}
 #| label: composition-export-interactive-alt
+#| slide-show: both
+#| slide-title: An interactive figure to share
 interactive_cars = mpg_weight.encode(
     tooltip=['Name:N', 'Origin:N', 'Horsepower:Q', 'Miles_per_Gallon:Q']
 ).interactive()
 interactive_cars
 ```
 
-Saving HTML preserves these client-side interactions: the recipient does not need
-a running Python process or Jupyter session.
+## Saving interactive HTML {.content-visible when-format="revealjs"}
+
+[Saving HTML preserves these client-side interactions: the recipient does not need
+a running Python process or Jupyter session.]{.slide-bullet}
 However, the default HTML export loads JavaScript libraries from an online CDN.
 
 ```{python}
 #| eval: false
+#| label: composition-save-html-alt
+#| slide-show: code
 interactive_cars.save('cars-interactive.html')
 ```
 
-For an HTML file that can be opened **without an internet connection**, use
-[`inline=True`](https://altair-viz.github.io/user_guide/saving_charts.html#offline-html-support).
+## Bundling dependencies for offline use {.content-visible when-format="revealjs"}
+
+[For an HTML file that can be opened **without an internet connection**, use
+[`inline=True`](https://altair-viz.github.io/user_guide/saving_charts.html#offline-html-support).]{.slide-bullet}
 It bundles the JavaScript dependencies into the file, making it larger but self-contained
 for this dataframe-based example.
 
 ```{python}
 #| eval: false
+#| label: composition-save-offline-alt
+#| slide-show: code
 interactive_cars.save('cars-interactive-offline.html', inline=True)
 ```
 
-`inline=True` bundles the rendering libraries; it does not automatically download
-arbitrary externally referenced datasets, map tiles, or images.
+## Check both code and data dependencies {.content-visible when-format="revealjs"}
+
+[`inline=True` bundles the rendering libraries; it does not automatically download
+arbitrary externally referenced datasets, map tiles, or images.]{.slide-bullet}
 For example, a chart built with a data URL may still need the network to retrieve
 its data. Load the data into a dataframe before constructing the chart, as we do here,
-and check the exported file with the network disabled.
+and [check the exported file with the network disabled.]{.slide-bullet}
 
 You can send the resulting HTML file as an attachment or host it on a static website
 such as GitHub Pages. Naming it `index.html` makes it the usual landing page for its directory.
@@ -444,7 +524,7 @@ provide examples of this kind of sharing.
 For integration into a larger report, `interactive_cars.to_html(inline=True)` returns
 the HTML as a string instead of writing a file.
 
-### R: save the HTML widget
+### R: save the HTML widget {.slide-skip}
 
 Wrapping a ggplot in `plotly::ggplotly()` creates an interactive HTML widget.
 This preview has hover details, zooming, and a clickable legend;
@@ -452,14 +532,20 @@ we will explore those interactions in @sec-interactivity.
 
 ```{r}
 #| label: composition-export-interactive-gg
+#| slide-show: both
+#| slide-title: An interactive HTML widget to share
 interactive_cars_r <- plotly::ggplotly(mpg_weight)
 interactive_cars_r
 ```
 
-Use `htmlwidgets::saveWidget()` to preserve the widget's interactivity.
+## Saving a self-contained HTML widget {.content-visible when-format="revealjs"}
+
+[Use `htmlwidgets::saveWidget()` to preserve the widget's interactivity.]{.slide-bullet}
 
 ```{r}
 #| eval: false
+#| label: composition-save-offline-gg
+#| slide-show: code
 htmlwidgets::saveWidget(interactive_cars_r, 'cars-interactive-r.html', selfcontained = TRUE)
 ```
 
@@ -469,12 +555,16 @@ As with Altair, externally requested resources such as online map tiles still ne
 their own offline solution. For a multi-file export, use `selfcontained = FALSE`
 and distribute the accompanying dependency directory together with the HTML.
 
-An HTML page containing widgets plus other elements, such as headings or filter controls,
-is a container rather than one HTML widget. Save the container with `htmltools::save_html()`,
+## Saving a page of widgets and controls {.content-visible when-format="revealjs"}
+
+[An HTML page containing widgets plus other elements, such as headings or filter controls,
+is a container rather than one HTML widget.]{.slide-bullet} Save the container with `htmltools::save_html()`,
 then bundle its local dependencies with `rmarkdown::pandoc_self_contained_html()`:
 
 ```{r}
 #| eval: false
+#| label: composition-save-container-gg
+#| slide-show: code
 widget_page <- htmltools::tagList(
     htmltools::tags$head(htmltools::tags$title('Vehicle explorer')),
     htmltools::h2('Vehicle explorer'), interactive_cars_r
@@ -489,8 +579,8 @@ This is the same workflow we will use for a page of linked plots and controls in
 
 ## Notebook display formats and static previews
 
-A notebook can store several representations of one output, such as a Vega-Lite
-specification, HTML, and a PNG. The viewer chooses which representation it can display.
+[A notebook can store several representations of one output, such as a Vega-Lite
+specification, HTML, and a PNG.]{.slide-bullet} [The viewer chooses which representation it can display.]{.slide-bullet}
 GitHub's notebook viewer does not run arbitrary interactive JavaScript, so a chart
 that works in JupyterLab may need a static fallback there.
 
@@ -499,6 +589,9 @@ representation that the frontend can render and may save with a PNG fallback:
 
 ```{python}
 #| eval: false
+#| label: composition-display-mime-alt
+#| slide-show: code
+#| slide-title: Let a compatible notebook frontend render the specification
 alt.renderers.enable('mimetype')
 ```
 
@@ -509,6 +602,9 @@ For an explicitly static notebook output, use the PNG renderer instead:
 
 ```{python}
 #| eval: false
+#| label: composition-display-png-alt
+#| slide-show: code
+#| slide-title: Request a static notebook preview explicitly
 alt.renderers.enable('png')
 mpg_weight
 ```
@@ -517,7 +613,7 @@ Return to interactive HTML display with `alt.renderers.enable('default')`.
 A PNG fallback is a static preview; sharing the HTML export preserves interactive
 exploration. Notebook display settings and exported-file formats are separate choices.
 
-## Further reading
+## Further reading {.slide-skip}
 
 - [Altair: layered and multi-view charts](https://altair-viz.github.io/user_guide/compound_charts.html).
 - [Altair: saving charts](https://altair-viz.github.io/user_guide/saving_charts.html).
