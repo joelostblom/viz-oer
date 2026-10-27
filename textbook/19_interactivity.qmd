@@ -634,18 +634,23 @@ subplot(count_widget, car_legend_widget, widths = c(0.3, 0.7), titleX = TRUE, ti
 
 [Highlighting changes the visual emphasis
 without changing the observations used in the view.]{.slide-bullet}
-[Filtering restricts which observations enter a layer or calculation.]{.slide-bullet}
-We introduce this distinction before the controls, because the same control can drive either effect.
-
-An interactive query can change not just which marks appear, but the values being summarized.
-The summary must be calculated from the filtered observations in the browser.
+[Filtering restricts which observations are available to a another chart layer,
+effecting both display and calculations made in that chart.]{.slide-bullet}
+An interactive query can change not just which marks appear,
+but the values being summarized.
 
 ::: {.panel-tabset group="language"}
 
 ##### Altair {.slide-skip}
 
-The brush filters the bar chart's input before counting, so the bars show the number
-of selected cars in each origin. The legend still controls only opacity.
+Here, the brush filters the bar chart's input before counting,
+so the bars show the number
+of selected cars in each origin.
+The `transform_filter` method could have been used for any static filtering too,
+such as only keeping cars with Horsepower < 120,
+But in general it is preferred to do such operations
+in the dataframe library
+to limit the amount of data passed to the chart.
 
 ```{python}
 #| label: interaction-filter-alt
@@ -659,6 +664,32 @@ selected_points = alt.Chart(cars).mark_circle().encode(
 ).add_params(brush)
 bars = alt.Chart(cars, height=80).transform_filter(brush).mark_bar().encode(
     x='count()', y='Origin:N', color='Origin:N'
+)
+selected_points & bars
+```
+
+The x-axis is flickering a bit because it's domain max changes
+with the number of cars that are included in the rectangle.
+We can also see that if we only select cars from a single Origin,
+that bar becomes thrice as wide
+as it takes up all the space in the chart.
+We can address both these issues,
+by defining constant domains in the chart:
+
+```{python}
+#| label: interaction-filter-domain-alt
+#| slide-show: both
+#| slide-title: Recount the observations selected by the brush
+brush = alt.selection_interval()
+selected_points = alt.Chart(cars).mark_circle().encode(
+    x='Horsepower',
+    y='Miles_per_Gallon',
+    color=alt.when(brush).then('Origin:N').otherwise(alt.value('lightgray'))
+).add_params(brush)
+bars = alt.Chart(cars, height=80).transform_filter(brush).mark_bar().encode(
+    x='count()',
+    y=alt.Y('Origin').scale(domain=[0, 260]),
+    color=alt.Y('Origin').scale(domain=cars['Origin'].unique())
 )
 selected_points & bars
 ```
