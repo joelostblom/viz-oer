@@ -4,6 +4,24 @@
   const filename = window.location.pathname.split("/").pop();
   const chapter = new URL(`../${filename}`, window.location.href);
 
+  const sizedBindings = new WeakSet();
+  const installPlotlySizing = () => {
+    const binding = window.HTMLWidgets?.widgets?.find(widget => widget.name === "plotly");
+    if (!binding?.resize || sizedBindings.has(binding)) return;
+    const resize = binding.resize;
+    binding.resize = function(el, width, height, instance) {
+      if (el.closest(".reveal")) {
+        // htmlwidgets measures getBoundingClientRect(), which includes Reveal's
+        // presentation scale. Plotly needs layout pixels or it scales twice.
+        width = el.clientWidth;
+        height = el.clientHeight;
+        if (!width || !height) return;
+      }
+      return resize.call(this, el, width, height, instance);
+    };
+    sizedBindings.add(binding);
+  };
+
   const installCodeToggles = (deck) => {
     const query = new URLSearchParams(window.location.search);
     if (query.get("view") === "print" || query.has("print-pdf")) return;
@@ -57,6 +75,7 @@
   const headingFirst = () => {
     const deck = window.Reveal;
     if (!deck) return;
+    installPlotlySizing();
     installCodeToggles(deck);
     let footerTimer;
     const showTitleHint = () => {
@@ -78,6 +97,7 @@
       requestAnimationFrame(() => slide.classList.remove("resetting-fragments"));
     };
     const onReady = () => {
+      installPlotlySizing();
       resetFragments();
       showTitleHint();
       deck.registerKeyboardShortcut("ESC, Q, O",

@@ -485,6 +485,23 @@
   object-position: left top;
 }
 
+/* Keep widget containers inside their slide; the resize handler uses these
+   unscaled dimensions for Plotly's canvas as well. */
+.reveal .slide-media .plotly.html-widget {
+  max-width: 100%;
+  max-height: 520px;
+}
+
+.reveal .slide-media[data-slide-show="both"] .plotly.html-widget {
+  max-height: 360px;
+}
+
+/* Crosstalk's negative outer margins otherwise add a horizontal scrollbar. */
+.reveal .slide-media .crosstalk-bscols {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .reveal .vega-embed {
   justify-content: flex-start;
   text-align: left;
