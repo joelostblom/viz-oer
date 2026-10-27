@@ -60,6 +60,7 @@ CHAPTER_ASSETS = {
     ),
     "16_trends": ("data/vega-cars.csv",),
     "17_uncertainty": ("data/vega-cars.csv",),
+    "18_figure-composition-and-saving": ("data/vega-cars.csv",),
     "19_interactivity": (
         "data/vega-cars.csv",
         "data/vega-sp500.csv",

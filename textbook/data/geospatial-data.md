@@ -25,6 +25,13 @@ Both files use WGS84 longitude/latitude (`EPSG:4326`); coordinates are rounded t
 five decimal places while retaining the source ring winding. Natural Earth data
 are public domain: <https://www.naturalearthdata.com/about/terms-of-use/>.
 
+These files are prepared GeoJSON copies of the zipped shapefile downloads
+linked above. Natural Earth also distributes GeoJSON exports through its
+project repository: <https://github.com/nvkelso/natural-earth-vector/tree/master/geojson>.
+Our preparation selects attributes and simplifies the regional geometry for
+these examples; the local files are not byte-for-byte copies of those repository
+exports. GeoPandas can also read the source shapefiles directly.
+
 ## Tables
 
 - `geospatial-canada-population-2021.csv`: the 13 regional population counts
