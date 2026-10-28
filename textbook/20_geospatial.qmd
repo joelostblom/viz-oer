@@ -1037,8 +1037,85 @@ Keep the original spatial data for measurements and geographic analysis.
 #     geom_sf(color = 'white', linewidth = 0.2) +
 #     coord_sf(crs = 5070)
 # ggplotly(us_albers_gg + aes(fill = I('lightgray')), tooltip = 'label')
-us_albers_gg <- usmap::plot_usmap(regions = "states")
-  #coord_sf(crs = "ESRI:102003")
+
+election_attributes <- us_states_sf |>
+    sf::st_drop_geometry() |>
+    dplyr::select(postal, winning_party, electoral_votes)
+
+us_election_sf <- us_states |>
+    dplyr::left_join(
+        election_attributes,
+        by = c("STUSPS" = "postal"),
+        relationship = "one-to-one"
+    )
+
+# Check that all 50 states and DC matched
+stopifnot(
+    nrow(us_election_sf) == 51,
+    !anyNA(us_election_sf$winning_party),
+    !anyNA(us_election_sf$electoral_votes),
+    sum(us_election_sf$electoral_votes) == 538
+)
+
+
+
+#us_albers_gg <- usmap::plot_usmap(regions = "states")
+#  #coord_sf(crs = "ESRI:102003")
+#library(tigris)
+#library(ggplot2)
+
+#library(scales)
+#us_states <- states(cb = TRUE, year = 2024) |>
+#  shift_geometry()
+
+#ggplot(us_states) +
+#  geom_sf(fill = "white", color = "grey40", linewidth = 0.2) +
+#  theme_void()
+us_election_sf
+```
+
+```{r}
+ggplot(us_election_sf) +
+    geom_sf(
+        aes(fill = winning_party),
+        color = "grey40",
+        linewidth = 0.2
+    ) +
+    scale_fill_manual(
+        values = c(Dem = "#4c78a8", Rep = "#e45756"),
+        name = "Winning party"
+    ) +
+    coord_sf(expand = FALSE) +
+    labs(title = "2012 US presidential election") +
+    theme_void()
+
+
+
+# shifted <- us_states |>
+#   shift_geometry(position = "below", preserve_area = TRUE)
+
+# ggplot(shifted) +
+#   geom_sf(fill = "white", color = "grey40", linewidth = 0.2) +
+#   theme_void()
+```
+
+```{r}
+library(tigris)
+library(ggplot2)
+
+us_states <- states(cb = TRUE, year = 2024) |>
+  # Keep the 50 states, including Alaska and Hawaii, plus DC
+  dplyr::filter(STUSPS %in% c(state.abb, "DC")) |>
+  shift_geometry(geoid_column = "GEOID")
+
+ggplot(us_states) +
+  geom_sf(
+    fill = "white",
+    color = "grey40",
+    linewidth = 0.2
+  ) +
+  coord_sf(expand = FALSE) +
+  theme_void()
 ```
 
 :::
