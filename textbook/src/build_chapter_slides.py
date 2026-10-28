@@ -72,6 +72,7 @@ CHAPTER_ASSETS = {
         "data/geospatial-world-regions.geojson",
         "data/geospatial-canada-population-2021.csv",
         "data/geospatial-us-election-2012.csv",
+        "data/geospatial-us-states-2024.geojson",
         "data/geospatial-earthquakes.csv",
     ),
 }

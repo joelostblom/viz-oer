@@ -5,6 +5,7 @@ resources:
   - data/geospatial-world-regions.geojson
   - data/geospatial-canada-population-2021.csv
   - data/geospatial-us-election-2012.csv
+  - data/geospatial-us-states-2024.geojson
   - data/geospatial-earthquakes.csv
 execute:
   message: false
@@ -1007,115 +1008,26 @@ alt.Chart(us_states, width=550).mark_geoshape(stroke='white').project('albersUsa
 
 #### ggplot {.slide-skip}
 
-A composite inset arrangement is not a single CRS. This helper separately
-projects Alaska and Hawaii and moves them into a compact **display-only** layout.
-Alaska is reduced to 35% of its linear size, as in the standard composite view.
-Keep the original spatial data for measurements and geographic analysis.
+A composite inset arrangement is not a single CRS. The `tigris` package provides
+`shift_geometry()` to arrange Alaska and Hawaii in a compact **display-only**
+layout. Here we use a local copy of the 2024 Census cartographic boundaries,
+prepared with `tigris::states(cb = TRUE, resolution = '20m', year = 2024)`.
+The overview resolution keeps the interactive maps small enough to load quickly.
+`preserve_area = FALSE` allows inset resizing; keep the unshifted geometry for
+geographic measurements and analysis.
 
 ```{r}
 #| label: geospatial-us-albers-sf
 #| slide-show: output
 #| slide-title: Make a compact US inset layout
-# alaska_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Alaska'), 3338))[c('xmin', 'ymin')]
-# hawaii_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Hawaii'), 26904))[c('xmin', 'ymin')]
-# us_insets <- function(features) {
-#     move <- function(part, crs, origin, scale, position) {
-#         part <- st_transform(part, crs)
-#         geometry <- (st_geometry(part) - as.numeric(origin)) * scale + position
-#         st_geometry(part) <- st_set_crs(geometry, 5070)
-#         part
-#     }
-#     bind_rows(
-#         features |> dplyr::filter(!name %in% c('Alaska', 'Hawaii')) |> st_transform(5070),
-#         move(dplyr::filter(features, name == 'Alaska'), 3338, alaska_origin,
-#              0.35, c(-2200000, -1200000)),
-#         move(dplyr::filter(features, name == 'Hawaii'), 26904, hawaii_origin,
-#              1, c(-1100000, -1150000))
-#     )
-# }
-# us_albers_gg <- ggplot(us_insets(us_states_sf), aes(label = name)) +
-#     geom_sf(color = 'white', linewidth = 0.2) +
-#     coord_sf(crs = 5070)
-# ggplotly(us_albers_gg + aes(fill = I('lightgray')), tooltip = 'label')
-
-election_attributes <- us_states_sf |>
-    sf::st_drop_geometry() |>
-    dplyr::select(postal, winning_party, electoral_votes)
-
-us_election_sf <- us_states |>
-    dplyr::left_join(
-        election_attributes,
-        by = c("STUSPS" = "postal"),
-        relationship = "one-to-one"
-    )
-
-# Check that all 50 states and DC matched
-stopifnot(
-    nrow(us_election_sf) == 51,
-    !anyNA(us_election_sf$winning_party),
-    !anyNA(us_election_sf$electoral_votes),
-    sum(us_election_sf$electoral_votes) == 538
+us_census_sf <- st_read('data/geospatial-us-states-2024.geojson', quiet = TRUE)
+us_shifted_sf <- tigris::shift_geometry(
+    us_census_sf, geoid_column = 'GEOID', preserve_area = FALSE
 )
-
-
-
-#us_albers_gg <- usmap::plot_usmap(regions = "states")
-#  #coord_sf(crs = "ESRI:102003")
-#library(tigris)
-#library(ggplot2)
-
-#library(scales)
-#us_states <- states(cb = TRUE, year = 2024) |>
-#  shift_geometry()
-
-#ggplot(us_states) +
-#  geom_sf(fill = "white", color = "grey40", linewidth = 0.2) +
-#  theme_void()
-us_election_sf
-```
-
-```{r}
-ggplot(us_election_sf) +
-    geom_sf(
-        aes(fill = winning_party),
-        color = "grey40",
-        linewidth = 0.2
-    ) +
-    scale_fill_manual(
-        values = c(Dem = "#4c78a8", Rep = "#e45756"),
-        name = "Winning party"
-    ) +
-    coord_sf(expand = FALSE) +
-    labs(title = "2012 US presidential election") +
-    theme_void()
-
-
-
-# shifted <- us_states |>
-#   shift_geometry(position = "below", preserve_area = TRUE)
-
-# ggplot(shifted) +
-#   geom_sf(fill = "white", color = "grey40", linewidth = 0.2) +
-#   theme_void()
-```
-
-```{r}
-library(tigris)
-library(ggplot2)
-
-us_states <- states(cb = TRUE, year = 2024) |>
-  # Keep the 50 states, including Alaska and Hawaii, plus DC
-  dplyr::filter(STUSPS %in% c(state.abb, "DC")) |>
-  shift_geometry(geoid_column = "GEOID")
-
-ggplot(us_states) +
-  geom_sf(
-    fill = "white",
-    color = "grey40",
-    linewidth = 0.2
-  ) +
-  coord_sf(expand = FALSE) +
-  theme_void()
+us_inset_map_gg <- ggplot(us_shifted_sf, aes(label = NAME)) +
+    geom_sf(color = 'grey40', linewidth = 0.2) +
+    coord_sf(expand = FALSE) + theme_void()
+ggplotly(us_inset_map_gg + aes(fill = I('white')), tooltip = 'label')
 ```
 
 :::
@@ -1164,16 +1076,25 @@ us_states[['name', 'winning_party', 'electoral_votes']].head()
 
 #### ggplot {.slide-skip}
 
+Load the election results before selecting or plotting their columns. The
+shifted Census boundaries use `NAME`, and the results table uses `name`.
+Joining this attribute table directly keeps the shifted geometry and avoids
+depending on election columns that have not yet been added to another object.
+The boundaries are from 2024, but the results and electoral-vote allocations
+remain those of the 2012 election.
+
 ```{r}
 #| label: geospatial-election-data-sf
 #| slide-show: code
 #| slide-title: Join the 2012 election results
-election_results_sf <- readr::read_csv('data/geospatial-us-election-2012.csv')
-us_states_sf <- us_states_sf |>
-    left_join(election_results_sf, by = 'name', relationship = 'one-to-one')
-stopifnot(nrow(us_states_sf) == 51, !anyNA(us_states_sf$electoral_votes),
-          sum(us_states_sf$electoral_votes) == 538)
-us_states_sf |> select(name, winning_party, electoral_votes) |> head()
+election_results <- readr::read_csv('data/geospatial-us-election-2012.csv')
+us_election_sf <- us_shifted_sf |>
+    left_join(election_results, by = c('NAME' = 'name'), relationship = 'one-to-one')
+stopifnot(nrow(us_election_sf) == 51, !anyDuplicated(us_election_sf$STUSPS),
+          !anyNA(us_election_sf$winning_party), !anyNA(us_election_sf$electoral_votes),
+          sum(us_election_sf$electoral_votes) == 538)
+us_election_sf |> st_drop_geometry() |>
+    select(NAME, STUSPS, winning_party, electoral_votes) |> head()
 ```
 
 :::
@@ -1210,18 +1131,15 @@ election_map
 
 #### ggplot {.slide-skip}
 
-The fill aesthetic handles the two party categories directly. The inset helper
-is applied after joining the election attributes.
+The fill aesthetic handles the two party categories directly. The joined table
+already has the shifted geometry, so the map can use it directly.
 
 ```{r}
 #| label: geospatial-election-winners-sf
 #| slide-show: both
 #| slide-title: Show each state's winning party
 party_colors_gg <- c(Dem = '#4c78a8', Rep = '#e45756')
-#us_display_sf <- us_insets(us_states_sf)
-#election_map_gg <- (us_albers_gg + us_display_sf) +
-
-election_map_gg <- usmap::plot_usmap(regions = "states") + us_states_sf
+election_map_gg <- (us_inset_map_gg + us_election_sf) +
     aes(fill = winning_party) +
     scale_fill_manual(values = party_colors_gg, name = 'Winning party')
 ggplotly(election_map_gg, tooltip = c('label', 'fill'))
@@ -1347,20 +1265,19 @@ election_map + electoral_points
 
 #### ggplot {.slide-skip}
 
-Convert the supplied point coordinates into `sf` features and apply the same
-inset layout to points and boundaries. `scale_size_area()` makes circle area
-represent electoral votes.
+Place a representative point inside each shifted state polygon. Computing
+these points after shifting keeps Alaska and Hawaii aligned with the map;
+unshifted longitude/latitude coordinates would not match the inset layout.
+`scale_size_area()` makes circle area represent electoral votes.
 
 ```{r}
 #| label: geospatial-election-neutral-points-sf
 #| slide-show: both
 #| slide-title: Add proportional symbols to the regions
-electoral_points_sf <- st_as_sf(st_drop_geometry(us_states_sf),
-                                coords = c('longitude', 'latitude'), crs = 4326)
-#electoral_display_sf <- us_insets(electoral_points_sf)
-#election_map_gg <- usmap::plot_usmap(regions = "states") +
+electoral_points_sf <- us_election_sf
+st_geometry(electoral_points_sf) <- st_point_on_surface(st_geometry(us_election_sf))
 ggplotly(election_map_gg +
-             geom_sf(data = electoral_points_sf, aes(size = electoral_votes),
+             geom_sf(data = electoral_points_sf, aes(label = NAME, size = electoral_votes),
                      fill = 'white', color = 'black', shape = 21, inherit.aes = FALSE) +
              scale_size_area(max_size = 12, name = 'Electoral votes'),
          tooltip = c('label', 'fill', 'size'))
@@ -1398,9 +1315,9 @@ Use a neutral boundary layer and map party and electoral votes to the points.
 #| label: geospatial-election-colored-points-sf
 #| slide-show: both
 #| slide-title: Put the quantity and party on the same marks
-ggplotly((us_albers_gg) + aes(fill = I('lightgray')) +
-             geom_sf(data = us_states_sf,
-                     aes(label = name, color = winning_party, size = electoral_votes),
+ggplotly(us_inset_map_gg + aes(fill = I('lightgray')) +
+             geom_sf(data = electoral_points_sf,
+                     aes(label = NAME, color = winning_party, size = electoral_votes),
                      alpha = 0.8, inherit.aes = FALSE) +
              scale_color_manual(values = party_colors_gg, name = 'Winning party') +
              scale_size_area(max_size = 12, name = 'Electoral votes'),
@@ -1409,8 +1326,10 @@ ggplotly((us_albers_gg) + aes(fill = I('lightgray')) +
 
 :::
 
-The supplied longitude and latitude locate representative points for each region;
-they are not the locations of individual voters. If a dataset lacks such points,
+These marks represent whole regions, not individual voters. Altair uses the
+supplied longitude/latitude locations; R computes points inside the shifted
+regions so that the point and boundary layers share the same display coordinates.
+If a dataset lacks representative locations,
 Altair's [`geoCentroid` expression](https://altair-viz.github.io/user_guide/marks/geoshape.html#mapping-points)
 can calculate a geographic centroid. Check the result: a centroid need not fall
 inside an irregular or multipart region. Dense clusters of small regions can
@@ -1471,7 +1390,7 @@ us_states.groupby('winning_party')['electoral_votes'].sum()
 
 ```{r}
 #| label: geospatial-electoral-totals-sf
-us_states_sf |>
+us_election_sf |>
     st_drop_geometry() |>
     group_by(winning_party) |>
     summarise(electoral_votes = sum(electoral_votes), .groups = 'drop')
