@@ -21,7 +21,8 @@ knitr:
 :::: {.slide-outcomes}
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Recognize** GeoJSON features, geometries, and attributes, and find boundaries at an appropriate level of detail.
+1. **Recognize** GeoJSON features, geometries, and attributes,
+   and find boundaries at an appropriate level of detail.
 2. **Choose** a projection that supports the map's purpose and explain the distortions it introduces.
 3. **Create** choropleths and point maps by joining geographic boundaries to other data.
 4. **Evaluate** how region size, normalization, and color bins affect a map's interpretation.
@@ -32,21 +33,130 @@ knitr:
 
 ## Why bother?
 
-A map makes geographic patterns visible: where observations occur, which regions
-are similar, and how nearby places differ. But geographic position also constrains
-the layout. A small region can be almost invisible even when its population or
-contribution to a total is large. Choosing the boundaries, projection, and visual
-encodings is therefore part of answering the question, not just decorating a chart.
+Similar to how categorical variables can have a natural order
+or a natural mapping to certain colors,
+geographical data has a natural spatial layout
+that makes it easier to identify and recognize regions.
+Visualizing geogrphical data as a map makes such geographic patterns visible,
+e.g. where observations occur, which regions are similar, and how nearby places differ.
 
-We will combine the layout techniques from @sec-figure-composition with the
-selections and linked views from @sec-interactivity. The examples use local
-data snapshots.
+## Choosing a projection {#map-projections}
 
-## GeoJSON: geometry alongside attributes
+A map must turn positions on the curved Earth into positions on a flat page.
+This transformation is called a **projection**.
+Since a projection flattens a 3D space into 2D,
+it necessarily distorts some combination of area, shape, distance, and direction.
+Therefore there are many projections to choose from for different purposes,
+but what is a reasonable default choice?
+Let's find out in the next exercise.
+
+::: {.callout-default .ex-prompt}
+
+This image below shows the world map with its most commonly used map project,
+Mercator,
+which was introduced in 1569 mainly for use in navigation,.
+Study this image and try to estimate which land region is largest,
+Africa or Greenland?
+
+![A Mercator world map projection from [map-projections.net.](https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84).](img/geospatial-lecture/mercator-world.png){#fig-map-mercator width=70% fig-alt="A rectangular Mercator world map."}
+
+:::: {.callout-default .ex-hint}
+
+Mercator's projection
+preserves local angles and shapes which is useful for navigation,
+but greatly enlarges areas at high latitudes.
+The animation below gives an intuition for 
+where this issue stems from.
+Opening the globe into strips leaves gaps.
+Filling those gaps make a continuous rectangle as for the Mercator projection
+to preserve angles and shapes
+requires stretching parts of the surface,
+which distorts the area of each surface
+paritcularly closer to the poles where the gaps are bigger.
+
+![Flattening a globe in the Mercator projection introduces gaps or distortion. Modeled an animated by Grafonaut for Elmarin Norway. https://www.youtube.com/watch?v=CPQZ7NcQ6YQ](img/geospatial-lecture/projection-animation.gif){#fig-map-projection-animation width=85% fig-alt="An animation opens a globe into curved strips, flattens them, and stretches them to fill a rectangular world map."}
+
+::::: {.callout-default .ex-solution}
+
+The familiar Mercator world map Greenland look comparable in size to Africa.
+However,
+the area of Africa is actually about **14 times larger**.
+The Mercator map is useful for navigation
+but the distorted areas on this map
+do not provide a reliable basis for estimating areas and distances
+which is arguably a more common use case when showing maps today.
+The Equal Earth projection shown below
+was introduced in 2018
+in an attempt to preserve relative areas
+It has since slowly been replacing the Mercator projection
+as the default choice for showing maps and visualizing geographic data
+(unless a specific purpose calls for a specific projection).
+
+![An Equal Earth world map preserves relative areas, making Africa much larger than Greenland. We can also see that the size of Antartica is a fraction of that in the Mercator projection. Source: [map-projections.net](https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84).](img/geospatial-lecture/equal-earth-world.png){#fig-map-equal-earth fig-alt="An Equal Earth projection of the same world imagery, showing Africa much larger than Greenland and less exaggerated polar regions."}
+
+:::::
+
+::::
+
+:::
+
+Note that the choice of projection
+also depends on the region being shown.
+A projection designed for a limited region
+suffer less from the issues of distortion
+and different regions often have different choices for their default projection.
+For example,
+in Canada both the transverse Mercator and Lambert conformal conic projections
+are commonly used.
+Special projections can also be used
+for countries with regions spread far apart,
+such as the US,
+which is often shown with Alaska and Hawaii
+repositioned closed to the rest of the American states.
+In general,
+we want to use a projection designed for the place and purpose,
+and keep it consistent across maps that readers need to compare.
+
+## Geographic data and file formats
 
 So far, most of our datasets have been tables of rows and columns. To represent
 country boundaries, flight paths, or subway lines, we also need geometries.
-[GeoJSON](https://geojson.org/) stores these geographic features in JSON.
+**Geometry** describes where a feature is and what shape it has; **attributes**
+describe what we know about it, such as its name, population, or category.
+
+There are two broad ways to represent spatial data:
+
+- **Vector data** describe features using points, lines, and polygons. These
+  are the main focus of this chapter: country boundaries, administrative
+  regions, and locations for symbols.
+- **Raster data** describe a grid of cells, such as satellite imagery or an
+  elevation surface. Formats such as GeoTIFF store georeferencing alongside
+  raster values. A screenshot of a map is an image, but does not by itself
+  supply the feature geometries and attributes needed for our data joins.
+
+Geographical data comes in many different file formats,
+each specialized for slightly different purposes.
+Here,
+we are going to use GeoJSON as an example,
+but in the deep dive below,
+you can read more about different formats.
+
+::: {.deep-dive}
+
+| Format | Typical files | What to recognize |
+|:--|:--|:--|
+| **Shapefile** | `.shp`, `.shx`, `.dbf`, often `.prj` and other sidecars | An older, widely supported vector format. Geometry, attributes, indexes, and CRS information are split across files, usually delivered together in a ZIP archive. Keep the component files together. |
+| **GeoJSON** | `.geojson` or `.json` | JSON containing geometries and attributes. Convenient for inspecting data and exchanging features with web-mapping libraries. Standard GeoJSON uses WGS84 longitude/latitude coordinates. |
+| **GeoPackage** | `.gpkg` | A single SQLite-based file that can contain multiple spatial layers, their attributes, and CRS information. Common in GIS workflows. |
+| **GeoParquet** | `.parquet` | Columnar storage with geometry and spatial metadata, useful for larger analytical datasets. A regular Parquet file is not automatically GeoParquet. |
+| **TopoJSON** | `.topojson` or `.json` | A topology-based JSON format that can share boundary segments between neighboring regions. Common in web maps; its structure differs from GeoJSON. |
+
+:::
+
+[GeoJSON](https://geojson.org/) makes the geometry–attribute relationship easy
+to inspect because it stores geographic features in readable JSON. We use it
+for the prepared boundary files in this chapter, but the mapping principles
+also apply to data read from other formats.
 
 A **Feature** has a `geometry` and a set of `properties`. For example, the
 following deliberately simplified rectangle approximates Colorado's outline:
@@ -76,10 +186,12 @@ but recognizing this structure helps us inspect a downloaded file. See
 [Tom MacWright's GeoJSON primer](https://macwright.org/2015/03/23/geojson-second-bite)
 for more detail.
 
-### Finding boundaries and choosing detail
+### Finding boundary data and choosing detail
 
-[Natural Earth](https://www.naturalearthdata.com/downloads/) provides geographic
-data at several scales:
+A helpful website for finding data with geographical boundaries is
+[Natural Earth](https://www.naturalearthdata.com/downloads/),
+which provides different file format
+at different scales and for different boundary representations:
 
 - **Cultural** data includes countries, administrative regions, and populated places.
 - **Physical** data includes coastlines, rivers, and lakes.
@@ -87,36 +199,17 @@ data at several scales:
 - **1:110 million** is useful for an overview of the world. **1:50 million** and
   **1:10 million** provide more detail for regional maps.
 
-Here, `m` means *million* in the map scale, not meters of positional accuracy.
-More detail means larger files and slower drawing. Zooming into an overview map
-does not recover coastline detail that was omitted from its data.
-
-Natural Earth's download archives contain shapefiles, rather than GeoJSON.
-GeoPandas can read both formats. These are direct download URLs for the two
-archives used to prepare our local GeoJSON files:
-
-```text
-https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip
-https://naciscdn.org/naturalearth/50m/cultural/ne_50m_admin_1_states_provinces.zip
-```
-
-If a website's download button uses a redirect, the browser's Network tab can
-help identify the actual file URL. For detailed local work, also look for data
-from the relevant national or regional mapping agency.
-
 ## Working with geographic data
-
-Both language versions use the same local GeoJSON boundaries and statistical
-tables. Python keeps attributes and geometry in a GeoDataFrame. In R, we read
-the GeoJSON as a list and extract its properties into a table for Plotly.
 
 ::: {.panel-tabset group="language"}
 
 ### Altair {.slide-skip}
 
-**GeoPandas** extends pandas with geometry types and spatial operations.
-`read_file()` reads a local file or a supported URL, including zipped shapefiles.
-Here we use a local snapshot, so rendering does not require downloading boundaries.
+For Altair,
+we use the package GeoPandas,
+which can read many different geo data files into a **GeoDataFrame**,
+holding attributes and geometries for the different regions.
+GeoPandas extends pandas with geometry types and spatial operations.
 
 ```{python}
 #| label: geospatial-read-countries
@@ -144,9 +237,10 @@ world_countries = world_countries.rename(
 world_countries[['name', 'continent', 'pop_est', 'pop_year', 'gdp_year']].head()
 ```
 
-These attributes are historical estimates, not current statistics. Their
-reference years can differ; inspect `pop_year` and `gdp_year` before making a
-substantive comparison.
+Note that these attributes are historical estimates and their
+reference years can differ somehow.
+You can inspect `pop_year` and `gdp_year`
+for the exact collection year of each attribute.
 
 #### Quick static and interactive views
 
@@ -180,10 +274,24 @@ changes the view; it does not change the resolution of the overlaid polygons.
 
 ### ggplot {.slide-skip}
 
-For interactive geographic marks in R, we use **Plotly**. `jsonlite::read_json()`
-reads the feature collection, and `map_dfr()` combines the properties into a
-table. The geometry remains in `world_geojson`; the country names will connect
-it to the table when we draw a map.
+For interactive geographic marks in R, we use Plotly.
+Altohugh we can create basic maps in ggplot,
+the 
+For Plotly,
+we need to read the prepared GeoJSON as a list and
+extract its properties into a table.
+`jsonlite::read_json()`
+reads the feature collection,
+and `map_dfr()` combines the properties into a
+table.
+The geometry remains in `world_geojson`;
+the country names will connect it to the table when we draw a map.
+
+Note that the JSON reader is specific to JSON files.
+For broader GIS importing and
+spatial operations in R, the **sf** package provides `st_read()` for formats
+such as shapefiles and GeoPackage. Here we use the already prepared GeoJSON
+with Plotly directly.
 
 ```{r}
 #| label: geospatial-read-countries-gg
@@ -217,7 +325,8 @@ before making a substantive comparison.
 
 ### Altair {.slide-skip}
 
-Altair accepts a GeoDataFrame directly. `mark_geoshape()` draws its geometries,
+Altair accepts a GeoDataFrame directly.
+`mark_geoshape()` draws its geometries,
 and the usual encoding channels map attributes to color, tooltips, and so on.
 
 ```{python}
@@ -308,11 +417,6 @@ projection_comparison
 ```
 
 :::
-
-Equal-area projections support comparisons of geographic extent. Conformal
-projections preserve local angles and shapes, which can be useful for navigation
-or local detail. Choose a projection for the task and region, and use the same
-one for maps that readers need to compare.
 
 The coordinates in our GeoJSON use longitude and latitude in WGS84
 (`EPSG:4326`). This coordinate reference system describes the data; Altair's
