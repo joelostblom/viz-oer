@@ -119,11 +119,6 @@ def main():
         })
     pd.DataFrame(rows).to_csv(DATA / "geospatial-earthquakes.csv", index=False)
 
-    topology = DATA / "plotly-geo"
-    topology.mkdir(exist_ok=True)
-    for name in ["world_110m.json", "usa_110m.json"]:
-        (topology / name).write_bytes(download(f"https://cdn.plot.ly/{name}"))
-
     if args.lecture:
         import_lecture(args.lecture)
 

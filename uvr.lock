@@ -1,4 +1,4 @@
-manifest_fingerprint = "sha256:095d37b4973879fe8f6df21f0443ba7e7309591950a9a8430c5c143f465d31f8"
+manifest_fingerprint = "sha256:28d54fea29b400fe035f21a03da83de8a0f8c4dbea1a3bf7a6f37b37dca0972d"
 
 [r]
 version = "4.6.1"
@@ -67,6 +67,14 @@ requires = [
     "knitr",
     "Formula",
 ]
+
+[[package]]
+name = "KernSmooth"
+version = "2.23.27"
+source = "cran"
+raw_version = "2.23-27"
+url = "https://cran.r-project.org/src/contrib/KernSmooth_2.23-27.tar.gz"
+checksum = "md5:fcb00c7502387107c125ca4ca6382139"
 
 [[package]]
 name = "Matrix"
@@ -273,6 +281,27 @@ checksum = "md5:64da20583ae2453fe1c86df562eb031b"
 requires = ["backports"]
 
 [[package]]
+name = "class"
+version = "7.3.24"
+source = "cran"
+raw_version = "7.3-24"
+url = "https://cran.r-project.org/src/contrib/class_7.3-24.tar.gz"
+checksum = "md5:4c34ed21d30eadd51157e05ff34f79f2"
+
+[[package]]
+name = "classInt"
+version = "0.4.11"
+source = "cran"
+raw_version = "0.4-11"
+url = "https://cran.r-project.org/src/contrib/classInt_0.4-11.tar.gz"
+checksum = "md5:ef2a4750f70e32d9d8838a00f144df2e"
+requires = [
+    "e1071",
+    "class",
+    "KernSmooth",
+]
+
+[[package]]
 name = "cli"
 version = "3.6.6"
 source = "cran"
@@ -449,6 +478,18 @@ requires = [
     "tibble",
     "tidyselect",
     "vctrs",
+]
+
+[[package]]
+name = "e1071"
+version = "1.7.17"
+source = "cran"
+raw_version = "1.7-17"
+url = "https://cran.r-project.org/src/contrib/e1071_1.7-17.tar.gz"
+checksum = "md5:7e8d521ac6b3a92c7e1888dbb8e59c47"
+requires = [
+    "class",
+    "proxy",
 ]
 
 [[package]]
@@ -1135,6 +1176,14 @@ requires = [
 ]
 
 [[package]]
+name = "proxy"
+version = "0.4.29"
+source = "cran"
+raw_version = "0.4-29"
+url = "https://cran.r-project.org/src/contrib/proxy_0.4-29.tar.gz"
+checksum = "md5:1180e4455fdadb2267aa62512a06b079"
+
+[[package]]
 name = "ps"
 version = "1.9.3"
 source = "cran"
@@ -1349,6 +1398,20 @@ requires = [
 ]
 
 [[package]]
+name = "s2"
+version = "1.1.13"
+source = "cran"
+raw_version = "1.1.13"
+url = "https://cran.r-project.org/src/contrib/s2_1.1.13.tar.gz"
+checksum = "md5:9ab9944eae5694619cdf355578fc4439"
+requires = [
+    "Rcpp",
+    "wk",
+    "Rcpp",
+    "wk",
+]
+
+[[package]]
 name = "sass"
 version = "0.4.10"
 source = "cran"
@@ -1389,6 +1452,21 @@ source = "cran"
 raw_version = "0.8-0"
 url = "https://cran.r-project.org/src/contrib/selectr_0.8-0.tar.gz"
 checksum = "md5:06a8ec7b306aec30a99f3654c60d5f59"
+
+[[package]]
+name = "sf"
+version = "1.1.3"
+source = "cran"
+raw_version = "1.1-3"
+url = "https://cran.r-project.org/src/contrib/sf_1.1-3.tar.gz"
+checksum = "md5:fdb21b171be80feb727c4b1cebe7cfae"
+requires = [
+    "classInt",
+    "DBI",
+    "s2",
+    "units",
+    "Rcpp",
+]
 
 [[package]]
 name = "slider"
@@ -1609,6 +1687,42 @@ checksum = "md5:a9f89aa8a851f7a2a13856e815c8bb1c"
 requires = ["cpp11"]
 
 [[package]]
+name = "units"
+version = "1.0.1"
+source = "cran"
+raw_version = "1.0-1"
+url = "https://cran.r-project.org/src/contrib/units_1.0-1.tar.gz"
+checksum = "md5:6aeee90a7f0b2f63a37f69407bbcca63"
+requires = [
+    "Rcpp",
+    "Rcpp",
+]
+
+[[package]]
+name = "usmap"
+version = "1.0.0"
+source = "cran"
+raw_version = "1.0.0"
+url = "https://cran.r-project.org/src/contrib/usmap_1.0.0.tar.gz"
+checksum = "md5:414bfe0840e2b9f36f8f4e4ef6851b8c"
+requires = [
+    "rlang",
+    "usmapdata",
+]
+
+[[package]]
+name = "usmapdata"
+version = "1.1.0"
+source = "cran"
+raw_version = "1.1.0"
+url = "https://cran.r-project.org/src/contrib/usmapdata_1.1.0.tar.gz"
+checksum = "md5:7e086d87f7f7306439c154821a915549"
+requires = [
+    "rlang",
+    "sf",
+]
+
+[[package]]
 name = "utf8"
 version = "1.2.6"
 source = "cran"
@@ -1686,6 +1800,14 @@ source = "cran"
 raw_version = "3.0.3"
 url = "https://cran.r-project.org/src/contrib/withr_3.0.3.tar.gz"
 checksum = "md5:121bf3699aadb9d1b47d648964b934f8"
+
+[[package]]
+name = "wk"
+version = "0.9.5"
+source = "cran"
+raw_version = "0.9.5"
+url = "https://cran.r-project.org/src/contrib/wk_0.9.5.tar.gz"
+checksum = "md5:2f70ad0274a5d83a8a9de1dfe85da0ea"
 
 [[package]]
 name = "xfun"

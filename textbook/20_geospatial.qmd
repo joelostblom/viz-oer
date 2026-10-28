@@ -274,48 +274,36 @@ changes the view; it does not change the resolution of the overlaid polygons.
 
 ### ggplot {.slide-skip}
 
-For interactive geographic marks in R, we use Plotly.
-Altohugh we can create basic maps in ggplot,
-the 
-For Plotly,
-we need to read the prepared GeoJSON as a list and
-extract its properties into a table.
-`jsonlite::read_json()`
-reads the feature collection,
-and `map_dfr()` combines the properties into a
-table.
-The geometry remains in `world_geojson`;
-the country names will connect it to the table when we draw a map.
-
-Note that the JSON reader is specific to JSON files.
-For broader GIS importing and
-spatial operations in R, the **sf** package provides `st_read()` for formats
-such as shapefiles and GeoPackage. Here we use the already prepared GeoJSON
-with Plotly directly.
+The **sf** package reads spatial data into a dataframe with a geometry column,
+much like GeoPandas. We draw maps with `geom_sf()` and convert them with
+`ggplotly()` to add tooltips, panning, and zooming.
 
 ```{r}
-#| label: geospatial-read-countries-gg
-library(tidyverse)
-library(plotly)
+#| label: geospatial-read-countries-sf
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(plotly, include.only = "ggplotly")
 
-world_geojson <- jsonlite::read_json('data/geospatial-world-countries.geojson')
-world_countries <- map_dfr(world_geojson$features, 'properties')
-head(world_countries)
+map_theme <- theme_void() +
+    theme(plot.background = element_rect(fill = 'white', color = NA),
+          legend.background = element_rect(fill = 'white', color = NA),
+          legend.position = 'bottom', legend.text = element_text(size = 9))
+world_sf <- st_read('data/geospatial-world-countries.geojson', quiet = TRUE)
+head(world_sf)
 ```
 
-Use the same attributes, normalization, and Antarctica filter as in Python:
-
 ```{r}
-#| label: geospatial-country-attributes-gg
-world_countries <- world_countries |>
+#| label: geospatial-country-attributes-sf
+world_sf <- world_sf |>
     rename_with(tolower) |>
     mutate(gdp_per_capita = gdp_md * 1e6 / pop_est) |>
     dplyr::filter(continent != 'Antarctica')
-world_countries |> select(name, continent, pop_est, pop_year, gdp_year) |> head()
+world_sf |> select(name, continent, pop_est, pop_year, gdp_year) |> head()
 ```
 
-These are historical estimates. Check the population and GDP reference years
-before making a substantive comparison.
+The geometry stays attached during filtering and joins. In later plots, the
+`label` aesthetic supplies names to the tooltip without drawing text.
 
 :::
 
@@ -336,29 +324,17 @@ alt.Chart(world_countries, width=550).mark_geoshape()
 
 ### ggplot {.slide-skip}
 
-Plotly's `choropleth` trace draws filled regions. `locations` supplies a key from
-the table, and `featureidkey` identifies the matching property in the GeoJSON.
-The constant `z` value gives all matched countries the same fill.
+`geom_sf()` draws the geometry, and `coord_sf()` chooses the projection.
+We use `text` to encode the tooltip
+to avoid that it gets prefixed with the name of the dataframe column.
 
 ```{r}
-#| label: geospatial-world-outline-gg
-world_map <- plot_ly(
-    world_countries, type = 'choropleth', geojson = world_geojson,
-    featureidkey = 'properties.NAME', locations = ~name,
-    z = rep(1, nrow(world_countries)), text = ~name,
-    colorscale = list(c(0, 'lightgray'), c(1, 'lightgray')),
-    showscale = FALSE, hoverinfo = 'text',
-    marker = list(line = list(color = 'white', width = 0.3))
-) |>
-    layout(margin = list(l = 0, r = 0, b = 10, t = 30),
-           geo = list(projection = list(type = 'equal earth'), visible = FALSE)) |>
-    config(topojsonURL = 'data/plotly-geo/')
-world_map
+#| label: geospatial-world-outline-sf
+world_map_gg <- ggplot(world_sf, aes(text = name)) +
+    geom_sf() +
+    coord_sf(crs = '+proj=eqearth')
+ggplotly(world_map_gg, tooltip = 'text')
 ```
-
-`~` references a column in the table. We explicitly choose Equal Earth to match
-the Altair map. Plotly's supporting TopoJSON files are also local, so the map
-does not need geographic downloads from Plotly's CDN.
 
 :::
 
@@ -383,31 +359,15 @@ projection_map.project('equalEarth').properties(title='Equal Earth') | \
 
 #### ggplot {.slide-skip}
 
-Each trace needs its own geographic subplot to use a different projection.
-The `geo` and `geo2` domains place the two maps side by side.
+The projections are calculated in R before converting the two ggplots.
 
 ```{r}
-#| label: geospatial-projection-comparison-gg
-projection_comparison <- world_map |>
-    add_trace(
-        data = world_countries, type = 'choropleth', geo = 'geo2',
-        geojson = world_geojson, featureidkey = 'properties.NAME', locations = ~name,
-        z = rep(1, nrow(world_countries)), text = ~name, hoverinfo = 'text',
-        colorscale = list(c(0, 'lightgray'), c(1, 'lightgray')),
-        showscale = FALSE, marker = list(line = list(color = 'white', width = 0.3)),
-        inherit = FALSE
-    ) |>
-    layout(
-        geo = list(domain = list(x = c(0, 0.48), y = c(0, 1)),
-                    projection = list(type = 'equal earth')),
-        geo2 = list(domain = list(x = c(0.52, 1), y = c(0, 1)),
-                    projection = list(type = 'mercator'), visible = FALSE),
-        annotations = list(
-            list(x = 0.23, y = 1, text = 'Equal Earth', showarrow = FALSE),
-            list(x = 0.77, y = 1, text = 'Mercator', showarrow = FALSE)
-        )
-    )
-projection_comparison
+#| label: geospatial-projection-comparison-sf
+equal_earth_gg <- world_map_gg + aes(fill = I('lightgray')) + labs(title = 'Equal Earth')
+mercator_gg <- world_map_gg + aes(fill = I('lightgray')) +
+    coord_sf(crs = '+proj=merc') + labs(title = 'Mercator')
+plotly::subplot(ggplotly(equal_earth_gg, tooltip = 'text'),
+                ggplotly(mercator_gg, tooltip = 'text'), nrows = 1)
 ```
 
 :::
@@ -431,42 +391,19 @@ gets a categorical color scale, and the country name can appear in a tooltip.
 ```{python}
 #| label: geospatial-continents-alt
 alt.Chart(world_countries, width=500).mark_geoshape().encode(
-    color=alt.Color('continent:N').title('Continent'),
-    tooltip='name:N'
+    color=alt.Color('continent').title('Continent'),
+    tooltip='name'
 )
 ```
 
 #### ggplot {.slide-skip}
 
-Plotly's choropleth color channel uses numeric `z` values. For categories, we
-use integer codes and label the colorbar with the original names. A stepped
-color scale gives each category a distinct color rather than a gradient.
-This small helper repeats each color up to the next bin boundary.
+Map the categorical variable directly to `fill`.
 
 ```{r}
-#| label: geospatial-continents-gg
-step_colors <- function(colors) {
-    positions <- rep(seq(0, 1, length.out = length(colors) + 1), each = 2)
-    positions <- positions[-c(1, length(positions))]
-    Map(function(position, color) list(position, color), positions, rep(colors, each = 2))
-}
-continent_levels <- sort(unique(world_countries$continent))
-continent_colors <- c('#4c78a8', '#f58518', '#e45756', '#72b7b2',
-                       '#54a24b', '#eeca3b', '#b279a2')
-world_map |>
-    style(
-        z = match(world_countries$continent, continent_levels),
-        zmin = 0.5, zmax = length(continent_levels) + 0.5,
-        colorscale = step_colors(continent_colors), showscale = TRUE,
-        colorbar = list(title = 'Continent', tickvals = seq_along(continent_levels),
-                        ticktext = continent_levels),
-        customdata = world_countries$continent,
-        hovertemplate = '%{text}<br>%{customdata}<extra></extra>'
-    )
+#| label: geospatial-continents-sf
+ggplotly(world_map_gg + aes(fill = continent), tooltip = 'text')
 ```
-
-`style()` changes trace attributes while keeping the map's geometry and layout.
-The numeric codes are lookup positions, not a ranking of the continents.
 
 :::
 
@@ -477,14 +414,18 @@ start with total population, then replace the color encoding with GDP per person
 
 #### Altair {.slide-skip}
 
+Showing total population.
+
 ```{python}
 #| label: geospatial-world-population-alt
 country_map = alt.Chart(world_countries, width=500).mark_geoshape().encode(
-    color=alt.Color('pop_est:Q').title('Population estimate'),
-    tooltip=['name:N', alt.Tooltip('pop_est:Q', format=',')]
+    color=alt.Color('pop_est').title('Population estimate'),
+    tooltip=['name', alt.Tooltip('pop_est', format=',')]
 )
 country_map
 ```
+
+Here we show the GDP per capita.
 
 ```{python}
 #| label: geospatial-world-gdp-alt
@@ -496,24 +437,14 @@ country_map.encode(
 
 #### ggplot {.slide-skip}
 
-Use the same population estimates and GDP-per-person calculation as in Altair.
-The sequential palette represents a quantitative variable; the tooltip states
-the value and its units.
-
 ```{r}
-#| label: geospatial-world-population-gg
-world_map |>
-    style(z = world_countries$pop_est, colorscale = 'Blues', showscale = TRUE,
-          colorbar = list(title = 'Population estimate'),
-          hovertemplate = '%{text}<br>Population: %{z:,.0f}<extra></extra>')
+#| label: geospatial-world-population-sf
+ggplotly(world_map_gg + aes(fill = pop_est), tooltip = 'text')
 ```
 
 ```{r}
-#| label: geospatial-world-gdp-gg
-world_map |>
-    style(z = world_countries$gdp_per_capita, colorscale = 'Blues', showscale = TRUE,
-          colorbar = list(title = 'GDP per person<br>(US$)'),
-          hovertemplate = '%{text}<br>GDP per person: US$%{z:,.0f}<extra></extra>')
+#| label: geospatial-world-gdp-sf
+ggplotly(world_map_gg + aes(fill = gdp_per_capita), tooltip = 'text')
 ```
 
 :::
@@ -525,51 +456,37 @@ an ordering number, so the default label order is meaningful here.
 
 #### Altair {.slide-skip}
 
+We encode the economy as an ordinal variable
+since it has a natural order to it.
+
 ```{python}
 #| label: geospatial-economy-alt
 country_map.encode(
-    color=alt.Color('economy:O').title('Economy group'),
-    tooltip=['name:N', 'economy:O']
+    color=alt.Color('economy:O'),
+    tooltip=['name', 'economy:O']
 )
 ```
 
 ```{python}
 #| label: geospatial-income-alt
 country_map.encode(
-    color=alt.Color('income_grp:O').title('Income group'),
+    color=alt.Color('income_grp:O'),
     tooltip=['name:N', 'income_grp:O']
 )
 ```
 
 #### ggplot {.slide-skip}
 
-The same category codes now follow a meaningful order. A stepped sequential
-palette preserves that ordering without implying intermediate categories.
+Ordered factors give the sequential palette the intended category order.
 
 ```{r}
-#| label: geospatial-economy-gg
-economy_levels <- sort(unique(world_countries$economy))
-world_map |>
-    style(z = match(world_countries$economy, economy_levels),
-          zmin = 0.5, zmax = length(economy_levels) + 0.5, showscale = TRUE,
-          colorscale = step_colors(colorRampPalette(c('#deebf7', '#08519c'))(length(economy_levels))),
-          colorbar = list(title = 'Economy group', tickvals = seq_along(economy_levels),
-                          ticktext = economy_levels),
-          customdata = world_countries$economy,
-          hovertemplate = '%{text}<br>%{customdata}<extra></extra>')
+#| label: geospatial-economy-sf
+ggplotly(world_map_gg + aes(fill = factor(economy, ordered = TRUE)), tooltip = 'name')
 ```
 
 ```{r}
-#| label: geospatial-income-gg
-income_levels <- sort(unique(world_countries$income_grp))
-world_map |>
-    style(z = match(world_countries$income_grp, income_levels),
-          zmin = 0.5, zmax = length(income_levels) + 0.5, showscale = TRUE,
-          colorscale = step_colors(colorRampPalette(c('#deebf7', '#08519c'))(length(income_levels))),
-          colorbar = list(title = 'Income group', tickvals = seq_along(income_levels),
-                          ticktext = income_levels),
-          customdata = world_countries$income_grp,
-          hovertemplate = '%{text}<br>%{customdata}<extra></extra>')
+#| label: geospatial-income-sf
+ggplotly(world_map_gg + aes(fill = factor(income_grp, ordered = TRUE)), tooltip = 'name')
 ```
 
 :::
@@ -588,8 +505,8 @@ geometries. It is different from cropping a world map to a rectangular window.
 africa = alt.Chart(
     world_countries.query('continent == "Africa"'), width=450, height=420
 ).mark_geoshape().encode(
-    color=alt.Color('pop_est:Q').title('Population estimate'),
-    tooltip=['name:N', alt.Tooltip('pop_est:Q', format=',')]
+    color=alt.Color('pop_est').title('Population estimate'),
+    tooltip=['name', alt.Tooltip('pop_est', format=',')]
 )
 africa
 ```
@@ -604,27 +521,24 @@ africa.mark_geoshape(stroke='gray', strokeWidth=0.5)
 
 #### ggplot {.slide-skip}
 
-Filter the attribute table, then replace all row-dependent trace attributes.
-`fitbounds = 'locations'` fits the view to the matched African countries.
+Filtering an `sf` dataframe keeps its geometries attached.
 
 ```{r}
-#| label: geospatial-africa-gg
-african_countries <- world_countries |> dplyr::filter(continent == 'Africa')
-africa_map <- world_map |>
-    style(locations = african_countries$name, text = african_countries$name,
-          z = african_countries$pop_est, colorscale = 'Blues', showscale = TRUE,
-          colorbar = list(title = 'Population estimate'),
-          marker = list(line = list(width = 0)),
-          hovertemplate = '%{text}<br>Population: %{z:,.0f}<extra></extra>') |>
-    layout(geo = list(fitbounds = 'locations'))
-africa_map
+#| label: geospatial-africa-sf
+africa_sf <- world_sf |> filter(continent == 'Africa')
+africa_map_gg <- ggplot(africa_sf, aes(label = name, fill = pop_est)) +
+    geom_sf(color = NA) + coord_sf(crs = '+proj=eqearth')
+ggplotly(africa_map_gg, tooltip = c('label', 'fill'))
 ```
-
-Add a visible border between adjacent regions:
+We could emphasize the lines between countries more
 
 ```{r}
-#| label: geospatial-africa-boundaries-gg
-africa_map |> style(marker = list(line = list(color = 'gray', width = 0.5)))
+#| label: geospatial-africa-boundaries-sf
+ggplotly(
+    africa_map_gg
+        + geom_sf(color = 'grey', linewidth = 0.1)
+        + coord_sf(crs = '+proj=eqearth'),
+    tooltip = c('label', 'fill'))
 ```
 
 :::
@@ -649,16 +563,14 @@ alt.Chart(
 
 ### ggplot {.slide-skip}
 
-Filter the same two country names and fit the view to those locations:
+Here we use `+` to change the data in our existing ggplot object
+to only include North America.
 
 ```{r}
-#| label: geospatial-north-america-gg
-north_america <- world_countries |>
-    dplyr::filter(name %in% c('Canada', 'United States of America'))
-world_map |>
-    style(locations = north_america$name, text = north_america$name,
-          z = rep(1, nrow(north_america))) |>
-    layout(geo = list(fitbounds = 'locations'))
+#| label: geospatial-north-america-sf
+north_america_sf <- world_sf |>
+    filter(name %in% c('Canada', 'United States of America'))
+ggplotly((world_map_gg + north_america_sf), tooltip = 'text')
 ```
 
 :::
@@ -680,44 +592,26 @@ world_regions[['name', 'admin', 'iso_a2']].head()
 ```{python}
 #| label: geospatial-regional-boundaries-alt
 alt.Chart(world_regions, width=500).mark_geoshape(stroke='white', strokeWidth=0.3).encode(
-    color=alt.Color('admin:N').title('Country'),
-    tooltip=['admin:N', 'name:N']
+    color=alt.Color('admin').title('Country'),
+    tooltip=['admin', 'name']
 )
 ```
 
 ### ggplot {.slide-skip}
 
-Extract the properties from the same Admin 1 feature collection. These features
-use lowercase `name`, so the matching key becomes `properties.name`.
-
 ```{r}
-#| label: geospatial-read-regions-gg
-regions_geojson <- jsonlite::read_json('data/geospatial-world-regions.geojson')
-world_regions <- map_dfr(regions_geojson$features, 'properties')
-world_regions |> select(name, admin, iso_a2) |> head()
+#| label: geospatial-read-regions-sf
+regions_sf <- st_read('data/geospatial-world-regions.geojson', quiet = TRUE)
+regions_sf |> select(name, admin, iso_a2) |> head()
 ```
 
 ```{r}
-#| label: geospatial-regional-boundaries-gg
-country_levels <- sort(unique(world_regions$admin))
-regions_map <- plot_ly(
-    world_regions, type = 'choropleth', geojson = regions_geojson,
-    featureidkey = 'properties.name', locations = ~name,
-    z = match(world_regions$admin, country_levels),
-    zmin = 0.5, zmax = length(country_levels) + 0.5,
-    colorscale = step_colors(hcl.colors(length(country_levels), 'Dark 3')),
-    colorbar = list(title = 'Country', tickvals = seq_along(country_levels), ticktext = country_levels),
-    text = ~paste(name, admin, sep = '<br>'), hoverinfo = 'text',
-    marker = list(line = list(color = 'white', width = 0.3))
-) |>
-    layout(margin = list(l = 0, r = 0, b = 10, t = 30),
-           geo = list(projection = list(type = 'equal earth'), visible = FALSE)) |>
-    config(topojsonURL = 'data/plotly-geo/')
-regions_map
+#| label: geospatial-regional-boundaries-sf
+regions_map_gg <- ggplot(regions_sf, aes(label = name, fill = admin)) +
+    geom_sf() +
+    coord_sf(crs = '+proj=eqearth')
+ggplotly(regions_map_gg, tooltip = c('label', 'fill'))
 ```
-
-Country and subdivision names are separate attributes. For data with repeated
-subdivision names, use a unique regional identifier rather than name alone.
 
 :::
 
@@ -759,49 +653,23 @@ makes a region a link; clicking it opens its Wikipedia page.
 
 #### ggplot {.slide-skip}
 
-Keep Canada's 13 features in a smaller GeoJSON collection and filter its
-attribute table to match. Plotly uses the central meridian, `-90`, where
-Altair specifies a longitude rotation of `90`.
+The `sf` version keeps the geometry with the province attributes. We use the
+same central meridian as the other implementations.
 
 ```{r}
-#| label: geospatial-canada-regions-gg
-canadian_provinces <- world_regions |> dplyr::filter(iso_a2 == 'CA')
-canada_geojson <- regions_geojson
-canada_geojson$features <- keep(regions_geojson$features, function(feature) {
-    feature$properties$iso_a2 == 'CA'
-})
-canadian_provinces |> select(name, postal, latitude, longitude)
+#| label: geospatial-canada-regions-sf
+canadian_provinces_sf <- regions_sf |> filter(iso_a2 == 'CA')
+canadian_provinces_sf |> select(name, postal, latitude, longitude)
+canada_crs <- '+proj=tmerc +lon_0=-90 +lat_0=0 +datum=WGS84'
 ```
 
 ```{r}
-#| label: geospatial-canada-links-gg
-province_levels <- sort(canadian_provinces$name)
-canada_map <- plot_ly(
-    canadian_provinces, type = 'choropleth', geojson = canada_geojson,
-    featureidkey = 'properties.name', locations = ~name,
-    z = match(canadian_provinces$name, province_levels),
-    zmin = 0.5, zmax = length(province_levels) + 0.5,
-    colorscale = step_colors(hcl.colors(length(province_levels), 'Dark 3')),
-    colorbar = list(title = 'Province or territory', len = 1,
-                    tickvals = seq_along(province_levels), ticktext = province_levels),
-    text = ~name, customdata = ~wikipedia, hoverinfo = 'text',
-    marker = list(line = list(color = 'white', width = 0.5))
-) |>
-    layout(margin = list(l = 0, r = 0, b = 10, t = 30),
-           geo = list(projection = list(type = 'transverse mercator',
-                                        rotation = list(lon = -90)),
-                      fitbounds = 'locations', visible = FALSE)) |>
-    config(topojsonURL = 'data/plotly-geo/')
-canada_map |> htmlwidgets::onRender("
-function(el) {
-  el.on('plotly_click', function(event) {
-    window.open(event.points[0].customdata, '_blank', 'noopener');
-  });
-}")
+#| label: geospatial-canada-links-sf
+canada_map_gg <- ggplot(canadian_provinces_sf, aes(fill = name)) +
+    geom_sf() +
+    coord_sf(crs = canada_crs)
+ggplotly(canada_map_gg, tooltip = 'fill')
 ```
-
-The click handler uses the Wikipedia URL stored in `customdata`. It adds the
-same region-link behavior as Altair's `href` channel.
 
 :::
 
@@ -850,17 +718,15 @@ canadian_provinces[['name', 'population']]
 
 #### ggplot {.slide-skip}
 
-Read the same census snapshot and join by region name. `relationship` checks
-that neither table introduces duplicate matches, while the final checks catch
-an unmatched or missing region.
+The left join preserves the geometries and the same census counts.
 
 ```{r}
-#| label: geospatial-canada-population-join-gg
-province_populations <- read_csv('data/geospatial-canada-population-2021.csv')
-canadian_provinces <- canadian_provinces |>
-    left_join(province_populations, by = 'name', relationship = 'one-to-one')
-stopifnot(nrow(canadian_provinces) == 13, !anyNA(canadian_provinces$population))
-canadian_provinces |> select(name, population)
+#| label: geospatial-canada-population-join-sf
+province_populations_sf <- readr::read_csv('data/geospatial-canada-population-2021.csv')
+canadian_provinces_sf <- canadian_provinces_sf |>
+    left_join(province_populations_sf, by = 'name', relationship = 'one-to-one')
+stopifnot(nrow(canadian_provinces_sf) == 13, !anyNA(canadian_provinces_sf$population))
+canadian_provinces_sf |> select(name, population)
 ```
 
 :::
@@ -881,27 +747,21 @@ We can now color the regions by population, using the new column from the join.
 canada_population_map = alt.Chart(
     canadian_provinces, width=500, height=420
 ).mark_geoshape(stroke='gray').project('transverseMercator', rotate=[90, 0, 0]).encode(
-    color=alt.Color('population:Q').title('Population, 2021'),
-    tooltip=['name:N', alt.Tooltip('population:Q', format=',')]
+    color=alt.Color('population'),
+    tooltip=['name', alt.Tooltip('population', format=',')]
 )
 canada_population_map
 ```
 
 ### ggplot {.slide-skip}
 
-Replace the category codes with the joined populations, and use a quantitative
-sequential color scale. The location order is unchanged by the left join.
+Replace the data with the joined spatial table and map population to `fill`.
 
 ```{r}
-#| label: geospatial-canada-population-gg
-canada_population_map <- canada_map |>
-    style(z = canadian_provinces$population,
-          zmin = 0, zmax = max(canadian_provinces$population),
-          colorscale = 'Blues',
-          colorbar = list(title = 'Population, 2021', tickmode = 'auto'),
-          hovertemplate = '%{text}<br>Population: %{z:,.0f}<extra></extra>',
-          marker = list(line = list(color = 'gray', width = 0.5)))
-canada_population_map
+#| label: geospatial-canada-population-sf
+canada_population_gg <- (canada_map_gg + canadian_provinces_sf) +
+    aes(label = name, fill = population)
+ggplotly(canada_population_gg, tooltip = c('label', 'fill'))
 ```
 
 :::
@@ -931,24 +791,19 @@ canada_population_map.encode(
 
 #### ggplot {.slide-skip}
 
-Use explicit two-million-person bins and the stepped scale. The boundaries are
-visible in the code, making the binning decision easy to inspect or change.
-The tooltip still reports the original population, not its bin code.
+Use the same two-million-person boundaries, now as a factor for a discrete scale.
 
 ```{r}
-#| label: geospatial-canada-binned-gg
-population_breaks <- seq(0, 16e6, by = 2e6)
-population_bins <- cut(canadian_provinces$population, breaks = population_breaks,
-                       right = FALSE, labels = FALSE)
-bin_labels <- paste0(head(population_breaks, -1) / 1e6, '–',
-                      tail(population_breaks, -1) / 1e6, ' million')
-canada_population_map |>
-    style(z = population_bins, zmin = 0.5, zmax = length(bin_labels) + 0.5,
-          colorscale = step_colors(colorRampPalette(c('#deebf7', '#08519c'))(length(bin_labels))),
-          colorbar = list(title = 'Population, 2021', tickmode = 'array',
-                          tickvals = seq_along(bin_labels), ticktext = bin_labels),
-          customdata = canadian_provinces$population,
-          hovertemplate = '%{text}<br>Population: %{customdata:,.0f}<extra></extra>')
+#| label: geospatial-canada-binned-sf
+population_breaks_gg <- seq(0, 16e6, by = 2e6)
+population_labels_gg <- paste0(head(population_breaks_gg, -1) / 1e6, '–',
+                               tail(population_breaks_gg, -1) / 1e6, ' million')
+canadian_provinces_sf <- canadian_provinces_sf |>
+    mutate(population_bin = cut(population, breaks = population_breaks_gg,
+                                right = FALSE, labels = population_labels_gg))
+ggplotly((canada_population_gg + canadian_provinces_sf) +
+             aes(fill = population_bin),
+         tooltip = c('label', 'fill'))
 ```
 
 :::
@@ -1058,22 +913,13 @@ alt.Chart(us_states, width=550).mark_geoshape(stroke='white')
 
 #### ggplot {.slide-skip}
 
-Keep the same 51 regions: the 50 states and the District of Columbia. Reuse the
-outline map with their GeoJSON features and matching names.
-
 ```{r}
-#| label: geospatial-us-regions-gg
-us_states <- world_regions |> dplyr::filter(iso_a2 == 'US')
-us_geojson <- regions_geojson
-us_geojson$features <- keep(regions_geojson$features, function(feature) {
-    feature$properties$iso_a2 == 'US'
-})
-us_map <- world_map |>
-    style(geojson = us_geojson, featureidkey = 'properties.name',
-          locations = us_states$name, text = us_states$name,
-          z = rep(1, nrow(us_states))) |>
-    layout(geo = list(fitbounds = 'locations'))
-us_map
+#| label: geospatial-us-regions-sf
+us_states_sf <- regions_sf |> dplyr::filter(iso_a2 == 'US')
+us_map_gg <- ggplot(us_states_sf, aes(label = name)) +
+    geom_sf() +
+    coord_sf(crs = '+proj=eqearth')
+ggplotly(us_map_gg + aes(fill = I('lightgray')), tooltip = 'label')
 ```
 
 :::
@@ -1093,15 +939,34 @@ alt.Chart(us_states, width=550).mark_geoshape(stroke='white').project('albersUsa
 
 #### ggplot {.slide-skip}
 
-Plotly calls the composite projection `'albers usa'`. Its USA scope supplies
-the standard inset arrangement rather than fitting one continuous world view.
+A composite inset arrangement is not a single CRS. This helper separately
+projects Alaska and Hawaii and moves them into a compact **display-only** layout.
+Alaska is reduced to 35% of its linear size, as in the standard composite view.
+Keep the original spatial data for measurements and geographic analysis.
 
 ```{r}
-#| label: geospatial-us-albers-gg
-us_albers_map <- us_map |>
-    layout(geo = list(scope = 'usa', fitbounds = FALSE,
-                      projection = list(type = 'albers usa')))
-us_albers_map
+#| label: geospatial-us-albers-sf
+alaska_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Alaska'), 3338))[c('xmin', 'ymin')]
+hawaii_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Hawaii'), 26904))[c('xmin', 'ymin')]
+us_insets <- function(features) {
+    move <- function(part, crs, origin, scale, position) {
+        part <- st_transform(part, crs)
+        geometry <- (st_geometry(part) - as.numeric(origin)) * scale + position
+        st_geometry(part) <- st_set_crs(geometry, 5070)
+        part
+    }
+    bind_rows(
+        features |> dplyr::filter(!name %in% c('Alaska', 'Hawaii')) |> st_transform(5070),
+        move(dplyr::filter(features, name == 'Alaska'), 3338, alaska_origin,
+             0.35, c(-2200000, -1200000)),
+        move(dplyr::filter(features, name == 'Hawaii'), 26904, hawaii_origin,
+             1, c(-1100000, -1150000))
+    )
+}
+us_albers_gg <- ggplot(us_insets(us_states_sf), aes(label = name)) +
+    geom_sf(color = 'white', linewidth = 0.2) +
+    coord_sf(crs = 5070) + map_theme
+ggplotly(us_albers_gg + aes(fill = I('lightgray')), tooltip = 'label')
 ```
 
 :::
@@ -1144,17 +1009,14 @@ us_states[['name', 'winning_party', 'electoral_votes']].head()
 
 #### ggplot {.slide-skip}
 
-Join the same election table and check both the number of regions and the total
-electoral votes:
-
 ```{r}
-#| label: geospatial-election-data-gg
-election_results <- read_csv('data/geospatial-us-election-2012.csv')
-us_states <- us_states |>
-    left_join(election_results, by = 'name', relationship = 'one-to-one')
-stopifnot(nrow(us_states) == 51, !anyNA(us_states$electoral_votes),
-          sum(us_states$electoral_votes) == 538)
-us_states |> select(name, winning_party, electoral_votes) |> head()
+#| label: geospatial-election-data-sf
+election_results_sf <- readr::read_csv('data/geospatial-us-election-2012.csv')
+us_states_sf <- us_states_sf |>
+    left_join(election_results_sf, by = 'name', relationship = 'one-to-one')
+stopifnot(nrow(us_states_sf) == 51, !anyNA(us_states_sf$electoral_votes),
+          sum(us_states_sf$electoral_votes) == 538)
+us_states_sf |> select(name, winning_party, electoral_votes) |> head()
 ```
 
 :::
@@ -1189,22 +1051,16 @@ election_map
 
 #### ggplot {.slide-skip}
 
-Use the same party labels and blue/red colors. The stepped color scale encodes
-two categories, not a continuous partisan margin.
+The fill aesthetic handles the two party categories directly. The inset helper
+is applied after joining the election attributes.
 
 ```{r}
-#| label: geospatial-election-winners-gg
-party_levels <- c('Dem', 'Rep')
-party_colors <- c('#4c78a8', '#e45756')
-election_map <- us_albers_map |>
-    style(z = match(us_states$winning_party, party_levels), zmin = 0.5, zmax = 2.5,
-          colorscale = step_colors(party_colors), showscale = TRUE,
-          colorbar = list(title = 'Winning party', tickvals = 1:2, ticktext = party_levels),
-          text = paste(us_states$name, us_states$winning_party, sep = '<br>'),
-          customdata = us_states$electoral_votes,
-          hovertemplate = '%{text}<br>Electoral votes: %{customdata}<extra></extra>',
-          marker = list(line = list(color = 'white', width = 0.5)))
-election_map
+#| label: geospatial-election-winners-sf
+party_colors_gg <- c(Dem = '#4c78a8', Rep = '#e45756')
+us_display_sf <- us_insets(us_states_sf)
+election_map_gg <- (us_albers_gg + us_display_sf) +
+    aes(fill = winning_party) + scale_fill_manual(values = party_colors_gg, name = 'Winning party')
+ggplotly(election_map_gg, tooltip = c('label', 'fill'))
 ```
 
 :::
@@ -1227,14 +1083,14 @@ election_map.encode(
 
 #### ggplot {.slide-skip}
 
-Choropleth marker opacity can vary by location. Rescale electoral votes into
-an opacity range while retaining the party colors.
+This is the ggplot implementation. It is displayed statically because our
+current `ggplotly()` version cannot convert varying polygon alpha in this
+`geom_sf()` layer reliably.
 
 ```{r}
-#| label: geospatial-election-opacity-gg
-election_map |>
-    style(marker = list(opacity = scales::rescale(us_states$electoral_votes, to = c(0.3, 1)),
-                        line = list(color = 'white', width = 0.5)))
+#| label: geospatial-election-opacity-sf
+election_map_gg + aes(alpha = electoral_votes) +
+    scale_alpha_continuous(range = c(0.3, 1), name = 'Electoral votes')
 ```
 
 :::
@@ -1304,24 +1160,20 @@ election_map + electoral_points
 
 #### ggplot {.slide-skip}
 
-Add a `scattergeo` trace to the same geographic subplot. Its longitude and
-latitude locate the circles, and `sizemode = 'area'` makes symbol area represent
-electoral votes. `inherit = FALSE` keeps choropleth-only attributes out of the
-new point trace. Hover over a circle for its electoral-vote count.
+Convert the supplied point coordinates into `sf` features and apply the same
+inset layout to points and boundaries. `scale_size_area()` makes circle area
+represent electoral votes.
 
 ```{r}
-#| label: geospatial-election-neutral-points-gg
-vote_size_reference <- 2 * max(us_states$electoral_votes) / 40^2
-election_map |>
-    add_trace(
-        data = us_states, type = 'scattergeo', mode = 'markers',
-        lon = ~longitude, lat = ~latitude, text = ~name, customdata = ~electoral_votes,
-        marker = list(size = us_states$electoral_votes, sizemode = 'area',
-                      sizeref = vote_size_reference, color = 'white',
-                      line = list(color = 'black', width = 1)),
-        hovertemplate = '%{text}<br>Electoral votes: %{customdata}<extra></extra>',
-        showlegend = FALSE, inherit = FALSE
-    )
+#| label: geospatial-election-neutral-points-sf
+electoral_points_sf <- st_as_sf(st_drop_geometry(us_states_sf),
+                                coords = c('longitude', 'latitude'), crs = 4326)
+electoral_display_sf <- us_insets(electoral_points_sf)
+ggplotly(election_map_gg +
+             geom_sf(data = electoral_display_sf, aes(size = electoral_votes),
+                     fill = 'white', color = 'black', shape = 21, inherit.aes = FALSE) +
+             scale_size_area(max_size = 12, name = 'Electoral votes'),
+         tooltip = c('label', 'fill', 'size'))
 ```
 
 :::
@@ -1348,25 +1200,17 @@ map_points
 
 #### ggplot {.slide-skip}
 
-Use the neutral state map as the background. For point traces, Plotly can map
-the categorical `color` directly; the named colors keep the parties consistent
-with the choropleth.
+Use a neutral boundary layer and map party and electoral votes to the points.
 
 ```{r}
-#| label: geospatial-election-colored-points-gg
-us_albers_map |>
-    add_trace(
-        data = us_states, type = 'scattergeo', mode = 'markers',
-        lon = ~longitude, lat = ~latitude,
-        color = ~winning_party, colors = setNames(party_colors, party_levels),
-        text = ~paste(name, winning_party, sep = '<br>'), customdata = ~electoral_votes,
-        marker = list(size = us_states$electoral_votes, sizemode = 'area',
-                      sizeref = vote_size_reference, opacity = 0.8,
-                      line = list(color = 'white', width = 0.5)),
-        hovertemplate = '%{text}<br>Electoral votes: %{customdata}<extra></extra>',
-        inherit = FALSE
-    ) |>
-    layout(legend = list(title = list(text = 'Winning party')))
+#| label: geospatial-election-colored-points-sf
+ggplotly((us_albers_gg + us_display_sf) + aes(fill = I('lightgray')) +
+             geom_sf(data = electoral_display_sf,
+                     aes(label = name, color = winning_party, size = electoral_votes),
+                     alpha = 0.8, inherit.aes = FALSE) +
+             scale_color_manual(values = party_colors_gg, name = 'Winning party') +
+             scale_size_area(max_size = 12, name = 'Electoral votes'),
+         tooltip = c('label', 'colour', 'size'))
 ```
 
 :::
@@ -1429,8 +1273,9 @@ us_states.groupby('winning_party')['electoral_votes'].sum()
 #### ggplot {.slide-skip}
 
 ```{r}
-#| label: geospatial-electoral-totals-gg
-us_states |>
+#| label: geospatial-electoral-totals-sf
+us_states_sf |>
+    st_drop_geometry() |>
     group_by(winning_party) |>
     summarise(electoral_votes = sum(electoral_votes), .groups = 'drop')
 ```
@@ -1441,7 +1286,7 @@ The totals are 332 for the Democratic candidate and 206 for the Republican
 candidate. Neither a winner-by-state map nor this electoral-vote table tells us
 the popular-vote margin within each state.
 
-{.deep-dive}
+::: {.deep-dive}
 
 ## A rotating earthquake globe
 
@@ -1496,6 +1341,6 @@ that a circle mark will be clipped behind the globe.
 - [Fundamentals of Data Visualization: visualizing geospatial data](https://clauswilke.com/dataviz/geospatial-data.html).
 - [Altair: geoshape marks and mapping points](https://altair-viz.github.io/user_guide/marks/geoshape.html).
 - [GeoPandas: interactive mapping](https://geopandas.org/en/stable/docs/user_guide/interactive_mapping.html).
-- [Plotly for R: maps](https://plotly-r.com/maps.html).
-- [Plotly for R: custom GeoJSON choropleths](https://plotly.com/r/choropleth-maps/).
+- [ggplot2: maps with simple features](https://ggplot2.tidyverse.org/reference/ggsf.html).
+- [Plotly for R: converting simple-feature maps with ggplotly](https://plotly-r.com/maps.html#sf).
 - [Natural Earth downloads](https://www.naturalearthdata.com/downloads/).

@@ -37,8 +37,9 @@ to run explicitly, so rendering the book does not create export files in the sou
 It precedes Interactivity so its layout and offline-export techniques can be reused there.
 Chapter 20, **Geospatial**, adapts the DSCI 532 geoviz notebook: GeoJSON and
 GeoPandas, projections, choropleths, proportional symbols, and linked map selections.
-Altair and live Plotly R examples share language tabs and use the same data.
-Its boundary and table snapshots and Plotly geographic assets are stored locally.
+Altair and ggplot2/sf examples share language tabs and use the same data, with
+`ggplotly()` providing interactivity for the R maps. Boundary and table snapshots
+are stored locally.
 
 ### GitHub Actions publishing
 

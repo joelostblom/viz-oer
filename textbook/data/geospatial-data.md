@@ -49,18 +49,15 @@ exports. GeoPandas can also read the source shapefiles directly.
   magnitude, and place from the historical USGS sample distributed by Vega.
   Source: <https://raw.githubusercontent.com/vega/vega-datasets/main/data/earthquakes.json>.
 
-The Altair and Plotly R tabs use these same boundaries and statistical tables.
+The Altair and ggplot tabs use these same boundaries and statistical tables.
 Country maps use Natural Earth's historical GDP/population attributes, not a
 separate GDP snapshot. Both language versions use the 2021 Canadian population
 counts and 2012 US election results.
 
-## Browser geometry
-
-`plotly-geo/world_110m.json` and `plotly-geo/usa_110m.json` are the TopoJSON files
-from <https://cdn.plot.ly/world_110m.json> and
-<https://cdn.plot.ly/usa_110m.json>. The R examples set
-`config(topojsonURL = 'data/plotly-geo/')` to use these local files rather than
-requesting geography from the CDN.
+The R examples read boundaries with `sf::st_read()`, retain the geometry column
+for `geom_sf()`, and convert the ggplots with `ggplotly()`. The converted maps
+contain their projected geometry and do not need supporting geographic files
+from Plotly's CDN. No example depends on a live boundary-data download.
 
 ## Recreating the snapshots
 
@@ -70,7 +67,7 @@ From the repository root:
 uv run python textbook/src/data_processing/prepare_geospatial_data.py
 ```
 
-This refreshes Natural Earth and Vega data and Plotly's supporting TopoJSON.
+This refreshes the Natural Earth and Vega data.
 To also recover the original population/election tables, provide the
 instructor notebook:
 
