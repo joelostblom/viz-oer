@@ -1,4 +1,5 @@
 ---
+chapter-slides: slides/20_geospatial.html
 resources:
   - data/geospatial-world-countries.geojson
   - data/geospatial-world-regions.geojson
@@ -35,36 +36,44 @@ knitr:
 
 Similar to how categorical variables can have a natural order
 or a natural mapping to certain colors,
-geographical data has a natural spatial layout
-that makes it easier to identify and recognize regions.
-Visualizing geogrphical data as a map makes such geographic patterns visible,
-e.g. where observations occur, which regions are similar, and how nearby places differ.
+[geographical data has a natural spatial layout
+that makes it easier to identify and recognize regions.]{.slide-bullet}
+[Visualizing geogrphical data as a map makes such geographic patterns visible,
+e.g. where observations occur, which regions are similar, and how nearby places differ.]{.slide-bullet}
 
 ## Choosing a projection {#map-projections}
 
-A map must turn positions on the curved Earth into positions on a flat page.
-This transformation is called a **projection**.
+[A map must turn positions on the curved Earth into positions on a flat page.
+This transformation is called a **projection**.]{.slide-bullet}
 Since a projection flattens a 3D space into 2D,
-it necessarily distorts some combination of area, shape, distance, and direction.
+[it necessarily distorts some combination of area, shape, distance, and direction.]{.slide-bullet}
 Therefore there are many projections to choose from for different purposes,
 but what is a reasonable default choice?
 Let's find out in the next exercise.
 
 ::: {.callout-default .ex-prompt}
 
+## Africa or Greenland? {.content-visible when-format="revealjs"}
+
 This image below shows the world map with its most commonly used map project,
 Mercator,
 which was introduced in 1569 mainly for use in navigation,.
-Study this image and try to estimate which land region is largest,
-Africa or Greenland?
+[Study this image and try to estimate which land region is largest,
+Africa or Greenland?]{.slide-bullet}
+
+:::: {.slide-visual}
 
 ![A Mercator world map projection from [map-projections.net.](https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84).](img/geospatial-lecture/mercator-world.png){#fig-map-mercator width=70% fig-alt="A rectangular Mercator world map."}
 
+::::
+
 :::: {.callout-default .ex-hint}
 
-Mercator's projection
+## Why flattening changes area {.content-visible when-format="revealjs"}
+
+[Mercator's projection
 preserves local angles and shapes which is useful for navigation,
-but greatly enlarges areas at high latitudes.
+but greatly enlarges areas at high latitudes.]{.slide-bullet}
 The animation below gives an intuition for 
 where this issue stems from.
 Opening the globe into strips leaves gaps.
@@ -74,13 +83,19 @@ requires stretching parts of the surface,
 which distorts the area of each surface
 paritcularly closer to the poles where the gaps are bigger.
 
+::::: {.slide-visual}
+
 ![Flattening a globe in the Mercator projection introduces gaps or distortion. Modeled an animated by Grafonaut for Elmarin Norway. https://www.youtube.com/watch?v=CPQZ7NcQ6YQ](img/geospatial-lecture/projection-animation.gif){#fig-map-projection-animation width=85% fig-alt="An animation opens a globe into curved strips, flattens them, and stretches them to fill a rectangular world map."}
+
+:::::
 
 ::::: {.callout-default .ex-solution}
 
+## Compare with an equal-area map {.content-visible when-format="revealjs"}
+
 The familiar Mercator world map Greenland look comparable in size to Africa.
 However,
-the area of Africa is actually about **14 times larger**.
+[the area of Africa is actually about **14 times larger**.]{.slide-bullet}
 The Mercator map is useful for navigation
 but the distorted areas on this map
 do not provide a reliable basis for estimating areas and distances
@@ -92,7 +107,11 @@ It has since slowly been replacing the Mercator projection
 as the default choice for showing maps and visualizing geographic data
 (unless a specific purpose calls for a specific projection).
 
+:::::: {.slide-visual}
+
 ![An Equal Earth world map preserves relative areas, making Africa much larger than Greenland. We can also see that the size of Antartica is a fraction of that in the Mercator projection. Source: [map-projections.net](https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84).](img/geospatial-lecture/equal-earth-world.png){#fig-map-equal-earth fig-alt="An Equal Earth projection of the same world imagery, showing Africa much larger than Greenland and less exaggerated polar regions."}
+
+::::::
 
 :::::
 
@@ -121,16 +140,16 @@ and keep it consistent across maps that readers need to compare.
 
 So far, most of our datasets have been tables of rows and columns. To represent
 country boundaries, flight paths, or subway lines, we also need geometries.
-**Geometry** describes where a feature is and what shape it has; **attributes**
-describe what we know about it, such as its name, population, or category.
+[**Geometry** describes where a feature is and what shape it has; **attributes**
+describe what we know about it, such as its name, population, or category.]{.slide-bullet}
 
 There are two broad ways to represent spatial data:
 
-- **Vector data** describe features using points, lines, and polygons. These
+- [**Vector data** describe features using points, lines, and polygons.]{.slide-bullet} These
   are the main focus of this chapter: country boundaries, administrative
   regions, and locations for symbols.
-- **Raster data** describe a grid of cells, such as satellite imagery or an
-  elevation surface. Formats such as GeoTIFF store georeferencing alongside
+- [**Raster data** describe a grid of cells, such as satellite imagery or an
+  elevation surface.]{.slide-bullet} Formats such as GeoTIFF store georeferencing alongside
   raster values. A screenshot of a map is an image, but does not by itself
   supply the feature geometries and attributes needed for our data joins.
 
@@ -158,6 +177,8 @@ to inspect because it stores geographic features in readable JSON. We use it
 for the prepared boundary files in this chapter, but the mapping principles
 also apply to data read from other formats.
 
+::: {.slide-visual slide-title="Geometry and properties in GeoJSON"}
+
 A **Feature** has a `geometry` and a set of `properties`. For example, the
 following deliberately simplified rectangle approximates Colorado's outline:
 
@@ -174,6 +195,8 @@ following deliberately simplified rectangle approximates Colorado's outline:
   }
 }
 ```
+
+:::
 
 Coordinates are ordered **longitude, latitude**, in degrees. A polygon ring
 closes by repeating its first coordinate. A `MultiPolygon` can represent a country
@@ -193,13 +216,17 @@ A helpful website for finding data with geographical boundaries is
 which provides different file format
 at different scales and for different boundary representations:
 
-- **Cultural** data includes countries, administrative regions, and populated places.
-- **Physical** data includes coastlines, rivers, and lakes.
-- **Admin 0** represents countries; **Admin 1** represents states and provinces.
-- **1:110 million** is useful for an overview of the world. **1:50 million** and
-  **1:10 million** provide more detail for regional maps.
+- [**Cultural** data includes countries, administrative regions, and populated places.]{.slide-bullet}
+- [**Physical** data includes coastlines, rivers, and lakes.]{.slide-bullet}
+- [**Admin 0** represents countries; **Admin 1** represents states and provinces.]{.slide-bullet}
+- [**1:110 million** is useful for an overview of the world. **1:50 million** and
+  **1:10 million** provide more detail for regional maps.]{.slide-bullet}
 
 ## Working with geographic data
+
+Each paired example offers **Altair** and **ggplot** tabs. The R examples read
+spatial data with `sf`, draw maps with `geom_sf()`, and use `ggplotly()` to add
+interactivity. The language choice is synchronized within the chapter.
 
 ::: {.panel-tabset group="language"}
 
@@ -213,6 +240,8 @@ GeoPandas extends pandas with geometry types and spatial operations.
 
 ```{python}
 #| label: geospatial-read-countries
+#| slide-show: code
+#| slide-title: Read geographic boundaries
 import altair as alt
 import geopandas as gpd
 import pandas as pd
@@ -229,6 +258,8 @@ dividing by population.
 
 ```{python}
 #| label: geospatial-country-attributes
+#| slide-show: code
+#| slide-title: Prepare the country attributes
 world_countries = world_countries.rename(
     columns=lambda name: name.lower()
 ).assign(
@@ -242,7 +273,7 @@ reference years can differ somehow.
 You can inspect `pop_year` and `gdp_year`
 for the exact collection year of each attribute.
 
-#### Quick static and interactive views
+#### Quick static and interactive views {.slide-skip}
 
 GeoPandas has a convenient `plot()` method for an initial look at the geometries.
 
@@ -280,6 +311,8 @@ much like GeoPandas. We draw maps with `geom_sf()` and convert them with
 
 ```{r}
 #| label: geospatial-read-countries-sf
+#| slide-show: code
+#| slide-title: Read geographic boundaries
 library(sf)
 library(dplyr)
 library(ggplot2)
@@ -295,6 +328,8 @@ head(world_sf)
 
 ```{r}
 #| label: geospatial-country-attributes-sf
+#| slide-show: code
+#| slide-title: Prepare the country attributes
 world_sf <- world_sf |>
     rename_with(tolower) |>
     mutate(gdp_per_capita = gdp_md * 1e6 / pop_est) |>
@@ -319,6 +354,8 @@ and the usual encoding channels map attributes to color, tooltips, and so on.
 
 ```{python}
 #| label: geospatial-world-outline-alt
+#| slide-show: both
+#| slide-title: Draw geographic shapes
 alt.Chart(world_countries, width=550).mark_geoshape()
 ```
 
@@ -330,6 +367,8 @@ to avoid that it gets prefixed with the name of the dataframe column.
 
 ```{r}
 #| label: geospatial-world-outline-sf
+#| slide-show: both
+#| slide-title: Draw geographic shapes
 world_map_gg <- ggplot(world_sf, aes(text = name)) +
     geom_sf() +
     coord_sf(crs = '+proj=eqearth')
@@ -350,6 +389,8 @@ it explicitly in both versions so that the comparison is intentional.
 
 ```{python}
 #| label: geospatial-projection-comparison-alt
+#| slide-show: output
+#| slide-title: Compare projections on the same boundaries
 projection_map = alt.Chart(world_countries, width=260, height=200).mark_geoshape(
     fill='lightgray', stroke='white', strokeWidth=0.3
 )
@@ -363,6 +404,8 @@ The projections are calculated in R before converting the two ggplots.
 
 ```{r}
 #| label: geospatial-projection-comparison-sf
+#| slide-show: output
+#| slide-title: Compare projections on the same boundaries
 equal_earth_gg <- world_map_gg + aes(fill = I('lightgray')) + labs(title = 'Equal Earth')
 mercator_gg <- world_map_gg + aes(fill = I('lightgray')) +
     coord_sf(crs = '+proj=merc') + labs(title = 'Mercator')
@@ -390,6 +433,8 @@ gets a categorical color scale, and the country name can appear in a tooltip.
 
 ```{python}
 #| label: geospatial-continents-alt
+#| slide-show: both
+#| slide-title: Encode a categorical attribute
 alt.Chart(world_countries, width=500).mark_geoshape().encode(
     color=alt.Color('continent').title('Continent'),
     tooltip='name'
@@ -402,6 +447,8 @@ Map the categorical variable directly to `fill`.
 
 ```{r}
 #| label: geospatial-continents-sf
+#| slide-show: both
+#| slide-title: Encode a categorical attribute
 ggplotly(world_map_gg + aes(fill = continent), tooltip = 'text')
 ```
 
@@ -418,6 +465,8 @@ Showing total population.
 
 ```{python}
 #| label: geospatial-world-population-alt
+#| slide-show: both
+#| slide-title: Color countries by population
 country_map = alt.Chart(world_countries, width=500).mark_geoshape().encode(
     color=alt.Color('pop_est').title('Population estimate'),
     tooltip=['name', alt.Tooltip('pop_est', format=',')]
@@ -429,6 +478,8 @@ Here we show the GDP per capita.
 
 ```{python}
 #| label: geospatial-world-gdp-alt
+#| slide-show: both
+#| slide-title: Color countries by GDP per person
 country_map.encode(
     color=alt.Color('gdp_per_capita:Q').title('GDP per person (US$)'),
     tooltip=['name:N', alt.Tooltip('gdp_per_capita:Q', format=',.0f')]
@@ -439,11 +490,15 @@ country_map.encode(
 
 ```{r}
 #| label: geospatial-world-population-sf
+#| slide-show: both
+#| slide-title: Color countries by population
 ggplotly(world_map_gg + aes(fill = pop_est), tooltip = 'text')
 ```
 
 ```{r}
 #| label: geospatial-world-gdp-sf
+#| slide-show: both
+#| slide-title: Color countries by GDP per person
 ggplotly(world_map_gg + aes(fill = gdp_per_capita), tooltip = 'text')
 ```
 
@@ -461,6 +516,8 @@ since it has a natural order to it.
 
 ```{python}
 #| label: geospatial-economy-alt
+#| slide-show: both
+#| slide-title: Encode ordered economy groups
 country_map.encode(
     color=alt.Color('economy:O'),
     tooltip=['name', 'economy:O']
@@ -469,6 +526,8 @@ country_map.encode(
 
 ```{python}
 #| label: geospatial-income-alt
+#| slide-show: both
+#| slide-title: Encode ordered income groups
 country_map.encode(
     color=alt.Color('income_grp:O'),
     tooltip=['name:N', 'income_grp:O']
@@ -481,11 +540,15 @@ Ordered factors give the sequential palette the intended category order.
 
 ```{r}
 #| label: geospatial-economy-sf
+#| slide-show: both
+#| slide-title: Encode ordered economy groups
 ggplotly(world_map_gg + aes(fill = factor(economy, ordered = TRUE)), tooltip = 'name')
 ```
 
 ```{r}
 #| label: geospatial-income-sf
+#| slide-show: both
+#| slide-title: Encode ordered income groups
 ggplotly(world_map_gg + aes(fill = factor(income_grp, ordered = TRUE)), tooltip = 'name')
 ```
 
@@ -502,6 +565,8 @@ geometries. It is different from cropping a world map to a rectangular window.
 
 ```{python}
 #| label: geospatial-africa-alt
+#| slide-show: both
+#| slide-title: Focus on one continent
 africa = alt.Chart(
     world_countries.query('continent == "Africa"'), width=450, height=420
 ).mark_geoshape().encode(
@@ -516,6 +581,8 @@ fill colors are similar.
 
 ```{python}
 #| label: geospatial-africa-boundaries-alt
+#| slide-show: both
+#| slide-title: Make adjacent boundaries visible
 africa.mark_geoshape(stroke='gray', strokeWidth=0.5)
 ```
 
@@ -525,6 +592,8 @@ Filtering an `sf` dataframe keeps its geometries attached.
 
 ```{r}
 #| label: geospatial-africa-sf
+#| slide-show: both
+#| slide-title: Focus on one continent
 africa_sf <- world_sf |> filter(continent == 'Africa')
 africa_map_gg <- ggplot(africa_sf, aes(label = name, fill = pop_est)) +
     geom_sf(color = NA) + coord_sf(crs = '+proj=eqearth')
@@ -534,6 +603,8 @@ We could emphasize the lines between countries more
 
 ```{r}
 #| label: geospatial-africa-boundaries-sf
+#| slide-show: both
+#| slide-title: Make adjacent boundaries visible
 ggplotly(
     africa_map_gg
         + geom_sf(color = 'grey', linewidth = 0.1)
@@ -555,6 +626,8 @@ country outlines:
 
 ```{python}
 #| label: geospatial-north-america-alt
+#| slide-show: both
+#| slide-title: Country boundaries are not province boundaries
 alt.Chart(
     world_countries.query('name.isin(["Canada", "United States of America"])'),
     width=550
@@ -568,6 +641,8 @@ to only include North America.
 
 ```{r}
 #| label: geospatial-north-america-sf
+#| slide-show: both
+#| slide-title: Country boundaries are not province boundaries
 north_america_sf <- world_sf |>
     filter(name %in% c('Canada', 'United States of America'))
 ggplotly((world_map_gg + north_america_sf), tooltip = 'text')
@@ -585,12 +660,16 @@ set of subdivisions for every country in the world.
 
 ```{python}
 #| label: geospatial-read-regions
+#| slide-show: code
+#| slide-title: Read administrative regions
 world_regions = gpd.read_file('data/geospatial-world-regions.geojson')
 world_regions[['name', 'admin', 'iso_a2']].head()
 ```
 
 ```{python}
 #| label: geospatial-regional-boundaries-alt
+#| slide-show: both
+#| slide-title: Draw administrative regions
 alt.Chart(world_regions, width=500).mark_geoshape(stroke='white', strokeWidth=0.3).encode(
     color=alt.Color('admin').title('Country'),
     tooltip=['admin', 'name']
@@ -601,12 +680,16 @@ alt.Chart(world_regions, width=500).mark_geoshape(stroke='white', strokeWidth=0.
 
 ```{r}
 #| label: geospatial-read-regions-sf
+#| slide-show: code
+#| slide-title: Read administrative regions
 regions_sf <- st_read('data/geospatial-world-regions.geojson', quiet = TRUE)
 regions_sf |> select(name, admin, iso_a2) |> head()
 ```
 
 ```{r}
 #| label: geospatial-regional-boundaries-sf
+#| slide-show: both
+#| slide-title: Draw administrative regions
 regions_map_gg <- ggplot(regions_sf, aes(label = name, fill = admin)) +
     geom_sf() +
     coord_sf(crs = '+proj=eqearth')
@@ -627,6 +710,8 @@ as boundaries.
 
 ```{python}
 #| label: geospatial-canada-regions
+#| slide-show: code
+#| slide-title: Select Canada's provinces and territories
 canadian_provinces = world_regions.query('iso_a2 == "CA"').copy()
 canadian_provinces[['name', 'postal', 'latitude', 'longitude']]
 ```
@@ -638,6 +723,8 @@ below is an illustration, not a specification of an official UTM zone.
 
 ```{python}
 #| label: geospatial-canada-links-alt
+#| slide-show: output
+#| slide-title: Choose a regional projection for Canada
 canada_map = alt.Chart(canadian_provinces, width=500, height=420).mark_geoshape(
     stroke='white'
 ).project('transverseMercator', rotate=[90, 0, 0])
@@ -658,6 +745,8 @@ same central meridian as the other implementations.
 
 ```{r}
 #| label: geospatial-canada-regions-sf
+#| slide-show: code
+#| slide-title: Select Canada's provinces and territories
 canadian_provinces_sf <- regions_sf |> filter(iso_a2 == 'CA')
 canadian_provinces_sf |> select(name, postal, latitude, longitude)
 canada_crs <- '+proj=tmerc +lon_0=-90 +lat_0=0 +datum=WGS84'
@@ -665,6 +754,8 @@ canada_crs <- '+proj=tmerc +lon_0=-90 +lat_0=0 +datum=WGS84'
 
 ```{r}
 #| label: geospatial-canada-links-sf
+#| slide-show: output
+#| slide-title: Choose a regional projection for Canada
 canada_map_gg <- ggplot(canadian_provinces_sf, aes(fill = name)) +
     geom_sf() +
     coord_sf(crs = canada_crs)
@@ -708,6 +799,8 @@ match unless we explicitly reconcile them.
 
 ```{python}
 #| label: geospatial-canada-population-join
+#| slide-show: code
+#| slide-title: Join populations to the boundaries
 canadian_provinces = canadian_provinces.merge(
     province_populations, on='name', how='left', validate='one_to_one'
 )
@@ -722,6 +815,8 @@ The left join preserves the geometries and the same census counts.
 
 ```{r}
 #| label: geospatial-canada-population-join-sf
+#| slide-show: code
+#| slide-title: Join populations to the boundaries
 province_populations_sf <- readr::read_csv('data/geospatial-canada-population-2021.csv')
 canadian_provinces_sf <- canadian_provinces_sf |>
     left_join(province_populations_sf, by = 'name', relationship = 'one-to-one')
@@ -731,7 +826,7 @@ canadian_provinces_sf |> select(name, population)
 
 :::
 
-A left join keeps every boundary so that an unmatched region is detectable.
+[A left join keeps every boundary so that an unmatched region is detectable.]{.slide-bullet}
 An inner join can silently remove a region whose name differs between sources.
 
 ## Choropleths and their pitfalls
@@ -744,6 +839,8 @@ We can now color the regions by population, using the new column from the join.
 
 ```{python}
 #| label: geospatial-canada-population-alt
+#| slide-show: both
+#| slide-title: Population by province and territory
 canada_population_map = alt.Chart(
     canadian_provinces, width=500, height=420
 ).mark_geoshape(stroke='gray').project('transverseMercator', rotate=[90, 0, 0]).encode(
@@ -759,6 +856,8 @@ Replace the data with the joined spatial table and map population to `fill`.
 
 ```{r}
 #| label: geospatial-canada-population-sf
+#| slide-show: both
+#| slide-title: Population by province and territory
 canada_population_gg <- (canada_map_gg + canadian_provinces_sf) +
     aes(label = name, fill = population)
 ggplotly(canada_population_gg, tooltip = c('label', 'fill'))
@@ -784,6 +883,8 @@ bins, while more distant values can share a color.
 
 ```{python}
 #| label: geospatial-canada-binned-alt
+#| slide-show: both
+#| slide-title: Bin the population colors
 canada_population_map.encode(
     color=alt.Color('population:Q').bin(step=2_000_000, extent=[0, 16_000_000]).title('Population, 2021')
 )
@@ -795,6 +896,8 @@ Use the same two-million-person boundaries, now as a factor for a discrete scale
 
 ```{r}
 #| label: geospatial-canada-binned-sf
+#| slide-show: both
+#| slide-title: Bin the population colors
 population_breaks_gg <- seq(0, 16e6, by = 2e6)
 population_labels_gg <- paste0(head(population_breaks_gg, -1) / 1e6, '–',
                                tail(population_breaks_gg, -1) / 1e6, ' million')
@@ -819,6 +922,7 @@ We retain a legend so the color scale remains interpretable without a tooltip.
 
 ```{python}
 #| label: geospatial-canada-hover-alt
+#| slide-show: output
 province_hover = alt.selection_point(
     name='province_hover', fields=['name'], on='pointerover', clear='pointerout', empty=False
 )
@@ -835,15 +939,15 @@ A choropleth gives each region visual space according to its geographic area,
 not its population or contribution to a total. A small, densely populated region
 can be hard to see; a large, sparsely populated one can dominate the page.
 
-- Use **rates, proportions, or densities** when the question is about intensity
-  rather than totals. Population and population density answer different questions.
-- Use a **sequential scale** for ordered quantities, and show missing observations
-  distinctly from genuine zeros.
-- Consider **smaller geographic units** when their boundaries and data support
-  the question. Aggregation can conceal substantial variation within a region.
-- Add **proportional symbols** or a **bar chart** when readers need to compare totals.
-- A **cartogram** resizes or rearranges regions according to a quantity, trading
-  some geographic familiarity for a more relevant allocation of space.
+- [Use **rates, proportions, or densities** when the question is about intensity
+  rather than totals.]{.slide-bullet} Population and population density answer different questions.
+- [Use a **sequential scale** for ordered quantities, and show missing observations
+  distinctly from genuine zeros.]{.slide-bullet}
+- [Consider **smaller geographic units** when their boundaries and data support
+  the question.]{.slide-bullet} Aggregation can conceal substantial variation within a region.
+- [Add **proportional symbols** or a **bar chart** when readers need to compare totals.]{.slide-bullet}
+- [A **cartogram** resizes or rearranges regions according to a quantity, trading
+  some geographic familiarity for a more relevant allocation of space.]{.slide-bullet}
 
 Even an equal-area projection cannot make geographic area stand in for population.
 Changing the projection and changing the statistical encoding solve different problems.
@@ -853,14 +957,18 @@ Changing the projection and changing the statistical encoding solve different pr
 If we want to compare how intensely a phenomenon occurs, a total may answer the
 wrong question. More people in a region can mean more events even when the rate
 per person is low. Likewise, total population and population density describe
-different things: density divides population by area.
+different things: [density divides population by area.]{.slide-bullet}
 
 The county-level example below makes densely populated metropolitan areas stand
 out. Its color scale is **logarithmic**: the labeled steps represent multiplicative
 changes, not equal additions. Small high-density counties can still be difficult
 to see, even though their density is correctly encoded by color.
 
+::: {.slide-visual}
+
 ![Population density by US county, with a logarithmic color scale in people per square kilometer. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), using the 2015 five-year American Community Survey.](img/geospatial-lecture/county-population-density.png){#fig-map-county-density fig-alt="A county-level US population-density map highlights metropolitan areas in dark colors and sparsely populated western regions in pale colors; the legend labels range from 0.01 to 10000 people per square kilometer."}
+
+:::
 
 Normalization should follow the question. Disease incidence might require cases
 per person, whereas an environmental measure might require a quantity per unit
@@ -869,13 +977,17 @@ automatically make it more informative.
 
 ### Aggregation and color bins change the story
 
-Choropleths can also show summaries such as median income. When regions are
+[Choropleths can also show summaries such as median income.]{.slide-bullet} When regions are
 small relative to the spatial pattern of interest, we can see local variation
 without one region dominating the display. Discrete color bins can make the
 legend easier to read across many small regions, at the cost of hiding differences
 within a bin.
 
+::: {.slide-visual}
+
 ![County-level median incomes reveal local variation; five income bins make the color categories recognizable. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), 2015 five-year American Community Survey.](img/geospatial-lecture/county-median-income.png){#fig-map-county-income fig-alt="A US county-level choropleth of median income uses five purple categories and reveals variation within individual states."}
+
+:::
 
 Changing the unit from counties to states changes the visible pattern. The map
 below is dominated by Alaska's large area and high median income, even though
@@ -883,9 +995,13 @@ relatively few people live there. Small, densely populated states on the east
 coast receive much less visual space. This can be useful for comparing places,
 but it is a poor way to judge how common an income level is in the population.
 
+::: {.slide-visual slide-title="Aggregation can hide local variation"}
+
 ![A state-level income map gives Alaska much more visual weight than small, densely populated states. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), 2015 five-year American Community Survey.](img/geospatial-lecture/state-median-income.png){#fig-map-state-income fig-alt="A US state-level median-income choropleth is visually dominated by a large, dark-purple Alaska, while small northeastern states are hard to see."}
 
-These two income figures also use **different bin boundaries**. The same shade
+:::
+
+[These two income figures also use **different bin boundaries**.]{.slide-bullet} The same shade
 therefore does not mean the same income in both maps; read each legend. To
 isolate the effect of changing geographic units, hold the color scale constant.
 State medians also are not obtained by simply averaging county medians.
@@ -894,7 +1010,7 @@ The broader lesson is that the chosen boundaries and aggregation can conceal
 variation or change apparent relationships. A state-level pattern does not
 establish that every county, household, or person within that state follows it.
 
-## The United States: projections and electoral votes
+## The United States: projections and electoral votes {.slide-skip}
 
 ### Separated regions and composite projections
 
@@ -907,6 +1023,8 @@ world projection leaves a lot of space between them.
 
 ```{python}
 #| label: geospatial-us-regions
+#| slide-show: both
+#| slide-title: Separated regions leave empty space
 us_states = world_regions.query('iso_a2 == "US"').copy()
 alt.Chart(us_states, width=550).mark_geoshape(stroke='white')
 ```
@@ -915,6 +1033,8 @@ alt.Chart(us_states, width=550).mark_geoshape(stroke='white')
 
 ```{r}
 #| label: geospatial-us-regions-sf
+#| slide-show: both
+#| slide-title: Separated regions leave empty space
 us_states_sf <- regions_sf |> dplyr::filter(iso_a2 == 'US')
 us_map_gg <- ggplot(us_states_sf, aes(label = name)) +
     geom_sf() +
@@ -934,6 +1054,8 @@ literal geographic relationships.
 
 ```{python}
 #| label: geospatial-us-albers-alt
+#| slide-show: output
+#| slide-title: Make a compact US inset layout
 alt.Chart(us_states, width=550).mark_geoshape(stroke='white').project('albersUsa')
 ```
 
@@ -946,6 +1068,8 @@ Keep the original spatial data for measurements and geographic analysis.
 
 ```{r}
 #| label: geospatial-us-albers-sf
+#| slide-show: output
+#| slide-title: Make a compact US inset layout
 alaska_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Alaska'), 3338))[c('xmin', 'ymin')]
 hawaii_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Hawaii'), 26904))[c('xmin', 'ymin')]
 us_insets <- function(features) {
@@ -976,14 +1100,18 @@ ggplotly(us_albers_gg + aes(fill = I('lightgray')), tooltip = 'label')
 The standard composite view is compact partly because Alaska is reduced in
 scale. That can be convenient when the map's purpose is to identify states, but
 it is misleading if readers interpret all land areas on one common scale.
-Alaska's actual area is more than twice Texas's.
+[Alaska's actual area is more than twice Texas's.]{.slide-bullet}
 
 The lecture's alternative below moves Alaska and Hawaii without shrinking
 Alaska relative to the contiguous states. It takes more room, but preserves
 the area comparison. Insets should make their changed location and any changed
 scale clear; a compact layout is not a literal view of the states' geography.
 
+::: {.slide-visual}
+
 ![Repositioning Alaska and Hawaii while keeping a common area scale reveals Alaska's much larger size. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#projections), via the lecture.](img/geospatial-lecture/alaska-true-relative-size.png){#fig-map-alaska-scale fig-alt="The contiguous United States is shown above Alaska and Hawaii; Alaska is not shrunk to the usual inset scale and appears much larger than Texas."}
+
+:::
 
 ### Joining election results
 
@@ -997,6 +1125,8 @@ electoral-vote allocations used in 2012. These are electoral votes, not popular 
 
 ```{python}
 #| label: geospatial-election-data
+#| slide-show: code
+#| slide-title: Join the 2012 election results
 election_results = pd.read_csv('data/geospatial-us-election-2012.csv')
 us_states = us_states.merge(
     election_results, on='name', how='left', validate='one_to_one'
@@ -1011,6 +1141,8 @@ us_states[['name', 'winning_party', 'electoral_votes']].head()
 
 ```{r}
 #| label: geospatial-election-data-sf
+#| slide-show: code
+#| slide-title: Join the 2012 election results
 election_results_sf <- readr::read_csv('data/geospatial-us-election-2012.csv')
 us_states_sf <- us_states_sf |>
     left_join(election_results_sf, by = 'name', relationship = 'one-to-one')
@@ -1037,6 +1169,8 @@ inspected rather than assumed to remain unchanged.
 
 ```{python}
 #| label: geospatial-election-winners-alt
+#| slide-show: both
+#| slide-title: Show each state's winning party
 party_color = alt.Color('winning_party:N').scale(
     domain=['Dem', 'Rep'], range=['#4c78a8', '#e45756']
 ).title('Winning party')
@@ -1056,10 +1190,13 @@ is applied after joining the election attributes.
 
 ```{r}
 #| label: geospatial-election-winners-sf
+#| slide-show: both
+#| slide-title: Show each state's winning party
 party_colors_gg <- c(Dem = '#4c78a8', Rep = '#e45756')
 us_display_sf <- us_insets(us_states_sf)
 election_map_gg <- (us_albers_gg + us_display_sf) +
-    aes(fill = winning_party) + scale_fill_manual(values = party_colors_gg, name = 'Winning party')
+    aes(fill = winning_party) +
+    scale_fill_manual(values = party_colors_gg, name = 'Winning party')
 ggplotly(election_map_gg, tooltip = c('label', 'fill'))
 ```
 
@@ -1075,6 +1212,8 @@ yet small states are still difficult to compare.
 
 ```{python}
 #| label: geospatial-election-opacity-alt
+#| slide-show: output
+#| slide-title: Opacity still leaves small states hard to compare
 election_map.encode(
     opacity=alt.Opacity('electoral_votes:Q').title('Electoral votes'),
     tooltip=['name:N', 'winning_party:N', 'electoral_votes:Q']
@@ -1089,6 +1228,8 @@ current `ggplotly()` version cannot convert varying polygon alpha in this
 
 ```{r}
 #| label: geospatial-election-opacity-sf
+#| slide-show: output
+#| slide-title: Opacity still leaves small states hard to compare
 election_map_gg + aes(alpha = electoral_votes) +
     scale_alpha_continuous(range = c(0.3, 1), name = 'Electoral votes')
 ```
@@ -1098,12 +1239,16 @@ election_map_gg + aes(alpha = electoral_votes) +
 ### Cartograms: giving area a new meaning
 
 The original lecture's election map makes the area problem particularly clear.
-The amount of red or blue shows the land area of states won by each party, not
-the number of electoral votes. Obama won 332 of 538 electoral votes in 2012,
+[The amount of red or blue shows the land area of states won by each party, not
+the number of electoral votes.]{.slide-bullet} Obama won 332 of 538 electoral votes in 2012,
 about 61.7%, despite the prominence of red regions in this view. Neither land
 area nor the electoral-vote percentage is the popular-vote percentage.
 
+::: {.slide-visual}
+
 ![The 2012 election result on a geographic map of the contiguous United States: blue denotes Democratic state winners and red Republican state winners. Source: [Mark Newman](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), via the lecture.](img/geospatial-lecture/election-2012-geographic.png){#fig-map-election-geographic width=85% fig-alt="A conventional red-and-blue 2012 US election map contains large red areas across the central and western states, even though the Democratic candidate won more electoral votes."}
+
+:::
 
 A **cartogram** deliberately changes region areas or replaces regions with
 stylized shapes so that visual space follows a chosen quantity. Contiguous
@@ -1116,7 +1261,11 @@ It illustrates the effect of changing the area encoding, but its blue/red area
 does not directly measure the Electoral College result or individual voters'
 preferences. Population, votes cast, and electoral votes are different quantities.
 
+::: {.slide-visual slide-title="A population-weighted cartogram"}
+
 ![A population-weighted cartogram of the 2012 state winners changes region shapes and areas. Source: [Mark Newman's population cartogram](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), CC BY 2.0.](img/geospatial-lecture/election-2012-cartogram.png){#fig-map-election-population-cartogram width=85% fig-alt="A distorted map expands populous states such as California and New York and shrinks less populous states while retaining the red and blue state-winner colors."}
+
+:::
 
 To represent electoral weight directly, use electoral votes for area. The
 Financial Times examples below show two approaches to the same 2012 result:
@@ -1129,9 +1278,17 @@ Financial Times examples below show two approaches to the same 2012 result:
   votes and moves circles to keep them separate. It simplifies boundaries but
   sacrifices exact positions and some neighboring relationships.
 
+::: {.slide-visual slide-title="One tile per electoral vote"}
+
 ![A tile cartogram allocates squares according to each state's electoral votes rather than its land area. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-tile-cartogram.png){#fig-map-election-tiles width=80% fig-alt="A red-and-blue 2012 election cartogram approximates US geography using labeled groups of equal-sized squares, with more squares for states with more electoral votes."}
 
+:::
+
+::: {.slide-visual slide-title="Circle area can encode electoral votes"}
+
 ![A circle cartogram uses symbol area for electoral votes and approximate positions for geographic context. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-circle-cartogram.png){#fig-map-election-circles width=80% fig-alt="A 2012 election cartogram replaces states with nonoverlapping labeled circles sized by electoral votes; California, Texas, Florida, and New York are prominent."}
+
+:::
 
 These are tradeoffs rather than universally better maps. A geographic map can
 make a familiar state easier to find; a cartogram can make its contribution to
@@ -1149,6 +1306,8 @@ land area. First, overlay neutral circles on the party-colored regions:
 
 ```{python}
 #| label: geospatial-election-neutral-points-alt
+#| slide-show: output
+#| slide-title: Add proportional symbols to the regions
 electoral_points = alt.Chart(us_states).mark_circle(stroke='black').encode(
     longitude='longitude:Q', latitude='latitude:Q',
     color=alt.value('white'),
@@ -1166,6 +1325,8 @@ represent electoral votes.
 
 ```{r}
 #| label: geospatial-election-neutral-points-sf
+#| slide-show: output
+#| slide-title: Add proportional symbols to the regions
 electoral_points_sf <- st_as_sf(st_drop_geometry(us_states_sf),
                                 coords = c('longitude', 'latitude'), crs = 4326)
 electoral_display_sf <- us_insets(electoral_points_sf)
@@ -1188,6 +1349,8 @@ should represent the quantity.
 
 ```{python}
 #| label: geospatial-election-colored-points-alt
+#| slide-show: output
+#| slide-title: Put the quantity and party on the same marks
 state_background = alt.Chart(us_states).mark_geoshape(
     fill='lightgray', stroke='white'
 )
@@ -1204,6 +1367,8 @@ Use a neutral boundary layer and map party and electoral votes to the points.
 
 ```{r}
 #| label: geospatial-election-colored-points-sf
+#| slide-show: output
+#| slide-title: Put the quantity and party on the same marks
 ggplotly((us_albers_gg + us_display_sf) + aes(fill = I('lightgray')) +
              geom_sf(data = electoral_display_sf,
                      aes(label = name, color = winning_party, size = electoral_votes),
@@ -1229,6 +1394,7 @@ the corresponding state in both views; clearing the hover restores all states.
 
 ```{python}
 #| label: geospatial-election-hover-alt
+#| slide-show: output
 state_hover = alt.selection_point(
     name='state_hover', fields=['name'], on='pointerover', clear='pointerout'
 )
@@ -1246,6 +1412,8 @@ party, with independently ordered state names but a shared quantitative x-scale.
 
 ```{python}
 #| label: geospatial-election-linked-bars-alt
+#| slide-show: output
+#| slide-title: Link the map to an aligned comparison
 bars = alt.Chart(pd.DataFrame(us_states.drop(columns='geometry')), width=200).mark_bar().encode(
     x=alt.X('electoral_votes:Q').title('Electoral votes'),
     y=alt.Y('name:N').sort('-x').title(None),
@@ -1267,6 +1435,8 @@ judging colored land area or the number of states won:
 
 ```{python}
 #| label: geospatial-electoral-totals
+#| slide-show: both
+#| slide-title: Check electoral-vote totals directly
 us_states.groupby('winning_party')['electoral_votes'].sum()
 ```
 
@@ -1274,6 +1444,8 @@ us_states.groupby('winning_party')['electoral_votes'].sum()
 
 ```{r}
 #| label: geospatial-electoral-totals-sf
+#| slide-show: both
+#| slide-title: Check electoral-vote totals directly
 us_states_sf |>
     st_drop_geometry() |>
     group_by(winning_party) |>
@@ -1336,7 +1508,7 @@ that a circle mark will be clipped behind the globe.
 
 :::
 
-## Further reading
+## Further reading {.slide-skip}
 
 - [Fundamentals of Data Visualization: visualizing geospatial data](https://clauswilke.com/dataviz/geospatial-data.html).
 - [Altair: geoshape marks and mapping points](https://altair-viz.github.io/user_guide/marks/geoshape.html).

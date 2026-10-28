@@ -97,7 +97,7 @@ Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
 The slide decks retain their separate dark presentation theme.
 
-The chapter key and chapters with registered decks (1–14 and 16–19) open as ordinary textbook pages. Their small **Present slides**
+The chapter key and chapters with registered decks (1–14 and 16–20) open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
@@ -134,13 +134,16 @@ both Anscombe tables, the Altair chart, and the Datasaurus animation. Chapter 2
 also includes the exercise dataset, declarative/imperative charts and pseudocode,
 arithmetic code examples and grammar implementations.
 
-Chapters 3–14, 16, and 17 have first-draft decks covering their key principles, selected
+Chapters 3–14 and 16–20 have first-draft decks covering their key principles, selected
 exercise visuals, diagrams/animations, and Altair/ggplot examples. Short examples
 show source and output together; longer examples show the chart with explanations
 in speaker notes. Language variants share interactive tabs, with their selected
 content paired step by step when examples have descriptive slide titles.
-Deep dives and margin notes are excluded. Chapters 15 and 18–20 are not yet registered
-for slide builds.
+Deep dives and margin notes are excluded. Chapter 15 is not yet registered
+for slide builds. The Geospatial deck includes the projection exercise and
+animation, lecture illustrations about choropleths and cartograms, and paired
+Altair/ggplotly examples. Longer inset and layered-map examples show their output;
+their full code remains available in the reading view.
 
 Material from the DSCI 531 communication and color lectures is organized into
 ordinary Quarto chapters with synchronized Altair/ggplot tabs. Chapter 12 combines

@@ -67,6 +67,13 @@ CHAPTER_ASSETS = {
         "data/vega-gapminder.csv",
         "data/vega-movies-interactivity.csv",
     ),
+    "20_geospatial": (
+        "data/geospatial-world-countries.geojson",
+        "data/geospatial-world-regions.geojson",
+        "data/geospatial-canada-population-2021.csv",
+        "data/geospatial-us-election-2012.csv",
+        "data/geospatial-earthquakes.csv",
+    ),
 }
 SHARED_ASSETS = (
     "illustrative-chart-actions.lua",
