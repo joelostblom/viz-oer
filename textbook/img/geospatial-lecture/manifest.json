@@ -1,0 +1,110 @@
+{
+  "source": "lec4-maps.odp",
+  "sha256": "9bae1fd8680dfe4bcede1aaceb5bce5dc2137dc1f30c81ad42321f7d6c320143",
+  "figures": [
+    {
+      "file": "mercator-world.png",
+      "slide": 3,
+      "member": "Pictures/100002010000020C000001DEB68FFBEE8784B9A3.png",
+      "sha256": "854149850021412e86abd2ca37aa8bf93e9d24bd30c6eaebdd379286f90cbf14",
+      "slide_credit_urls": []
+    },
+    {
+      "file": "projection-animation.gif",
+      "slide": 4,
+      "member": "Pictures/100000D30000025800000152572A08524D91CBF0.gif",
+      "sha256": "97a81f6ad0d3a64813d242410ed01bad2ca2c54ebadb99543fc91b7f0735c2f1",
+      "slide_credit_urls": [
+        "https://www150.statcan.gc.ca/n1/pub/92-195-x/2011001/other-autre/mapproj-projcarte/m-c-eng.htm"
+      ]
+    },
+    {
+      "file": "equal-earth-world.png",
+      "slide": 6,
+      "member": "Pictures/10000201000003E9000002009BDB5ACC91E1F91A.png",
+      "sha256": "8ebebe164dadf335e10e5336c06a959c3f6f81922215e1a647ac68c7f77b9bd8",
+      "slide_credit_urls": [
+        "https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84"
+      ]
+    },
+    {
+      "file": "alaska-true-relative-size.png",
+      "slide": 11,
+      "member": "Pictures/1000020100000480000003603D91F41877F4A31E.png",
+      "sha256": "226c182678b7eab60af6355cc9f88bfd5261faa8ed9a7ca05fe58012a5853141",
+      "slide_credit_urls": [
+        "https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84"
+      ]
+    },
+    {
+      "file": "election-2012-geographic.png",
+      "slide": 12,
+      "member": "Pictures/1000000000000400000002AB69756EF8A7088B8C.png",
+      "sha256": "34f97361c519c83f388e91027379ed6add9b4c5a7f5bb576ae5083006e48758f",
+      "slide_credit_urls": []
+    },
+    {
+      "file": "election-2012-cartogram.png",
+      "slide": 13,
+      "member": "Pictures/1000000000000400000002AC6E2CF660AC97DD7B.png",
+      "sha256": "622fb497c216b11f21c19fccfdc97a6cd39a6a1641e92a0ca8b3695fcb13b612",
+      "slide_credit_urls": [
+        "http://www-personal.umich.edu/~mejn/election/2012/"
+      ]
+    },
+    {
+      "file": "election-2012-tile-cartogram.png",
+      "slide": 14,
+      "member": "Pictures/100000000000022E00000176E1BC80CE26F11A26.png",
+      "sha256": "6eac0d1b414e778caff0f0a347e3322eb9549b04b96549c86ce718c5bb3b15f6",
+      "slide_credit_urls": [
+        "https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1"
+      ]
+    },
+    {
+      "file": "election-2012-circle-cartogram.png",
+      "slide": 15,
+      "member": "Pictures/100000000000023D000001B67F5673CC3BDBE12E.png",
+      "sha256": "5ebbc2dcaa30305e4fa95826eb6f58046c027e6cadafe4836a5791e4fcc5477c",
+      "slide_credit_urls": [
+        "https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1"
+      ]
+    },
+    {
+      "file": "county-population-density.png",
+      "slide": 18,
+      "member": "Pictures/10000201000004800000034881577F2BC85EC169.png",
+      "sha256": "d782f70d4462f27587f6548775419b19150183e7d0097741fbfe4f36d533e206",
+      "slide_credit_urls": [
+        "https://clauswilke.com/dataviz/geospatial-data.html"
+      ]
+    },
+    {
+      "file": "county-median-income.png",
+      "slide": 19,
+      "member": "Pictures/100002010000048000000348FE70B26C53882731.png",
+      "sha256": "8afe3a4a8947a39857bc3f77b4b2b7219e08282d021f6c392087c5aecc27aa1a",
+      "slide_credit_urls": [
+        "https://clauswilke.com/dataviz/geospatial-data.html"
+      ]
+    },
+    {
+      "file": "state-median-income.png",
+      "slide": 20,
+      "member": "Pictures/100002010000048000000348FF418C1FEB8A5F90.png",
+      "sha256": "871be28732ab42116d005d61545c5766476b8f55a0a7329c75fb6e5a69be8723",
+      "slide_credit_urls": [
+        "https://clauswilke.com/dataviz/geospatial-data.html"
+      ]
+    },
+    {
+      "file": "choropleth-point-symbol-comparison.png",
+      "slide": 21,
+      "member": "Pictures/10000201000006AA000003051FF75E65F5543D46.png",
+      "sha256": "c47b8266121d89d1fc2b082a2a882fb8477afe04ba1762ab88267a1faf85f048",
+      "slide_credit_urls": [
+        "https://www.youtube.com/watch?v=LPcEttrNV_E"
+      ]
+    }
+  ]
+}

@@ -362,17 +362,11 @@ does not need geographic downloads from Plotly's CDN.
 
 :::
 
-### Choosing a projection
+### Comparing projections in code
 
-A **projection** turns positions on the curved Earth into positions on a flat
-page. Every flat map distorts something: area, shape, distance, or direction.
-
-Altair's default geographic projection is **Equal Earth**, which preserves
-relative areas. Web maps commonly use **Web Mercator**, which greatly enlarges
-high-latitude regions. Africa is about 14 times Greenland's area, despite how
-similar their sizes can appear on a Mercator world map.
-
-Compare the same data under the two projections:
+We can reproduce the [projection comparison](#map-projections) with the same
+country boundaries in each language. Altair defaults to Equal Earth; we choose
+it explicitly in both versions so that the comparison is intentional.
 
 ::: {.panel-tabset group="language"}
 
@@ -999,6 +993,52 @@ can be hard to see; a large, sparsely populated one can dominate the page.
 Even an equal-area projection cannot make geographic area stand in for population.
 Changing the projection and changing the statistical encoding solve different problems.
 
+### Totals, rates, and population density
+
+If we want to compare how intensely a phenomenon occurs, a total may answer the
+wrong question. More people in a region can mean more events even when the rate
+per person is low. Likewise, total population and population density describe
+different things: density divides population by area.
+
+The county-level example below makes densely populated metropolitan areas stand
+out. Its color scale is **logarithmic**: the labeled steps represent multiplicative
+changes, not equal additions. Small high-density counties can still be difficult
+to see, even though their density is correctly encoded by color.
+
+![Population density by US county, with a logarithmic color scale in people per square kilometer. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), using the 2015 five-year American Community Survey.](img/geospatial-lecture/county-population-density.png){#fig-map-county-density fig-alt="A county-level US population-density map highlights metropolitan areas in dark colors and sparsely populated western regions in pale colors; the legend labels range from 0.01 to 10000 people per square kilometer."}
+
+Normalization should follow the question. Disease incidence might require cases
+per person, whereas an environmental measure might require a quantity per unit
+area. Dividing by an unrelated denominator merely changes the map; it does not
+automatically make it more informative.
+
+### Aggregation and color bins change the story
+
+Choropleths can also show summaries such as median income. When regions are
+small relative to the spatial pattern of interest, we can see local variation
+without one region dominating the display. Discrete color bins can make the
+legend easier to read across many small regions, at the cost of hiding differences
+within a bin.
+
+![County-level median incomes reveal local variation; five income bins make the color categories recognizable. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), 2015 five-year American Community Survey.](img/geospatial-lecture/county-median-income.png){#fig-map-county-income fig-alt="A US county-level choropleth of median income uses five purple categories and reveals variation within individual states."}
+
+Changing the unit from counties to states changes the visible pattern. The map
+below is dominated by Alaska's large area and high median income, even though
+relatively few people live there. Small, densely populated states on the east
+coast receive much less visual space. This can be useful for comparing places,
+but it is a poor way to judge how common an income level is in the population.
+
+![A state-level income map gives Alaska much more visual weight than small, densely populated states. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), 2015 five-year American Community Survey.](img/geospatial-lecture/state-median-income.png){#fig-map-state-income fig-alt="A US state-level median-income choropleth is visually dominated by a large, dark-purple Alaska, while small northeastern states are hard to see."}
+
+These two income figures also use **different bin boundaries**. The same shade
+therefore does not mean the same income in both maps; read each legend. To
+isolate the effect of changing geographic units, hold the color scale constant.
+State medians also are not obtained by simply averaging county medians.
+
+The broader lesson is that the chosen boundaries and aggregation can conceal
+variation or change apparent relationships. A state-level pattern does not
+establish that every county, household, or person within that state follows it.
+
 ## The United States: projections and electoral votes
 
 ### Separated regions and composite projections
@@ -1065,6 +1105,20 @@ us_albers_map
 ```
 
 :::
+
+### Moving an inset is different from resizing it
+
+The standard composite view is compact partly because Alaska is reduced in
+scale. That can be convenient when the map's purpose is to identify states, but
+it is misleading if readers interpret all land areas on one common scale.
+Alaska's actual area is more than twice Texas's.
+
+The lecture's alternative below moves Alaska and Hawaii without shrinking
+Alaska relative to the contiguous states. It takes more room, but preserves
+the area comparison. Insets should make their changed location and any changed
+scale clear; a compact layout is not a literal view of the states' geography.
+
+![Repositioning Alaska and Hawaii while keeping a common area scale reveals Alaska's much larger size. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#projections), via the lecture.](img/geospatial-lecture/alaska-true-relative-size.png){#fig-map-alaska-scale fig-alt="The contiguous United States is shown above Alaska and Hawaii; Alaska is not shrunk to the usual inset scale and appears much larger than Texas."}
 
 ### Joining election results
 
@@ -1184,6 +1238,49 @@ election_map |>
 ```
 
 :::
+
+### Cartograms: giving area a new meaning
+
+The original lecture's election map makes the area problem particularly clear.
+The amount of red or blue shows the land area of states won by each party, not
+the number of electoral votes. Obama won 332 of 538 electoral votes in 2012,
+about 61.7%, despite the prominence of red regions in this view. Neither land
+area nor the electoral-vote percentage is the popular-vote percentage.
+
+![The 2012 election result on a geographic map of the contiguous United States: blue denotes Democratic state winners and red Republican state winners. Source: [Mark Newman](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), via the lecture.](img/geospatial-lecture/election-2012-geographic.png){#fig-map-election-geographic width=85% fig-alt="A conventional red-and-blue 2012 US election map contains large red areas across the central and western states, even though the Democratic candidate won more electoral votes."}
+
+A **cartogram** deliberately changes region areas or replaces regions with
+stylized shapes so that visual space follows a chosen quantity. Contiguous
+cartograms try to retain neighboring relationships, but the distorted outlines
+can make familiar places harder to identify.
+
+The particular Newman cartogram included in the lecture is **population-weighted**.
+California and northeastern states expand relative to sparsely populated states.
+It illustrates the effect of changing the area encoding, but its blue/red area
+does not directly measure the Electoral College result or individual voters'
+preferences. Population, votes cast, and electoral votes are different quantities.
+
+![A population-weighted cartogram of the 2012 state winners changes region shapes and areas. Source: [Mark Newman's population cartogram](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), CC BY 2.0.](img/geospatial-lecture/election-2012-cartogram.png){#fig-map-election-population-cartogram width=85% fig-alt="A distorted map expands populous states such as California and New York and shrinks less populous states while retaining the red and blue state-winner colors."}
+
+To represent electoral weight directly, use electoral votes for area. The
+Financial Times examples below show two approaches to the same 2012 result:
+
+- A **tile cartogram** assigns one equal-sized square to each electoral vote.
+  State labels and approximate relative positions help readers locate regions.
+  This differs from a grid with one equal-sized tile per state, which would
+  give every state equal weight.
+- A **circle cartogram** makes each circle's area proportional to electoral
+  votes and moves circles to keep them separate. It simplifies boundaries but
+  sacrifices exact positions and some neighboring relationships.
+
+![A tile cartogram allocates squares according to each state's electoral votes rather than its land area. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-tile-cartogram.png){#fig-map-election-tiles width=80% fig-alt="A red-and-blue 2012 election cartogram approximates US geography using labeled groups of equal-sized squares, with more squares for states with more electoral votes."}
+
+![A circle cartogram uses symbol area for electoral votes and approximate positions for geographic context. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-circle-cartogram.png){#fig-map-election-circles width=80% fig-alt="A 2012 election cartogram replaces states with nonoverlapping labeled circles sized by electoral votes; California, Texas, Florida, and New York are prominent."}
+
+These are tradeoffs rather than universally better maps. A geographic map can
+make a familiar state easier to find; a cartogram can make its contribution to
+a total clearer. For the question of who won overall, a bar chart or a labeled
+total can be more direct than either map.
 
 ### Points instead of regions
 
