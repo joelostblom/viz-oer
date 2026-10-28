@@ -1441,7 +1441,9 @@ The totals are 332 for the Democratic candidate and 206 for the Republican
 candidate. Neither a winner-by-state map nor this electoral-vote table tells us
 the popular-vote margin within each state.
 
-## Further exploration: a rotating earthquake globe (Altair)
+{.deep-dive}
+
+## A rotating earthquake globe
 
 An orthographic projection looks like a globe. This example combines a sphere,
 country polygons, and earthquake locations. A slider rotates all layers together;
@@ -1486,6 +1488,8 @@ alt.layer(sphere, globe_countries, quakes).project(
 The filter removes points on the far hemisphere, including when rotation crosses
 the date line. Merely projecting a point to an x/y position does not guarantee
 that a circle mark will be clipped behind the globe.
+
+:::
 
 ## Further reading
 
