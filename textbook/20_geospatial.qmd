@@ -11,7 +11,7 @@ execute:
   warning: false
 knitr:
   opts_chunk:
-    out.width: "600px"
+    out.width: "800px"
     out.height: "400px"
 ---
 
@@ -240,13 +240,13 @@ GeoPandas extends pandas with geometry types and spatial operations.
 
 ```{python}
 #| label: geospatial-read-countries
-#| slide-show: code
+#| slide-show: both
 import altair as alt
 import geopandas as gpd
 import pandas as pd
 
 world_countries = gpd.read_file('data/geospatial-world-countries.geojson')
-world_countries.head()
+world_countries
 ```
 
 The `geometry` column contains the country outlines. The local file keeps a
@@ -308,7 +308,7 @@ much like GeoPandas. We draw maps with `geom_sf()` and convert them with
 
 ```{r}
 #| label: geospatial-read-countries-sf
-#| slide-show: code
+#| slide-show: both
 #| message: false
 library(sf)
 library(dplyr)
@@ -383,7 +383,7 @@ gets a categorical color scale, and the country name can appear in a tooltip.
 #| slide-show: both
 #| slide-title: Encode a categorical attribute
 alt.Chart(world_countries, width=500).mark_geoshape().encode(
-    color=alt.Color('continent').title('Continent'),
+    color=alt.Color('continent'),
     tooltip='name'
 )
 ```
@@ -415,7 +415,7 @@ Showing total population.
 #| slide-show: both
 #| slide-title: Color countries by population
 country_map = alt.Chart(world_countries, width=500).mark_geoshape().encode(
-    color=alt.Color('pop_est').title('Population estimate'),
+    color=alt.Color('pop_est'),
     tooltip=['name', alt.Tooltip('pop_est', format=',')]
 )
 country_map
@@ -428,7 +428,7 @@ Here we show the GDP per capita.
 #| slide-show: both
 #| slide-title: Color countries by GDP per person
 country_map.encode(
-    color=alt.Color('gdp_per_capita:Q').title('GDP per person (US$)'),
+    color=alt.Color('gdp_per_capita:Q'),
     tooltip=['name:N', alt.Tooltip('gdp_per_capita:Q', format=',.0f')]
 )
 ```
@@ -517,7 +517,7 @@ geometries. It is different from cropping a world map to a rectangular window.
 africa = alt.Chart(
     world_countries.query('continent == "Africa"'), width=450
 ).mark_geoshape().encode(
-    color=alt.Color('pop_est').title('Population estimate'),
+    color=alt.Color('pop_est'),
     tooltip=['name', alt.Tooltip('pop_est', format=',')]
 )
 africa
@@ -618,7 +618,7 @@ world_regions[['name', 'admin', 'iso_a2']].head()
 #| slide-show: both
 #| slide-title: Draw administrative regions
 alt.Chart(world_regions, width=500).mark_geoshape(stroke='white', strokeWidth=0.3).encode(
-    color=alt.Color('admin').title('Country'),
+    color=alt.Color('admin'),
     tooltip=['admin', 'name']
 )
 ```
@@ -832,7 +832,7 @@ bins, while more distant values can share a color.
 #| slide-show: both
 #| slide-title: Bin the population colors
 canada_population_map.encode(
-    color=alt.Color('population:Q').bin(step=2_000_000, extent=[0, 16_000_000]).title('Population, 2021')
+    color=alt.Color('population:Q').bin(step=2_000_000, extent=[0, 16_000_000])
 )
 ```
 
@@ -873,7 +873,7 @@ province_hover = alt.selection_point(
     name='province_hover', fields=['name'], on='pointerover', clear='pointerout', empty=False
 )
 canada_population_map.mark_geoshape(strokeWidth=2).encode(
-    color=alt.Color('population:Q').scale(scheme='tealblues').title('Population, 2021'),
+    color=alt.Color('population:Q').scale(scheme='tealblues'),
     stroke=alt.condition(province_hover, alt.value('white'), alt.value('#222222')),
     order=alt.condition(province_hover, alt.value(1), alt.value(0))
 ).add_params(province_hover)
@@ -1121,7 +1121,7 @@ inspected rather than assumed to remain unchanged.
 #| slide-title: Show each state's winning party
 party_color = alt.Color('winning_party').scale(
     domain=['Dem', 'Rep'], range=['#4c78a8', '#e45756']
-).title('Winning party')
+)
 election_map = alt.Chart(us_states, width=550).mark_geoshape(
     stroke='white'
 ).project('albersUsa').encode(
@@ -1165,7 +1165,7 @@ yet small states are still difficult to compare.
 #| slide-show: both
 #| slide-title: Opacity still leaves small states hard to compare
 election_map.encode(
-    opacity=alt.Opacity('electoral_votes:Q').title('Electoral votes'),
+    opacity=alt.Opacity('electoral_votes:Q'),
     tooltip=['name', 'winning_party', 'electoral_votes']
 )
 ```
@@ -1262,7 +1262,7 @@ electoral_points = alt.Chart(us_states).mark_circle(stroke='black').encode(
     longitude='longitude',
     latitude='latitude',
     color=alt.value('white'),
-    size=alt.Size('electoral_votes').scale(range=[20, 1500])),
+    size=alt.Size('electoral_votes').scale(range=[20, 1500]),
     tooltip=['name', 'winning_party', 'electoral_votes']
 )
 election_map + electoral_points
@@ -1321,8 +1321,8 @@ Use a neutral boundary layer and map party and electoral votes to the points.
 #| label: geospatial-election-colored-points-sf
 #| slide-show: both
 #| slide-title: Put the quantity and party on the same marks
-ggplotly((us_albers_gg + us_display_sf) + aes(fill = I('lightgray')) +
-             geom_sf(data = electoral_display_sf,
+ggplotly((us_albers_gg) + aes(fill = I('lightgray')) +
+             geom_sf(data = us_states_sf,
                      aes(label = name, color = winning_party, size = electoral_votes),
                      alpha = 0.8, inherit.aes = FALSE) +
              scale_color_manual(values = party_colors_gg, name = 'Winning party') +
@@ -1367,7 +1367,7 @@ party, with independently ordered state names but a shared quantitative x-scale.
 #| slide-show: both
 #| slide-title: Link the map to an aligned comparison
 bars = alt.Chart(pd.DataFrame(us_states.drop(columns='geometry')), width=200).mark_bar().encode(
-    x=alt.X('electoral_votes:Q').title('Electoral votes'),
+    x=alt.X('electoral_votes:Q'),
     y=alt.Y('name:N').sort('-x').title(None),
     color=party_color,
     opacity=alt.condition(state_hover, alt.value(0.9), alt.value(0.2)),
