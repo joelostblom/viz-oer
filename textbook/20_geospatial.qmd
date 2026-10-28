@@ -317,8 +317,8 @@ library(ggplot2)
 # Only import the one function we will use to avoid cluttering the namespace
 library(plotly, include.only = "ggplotly")
 
-world_sf <- st_read('data/geospatial-world-countries.geojson')
-head(world_sf)
+world_sf <- st_read('data/geospatial-world-countries.geojson', quiet = FALSE)
+world_sf
 ```
 
 ```{r}
@@ -362,10 +362,9 @@ to avoid that it gets prefixed with the name of the dataframe column.
 #| label: geospatial-world-outline-sf
 #| slide-show: both
 #| slide-title: Draw geographic shapes
-world_map_gg <- ggplot(world_sf, aes(text = name)) +
+ggplot(world_sf, aes(text = name)) +
     geom_sf() +
     coord_sf(crs = '+proj=eqearth')
-ggplotly(world_map_gg, tooltip = 'text')
 ```
 
 :::
@@ -380,7 +379,7 @@ gets a categorical color scale, and the country name can appear in a tooltip.
 ```{python}
 #| label: geospatial-continents-alt
 #| slide-show: both
-#| slide-title: Encode a categorical attribute
+#| slide-title: Encode dataframe columns
 alt.Chart(world_countries, width=500).mark_geoshape().encode(
     color=alt.Color('continent'),
     tooltip='name'
@@ -394,7 +393,10 @@ Map the categorical variable directly to `fill`.
 ```{r}
 #| label: geospatial-continents-sf
 #| slide-show: both
-#| slide-title: Encode a categorical attribute
+#| slide-title: Encode dataframe columns
+world_map_gg <- ggplot(world_sf, aes(text = name)) +
+    geom_sf() +
+    coord_sf(crs = '+proj=eqearth')
 ggplotly(world_map_gg + aes(fill = continent), tooltip = 'text')
 ```
 
@@ -488,6 +490,7 @@ Ordered factors give the sequential palette the intended category order.
 
 ```{r}
 #| label: geospatial-economy-sf
+#| out.width: "800px"
 #| slide-show: both
 #| slide-title: Encode ordered economy groups
 ggplotly(world_map_gg + aes(fill = factor(economy, ordered = TRUE)), tooltip = 'name')
@@ -495,6 +498,7 @@ ggplotly(world_map_gg + aes(fill = factor(economy, ordered = TRUE)), tooltip = '
 
 ```{r}
 #| label: geospatial-income-sf
+#| out.width: "800px"
 #| slide-show: both
 #| slide-title: Encode ordered income groups
 ggplotly(world_map_gg + aes(fill = factor(income_grp, ordered = TRUE)), tooltip = 'name')
@@ -514,7 +518,6 @@ geometries. It is different from cropping a world map to a rectangular window.
 ```{python}
 #| label: geospatial-africa-alt
 #| slide-show: both
-#| slide-title: Focus on one continent
 africa = alt.Chart(
     world_countries.query('continent == "Africa"'), width=450
 ).mark_geoshape().encode(
@@ -530,7 +533,6 @@ fill colors are similar.
 ```{python}
 #| label: geospatial-africa-boundaries-alt
 #| slide-show: both
-#| slide-title: Make adjacent boundaries visible
 africa.mark_geoshape(stroke='gray', strokeWidth=0.5)
 ```
 
@@ -541,7 +543,6 @@ Filtering an `sf` dataframe keeps its geometries attached.
 ```{r}
 #| label: geospatial-africa-sf
 #| slide-show: both
-#| slide-title: Focus on one continent
 africa_sf <- world_sf |> filter(continent == 'Africa')
 africa_map_gg <- ggplot(africa_sf, aes(label = name, fill = pop_est)) +
     geom_sf() + coord_sf(crs = '+proj=eqearth')
@@ -552,7 +553,6 @@ We could emphasize the lines between countries more
 ```{r}
 #| label: geospatial-africa-boundaries-sf
 #| slide-show: both
-#| slide-title: Make adjacent boundaries visible
 ggplotly(
     africa_map_gg
         + geom_sf(color = 'grey', linewidth = 0.1)
@@ -1079,7 +1079,7 @@ ggplotly(us_inset_map_gg + aes(fill = I('white')), tooltip = 'label')
 
 :::
 
-### Moving an inset is different from resizing it
+### Moving an inset is different from resizing it {.slide-skip}
 
 The standard composite view is compact partly because Alaska is reduced in
 scale. That can be convenient when the map's purpose is to identify states, but
@@ -1091,13 +1091,9 @@ Alaska relative to the contiguous states. It takes more room, but preserves
 the area comparison. Insets should make their changed location and any changed
 scale clear; a compact layout is not a literal view of the states' geography.
 
-::: {.slide-visual}
-
 ![Repositioning Alaska and Hawaii while keeping a common area scale reveals Alaska's much larger size. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#projections), via the lecture.](img/geospatial-lecture/alaska-true-relative-size.png){#fig-map-alaska-scale fig-alt="The contiguous United States is shown above Alaska and Hawaii; Alaska is not shrunk to the usual inset scale and appears much larger than Texas."}
 
-:::
-
-### Joining election results
+### Joining election results {.slide-skip}
 
 The lecture used the 2012 presidential election to compare a winner-by-state
 map with electoral votes. Our local table combines the state winners and the
@@ -1110,7 +1106,6 @@ electoral-vote allocations used in 2012. These are electoral votes, not popular 
 ```{python}
 #| label: geospatial-election-data
 #| slide-show: code
-#| slide-title: Join the 2012 election results
 election_results = pd.read_csv('data/geospatial-us-election-2012.csv')
 us_states = us_states.merge(
     election_results, on='name', how='left', validate='one_to_one'
@@ -1133,7 +1128,6 @@ remain those of the 2012 election.
 ```{r}
 #| label: geospatial-election-data-sf
 #| slide-show: code
-#| slide-title: Join the 2012 election results
 election_results <- readr::read_csv('data/geospatial-us-election-2012.csv')
 us_election_sf <- us_shifted_sf |>
     left_join(election_results, by = c('NAME' = 'name'), relationship = 'one-to-one')
