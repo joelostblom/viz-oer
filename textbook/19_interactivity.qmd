@@ -290,8 +290,12 @@ car_tooltip_plot <- ggplot(cars, aes(x = Horsepower, y = Miles_per_Gallon, color
 ggplotly(car_tooltip_plot)
 ```
 
-`ggplotly()` uses the `text` aesthetic from ggplot for custom tooltip content,
-so we must first map a dataframe column to `text` in ggplot
+`ggplotly()` can uses aesthetics from ggplot for custom tooltip content,
+so we must first map each dataframe we want to use to an aesthetic.
+Here we use `label` which does not show up in `geom_point`,
+but is still part of the structure of the plot.
+If we wanted to avoid seeing the `Name:` prefix in the tooltip,
+we could have used `text` instead of `label`.
 
 ```{r}
 #| label: interaction-ggplotly
@@ -302,15 +306,15 @@ car_tooltip_plot <- ggplot(cars, aes(
     x = Horsepower,
     y = Miles_per_Gallon,
     color = Origin,
-    text = Name
+    label = Name
 )) +
     geom_point()
-ggplotly(car_tooltip_plot, tooltip = 'text')
+ggplotly(car_tooltip_plot, tooltip = 'label')
 ```
 
 Including multiple fields involves
-manually pasting together columns with newlines
-in ggplot.
+passing a vector with aesthetic channels
+to the Plotly tooltip parameter.
 
 ```{r}
 #| label: interaction-tooltip-multiple-gg
@@ -321,10 +325,10 @@ car_tooltip_plot <- ggplot(cars, aes(
     x = Horsepower,
     y = Miles_per_Gallon,
     color = Origin,
-    text = paste(Name, Origin, sep = '<br>')
+    label = Name
 )) +
     geom_point()
-ggplotly(car_tooltip_plot, tooltip = 'text')
+ggplotly(car_tooltip_plot, tooltip = c('label', 'color'))
 ```
 
 :::
