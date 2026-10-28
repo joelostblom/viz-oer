@@ -20,13 +20,21 @@ require a network connection.
   topology preservation for overview maps; they are not suitable for precise
   measurements or detailed local boundary work.
   Source: <https://naciscdn.org/naturalearth/50m/cultural/ne_50m_admin_1_states_provinces.zip>.
+- `geospatial-us-states-2024.geojson`: 2024 US Census cartographic state
+  boundaries at 1:20 million, obtained with
+  `tigris::states(cb = TRUE, resolution = '20m', year = 2024)`. The snapshot
+  retains the 50 states and DC, their `GEOID`, `STUSPS`, and `NAME` attributes,
+  and WGS84 geometry. Source:
+  <https://www2.census.gov/geo/tiger/GENZ2024/shp/cb_2024_us_state_20m.zip>.
+  The R inset maps apply `tigris::shift_geometry()` to this local file.
 
-Both files use WGS84 longitude/latitude (`EPSG:4326`); coordinates are rounded to
+The two Natural Earth files use WGS84 longitude/latitude (`EPSG:4326`); coordinates are rounded to
 five decimal places while retaining the source ring winding. Natural Earth data
 are public domain: <https://www.naturalearthdata.com/about/terms-of-use/>.
 
 These files are prepared GeoJSON copies of the zipped shapefile downloads
-linked above. Natural Earth also distributes GeoJSON exports through its
+linked above. The US Census boundaries are public-domain US government data.
+Natural Earth also distributes GeoJSON exports through its
 project repository: <https://github.com/nvkelso/natural-earth-vector/tree/master/geojson>.
 Our preparation selects attributes and simplifies the regional geometry for
 these examples; the local files are not byte-for-byte copies of those repository
@@ -49,18 +57,22 @@ exports. GeoPandas can also read the source shapefiles directly.
   magnitude, and place from the historical USGS sample distributed by Vega.
   Source: <https://raw.githubusercontent.com/vega/vega-datasets/main/data/earthquakes.json>.
 
-The Altair and Plotly R tabs use these same boundaries and statistical tables.
+The Altair and ggplot tabs use these same boundaries and statistical tables.
 Country maps use Natural Earth's historical GDP/population attributes, not a
 separate GDP snapshot. Both language versions use the 2021 Canadian population
 counts and 2012 US election results.
 
-## Browser geometry
+For the R US inset maps, the 2012 results are joined directly to the shifted
+Census features using `NAME` and `name`. All 51 regions must match, totaling
+538 electoral votes: Democratic 332 and Republican 206. The 2024 boundary date
+does not change the election year or its electoral-vote allocation. Symbol
+locations are computed inside the shifted polygons so that all R map layers
+share the same display coordinates.
 
-`plotly-geo/world_110m.json` and `plotly-geo/usa_110m.json` are the TopoJSON files
-from <https://cdn.plot.ly/world_110m.json> and
-<https://cdn.plot.ly/usa_110m.json>. The R examples set
-`config(topojsonURL = 'data/plotly-geo/')` to use these local files rather than
-requesting geography from the CDN.
+The R examples read boundaries with `sf::st_read()`, retain the geometry column
+for `geom_sf()`, and convert the ggplots with `ggplotly()`. The converted maps
+contain their projected geometry and do not need supporting geographic files
+from Plotly's CDN. No example depends on a live boundary-data download.
 
 ## Recreating the snapshots
 
@@ -70,7 +82,14 @@ From the repository root:
 uv run python textbook/src/data_processing/prepare_geospatial_data.py
 ```
 
-This refreshes Natural Earth and Vega data and Plotly's supporting TopoJSON.
+This refreshes the Natural Earth and Vega data.
+
+With the project's R environment activated, regenerate the Census snapshot with:
+
+```sh
+Rscript textbook/src/data_processing/prepare_geospatial_us_states.R
+```
+
 To also recover the original population/election tables, provide the
 instructor notebook:
 
