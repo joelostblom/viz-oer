@@ -368,7 +368,6 @@ nested_figure
 | PNG | Slides, documents, previews | Raster image: enlarging it reveals pixels; choose sufficient resolution |
 | SVG or PDF | Resizable diagrams and publication figures | Vector output stays sharp, but dense plots can create large files |
 | HTML | Interactive charts | Preserves supported browser interactions; decide whether dependencies and data must work offline |
-| Vega-Lite JSON | Storing or reusing an Altair specification | Describes the chart; needs a compatible renderer to display it |
 
 :::
 
