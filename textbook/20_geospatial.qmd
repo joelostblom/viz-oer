@@ -12,7 +12,7 @@ execute:
   warning: false
 knitr:
   opts_chunk:
-    out.width: "800px"
+    out.width: "700px"
     out.height: "400px"
 ---
 
@@ -370,8 +370,6 @@ ggplotly(world_map_gg, tooltip = 'text')
 
 :::
 
-### Encoding country attributes
-
 The grammar of graphics still applies. A nominal variable such as continent
 gets a categorical color scale, and the country name can appear in a tooltip.
 
@@ -401,6 +399,8 @@ ggplotly(world_map_gg + aes(fill = continent), tooltip = 'text')
 ```
 
 :::
+
+### Choropleths
 
 A **choropleth** fills geographic regions according to an attribute. Here we
 start with total population, then replace the color encoding with GDP per person.
@@ -544,7 +544,7 @@ Filtering an `sf` dataframe keeps its geometries attached.
 #| slide-title: Focus on one continent
 africa_sf <- world_sf |> filter(continent == 'Africa')
 africa_map_gg <- ggplot(africa_sf, aes(label = name, fill = pop_est)) +
-    geom_sf(color = NA) + coord_sf(crs = '+proj=eqearth')
+    geom_sf() + coord_sf(crs = '+proj=eqearth')
 ggplotly(africa_map_gg, tooltip = c('label', 'fill'))
 ```
 We could emphasize the lines between countries more
@@ -561,6 +561,8 @@ ggplotly(
 ```
 
 :::
+
+<!-- TODO wrong color scale for bined ggplot data -->
 
 ## States, provinces, and territories
 
@@ -646,7 +648,7 @@ ggplotly(regions_map_gg, tooltip = c('label', 'fill'))
 
 :::
 
-### A map of Canada
+### Focusing on a region and is administrative subregions
 
 Select Canada's provinces and territories using the country code. The dataset
 includes names, representative point coordinates, and Wikipedia links as well
@@ -772,9 +774,6 @@ canadian_provinces_sf |> select(name, population)
 
 A left join keeps every boundary so that an unmatched region is detectable.
 An inner join can silently remove a region whose name differs between sources.
-
-## Choropleths and their pitfalls
-
 We can now color the regions by population, using the new column from the join.
 
 ::: {.panel-tabset group="language"}
@@ -861,7 +860,7 @@ ggplotly((canada_population_gg + canadian_provinces_sf) +
 Compare this with the continuous scale. Changing the bin boundaries changes
 which differences look important, even though the data have not changed.
 
-### Highlighting boundaries on hover (Altair)
+### Highlighting boundaries on hover
 
 Selections from @sec-interactivity work with geographic marks too. Here, hovering
 adds a white outline and draws that region last, keeping its outline visible.
@@ -880,7 +879,15 @@ canada_population_map.mark_geoshape(strokeWidth=2).encode(
 ).add_params(province_hover)
 ```
 
+## Choropleths and their pitfalls
+
 ### What does the map's area imply?
+
+::: {.slide-visual}
+
+-![A state-level income map gives Alaska much more visual weight than small, densely populated states. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), 2015 five-year American Community Survey.](img/geospatial-lecture/state-median-income.png){#fig-map-state-income fig-alt="A US state-level median-income choropleth is visually dominated by a large, dark-purple Alaska, while small northeastern states are hard to see."}
+
+:::
 
 A choropleth gives each region visual space according to its geographic area,
 not its population or contribution to a total. A small, densely populated region
@@ -922,7 +929,7 @@ per person, whereas an environmental measure might require a quantity per unit
 area. Dividing by an unrelated denominator merely changes the map; it does not
 automatically make it more informative.
 
-### Aggregation and color bins change the story
+### Aggregation at higher resolution
 
 [Choropleths can also show summaries such as median income.]{.slide-bullet} When regions are
 small relative to the spatial pattern of interest, we can see local variation
@@ -936,28 +943,70 @@ within a bin.
 
 :::
 
-Changing the unit from counties to states changes the visible pattern. The map
-below is dominated by Alaska's large area and high median income, even though
-relatively few people live there. Small, densely populated states on the east
-coast receive much less visual space. This can be useful for comparing places,
-but it is a poor way to judge how common an income level is in the population.
-
-::: {.slide-visual slide-title="Aggregation can hide local variation"}
-
-![A state-level income map gives Alaska much more visual weight than small, densely populated states. Source: [Claus Wilke](https://clauswilke.com/dataviz/geospatial-data.html#choropleth-mapping), 2015 five-year American Community Survey.](img/geospatial-lecture/state-median-income.png){#fig-map-state-income fig-alt="A US state-level median-income choropleth is visually dominated by a large, dark-purple Alaska, while small northeastern states are hard to see."}
-
-:::
-
-[These two income figures also use **different bin boundaries**.]{.slide-bullet} The same shade
-therefore does not mean the same income in both maps; read each legend. To
-isolate the effect of changing geographic units, hold the color scale constant.
-State medians also are not obtained by simply averaging county medians.
-
 The broader lesson is that the chosen boundaries and aggregation can conceal
 variation or change apparent relationships. A state-level pattern does not
 establish that every county, household, or person within that state follows it.
 
-## The United States: projections and electoral votes {.slide-skip}
+### Cartograms: giving area a new meaning
+
+The original lecture's election map makes the area problem particularly clear.
+[The amount of red or blue shows the land area of states won by each party, not
+the number of electoral votes.]{.slide-bullet} Obama won 332 of 538 electoral votes in 2012,
+about 61.7%, despite the prominence of red regions in this view. Neither land
+area nor the electoral-vote percentage is the popular-vote percentage.
+
+::: {.slide-visual}
+
+![The 2012 election result on a geographic map of the contiguous United States: blue denotes Democratic state winners and red Republican state winners. Source: [Mark Newman](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), via the lecture.](img/geospatial-lecture/election-2012-geographic.png){#fig-map-election-geographic width=85% fig-alt="A conventional red-and-blue 2012 US election map contains large red areas across the central and western states, even though the Democratic candidate won more electoral votes."}
+
+:::
+
+A **cartogram** deliberately changes region areas or replaces regions with
+stylized shapes so that visual space follows a chosen quantity. Contiguous
+cartograms try to retain neighboring relationships, but the distorted outlines
+can make familiar places harder to identify.
+
+The particular Newman cartogram included in the lecture is **population-weighted**.
+California and northeastern states expand relative to sparsely populated states.
+It illustrates the effect of changing the area encoding, but its blue/red area
+does not directly measure the Electoral College result or individual voters'
+preferences. Population, votes cast, and electoral votes are different quantities.
+
+::: {.slide-visual slide-title="A population-weighted cartogram"}
+
+![A population-weighted cartogram of the 2012 state winners changes region shapes and areas. Source: [Mark Newman's population cartogram](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), CC BY 2.0.](img/geospatial-lecture/election-2012-cartogram.png){#fig-map-election-population-cartogram width=85% fig-alt="A distorted map expands populous states such as California and New York and shrinks less populous states while retaining the red and blue state-winner colors."}
+
+:::
+
+To represent electoral weight directly, use electoral votes for area. The
+Financial Times examples below show two approaches to the same 2012 result:
+
+- A **tile cartogram** assigns one equal-sized square to each electoral vote.
+  State labels and approximate relative positions help readers locate regions.
+  This differs from a grid with one equal-sized tile per state, which would
+  give every state equal weight.
+- A **circle cartogram** makes each circle's area proportional to electoral
+  votes and moves circles to keep them separate. It simplifies boundaries but
+  sacrifices exact positions and some neighboring relationships.
+
+::: {.slide-visual slide-title="One tile per electoral vote"}
+
+![A tile cartogram allocates squares according to each state's electoral votes rather than its land area. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-tile-cartogram.png){#fig-map-election-tiles width=80% fig-alt="A red-and-blue 2012 election cartogram approximates US geography using labeled groups of equal-sized squares, with more squares for states with more electoral votes."}
+
+:::
+
+::: {.slide-visual slide-title="Circle area can encode electoral votes"}
+
+![A circle cartogram uses symbol area for electoral votes and approximate positions for geographic context. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-circle-cartogram.png){#fig-map-election-circles width=80% fig-alt="A 2012 election cartogram replaces states with nonoverlapping labeled circles sized by electoral votes; California, Texas, Florida, and New York are prominent."}
+
+:::
+
+These are tradeoffs rather than universally better maps. A geographic map can
+make a familiar state easier to find; a cartogram can make its contribution to
+a total clearer. For the question of who won overall, a bar chart or a labeled
+total can be more direct than either map.
+
+## Choropleths and cartograms of the US {.slide-skip}
 
 ### Separated regions and composite projections
 
@@ -1013,8 +1062,6 @@ A composite inset arrangement is not a single CRS. The `tigris` package provides
 layout. Here we use a local copy of the 2024 Census cartographic boundaries,
 prepared with `tigris::states(cb = TRUE, resolution = '20m', year = 2024)`.
 The overview resolution keeps the interactive maps small enough to load quickly.
-`preserve_area = FALSE` allows inset resizing; keep the unshifted geometry for
-geographic measurements and analysis.
 
 ```{r}
 #| label: geospatial-us-albers-sf
@@ -1022,7 +1069,7 @@ geographic measurements and analysis.
 #| slide-title: Make a compact US inset layout
 us_census_sf <- st_read('data/geospatial-us-states-2024.geojson', quiet = TRUE)
 us_shifted_sf <- tigris::shift_geometry(
-    us_census_sf, geoid_column = 'GEOID', preserve_area = FALSE
+    us_census_sf, geoid_column = 'GEOID', preserve_area = TRUE
 )
 us_inset_map_gg <- ggplot(us_shifted_sf, aes(label = NAME)) +
     geom_sf(color = 'grey40', linewidth = 0.2) +
@@ -1181,66 +1228,7 @@ election_map_gg + aes(alpha = electoral_votes) +
 
 :::
 
-### Cartograms: giving area a new meaning
-
-The original lecture's election map makes the area problem particularly clear.
-[The amount of red or blue shows the land area of states won by each party, not
-the number of electoral votes.]{.slide-bullet} Obama won 332 of 538 electoral votes in 2012,
-about 61.7%, despite the prominence of red regions in this view. Neither land
-area nor the electoral-vote percentage is the popular-vote percentage.
-
-::: {.slide-visual}
-
-![The 2012 election result on a geographic map of the contiguous United States: blue denotes Democratic state winners and red Republican state winners. Source: [Mark Newman](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), via the lecture.](img/geospatial-lecture/election-2012-geographic.png){#fig-map-election-geographic width=85% fig-alt="A conventional red-and-blue 2012 US election map contains large red areas across the central and western states, even though the Democratic candidate won more electoral votes."}
-
-:::
-
-A **cartogram** deliberately changes region areas or replaces regions with
-stylized shapes so that visual space follows a chosen quantity. Contiguous
-cartograms try to retain neighboring relationships, but the distorted outlines
-can make familiar places harder to identify.
-
-The particular Newman cartogram included in the lecture is **population-weighted**.
-California and northeastern states expand relative to sparsely populated states.
-It illustrates the effect of changing the area encoding, but its blue/red area
-does not directly measure the Electoral College result or individual voters'
-preferences. Population, votes cast, and electoral votes are different quantities.
-
-::: {.slide-visual slide-title="A population-weighted cartogram"}
-
-![A population-weighted cartogram of the 2012 state winners changes region shapes and areas. Source: [Mark Newman's population cartogram](https://web.archive.org/web/20240000000000id_/http://www-personal.umich.edu/~mejn/election/2012/), CC BY 2.0.](img/geospatial-lecture/election-2012-cartogram.png){#fig-map-election-population-cartogram width=85% fig-alt="A distorted map expands populous states such as California and New York and shrinks less populous states while retaining the red and blue state-winner colors."}
-
-:::
-
-To represent electoral weight directly, use electoral votes for area. The
-Financial Times examples below show two approaches to the same 2012 result:
-
-- A **tile cartogram** assigns one equal-sized square to each electoral vote.
-  State labels and approximate relative positions help readers locate regions.
-  This differs from a grid with one equal-sized tile per state, which would
-  give every state equal weight.
-- A **circle cartogram** makes each circle's area proportional to electoral
-  votes and moves circles to keep them separate. It simplifies boundaries but
-  sacrifices exact positions and some neighboring relationships.
-
-::: {.slide-visual slide-title="One tile per electoral vote"}
-
-![A tile cartogram allocates squares according to each state's electoral votes rather than its land area. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-tile-cartogram.png){#fig-map-election-tiles width=80% fig-alt="A red-and-blue 2012 election cartogram approximates US geography using labeled groups of equal-sized squares, with more squares for states with more electoral votes."}
-
-:::
-
-::: {.slide-visual slide-title="Circle area can encode electoral votes"}
-
-![A circle cartogram uses symbol area for electoral votes and approximate positions for geographic context. Source: [Financial Times](https://www.ft.com/content/3685bf9e-a4cc-11e6-8b69-02899e8bd9d1), via the lecture.](img/geospatial-lecture/election-2012-circle-cartogram.png){#fig-map-election-circles width=80% fig-alt="A 2012 election cartogram replaces states with nonoverlapping labeled circles sized by electoral votes; California, Texas, Florida, and New York are prominent."}
-
-:::
-
-These are tradeoffs rather than universally better maps. A geographic map can
-make a familiar state easier to find; a cartogram can make its contribution to
-a total clearer. For the question of who won overall, a bar chart or a labeled
-total can be more direct than either map.
-
-### Points instead of regions
+### Creating cartograms: Points instead of regions
 
 Proportional symbols allocate visible size according to a quantity rather than
 land area. First, overlay neutral circles on the party-colored regions:
