@@ -11,7 +11,7 @@ execute:
   warning: false
 knitr:
   opts_chunk:
-    out.width: "100%"
+    out.width: "600px"
     out.height: "400px"
 ---
 
@@ -209,18 +209,18 @@ but recognizing this structure helps us inspect a downloaded file. See
 [Tom MacWright's GeoJSON primer](https://macwright.org/2015/03/23/geojson-second-bite)
 for more detail.
 
-### Finding boundary data and choosing detail
+### Finding boundary data and choosing detail {.slide-skip}
 
 A helpful website for finding data with geographical boundaries is
 [Natural Earth](https://www.naturalearthdata.com/downloads/),
 which provides different file format
 at different scales and for different boundary representations:
 
-- [**Cultural** data includes countries, administrative regions, and populated places.]{.slide-bullet}
-- [**Physical** data includes coastlines, rivers, and lakes.]{.slide-bullet}
-- [**Admin 0** represents countries; **Admin 1** represents states and provinces.]{.slide-bullet}
-- [**1:110 million** is useful for an overview of the world. **1:50 million** and
-  **1:10 million** provide more detail for regional maps.]{.slide-bullet}
+- **Cultural** data includes countries, administrative regions, and populated places.
+- **Physical** data includes coastlines, rivers, and lakes.
+- **Admin 0** represents countries; **Admin 1** represents states and provinces.
+- **1:110 million** is useful for an overview of the world. **1:50 million** and
+  **1:10 million** provide more detail for regional maps.
 
 ## Working with geographic data
 
@@ -241,7 +241,6 @@ GeoPandas extends pandas with geometry types and spatial operations.
 ```{python}
 #| label: geospatial-read-countries
 #| slide-show: code
-#| slide-title: Read geographic boundaries
 import altair as alt
 import geopandas as gpd
 import pandas as pd
@@ -258,8 +257,6 @@ dividing by population.
 
 ```{python}
 #| label: geospatial-country-attributes
-#| slide-show: code
-#| slide-title: Prepare the country attributes
 world_countries = world_countries.rename(
     columns=lambda name: name.lower()
 ).assign(
@@ -312,24 +309,19 @@ much like GeoPandas. We draw maps with `geom_sf()` and convert them with
 ```{r}
 #| label: geospatial-read-countries-sf
 #| slide-show: code
-#| slide-title: Read geographic boundaries
+#| message: false
 library(sf)
 library(dplyr)
 library(ggplot2)
+# Only import the one function we will use to avoid cluttering the namespace
 library(plotly, include.only = "ggplotly")
 
-map_theme <- theme_void() +
-    theme(plot.background = element_rect(fill = 'white', color = NA),
-          legend.background = element_rect(fill = 'white', color = NA),
-          legend.position = 'bottom', legend.text = element_text(size = 9))
-world_sf <- st_read('data/geospatial-world-countries.geojson', quiet = TRUE)
+world_sf <- st_read('data/geospatial-world-countries.geojson')
 head(world_sf)
 ```
 
 ```{r}
 #| label: geospatial-country-attributes-sf
-#| slide-show: code
-#| slide-title: Prepare the country attributes
 world_sf <- world_sf |>
     rename_with(tolower) |>
     mutate(gdp_per_capita = gdp_md * 1e6 / pop_est) |>
@@ -376,51 +368,6 @@ ggplotly(world_map_gg, tooltip = 'text')
 ```
 
 :::
-
-### Comparing projections in code
-
-We can reproduce the [projection comparison](#map-projections) with the same
-country boundaries in each language. Altair defaults to Equal Earth; we choose
-it explicitly in both versions so that the comparison is intentional.
-
-::: {.panel-tabset group="language"}
-
-#### Altair {.slide-skip}
-
-```{python}
-#| label: geospatial-projection-comparison-alt
-#| slide-show: output
-#| slide-title: Compare projections on the same boundaries
-projection_map = alt.Chart(world_countries, width=260, height=200).mark_geoshape(
-    fill='lightgray', stroke='white', strokeWidth=0.3
-)
-projection_map.project('equalEarth').properties(title='Equal Earth') | \
-    projection_map.project('mercator').properties(title='Mercator')
-```
-
-#### ggplot {.slide-skip}
-
-The projections are calculated in R before converting the two ggplots.
-
-```{r}
-#| label: geospatial-projection-comparison-sf
-#| slide-show: output
-#| slide-title: Compare projections on the same boundaries
-equal_earth_gg <- world_map_gg + aes(fill = I('lightgray')) + labs(title = 'Equal Earth')
-mercator_gg <- world_map_gg + aes(fill = I('lightgray')) +
-    coord_sf(crs = '+proj=merc') + labs(title = 'Mercator')
-plotly::subplot(ggplotly(equal_earth_gg, tooltip = 'text'),
-                ggplotly(mercator_gg, tooltip = 'text'), nrows = 1)
-```
-
-:::
-
-The coordinates in our GeoJSON use longitude and latitude in WGS84
-(`EPSG:4326`). This coordinate reference system describes the data; Altair's
-`project()` controls how it is displayed. Changing the display projection does
-not change the underlying measurements. In GeoPandas, `to_crs()` actually
-transforms coordinates; assigning a CRS merely declares what existing
-coordinates mean.
 
 ### Encoding country attributes
 
@@ -568,7 +515,7 @@ geometries. It is different from cropping a world map to a rectangular window.
 #| slide-show: both
 #| slide-title: Focus on one continent
 africa = alt.Chart(
-    world_countries.query('continent == "Africa"'), width=450, height=420
+    world_countries.query('continent == "Africa"'), width=450
 ).mark_geoshape().encode(
     color=alt.Color('pop_est').title('Population estimate'),
     tooltip=['name', alt.Tooltip('pop_est', format=',')]
@@ -660,7 +607,7 @@ set of subdivisions for every country in the world.
 
 ```{python}
 #| label: geospatial-read-regions
-#| slide-show: code
+#| slide-show: both
 #| slide-title: Read administrative regions
 world_regions = gpd.read_file('data/geospatial-world-regions.geojson')
 world_regions[['name', 'admin', 'iso_a2']].head()
@@ -680,7 +627,7 @@ alt.Chart(world_regions, width=500).mark_geoshape(stroke='white', strokeWidth=0.
 
 ```{r}
 #| label: geospatial-read-regions-sf
-#| slide-show: code
+#| slide-show: both
 #| slide-title: Read administrative regions
 regions_sf <- st_read('data/geospatial-world-regions.geojson', quiet = TRUE)
 regions_sf |> select(name, admin, iso_a2) |> head()
@@ -710,7 +657,7 @@ as boundaries.
 
 ```{python}
 #| label: geospatial-canada-regions
-#| slide-show: code
+#| slide-show: both
 #| slide-title: Select Canada's provinces and territories
 canadian_provinces = world_regions.query('iso_a2 == "CA"').copy()
 canadian_provinces[['name', 'postal', 'latitude', 'longitude']]
@@ -723,13 +670,13 @@ below is an illustration, not a specification of an official UTM zone.
 
 ```{python}
 #| label: geospatial-canada-links-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Choose a regional projection for Canada
-canada_map = alt.Chart(canadian_provinces, width=500, height=420).mark_geoshape(
+canada_map = alt.Chart(canadian_provinces, width=500).mark_geoshape(
     stroke='white'
 ).project('transverseMercator', rotate=[90, 0, 0])
 canada_map.encode(
-    color=alt.Color('name:N').scale(scheme='tableau20').title('Province or territory'),
+    color=alt.Color('name:N').scale(scheme='tableau20'),
     tooltip='name:N',
     href='wikipedia:N'
 )
@@ -799,8 +746,6 @@ match unless we explicitly reconcile them.
 
 ```{python}
 #| label: geospatial-canada-population-join
-#| slide-show: code
-#| slide-title: Join populations to the boundaries
 canadian_provinces = canadian_provinces.merge(
     province_populations, on='name', how='left', validate='one_to_one'
 )
@@ -815,8 +760,6 @@ The left join preserves the geometries and the same census counts.
 
 ```{r}
 #| label: geospatial-canada-population-join-sf
-#| slide-show: code
-#| slide-title: Join populations to the boundaries
 province_populations_sf <- readr::read_csv('data/geospatial-canada-population-2021.csv')
 canadian_provinces_sf <- canadian_provinces_sf |>
     left_join(province_populations_sf, by = 'name', relationship = 'one-to-one')
@@ -826,7 +769,7 @@ canadian_provinces_sf |> select(name, population)
 
 :::
 
-[A left join keeps every boundary so that an unmatched region is detectable.]{.slide-bullet}
+A left join keeps every boundary so that an unmatched region is detectable.
 An inner join can silently remove a region whose name differs between sources.
 
 ## Choropleths and their pitfalls
@@ -841,11 +784,14 @@ We can now color the regions by population, using the new column from the join.
 #| label: geospatial-canada-population-alt
 #| slide-show: both
 #| slide-title: Population by province and territory
-canada_population_map = alt.Chart(
-    canadian_provinces, width=500, height=420
-).mark_geoshape(stroke='gray').project('transverseMercator', rotate=[90, 0, 0]).encode(
-    color=alt.Color('population'),
-    tooltip=['name', alt.Tooltip('population', format=',')]
+canada_population_map = (
+    alt.Chart(canadian_provinces, width=500)
+    .mark_geoshape(stroke='gray')
+    .project('transverseMercator', rotate=[90, 0, 0])
+    .encode(
+        color=alt.Color('population'),
+        tooltip=['name', alt.Tooltip('population', format=',')]
+    )
 )
 canada_population_map
 ```
@@ -922,7 +868,7 @@ We retain a legend so the color scale remains interpretable without a tooltip.
 
 ```{python}
 #| label: geospatial-canada-hover-alt
-#| slide-show: output
+#| slide-show: both
 province_hover = alt.selection_point(
     name='province_hover', fields=['name'], on='pointerover', clear='pointerout', empty=False
 )
@@ -1054,7 +1000,7 @@ literal geographic relationships.
 
 ```{python}
 #| label: geospatial-us-albers-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Make a compact US inset layout
 alt.Chart(us_states, width=550).mark_geoshape(stroke='white').project('albersUsa')
 ```
@@ -1070,27 +1016,29 @@ Keep the original spatial data for measurements and geographic analysis.
 #| label: geospatial-us-albers-sf
 #| slide-show: output
 #| slide-title: Make a compact US inset layout
-alaska_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Alaska'), 3338))[c('xmin', 'ymin')]
-hawaii_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Hawaii'), 26904))[c('xmin', 'ymin')]
-us_insets <- function(features) {
-    move <- function(part, crs, origin, scale, position) {
-        part <- st_transform(part, crs)
-        geometry <- (st_geometry(part) - as.numeric(origin)) * scale + position
-        st_geometry(part) <- st_set_crs(geometry, 5070)
-        part
-    }
-    bind_rows(
-        features |> dplyr::filter(!name %in% c('Alaska', 'Hawaii')) |> st_transform(5070),
-        move(dplyr::filter(features, name == 'Alaska'), 3338, alaska_origin,
-             0.35, c(-2200000, -1200000)),
-        move(dplyr::filter(features, name == 'Hawaii'), 26904, hawaii_origin,
-             1, c(-1100000, -1150000))
-    )
-}
-us_albers_gg <- ggplot(us_insets(us_states_sf), aes(label = name)) +
-    geom_sf(color = 'white', linewidth = 0.2) +
-    coord_sf(crs = 5070) + map_theme
-ggplotly(us_albers_gg + aes(fill = I('lightgray')), tooltip = 'label')
+# alaska_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Alaska'), 3338))[c('xmin', 'ymin')]
+# hawaii_origin <- st_bbox(st_transform(dplyr::filter(us_states_sf, name == 'Hawaii'), 26904))[c('xmin', 'ymin')]
+# us_insets <- function(features) {
+#     move <- function(part, crs, origin, scale, position) {
+#         part <- st_transform(part, crs)
+#         geometry <- (st_geometry(part) - as.numeric(origin)) * scale + position
+#         st_geometry(part) <- st_set_crs(geometry, 5070)
+#         part
+#     }
+#     bind_rows(
+#         features |> dplyr::filter(!name %in% c('Alaska', 'Hawaii')) |> st_transform(5070),
+#         move(dplyr::filter(features, name == 'Alaska'), 3338, alaska_origin,
+#              0.35, c(-2200000, -1200000)),
+#         move(dplyr::filter(features, name == 'Hawaii'), 26904, hawaii_origin,
+#              1, c(-1100000, -1150000))
+#     )
+# }
+# us_albers_gg <- ggplot(us_insets(us_states_sf), aes(label = name)) +
+#     geom_sf(color = 'white', linewidth = 0.2) +
+#     coord_sf(crs = 5070)
+# ggplotly(us_albers_gg + aes(fill = I('lightgray')), tooltip = 'label')
+us_albers_gg <- usmap::plot_usmap(regions = "states")
+  #coord_sf(crs = "ESRI:102003")
 ```
 
 :::
@@ -1171,14 +1119,14 @@ inspected rather than assumed to remain unchanged.
 #| label: geospatial-election-winners-alt
 #| slide-show: both
 #| slide-title: Show each state's winning party
-party_color = alt.Color('winning_party:N').scale(
+party_color = alt.Color('winning_party').scale(
     domain=['Dem', 'Rep'], range=['#4c78a8', '#e45756']
 ).title('Winning party')
 election_map = alt.Chart(us_states, width=550).mark_geoshape(
     stroke='white'
 ).project('albersUsa').encode(
     color=party_color,
-    tooltip=['name:N', 'winning_party:N']
+    tooltip=['name', 'winning_party']
 )
 election_map
 ```
@@ -1193,8 +1141,10 @@ is applied after joining the election attributes.
 #| slide-show: both
 #| slide-title: Show each state's winning party
 party_colors_gg <- c(Dem = '#4c78a8', Rep = '#e45756')
-us_display_sf <- us_insets(us_states_sf)
-election_map_gg <- (us_albers_gg + us_display_sf) +
+#us_display_sf <- us_insets(us_states_sf)
+#election_map_gg <- (us_albers_gg + us_display_sf) +
+
+election_map_gg <- usmap::plot_usmap(regions = "states") + us_states_sf
     aes(fill = winning_party) +
     scale_fill_manual(values = party_colors_gg, name = 'Winning party')
 ggplotly(election_map_gg, tooltip = c('label', 'fill'))
@@ -1212,11 +1162,11 @@ yet small states are still difficult to compare.
 
 ```{python}
 #| label: geospatial-election-opacity-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Opacity still leaves small states hard to compare
 election_map.encode(
     opacity=alt.Opacity('electoral_votes:Q').title('Electoral votes'),
-    tooltip=['name:N', 'winning_party:N', 'electoral_votes:Q']
+    tooltip=['name', 'winning_party', 'electoral_votes']
 )
 ```
 
@@ -1228,7 +1178,7 @@ current `ggplotly()` version cannot convert varying polygon alpha in this
 
 ```{r}
 #| label: geospatial-election-opacity-sf
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Opacity still leaves small states hard to compare
 election_map_gg + aes(alpha = electoral_votes) +
     scale_alpha_continuous(range = c(0.3, 1), name = 'Electoral votes')
@@ -1306,13 +1256,14 @@ land area. First, overlay neutral circles on the party-colored regions:
 
 ```{python}
 #| label: geospatial-election-neutral-points-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Add proportional symbols to the regions
 electoral_points = alt.Chart(us_states).mark_circle(stroke='black').encode(
-    longitude='longitude:Q', latitude='latitude:Q',
+    longitude='longitude',
+    latitude='latitude',
     color=alt.value('white'),
-    size=alt.Size('electoral_votes:Q').scale(range=[20, 1500]).title('Electoral votes'),
-    tooltip=['name:N', 'winning_party:N', 'electoral_votes:Q']
+    size=alt.Size('electoral_votes').scale(range=[20, 1500])),
+    tooltip=['name', 'winning_party', 'electoral_votes']
 )
 election_map + electoral_points
 ```
@@ -1325,13 +1276,14 @@ represent electoral votes.
 
 ```{r}
 #| label: geospatial-election-neutral-points-sf
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Add proportional symbols to the regions
 electoral_points_sf <- st_as_sf(st_drop_geometry(us_states_sf),
                                 coords = c('longitude', 'latitude'), crs = 4326)
-electoral_display_sf <- us_insets(electoral_points_sf)
+#electoral_display_sf <- us_insets(electoral_points_sf)
+#election_map_gg <- usmap::plot_usmap(regions = "states") +
 ggplotly(election_map_gg +
-             geom_sf(data = electoral_display_sf, aes(size = electoral_votes),
+             geom_sf(data = electoral_points_sf, aes(size = electoral_votes),
                      fill = 'white', color = 'black', shape = 21, inherit.aes = FALSE) +
              scale_size_area(max_size = 12, name = 'Electoral votes'),
          tooltip = c('label', 'fill', 'size'))
@@ -1349,7 +1301,7 @@ should represent the quantity.
 
 ```{python}
 #| label: geospatial-election-colored-points-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Put the quantity and party on the same marks
 state_background = alt.Chart(us_states).mark_geoshape(
     fill='lightgray', stroke='white'
@@ -1367,7 +1319,7 @@ Use a neutral boundary layer and map party and electoral votes to the points.
 
 ```{r}
 #| label: geospatial-election-colored-points-sf
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Put the quantity and party on the same marks
 ggplotly((us_albers_gg + us_display_sf) + aes(fill = I('lightgray')) +
              geom_sf(data = electoral_display_sf,
@@ -1387,14 +1339,14 @@ can calculate a geographic centroid. Check the result: a centroid need not fall
 inside an irregular or multipart region. Dense clusters of small regions can
 also cause symbols to overlap.
 
-### Linking a map and a bar chart (Altair)
+### Linking a map and a bar chart
 
 Use the region name as a shared selection key. Hover over a circle to highlight
 the corresponding state in both views; clearing the hover restores all states.
 
 ```{python}
 #| label: geospatial-election-hover-alt
-#| slide-show: output
+#| slide-show: both
 state_hover = alt.selection_point(
     name='state_hover', fields=['name'], on='pointerover', clear='pointerout'
 )
@@ -1412,7 +1364,7 @@ party, with independently ordered state names but a shared quantitative x-scale.
 
 ```{python}
 #| label: geospatial-election-linked-bars-alt
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Link the map to an aligned comparison
 bars = alt.Chart(pd.DataFrame(us_states.drop(columns='geometry')), width=200).mark_bar().encode(
     x=alt.X('electoral_votes:Q').title('Electoral votes'),
@@ -1424,7 +1376,7 @@ bars = alt.Chart(pd.DataFrame(us_states.drop(columns='geometry')), width=200).ma
 map_with_selection & bars
 ```
 
-### Checking electoral-vote totals
+### Checking electoral-vote totals {.slide-skip}
 
 For a direct comparison of the party totals, sum the electoral votes rather than
 judging colored land area or the number of states won:
@@ -1435,8 +1387,6 @@ judging colored land area or the number of states won:
 
 ```{python}
 #| label: geospatial-electoral-totals
-#| slide-show: both
-#| slide-title: Check electoral-vote totals directly
 us_states.groupby('winning_party')['electoral_votes'].sum()
 ```
 
@@ -1444,8 +1394,6 @@ us_states.groupby('winning_party')['electoral_votes'].sum()
 
 ```{r}
 #| label: geospatial-electoral-totals-sf
-#| slide-show: both
-#| slide-title: Check electoral-vote totals directly
 us_states_sf |>
     st_drop_geometry() |>
     group_by(winning_party) |>
@@ -1472,6 +1420,8 @@ distributed with Vega, not a live earthquake feed.
 
 ```{python}
 #| label: geospatial-earthquake-globe-alt
+#| slide-show: output
+#| slide-title: Spherical map projection
 earthquakes = pd.read_csv('data/geospatial-earthquakes.csv')
 globe_rotation = alt.param(
     name='globe_rotation', value=120,
