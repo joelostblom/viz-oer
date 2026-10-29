@@ -362,7 +362,7 @@ to avoid that it gets prefixed with the name of the dataframe column.
 #| label: geospatial-world-outline-sf
 #| slide-show: both
 #| slide-title: Draw geographic shapes
-ggplot(world_sf)) +
+ggplot(world_sf) +
     geom_sf() +
     coord_sf(crs = '+proj=eqearth')
 ```
