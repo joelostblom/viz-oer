@@ -317,7 +317,7 @@ library(ggplot2)
 # Only import the one function we will use to avoid cluttering the namespace
 library(plotly, include.only = "ggplotly")
 
-world_sf <- st_read('data/geospatial-world-countries.geojson', quiet = FALSE)
+world_sf <- st_read('data/geospatial-world-countries.geojson', quiet = TRUE)
 world_sf
 ```
 
@@ -432,7 +432,7 @@ Here we show the GDP per capita.
 #| slide-title: Color countries by GDP per person
 country_map.encode(
     color=alt.Color('gdp_per_capita:Q'),
-    tooltip=['name:N', alt.Tooltip('gdp_per_capita:Q', format=',.0f')]
+    tooltip=['name', alt.Tooltip('gdp_per_capita:Q', format=',.0f')]
 )
 ```
 
@@ -480,7 +480,7 @@ country_map.encode(
 #| slide-title: Encode ordered income groups
 country_map.encode(
     color=alt.Color('income_grp:O'),
-    tooltip=['name:N', 'income_grp:O']
+    tooltip=['name', 'income_grp:O']
 )
 ```
 
@@ -613,7 +613,7 @@ set of subdivisions for every country in the world.
 #| slide-show: both
 #| slide-title: Read administrative regions
 world_regions = gpd.read_file('data/geospatial-world-regions.geojson')
-world_regions[['name', 'admin', 'iso_a2']].head()
+world_regions
 ```
 
 ```{python}
@@ -633,7 +633,7 @@ alt.Chart(world_regions, width=500).mark_geoshape(stroke='white', strokeWidth=0.
 #| slide-show: both
 #| slide-title: Read administrative regions
 regions_sf <- st_read('data/geospatial-world-regions.geojson', quiet = TRUE)
-regions_sf |> select(name, admin, iso_a2) |> head()
+regions_sf
 ```
 
 ```{r}
@@ -663,7 +663,7 @@ as boundaries.
 #| slide-show: both
 #| slide-title: Select Canada's provinces and territories
 canadian_provinces = world_regions.query('iso_a2 == "CA"').copy()
-canadian_provinces[['name', 'postal', 'latitude', 'longitude']]
+canadian_provinces
 ```
 
 This rotated transverse Mercator view is one option for displaying Canada.
@@ -679,9 +679,9 @@ canada_map = alt.Chart(canadian_provinces, width=500).mark_geoshape(
     stroke='white'
 ).project('transverseMercator', rotate=[90, 0, 0])
 canada_map.encode(
-    color=alt.Color('name:N').scale(scheme='tableau20'),
-    tooltip='name:N',
-    href='wikipedia:N'
+    color=alt.Color('name').scale(scheme='tableau20'),
+    tooltip='name',
+    href='wikipedia'
 )
 ```
 
@@ -698,14 +698,14 @@ same central meridian as the other implementations.
 #| slide-show: code
 #| slide-title: Select Canada's provinces and territories
 canadian_provinces_sf <- regions_sf |> filter(iso_a2 == 'CA')
-canadian_provinces_sf |> select(name, postal, latitude, longitude)
-canada_crs <- '+proj=tmerc +lon_0=-90 +lat_0=0 +datum=WGS84'
+canadian_provinces_sf
 ```
 
 ```{r}
 #| label: geospatial-canada-links-sf
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Choose a regional projection for Canada
+canada_crs <- '+proj=tmerc +lon_0=-90 +lat_0=0 +datum=WGS84'
 canada_map_gg <- ggplot(canadian_provinces_sf, aes(fill = name)) +
     geom_sf() +
     coord_sf(crs = canada_crs)
@@ -1065,7 +1065,7 @@ The overview resolution keeps the interactive maps small enough to load quickly.
 
 ```{r}
 #| label: geospatial-us-albers-sf
-#| slide-show: output
+#| slide-show: both
 #| slide-title: Make a compact US inset layout
 us_census_sf <- st_read('data/geospatial-us-states-2024.geojson', quiet = TRUE)
 us_shifted_sf <- tigris::shift_geometry(
@@ -1105,7 +1105,6 @@ electoral-vote allocations used in 2012. These are electoral votes, not popular 
 
 ```{python}
 #| label: geospatial-election-data
-#| slide-show: code
 election_results = pd.read_csv('data/geospatial-us-election-2012.csv')
 us_states = us_states.merge(
     election_results, on='name', how='left', validate='one_to_one'
@@ -1127,7 +1126,6 @@ remain those of the 2012 election.
 
 ```{r}
 #| label: geospatial-election-data-sf
-#| slide-show: code
 election_results <- readr::read_csv('data/geospatial-us-election-2012.csv')
 us_election_sf <- us_shifted_sf |>
     left_join(election_results, by = c('NAME' = 'name'), relationship = 'one-to-one')
@@ -1346,10 +1344,10 @@ party, with independently ordered state names but a shared quantitative x-scale.
 #| slide-title: Link the map to an aligned comparison
 bars = alt.Chart(pd.DataFrame(us_states.drop(columns='geometry')), width=200).mark_bar().encode(
     x=alt.X('electoral_votes:Q'),
-    y=alt.Y('name:N').sort('-x').title(None),
+    y=alt.Y('name').sort('-x').title(None),
     color=party_color,
     opacity=alt.condition(state_hover, alt.value(0.9), alt.value(0.2)),
-    column=alt.Column('winning_party:N').title(None)
+    column=alt.Column('winning_party').title(None)
 ).resolve_scale(y='independent')
 map_with_selection & bars
 ```
