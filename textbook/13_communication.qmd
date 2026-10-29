@@ -27,7 +27,7 @@ execute:
 
 ## Why bother?
 
-[During data exploration, you are often the main person interpreting a chart.]{slide-bullet}
+[During data exploration, you are often the main person interpreting a chart.]{.slide-bullet}
 [For communication, a figure needs to make sense to someone who does not already
 know the data or the plotting code.]{.slide-bullet}
 [That reader might encounter it without the surrounding text or a spoken explanation.]{.slide-bullet}

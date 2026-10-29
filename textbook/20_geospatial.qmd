@@ -263,7 +263,7 @@ world_countries = world_countries.rename(
 ).assign(
     gdp_per_capita=lambda frame: frame['gdp_md'] * 1e6 / frame['pop_est']
 ).query('continent != "Antarctica"')
-world_countries[['name', 'continent', 'pop_est', 'pop_year', 'gdp_year']].head()
+world_countries[['name', 'continent', 'pop_est', 'pop_year', 'gdp_year']]
 ```
 
 Note that these attributes are historical estimates and their
@@ -362,7 +362,7 @@ to avoid that it gets prefixed with the name of the dataframe column.
 #| label: geospatial-world-outline-sf
 #| slide-show: both
 #| slide-title: Draw geographic shapes
-ggplot(world_sf, aes(text = name)) +
+ggplot(world_sf)) +
     geom_sf() +
     coord_sf(crs = '+proj=eqearth')
 ```
@@ -381,7 +381,7 @@ gets a categorical color scale, and the country name can appear in a tooltip.
 #| slide-show: both
 #| slide-title: Encode dataframe columns
 alt.Chart(world_countries, width=500).mark_geoshape().encode(
-    color=alt.Color('continent'),
+    color='continent',
     tooltip='name'
 )
 ```
@@ -394,10 +394,10 @@ Map the categorical variable directly to `fill`.
 #| label: geospatial-continents-sf
 #| slide-show: both
 #| slide-title: Encode dataframe columns
-world_map_gg <- ggplot(world_sf, aes(text = name)) +
+world_map_gg <- ggplot(world_sf, aes(fill = continent, text = name)) +
     geom_sf() +
     coord_sf(crs = '+proj=eqearth')
-ggplotly(world_map_gg + aes(fill = continent), tooltip = 'text')
+ggplotly(world_map_gg, tooltip = 'text')
 ```
 
 :::
@@ -418,7 +418,7 @@ Showing total population.
 #| slide-show: both
 #| slide-title: Color countries by population
 country_map = alt.Chart(world_countries, width=500).mark_geoshape().encode(
-    color=alt.Color('pop_est'),
+    color='pop_est',
     tooltip=['name', alt.Tooltip('pop_est', format=',')]
 )
 country_map
@@ -431,12 +431,14 @@ Here we show the GDP per capita.
 #| slide-show: both
 #| slide-title: Color countries by GDP per person
 country_map.encode(
-    color=alt.Color('gdp_per_capita:Q'),
-    tooltip=['name', alt.Tooltip('gdp_per_capita:Q', format=',.0f')]
+    color='gdp_per_capita',
+    tooltip=['name', alt.Tooltip('gdp_per_capita', format=',.0f')]
 )
 ```
 
 #### ggplot {.slide-skip}
+
+Here we can just change the fill `aes` instead of reconstructing the entire chart.
 
 ```{r}
 #| label: geospatial-world-population-sf
@@ -469,7 +471,7 @@ since it has a natural order to it.
 #| slide-show: both
 #| slide-title: Encode ordered economy groups
 country_map.encode(
-    color=alt.Color('economy:O'),
+    color='economy:O',
     tooltip=['name', 'economy:O']
 )
 ```
@@ -479,7 +481,7 @@ country_map.encode(
 #| slide-show: both
 #| slide-title: Encode ordered income groups
 country_map.encode(
-    color=alt.Color('income_grp:O'),
+    color='income_grp:O',
     tooltip=['name', 'income_grp:O']
 )
 ```
@@ -521,7 +523,7 @@ geometries. It is different from cropping a world map to a rectangular window.
 africa = alt.Chart(
     world_countries.query('continent == "Africa"'), width=450
 ).mark_geoshape().encode(
-    color=alt.Color('pop_est'),
+    color='pop_est',
     tooltip=['name', alt.Tooltip('pop_est', format=',')]
 )
 africa
@@ -621,7 +623,7 @@ world_regions
 #| slide-show: both
 #| slide-title: Draw administrative regions
 alt.Chart(world_regions, width=500).mark_geoshape(stroke='white', strokeWidth=0.3).encode(
-    color=alt.Color('admin'),
+    color='admin',
     tooltip=['admin', 'name']
 )
 ```
@@ -874,8 +876,8 @@ province_hover = alt.selection_point(
 )
 canada_population_map.mark_geoshape(strokeWidth=2).encode(
     color=alt.Color('population:Q').scale(scheme='tealblues'),
-    stroke=alt.condition(province_hover, alt.value('white'), alt.value('#222222')),
-    order=alt.condition(province_hover, alt.value(1), alt.value(0))
+    stroke=alt.when(province_hover).then(alt.value('white')).otherwise(alt.value('#222222')),
+    order=alt.when(province_hover).then(alt.value(1)).otherwise(alt.value(0))
 ).add_params(province_hover)
 ```
 
@@ -889,20 +891,23 @@ canada_population_map.mark_geoshape(strokeWidth=2).encode(
 
 :::
 
+::: {.slide-visual}
+
 A choropleth gives each region visual space according to its geographic area,
 not its population or contribution to a total. A small, densely populated region
 can be hard to see; a large, sparsely populated one can dominate the page.
 
 - [Use **rates, proportions, or densities** when the question is about intensity
   rather than totals.]{.slide-bullet} Population and population density answer different questions.
-- [Use a **sequential scale** for ordered quantities, and show missing observations
-  distinctly from genuine zeros.]{.slide-bullet}
 - [Consider **smaller geographic units** when their boundaries and data support
   the question.]{.slide-bullet} Aggregation can conceal substantial variation within a region.
 - [Add **proportional symbols** or a **bar chart** when readers need to compare totals.]{.slide-bullet}
 - [A **cartogram** resizes or rearranges regions according to a quantity, trading
   some geographic familiarity for a more relevant allocation of space.]{.slide-bullet}
 
+:::
+
+<!-- TODO Use a **sequential scale** for ordered quantities, and show missing observations distinctly from genuine zeros. -->
 Even an equal-area projection cannot make geographic area stand in for population.
 Changing the projection and changing the statistical encoding solve different problems.
 
@@ -1327,7 +1332,7 @@ state_hover = alt.selection_point(
     name='state_hover', fields=['name'], on='pointerover', clear='pointerout'
 )
 selected_points = party_points.encode(
-    opacity=alt.condition(state_hover, alt.value(0.9), alt.value(0.2))
+    opacity=alt.when(state_hover).then(alt.value(0.9).otherwise(alt.value(0.2))
 ).add_params(state_hover)
 map_with_selection = (state_background + selected_points).project(
     'albersUsa'
@@ -1346,7 +1351,7 @@ bars = alt.Chart(pd.DataFrame(us_states.drop(columns='geometry')), width=200).ma
     x=alt.X('electoral_votes:Q'),
     y=alt.Y('name').sort('-x').title(None),
     color=party_color,
-    opacity=alt.condition(state_hover, alt.value(0.9), alt.value(0.2)),
+    opacity=alt.when(state_hover).then(alt.value(0.9)).otherwise(alt.value(0.2)),
     column=alt.Column('winning_party').title(None)
 ).resolve_scale(y='independent')
 map_with_selection & bars
@@ -1420,7 +1425,7 @@ quakes = alt.Chart(earthquakes).mark_circle(opacity=0.4).transform_filter(
     ).title('Magnitude'),
     fill=alt.Fill('depth:Q').scale(scheme='lightorange', domain=[0, 400]).title('Depth (km)'),
     stroke=alt.value('black'),
-    strokeWidth=alt.condition(quake_hover, alt.value(1), alt.value(0)),
+    strokeWidth=alt.when(quake_hover).then(alt.value(1)).otherwise(alt.value(0)),
     tooltip=['place:N', 'magnitude:Q', 'depth:Q']
 ).add_params(quake_hover)
 alt.layer(sphere, globe_countries, quakes).project(
