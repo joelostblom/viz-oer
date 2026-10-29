@@ -1332,7 +1332,7 @@ state_hover = alt.selection_point(
     name='state_hover', fields=['name'], on='pointerover', clear='pointerout'
 )
 selected_points = party_points.encode(
-    opacity=alt.when(state_hover).then(alt.value(0.9).otherwise(alt.value(0.2))
+    opacity=alt.when(state_hover).then(alt.value(0.9)).otherwise(alt.value(0.2))
 ).add_params(state_hover)
 map_with_selection = (state_background + selected_points).project(
     'albersUsa'
