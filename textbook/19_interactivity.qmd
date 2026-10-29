@@ -691,9 +691,9 @@ selected_points = alt.Chart(cars).mark_circle().encode(
     color=alt.when(brush).then('Origin:N').otherwise(alt.value('lightgray'))
 ).add_params(brush)
 bars = alt.Chart(cars, height=80).transform_filter(brush).mark_bar().encode(
-    x='count()',
-    y=alt.Y('Origin').scale(domain=[0, 260]),
-    color=alt.Y('Origin').scale(domain=cars['Origin'].unique())
+    x=alt.X('count()').scale(domain=[0, 260]),
+    y=alt.Y('Origin').scale(domain=sorted(cars['Origin'].unique())),
+    color=alt.Color('Origin').scale(domain=sorted(cars['Origin'].unique()))
 )
 selected_points & bars
 ```

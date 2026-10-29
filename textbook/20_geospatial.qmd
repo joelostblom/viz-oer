@@ -695,7 +695,7 @@ same central meridian as the other implementations.
 
 ```{r}
 #| label: geospatial-canada-regions-sf
-#| slide-show: code
+#| slide-show: both
 #| slide-title: Select Canada's provinces and territories
 canadian_provinces_sf <- regions_sf |> filter(iso_a2 == 'CA')
 canadian_provinces_sf
