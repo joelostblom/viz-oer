@@ -14,12 +14,17 @@ resources:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Distinguish** variability among observations from uncertainty in an estimated mean.
-2. **Create and interpret** confidence intervals displayed as bands and point ranges.
-3. **Combine** estimates and their intervals with the underlying observations or distributions.
-4. **Communicate** probabilities using frequency framing and hypothetical outcomes.
-5. **Recognize** misleading interpretations of error bars, shaded bands, and forecast cones.
-6. **Explain** how bootstrap resamples produce a percentile confidence interval for a mean.
+1. **Distinguish** standard deviations, standard errors, and confidence intervals.
+   Explain which describe observation spread or uncertainty in a mean,
+   and how sample size and confidence level affect interval width.
+4. **Choose** and label error bars, bands, and point estimates.
+   State the interval's quantity, method, and confidence level;
+   include observations or distributions when needed to distinguish spread from precision.
+5. **Distinguish** intervals for separate group means from bands for a fitted relationship,
+   and pointwise coverage from simultaneous coverage of an entire curve.
+7. **Translate** probabilities into frequencies of hypothetical outcomes.
+   Explain why one unlikely outcome does not by itself invalidate a forecast.
+8. **Compare** confidence bands and showing potential individual outcomes.
 
 :::
 

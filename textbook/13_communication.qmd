@@ -17,9 +17,25 @@ execute:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Design** a visualization around the message and audience, using guidelines as a starting point rather than rigid rules.
-2. **Format** axis and legend values, titles, and ranges to make a figure understandable without a spoken explanation.
-3. **Distinguish** filtering observations from zooming into a chart, since filtering can change statistical summaries.
+1. **Design** for the audience, purpose, and intended message.
+   Use the guidelines we learn as a default best practice,
+   but adapt the level of detail and design depending on context.
+2. **Choose** encodings that make the intended comparison easy.
+   Explain the advantages of aligned positions and lengths over angles and areas,
+   and how decorative 3D, clutter, and awkward label orientation can hinder comparisons.
+3. **Use** selective highlighting while preserving context.
+   Keep group colors consistent across related figures and avoid competing colors or decoration.
+4. **Critique** claims based on counts and cumulative totals.
+   Distinguish counts from proportions and cumulative totals from period-by-period change;
+   identify the denominator and context needed to support a claim.
+5. **Make** a figure understandable without a spoken explanation.
+   Choose informative titles containing a conclusion about the data rather than a general description
+   of the axes,
+   readable axis and legend labels, explicit units, and useful number formats.
+6. **Evaluate** how axis ranges and direction affect interpretation.
+   Explain when restricting or reversing an axis is useful and why bars normally need a zero baseline.
+7. **Distinguish** filtering observations from zooming into a chart,
+   and explain why filtering can change bins, counts, and fitted summaries.
 
 :::
 

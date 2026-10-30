@@ -20,10 +20,17 @@ execute:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Use** means and rolling means to summarize patterns while retaining the observations as context.
-2. **Distinguish** global regression models from local smoothing, and **choose** a trendline according to the question and audience.
-3. **Adjust** smoothing neighborhoods and **explain** how they affect the local detail shown by a curve.
-4. **Recognize** that describing a trend within the observed data does not justify extrapolating it beyond that range.
+1. **Distinguish** observations, summaries, and fitted trends.
+   Explain why connecting observations or exact-value and binned means does not fit one shared model,
+   and retain observations as context for a trendline.
+4. **Compare** global regression, rolling means, and LOESS.
+   Distinguish one shared equation from moving local constant fits and distance-weighted local regressions.
+6. **Explain** the effect of the smoothing neighborhood.
+   Compare narrower and wider neighborhoods and assess which apparent features persist as the smoothing changes.
+7. **Distinguish** pooled from within-group trends.
+   Explain why a fit to all observations can differ from the relationships within individual groups.
+8. **Choose** a trendline for the question and audience.
+   Distinguish describing the observed range from extrapolation, and identify the assumptions needed to extend a fitted relationship beyond the data.
 
 :::
 

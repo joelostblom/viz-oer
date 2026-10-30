@@ -28,11 +28,19 @@ execute:
 
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Choose** categorical, sequential, or diverging color schemes according to the meaning of the data.
-2. **Use** perceptually appropriate and accessible palettes, and **set** color domains and directions deliberately.
-3. **Apply** predefined and custom palettes in Altair and ggplot.
-4. **Highlight and annotate** selected observations using color and text without adding unnecessary clutter.
-5. **Order** legends to match the chart, or **label** series directly when that makes identification easier.
+1. **Describe** hue, saturation, and lightness.
+2. **Match** the palette type to the meaning of the data.
+   Choose categorical, sequential, diverging, or cyclic palettes for unordered groups,
+   numerical magnitude, departures from a reference, or values that wrap around.
+3. **Explain** perceptual uniformity and the role of lightness.
+   Recognize how uneven or reversing lightness can obscure numerical order and create artificial boundaries.
+5. **Set** color mappings, domains, and directions deliberately.
+   Use meaningful diverging midpoints, symmetric limits when comparing equal departures,
+   and consistent category-to-color mappings across related layers and views.
+6. **Highlight** selected observations without losing context.
+   Use restrained colors and familiar associations to guide attention rather than assigning every observation a competing color.
+7. **Choose** annotations, direct labels, or ordered legends.
+   Reduce lookup effort and clutter while keeping values and series identities clear.
 
 :::
 ::::

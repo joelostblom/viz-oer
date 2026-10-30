@@ -23,12 +23,21 @@ knitr:
 :::: {.slide-outcomes}
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Recognize** GeoJSON features, geometries, and attributes,
-   and find boundaries at an appropriate level of detail.
-2. **Choose** a projection that supports the map's purpose and explain the distortions it introduces.
-3. **Create** choropleths and point maps by joining geographic boundaries to other data.
-4. **Evaluate** how region size, normalization, and color bins affect a map's interpretation.
-5. **Add** geographic tooltips and **link** map selections to other views.
+1. **Understand** the basics of how geospatial data is stored and read in programmatically.
+2. **Choose** boundary detail and administrative level to suit the question,
+   and explain why zooming does not increase the resolution of stored geometries.
+3. **Choose** a projection for the place and purpose.
+   Explain unavoidable distortions of area, shape, distance, or direction,
+   using Mercator and Equal Earth to contrast angle and area preservation.
+5. **Compare** choropleths, cartograms, and bar charts.
+   Explain how geographic area can be misleading
+   when it differs from the quantity of interest.
+7. **Evaluate** the effects of regional aggregation and color bins.
+   Explain what variation they hide, which differences they emphasize,
+   and why regional patterns do not establish the behavior of individuals.
+9. **Use** tooltips and linked views to complement geographic patterns.
+   Explain how a linked bar chart or numerical total can support comparisons
+   that are difficult to make from a map alone.
 
 :::
 ::::

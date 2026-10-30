@@ -16,9 +16,14 @@ execute:
 :::: {.slide-outcomes}
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Compose** plots into horizontal, vertical, and nested layouts.
-2. **Choose** panel sizes, shared axes, titles, and labels to support comparisons.
-3. **Save** figures in suitable static or interactive formats, including self-contained offline HTML.
+1. **Compose** complementary plots into readable multi-panel figures.
+   Choose horizontal, vertical, or nested layouts according to the comparisons they support.
+2. **Choose** compatible axes, scales, and color meanings across panels.
+   Distinguish aligning panels from sharing scales, and collecting legends from making their color mappings equivalent.
+3. **Allocate** panel space and annotations deliberately.
+   Use relative widths and heights, overall titles, panel labels, and legend placement to clarify the figure's structure.
+4. **Compare** raster, vector, and interactive output formats.
+   Choose PNG, SVG/PDF, or HTML according to the sharing medium, resizing needs, file size, and interactions to preserve.
 
 :::
 ::::

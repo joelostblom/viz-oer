@@ -21,11 +21,18 @@ knitr:
 :::: {.slide-outcomes}
 ::: {.callout-note title="Learning outcomes & Chapter summary"}
 
-1. **Navigate** a view by panning, zooming, and moving through time while retaining context.
-2. **Select** observations to reveal details, highlight them, or filter the data used in a view.
-3. **Choose** controls for a selection and **coordinate** its effects across multiple views.
-4. **Distinguish** selecting observations from changing an encoding or calculation parameter.
-5. **Combine and share** client-side interactive figures using the layout and offline-export techniques from the preceding chapter.
+1. **Choose** navigation interactions that retain context.
+   Compare panning and zooming, overview/detail views, and moving through time.
+2. **Use** tooltips for specific details on demand.
+   Choose fields that provide useful context without cluttering the initial view with labels.
+3. **Separate** a selection from its input and response.
+   Distinguish point and interval selections, and explain how clicking, hovering,
+   or brushing can drive highlighting, filtering, or another response.
+4. **Distinguish** the effects of highlighting, filtering, and zooming.
+   Explain when an interaction changes only appearance, changes the observations entering a calculation,
+   or the scale limits.
+5. **Explain** the general concept of how to create a selection
+   and how to make a chart responsive to the selection.
 
 :::
 ::::
