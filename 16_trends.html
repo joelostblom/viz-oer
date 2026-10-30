@@ -603,7 +603,7 @@ window.Quarto = {
 
 
 <div class="chapter-slide-link">
-<a href="slides/16_trends.html" class="chapter-present-link" aria-label="Present slides" hidden="" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+<a href="slides/16_trends.html" class="chapter-present-link" hidden="" aria-label="Present slides" title="Present slides"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
         <rect x="3" y="3" width="18" height="13" rx="1"></rect>
         <path d="M12 16v5m-4 0h8m-9-10 3-4 3 2 3-3"></path>
         </svg></a>
@@ -622,10 +622,11 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><strong>Use</strong> means and rolling means to summarize patterns while retaining the observations as context.</li>
-<li><strong>Distinguish</strong> global regression models from local smoothing, and <strong>choose</strong> a trendline according to the question and audience.</li>
-<li><strong>Adjust</strong> smoothing neighborhoods and <strong>explain</strong> how they affect the local detail shown by a curve.</li>
-<li><strong>Recognize</strong> that describing a trend within the observed data does not justify extrapolating it beyond that range.</li>
+<li><strong>Distinguish</strong> observations, summaries, and fitted trends. Explain why connecting observations or exact-value and binned means does not fit one shared model, and retain observations as context for a trendline.</li>
+<li><strong>Compare</strong> global regression, rolling means, and LOESS. Distinguish one shared equation from moving local constant fits and distance-weighted local regressions.</li>
+<li><strong>Explain</strong> the effect of the smoothing neighborhood. Compare narrower and wider neighborhoods and assess which apparent features persist as the smoothing changes.</li>
+<li><strong>Distinguish</strong> pooled from within-group trends. Explain why a fit to all observations can differ from the relationships within individual groups.</li>
+<li><strong>Choose</strong> a trendline for the question and audience. Distinguish describing the observed range from extrapolation, and identify the assumptions needed to extend a fitted relationship beyond the data.</li>
 </ol>
 </div>
 </div>
