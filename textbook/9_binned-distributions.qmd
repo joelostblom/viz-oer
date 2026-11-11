@@ -234,7 +234,7 @@ but they can also emphasize incidental variation.
 Wide bins combine more observations and emphasize broad patterns,
 but they can hide important features.
 Let's see how we can configure
-the bin width to be more narrow
+the bin width to be narrower
 and reveal more details from the distribution.
 
 
@@ -259,7 +259,7 @@ alt.Chart(movies, height=150).mark_bar().encode(
 
 To show more detail,
 reduce the `binwidth` of each bin to 10
-so that each bin now spans five minutes:
+so that each bin now spans ten minutes:
 
 ```{r}
 #| label: runtime-histogram-bins-gg
@@ -273,7 +273,7 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 If no bin width is set,
 visualization libraries have different rules of thumb
-try to determine a suitable width.
+to determine a suitable width.
 Libraries also tend to make different decisions
 around whether bins should favor round-number boundaries
 and regarding how axis labels and bins should align.
@@ -284,7 +284,7 @@ can stand out at different bin widths.
 When doing so,
 it is helpful to think about the variable's units,
 the question you want to answer,
-and whether aligning width to round numbers are important
+and whether aligning bin widths to round numbers is important
 to make the chart easier to interpret.
 
 ::: {.callout-default .ex-prompt}
@@ -336,9 +336,9 @@ alt.layer(*layers).add_params(width_param)
 ```
 
 You can hover over a bar to see its interval and count.
-Note that the count-axis varies
-as the bin-width changes,
-why do you think this is?
+Note that the count axis varies
+as the bin width changes.
+Why do you think this is?
 
 :::: {.callout-default .ex-hint}
 
@@ -350,9 +350,9 @@ How many hours do these minute values correspond to?
 
 In this case,
 the peaks are not a binning artefact or technical noise;
-they reflect a real phenomena in the underlying data.
+they reflect a real phenomenon in the underlying data.
 These concentrations in finish times
-occur just before round-numbers,
+occur just before round numbers,
 consistent with runners aiming to finish below a target time.
 Popular targets include 3 hours, 3 hours 30 minutes, and 4 hours,
 which correspond to 180, 210, and 240 minutes.^[[Reference-Dependent Preferences: Evidence from Marathon Runners](https://doi.org/10.1287/mnsc.2015.2417)]
@@ -362,8 +362,8 @@ In general we should [explore bin widths
 in intervals that are meaningful for the binned variable
 or so that they reveal interesting properties of the distribution]{.slide-bullet}.
 
-The y-axis labels show lower count number for narrower bins,
-since less runners fit within each bin.
+The y-axis labels show lower counts for narrower bins,
+since fewer runners fall within each bin.
 Note that a lower count per bin
 does not imply a less concentrated distribution,
 just that we have distributed the counts across more individual bins
@@ -451,7 +451,7 @@ they might highlight.
 
 ## Adding back individual observations
 
-The histogram shortcomings we have learned about
+The shortcomings of histograms that we have learned about
 can be somewhat alleviated
 by showing individual observations alongside the histogram.
 We can use jittered points, as at the start of the chapter,
@@ -512,7 +512,7 @@ ggplot(movies, aes(x = `Running Time min`)) +
 
 :::
 
-Showing individual observation alongside the histogram can alleviate some of its bin-related shortcomings {.content-visible when-format="revealjs" .slide-bullet}
+[Showing individual observations alongside the histogram can alleviate some of its bin-related shortcomings]{.content-visible when-format="revealjs" .slide-bullet}
 
 ## Multiple distributions
 

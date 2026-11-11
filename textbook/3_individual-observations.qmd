@@ -116,7 +116,7 @@ show_df(cars)
 Looking at the table above,
 we might start to generate questions about our data.
 [Perhaps the cars with the best fuel efficiency
-are also the cars with the least powerful engines](.slide-bullet)
+are also the cars with the least powerful engines]{.slide-bullet}
 (i.e. do the cars with the highest `Miles_per_Gallon`
 also have the lowest `Horsepower`)?
 This sounds reasonable since a more powerful engine
@@ -302,7 +302,7 @@ relate to each other.
 The default color gradient runs from dark blue for lower weights
 to light blue for higher weights,
 since light colors have the highest contrast
-to the chart's dark background.
+with the chart's dark background.
 
 ```{r}
 #| label: cars-weight-gg
@@ -362,7 +362,7 @@ based on our knowledge about the physics of moving objects.
 
 :::::
 
-[Is the color or position easier to read?]{.slide-bullet}.
+[Is the color or position easier to read?]{.slide-bullet}
 You might already have noticed that it was harder
 to read exact values from the color scale
 than from the x- and y-axes.

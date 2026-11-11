@@ -17,7 +17,7 @@ include-in-header:
 
 1. **Explain** that the main advantage of visualizing data
    instead of presenting it with numbers
-   is that they are easier to interpret for humans.
+   is that visualizations are easier for humans to interpret.
 
 2. **Distinguish** between exploring data to discover patterns and communicating findings to others.
 
@@ -53,8 +53,8 @@ At its core,
 data visualization is about representing data with graphical elements
 such as the position of a point, the length of a bar, or the color of a line.
 We usually visualize data for two main purposes:
-[to improve own understanding of a dataset]{.slide-bullet}
-or [to improve someone's else's understanding]{.slide-bullet} by communicating
+[to improve our own understanding of a dataset]{.slide-bullet}
+or [to improve someone else's understanding]{.slide-bullet} by communicating
 what we have learned.
 While we often use visualization
 [to answer a specific question about a dataset]{.slide-bullet},
@@ -303,7 +303,7 @@ that summaries fail to reveal.
 So if you can't really see any patterns in the table
 and the statistical summaries are nearly all the same,
 that must mean that the four sets are pretty similar, right?
-Sounds about right
+Sounds about right,
 so let's go ahead
 and plot them to have a quick look...
 
@@ -332,7 +332,7 @@ alt.Chart(anscombe).mark_circle(size=80).encode(
 
 ... what... how can they be so different...
 there must be something wrong, right?
-Well what is wrong is that
+Well, what is wrong is that
 humans are not good at detecting patterns in raw numbers,
 and we don't have good intuition about which combination of numbers
 can contribute to the same statistical summaries.
@@ -354,11 +354,11 @@ and set D has a constant X-value for all numbers except one big outlier.
 We could only detect these patterns
 after visualizing the data.
 Importantly,
-[if we only had looked at the raw data or the summary statistics,
+[if we had only looked at the raw data or the summary statistics,
 **we would have come to the wrong conclusions
 about how the datasets differ**]{.slide-bullet},
-and [any research or business level decision
-based on solely on our numerical analysis of this dataset
+and [any research or business decision
+based solely on our numerical analysis of this dataset
 **would have been misinformed**]{.slide-bullet}.
 
 :::::
@@ -374,7 +374,7 @@ it is helpful to remember that to answer a question,
 we often have to put the data in a format
 that is easy for us humans to interpret.
 Because [our number systems have only been around for about 5,000 years]{.slide-bullet},
-[we need to assert effort and train ourselves
+[we need to exert effort and train ourselves
 to recognize structure in numerical data]{.slide-bullet}.
 
 On the other hand,
@@ -403,7 +403,7 @@ but looking at the data graphically shows us how different these datasets actual
 
 ::: {.slide-visual}
 
-![The Datasaurus Dozen: Datasets with near identical summary statistics but widely different distributions.](img/DinoSequentialSmaller.gif){#fig-datasaurus fig-alt="Data Taurus Dozen Animation"}
+![The Datasaurus Dozen: Datasets with near-identical summary statistics but widely different distributions.](img/DinoSequentialSmaller.gif){#fig-datasaurus fig-alt="Datasaurus Dozen animation"}
 
 :::
 

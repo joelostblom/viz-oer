@@ -48,7 +48,7 @@ Similar to how categorical variables can have a natural order
 or a natural mapping to certain colors,
 [geographical data has a natural spatial layout
 that makes it easier to identify and recognize regions.]{.slide-bullet}
-[Visualizing geogrphical data as a map makes such geographic patterns visible,
+[Visualizing geographical data as a map makes such geographic patterns visible,
 e.g. where observations occur, which regions are similar, and how nearby places differ.]{.slide-bullet}
 
 ## Choosing a projection {#map-projections}
@@ -65,10 +65,10 @@ Let's find out in the next exercise.
 
 ## Africa or Greenland? {.content-visible when-format="revealjs"}
 
-This image below shows the world map with its most commonly used map project,
+The image below shows the world map with its most commonly used map projection,
 Mercator,
-which was introduced in 1569 mainly for use in navigation,.
-[Study this image and try to estimate which land region is largest,
+which was introduced in 1569 mainly for use in navigation.
+[Study this image and try to estimate which land region is larger:
 Africa or Greenland?]{.slide-bullet}
 
 :::: {.slide-visual}
@@ -82,20 +82,20 @@ Africa or Greenland?]{.slide-bullet}
 ## Why flattening changes area {.content-visible when-format="revealjs"}
 
 [Mercator's projection
-preserves local angles and shapes which is useful for navigation,
+preserves local angles and shapes, which is useful for navigation,
 but greatly enlarges areas at high latitudes.]{.slide-bullet}
 The animation below gives an intuition for 
 where this issue stems from.
 Opening the globe into strips leaves gaps.
-Filling those gaps make a continuous rectangle as for the Mercator projection
-to preserve angles and shapes
-requires stretching parts of the surface,
-which distorts the area of each surface
-paritcularly closer to the poles where the gaps are bigger.
+Filling those gaps to make a continuous rectangle,
+as in the Mercator projection,
+requires stretching parts of the surface to preserve local angles and shapes.
+This distorts areas,
+particularly closer to the poles where the gaps are bigger.
 
 ::::: {.slide-visual}
 
-![Flattening a globe in the Mercator projection introduces gaps or distortion. Modeled an animated by Grafonaut for Elmarin Norway. https://www.youtube.com/watch?v=CPQZ7NcQ6YQ](img/geospatial-lecture/projection-animation.gif){#fig-map-projection-animation width=85% fig-alt="An animation opens a globe into curved strips, flattens them, and stretches them to fill a rectangular world map."}
+![Flattening a globe in the Mercator projection introduces gaps or distortion. Modeled and animated by Grafonaut for Elmarin Norway. https://www.youtube.com/watch?v=CPQZ7NcQ6YQ](img/geospatial-lecture/projection-animation.gif){#fig-map-projection-animation width=85% fig-alt="An animation opens a globe into curved strips, flattens them, and stretches them to fill a rectangular world map."}
 
 :::::
 
@@ -103,23 +103,23 @@ paritcularly closer to the poles where the gaps are bigger.
 
 ## Compare with an equal-area map {.content-visible when-format="revealjs"}
 
-The familiar Mercator world map Greenland look comparable in size to Africa.
+The familiar Mercator world map makes Greenland look comparable in size to Africa.
 However,
-[the area of Africa is actually about **14 times larger**.]{.slide-bullet}
+[Africa actually has about **14 times the area of Greenland**.]{.slide-bullet}
 The Mercator map is useful for navigation
 but the distorted areas on this map
 do not provide a reliable basis for estimating areas and distances
 which is arguably a more common use case when showing maps today.
 The Equal Earth projection shown below
 was introduced in 2018
-in an attempt to preserve relative areas
+in an attempt to preserve relative areas.
 It has since slowly been replacing the Mercator projection
 as the default choice for showing maps and visualizing geographic data
 (unless a specific purpose calls for a specific projection).
 
 :::::: {.slide-visual}
 
-![An Equal Earth world map preserves relative areas, making Africa much larger than Greenland. We can also see that the size of Antartica is a fraction of that in the Mercator projection. Source: [map-projections.net](https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84).](img/geospatial-lecture/equal-earth-world.png){#fig-map-equal-earth fig-alt="An Equal Earth projection of the same world imagery, showing Africa much larger than Greenland and less exaggerated polar regions."}
+![An Equal Earth world map preserves relative areas, making Africa much larger than Greenland. We can also see that the size of Antarctica is a fraction of that in the Mercator projection. Source: [map-projections.net](https://map-projections.net/compare.php?p1=equalearth&p2=mercator-84).](img/geospatial-lecture/equal-earth-world.png){#fig-map-equal-earth fig-alt="An Equal Earth projection of the same world imagery, showing Africa much larger than Greenland and less exaggerated polar regions."}
 
 ::::::
 
@@ -132,7 +132,7 @@ as the default choice for showing maps and visualizing geographic data
 Note that the choice of projection
 also depends on the region being shown.
 A projection designed for a limited region
-suffer less from the issues of distortion
+suffers less from the issues of distortion,
 and different regions often have different choices for their default projection.
 For example,
 in Canada both the transverse Mercator and Lambert conformal conic projections
@@ -141,7 +141,7 @@ Special projections can also be used
 for countries with regions spread far apart,
 such as the US,
 which is often shown with Alaska and Hawaii
-repositioned closed to the rest of the American states.
+repositioned close to the rest of the American states.
 In general,
 we want to use a projection designed for the place and purpose,
 and keep it consistent across maps that readers need to compare.
@@ -223,7 +223,7 @@ for more detail.
 
 A helpful website for finding data with geographical boundaries is
 [Natural Earth](https://www.naturalearthdata.com/downloads/),
-which provides different file format
+which provides different file formats
 at different scales and for different boundary representations:
 
 - **Cultural** data includes countries, administrative regions, and populated places.
@@ -244,7 +244,7 @@ interactivity. The language choice is synchronized within the chapter.
 
 For Altair,
 we use the package GeoPandas,
-which can read many different geo data files into a **GeoDataFrame**,
+which can read many different geospatial data files into a **GeoDataFrame**,
 holding attributes and geometries for the different regions.
 GeoPandas extends pandas with geometry types and spatial operations.
 
@@ -276,7 +276,7 @@ world_countries[['name', 'continent', 'pop_est', 'pop_year', 'gdp_year']]
 ```
 
 Note that these attributes are historical estimates and their
-reference years can differ somehow.
+reference years can differ.
 You can inspect `pop_year` and `gdp_year`
 for the exact collection year of each attribute.
 
@@ -365,7 +365,7 @@ alt.Chart(world_countries, width=550).mark_geoshape()
 
 `geom_sf()` draws the geometry, and `coord_sf()` chooses the projection.
 We use `text` to encode the tooltip
-to avoid that it gets prefixed with the name of the dataframe column.
+to prevent it from being prefixed with the name of the dataframe column.
 
 ```{r}
 #| label: geospatial-world-outline-sf
@@ -559,7 +559,7 @@ africa_map_gg <- ggplot(africa_sf, aes(label = name, fill = pop_est)) +
     geom_sf() + coord_sf(crs = '+proj=eqearth')
 ggplotly(africa_map_gg, tooltip = c('label', 'fill'))
 ```
-We could emphasize the lines between countries more
+We could emphasize the lines between countries more:
 
 ```{r}
 #| label: geospatial-africa-boundaries-sf
@@ -659,7 +659,7 @@ ggplotly(regions_map_gg, tooltip = c('label', 'fill'))
 
 :::
 
-### Focusing on a region and is administrative subregions
+### Focusing on a region and its administrative subregions
 
 Select Canada's provinces and territories using the country code. The dataset
 includes names, representative point coordinates, and Wikipedia links as well

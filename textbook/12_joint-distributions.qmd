@@ -47,7 +47,7 @@ first for categorical variables, then for two numerical variables.
 ## Counting categorical combinations
 
 We will reuse the movie dataset from @sec-binned-distributions.
-For this example, we keep films with age ratings G, PG, PG-13, or R;
+For this example, we keep films with age ratings G, PG, PG-13, or R—
 a total of 789 films.
 
 ::: {.panel-tabset group="language"}
@@ -108,7 +108,7 @@ alt.Chart(movies).mark_circle().encode(
 
 ### ggplot {.slide-skip}
 
-Computing and mapping  `count()` to color counts the films for each combination
+Computing and mapping `count()` to color counts the films for each combination
 of the categories on the two axes.
 
 ```{r}
@@ -129,7 +129,7 @@ movies |>
 ## Ordering categories {.content-visible when-format="revealjs"}
 
 Just like for other charts using counts
-we can sort the categoricals according to their count.
+we can sort the categories according to their counts.
 This can be particularly effective 
 when there are many categories.
 [Here we don't sort `MPAA Rating` by count
@@ -178,7 +178,7 @@ movies |>
 Visualizing counts as both size and color
 helps make large and small counts visually distinct.
 We could also have visualized the counts as a heatmap,
-where the size of each mark is a fixed rectangle
+where each mark is a fixed-size rectangle
 and only the color varies by count.
 We will see this visualization further down for numerical distributions
 as it is more akin to a histogram with the bins more tightly together.
@@ -187,7 +187,7 @@ than color or area, so a faceted or grouped bar chart can therefore be preferabl
 (as we learned in @sec-counts-proportions).
 One drawback with such a chart
 is that it is harder to see patterns in the nested bars
-than the systematic 2D grid.
+than in the systematic 2D grid.
 
 ::: {.panel-tabset group="language"}
 

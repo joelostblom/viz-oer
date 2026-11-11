@@ -49,7 +49,7 @@ through a short exercise.
 ::: {.callout-default .ex-prompt}
 
 Take a few seconds to answer the following question.
-How many times larger is the bigger object
+How many times as large is the bigger object
 as the smaller one in each of these two images?
 
 :::::: {.slide-visual slide-layout="columns"}
@@ -305,7 +305,7 @@ and we will dive deeper into some of them later in the book.
 ## Choose the most effective channel for the most important comparison
 
 Let's apply what we have learned
-in the context of the dataset from last chapter.
+in the context of the dataset from the last chapter.
 
 ::: {.panel-tabset group="language"}
 
@@ -336,14 +336,14 @@ cars <- readr::read_csv(url)
 
 :::
 
-If we are interested in visualizing
+Suppose we are interested in visualizing
 the relationship between
 `'Miles_per_Gallon'`,
 `'Horsepower'`,
 and `'Weight_in_lbs'`.
 If all pairwise relationships were of high importance,
-we could created three separate plots
-where each variable get to be on the x and y axis two times each,
+we could create three separate plots
+where each variable appears on the x- or y-axis twice,
 so that they can make use of the most effective channel,
 position on a shared scale.
 
@@ -375,10 +375,10 @@ Here,
 we add the `color` encoding to the chart
 so that we can see how all three variables
 relate to each other.
-The default color gradient runs from dark blue for lower weights
-to light blue for higher weights,
+The default color gradient runs from dark blue for lower values
+to light blue for higher values,
 since light colors have the highest contrast
-to the chart's dark background.
+with the chart's dark background.
 
 ```{r}
 #| label: cars-weight-gg
@@ -390,8 +390,8 @@ ggplot(cars, aes(x = Miles_per_Gallon, y = Weight_in_lbs, color = Horsepower)) +
 
 :::
 
-If we instead are mainly interested in comparing,
-engine power vs weight,
+If we are instead mainly interested in comparing
+engine power with weight,
 then we would make the following chart:
 
 ::: {.panel-tabset group="language"}
@@ -415,10 +415,10 @@ Here,
 we add the `color` encoding to the chart
 so that we can see how all three variables
 relate to each other.
-The default color gradient runs from dark blue for lower weights
-to light blue for higher weights,
+The default color gradient runs from dark blue for lower values
+to light blue for higher values,
 since light colors have the highest contrast
-to the chart's dark background.
+with the chart's dark background.
 
 ```{r}
 #| label: cars-weight-2-gg
@@ -434,10 +434,10 @@ ggplot(cars, aes(x = Horsepower, y = Weight_in_lbs, color = Miles_per_Gallon)) +
 
 ### Avoid blindly following a ranking
 
-As with much of the other advice in this book,
-(and in life)
+As with much of the other advice in this book
+(and in life),
 context matters.
-If we think there is good reason to pick a lower ranking
+If we think there is good reason to pick a lower-ranking
 visual channel,
 then do that.
 For example,

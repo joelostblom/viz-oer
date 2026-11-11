@@ -73,7 +73,9 @@ Treat them as prompts to ask what comparison the reader needs to make.
 ## Design shapes the message
 
 Titles, colors, and graphical direction can emphasize different aspects of a dataset.
-Ask what message each design brings forward, and what important context it leaves behind. This first figure using red color and a reversed axis to draw parallels between the deaths in this war to the dripping of blood.
+Ask what message each design brings forward and what important context it leaves behind.
+This first figure uses red and a reversed axis to draw a parallel
+between the deaths in this war and dripping blood.
 
 ::: {.slide-visual}
 
@@ -92,8 +94,8 @@ focusing on the recent decline in the death rate.
 
 [Both these messages are true
 and the complete data story includes both]{.slide-bullet},
-but in a visulization we can what to highlight.
-This not only important to be aware of when making our own visualization,
+but in a visualization we can choose what to highlight.
+This is important to be aware of not only when making our own visualizations,
 but also when reading a visualization from someone else.
 
 
@@ -112,9 +114,9 @@ than a reader has time for in a short presentation.
 
 :::
 
-A simpler "take home" message of this chart presented to C-level executives
-in a short update meeting,
-might be much simpler and just focus on the outcome of the operation.
+A "take-home" version of this chart presented to C-level executives
+in a short update meeting
+might focus only on the outcome of the operation.
 
 ::: {.slide-visual}
 

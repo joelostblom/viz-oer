@@ -251,8 +251,8 @@ Here, we need to [distinguish two graphically related concepts]{.slide-bullet}:
 [the spread of the underlying data (descriptive statistics)]{.slide-subbullet}
 and [the uncertainty in the estimate of central tendency (inferential statistics)]{.slide-subbullet}.
 These [answer two different questions,
-but graphically they are often depicted similarly, e.g. with errorbars]{.slide-subbullet}.
-Therefore it is important to [always label what an errorbar represents]{.slide-subbullet}.
+but graphically they are often depicted similarly, e.g., with error bars]{.slide-subbullet}.
+Therefore it is important to [always label what an error bar represents]{.slide-subbullet}.
 In this chapter,
 we will focus on how spread out the underlying data distribution is,
 and return to confidence intervals and other measures of inferential uncertainty
@@ -271,7 +271,7 @@ in our charts:
 
 [Two measures of spread]{.slide-bullet}
 [Standard deviation: How spread out observations are around the mean]{.slide-subbullet}
-[Percentile interval: Where a certain range of the observations lie]{.slide-subbullet}
+[Percentile interval: Where a specified proportion of the observations lies]{.slide-subbullet}
 
 :::
 

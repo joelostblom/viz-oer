@@ -244,9 +244,9 @@ An arbitrary set of category colors makes it harder to judge which values are la
 :::
 
 A sequential palette represents movement along a numerical range.
-Check the lightness progression,
+Check the lightness progression:
 plateaus or reversals can make some changes stand out more than others,
-and sometimes introduce artifical banding.
+and sometimes introduce artificial banding.
 
 ::: {.slide-visual}
 
@@ -293,7 +293,7 @@ the legend and the palette's lightness structure both matter.
 In this case a cyclic palette was used for data that is not cyclic in nature,
 so the red shade being matched to both the top and the bottom of the color scale
 is quite confusing (although we could use neighboring regions to figure out
-the likely vaule of the red regions).
+the likely value of the red regions).
 
 ::: {.slide-visual}
 

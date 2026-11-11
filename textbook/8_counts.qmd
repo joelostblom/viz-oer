@@ -230,8 +230,8 @@ To place it at the top instead,
 pass `'-x'` rather than `'x'`.
 Either direction can work,
 but generally it is more visually appealing
-to have the longest bar,
-the closest to the axis.
+to have the longest bar
+closest to the axis.
 
 #### ggplot {.slide-skip}
 
@@ -256,18 +256,18 @@ meditation |>
         geom_bar()
 ```
 
-We used `-n` to put the longest bar the closest to the axis.
+We used `-n` to put the longest bar closest to the axis.
 To put the largest count at the top instead, use `reorder(condition, n)`.
 Either direction can work;
 but generally it is more visually appealing
-to have the longest bar,
-the closest to the axis.
+to have the longest bar
+closest to the axis.
 
 :::
 
 [Could you think of a scenario
 when it would make sense to sort by
-something else than the length of the bar?]{.content-visible when-format="revealjs" .slide-text}
+something other than the length of the bar?]{.content-visible when-format="revealjs" .slide-text}
 
 Ordering categories by their plotted values can also help in other charts,
 such as point charts of group means.
@@ -301,8 +301,8 @@ alt.Chart(meditation).mark_bar().encode(
 When ordering by another visual channel
 we used `reorder` to change the order of the dataframe column.
 To define a custom order,
-we need to directly manipulate order of the scale
-that the categorical variable is plotting on,
+we need to directly manipulate the order of the scale
+on which the categorical variable is plotted,
 in this case the y scale.
 
 ```{r}
@@ -363,7 +363,7 @@ In this chart,
 it is easy to see that
 all conditions have more female than male respondents.
 Try to [compare the exact number of respondents between conditions;
-is that easier for the male of female group?]{.slide-bullet}
+is that easier for the male or female group?]{.slide-bullet}
 [What's the reason it's easier for one group over the other?]{.slide-subbullet}
 
 :::: {.callout-default .ex-hint}
@@ -438,7 +438,7 @@ the control condition has the most female participants, with 86.
 
 ::: {.content-visible when-format="revealjs" .slide-text}
 
-- Prefer bars with a shared baseline when comparisons between bar segments is important
+- Prefer bars with a shared baseline when comparisons between bar segments are important.
 - Prefer stacked bars when the total is important (similar to stacked areas).
 
 :::
@@ -573,7 +573,7 @@ Setting an inner radius greater than zero creates a donut chart.
 #### ggplot {.slide-skip}
 
 In ggplot, we can construct a pie chart by transforming
-a stacked bar into polar coordinates with `coord_polar()`;
+a stacked bar into polar coordinates with `coord_polar()`—
 a very grammatically coherent way to express a pie chart!
 
 ```{r}
@@ -594,7 +594,7 @@ It is almost always better to use some form of a bar chart.
 When there are many groups in the data,
 pie charts can be disorienting.
 The charts below show parliamentary seats from the 2026 Swedish election.^[Source: [Swedish Election Authority, final results for 2026](https://www.val.se/valresultat-och-statistik/riksdags--region--och-kommunval/valresultat-2026)],
-with parties grouped into their blocs from last election.
+with parties grouped into their blocs from the last election.
 In the bar chart to the left,
 it is easier to see that Bloc 1 has slightly more seats: 176 compared with 173,
 and we could make this even clearer

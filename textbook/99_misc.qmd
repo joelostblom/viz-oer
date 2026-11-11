@@ -47,7 +47,7 @@ The plot-configuration examples use the 2018 Gapminder data introduced in @sec-c
 These two plots are included as a resource
 to show how you can change the appearance of a plot,
 including titles and sizes of plot elements.
-We will later cover what are the best practices in these areas,
+We will later cover what the best practices are in these areas,
 but for now it is enough to know the mechanics of how you can change these.
 Feel free to explore and create visualizations that appeal to you!
 
@@ -90,7 +90,7 @@ ggplot(gm2018, aes(x = child_mortality, y = life_expectancy, size = population))
     ggtitle('My plot title') +                        # Change the title of the plot
     labs(x = 'Child mortality') +                     # Change the x-axis scale to log and the title to 'POP'
     labs(size = 'Population') +                       # Change legend title
-    theme_bw() +                                      # Change the theme to black and white, ther is also theme_classic()
+    theme_bw() +                                      # Change the theme to black and white; there is also theme_classic()
     theme(text =  element_text(size = 24))            # Change the text size of all labels
 ```
 

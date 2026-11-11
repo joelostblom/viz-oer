@@ -309,7 +309,7 @@ before the end of the century, followed by a gradual decline.
 Interestingly,
 the line in this example helps us notice a change in the slope.
 The world population increased
-more slowly numbers before around 1950,
+more slowly before around 1950,
 and more rapidly afterwards.
 
 After making any chart,
@@ -360,7 +360,7 @@ rather than taking the population in each country into account,
 so it does not directly show the total number of babies born in the world.
 
 [Based on these charts, how would you explain the reason for the increase
-in the world population around the 1950?]{.slide-bullet}
+in the world population around 1950?]{.slide-bullet}
 
 <!-- TODO fix the data set to weight by population when I do the agggregation so that we don't need to make the reservations aroun the coutry aerage -->
 
@@ -477,7 +477,7 @@ suggests a country-average fertility estimate of approximately 5.4 children per 
 But as we can see from the points in the chart,
 our data does not contain any observation from exactly this year.
 [What conclusions can we draw
-about the fertility estimate for year 1950]?
+about the fertility estimate for the year 1950]?
 
 ```{python}
 #| label: population-line-points-zoom
@@ -591,15 +591,15 @@ when the same observational unit is present in all of them.
 For example,
 we might measure the same patient before and after treatment,
 or compare evaluations of the same film by different reviewer groups.
-We say that such measurements are paired;
+We say that such measurements are paired,
 a concept that extends to more than just two categories
 e.g. before, during, and after a treatment.
 Let's explore this more closely with an exercise:
 
 ::: {.callout-default .ex-prompt}
 
-This data set that contains the names of a few movies
-together with their critic and general audience rating
+This dataset contains the names of a few movies
+together with their ratings from critics and the general audience
 from [Rotten Tomatoes](https://www.rottentomatoes.com/):
 
 ```{python}
@@ -663,7 +663,7 @@ points = (
 points
 ```
 
-[How many movies have a higher scores from critics than from the audience?]{.slide-bullet}
+[How many movies have higher scores from critics than from the audience?]{.slide-bullet}
 
 ### ggplot
 
@@ -684,7 +684,7 @@ movie_plot + geom_point()
 
 From this plot,
 are you able to quickly tell
-for which films the critics score is higher
+for which films the critics' score is higher
 than the audience score?
 For which is it lower?
 Which films have the largest differences?
@@ -723,8 +723,8 @@ movie_plot +
 
 :::
 
-One of the reasons this comparison is difficult to make,
-is that [it takes some cognitive effort to find the same movie in both column]{.slide-bullet}.
+One of the reasons this comparison is difficult to make
+is that [it takes some cognitive effort to find the same movie in both columns]{.slide-bullet}.
 We could [make this task easier
 by connecting the points that are from the same movie with a line]{.slide-subbullet}.
 In addition to showing which points belong to the same movie,
@@ -793,18 +793,18 @@ ggplot(movie_scores, aes(x = Score, y = reorder(Movie, Score))) +
 <!-- TODO figure out what is wrong in the altair example -->
 
 A related concept to what we just did is a [parallel coordinates chart](https://en.wikipedia.org/wiki/Parallel_coordinates),
-Where several variables are plotted in the same plot,
+where several variables are plotted in the same plot,
 but on different axes next to each other.
 This is often used as an exploratory technique to detect clusters in the data.
 Like in the paired comparison,
 it is the same observation that is connected with the line across the variables.
 A difference between the two is that a paired comparison
-plots the same measurement (e.g. Movie score),
-between different groups (e.g. Reviewers group),
+plots the same measurement (e.g., movie score)
+across different groups (e.g., reviewer groups),
 whereas a parallel coordinate plot
-visualized different variables that all use different units or ranges.
+visualizes different variables that use different units or ranges.
 To be able to show these variables on a common scale,
-their ranges are often normalized
+their ranges are often normalized.
 
 :::
 
@@ -1116,7 +1116,7 @@ the world average wasn't 30 children per woman in the 1800s...
 ```{python}
 #| echo: false
 #| label: fertility-stacked
-#| slide-title: How many children per woman was there in the world in 1960?
+#| slide-title: What was the average number of children per woman in the world in 1960?
 #| slide-show: output
 alt.Chart(regions).mark_area().encode(
     x=alt.X('year').axis(format='d'),

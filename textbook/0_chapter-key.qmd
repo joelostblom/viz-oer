@@ -39,11 +39,11 @@ we have expanded them to include a summary of the "solution" for each outcome,
 instead of just stating what you are to learn in the chapter.
 
 For example,
-instead of simply stating:
-"Explain the main advantage of visualizing data"
+instead of simply stating
+"Explain the main advantage of visualizing data,"
 we would write:
 "Explain that the main advantage of visualizing data
-instead of presenting it with numbers is that they are easier to interpret for humans.
+instead of presenting it with numbers is that visualizations are easier for humans to interpret."
 
 As such,
 [the learning objectives also serve as the summary of each chapter]{.slide-bullet}.
@@ -138,9 +138,9 @@ and more.
 
 Deep dives
 include content that
-is not essential to understand main topics of the chapter.
+is not essential to understand the main topics of the chapter.
 Instead,
 these sections elaborate on concepts
-and often contains more challenging content.
+and often contain more challenging content.
 
 :::

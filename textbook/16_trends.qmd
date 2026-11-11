@@ -473,7 +473,7 @@ the orange segments show the magnitudes (i.e. the absolute value) of these discr
 
 There are different ways to combine these residuals into an overall error.
 An intuitive one might be to simply sum up all the magnitudes of the prediction errors,
-i.e. add the length orange lines together.
+i.e., add the lengths of the orange lines together.
 This is a perfectly reasonable thing to do,
 but often the squared distance is used instead.
 Squaring gives large misses disproportionately more influence than taking the absolute distance
@@ -501,19 +501,22 @@ gives the same fit for a fixed dataset:
 dividing by the number of observations only rescales the objective.
 Using means makes it easier to communicate how wrong the line is on average.
 To facilitate communication,
-we might also avoid MSE since results in really large numbers
-and squared units (e.g. squared horsepowers)
-and instead take the square root of the MSE,
-which is called the Root Mean Squared Error
-(notably similar to standard
+we might also avoid MSE since it creates really large numbers
+in squared units that are hard to reason about (e.g. squared horsepowers).
+Instead,
+we can take the square root of the MSE,
+which is called the Root Mean Squared Error (RMSE),
+which expresses prediction error in the original units of the data
+(note that the standard deviation technically is computed as the RMSE 
+around the mean).
 
 As in the preceding example, the slider changes the slope while the intercept
 adjusts to keep the line passing through this sample's means.
 The title shows the resulting equation, with MSE and MAE directly below it.
 This lets us compare the losses for the same candidate lines.
-However, note that a freely fitted LAD line need not pass through the sample means (or median),
+However, note that a freely fitted LAD line need not pass through the sample means (or median);
 it could be shifted up or down
-(whereas the OLS line is guranteed to be rotated around the mean).
+(whereas the OLS line is guaranteed to pass through the sample means).
 
 ```{python}
 #| label: trends-interactive-loss-alt
@@ -828,7 +831,7 @@ points + points.mark_line().transform_loess(
 
 The `span` parameter changes the fraction of observations in each neighborhood.
 By default,
-it is set as 0.75.
+it is set to 0.75.
 
 ```{r}
 #| label: trends-loess-span-gg
@@ -916,7 +919,7 @@ The same kernels can therefore reveal a changing density and a constant response
 
 Near the left edge of an increasing trend, most available neighbors lie to the right.
 A rolling mean averages their higher responses and can overestimate the response at the target.
-A local linear fit can account for the slope and evaluate the line at the target instead
+A local linear fit can account for the slope and evaluate the line at the target instead.
 For observations lying exactly on a straight line, it recovers that line wherever
 the neighborhood contains enough distinct, positively weighted x-values.
 A local mean can also reproduce a straight trend in a symmetric neighborhood,
@@ -989,17 +992,17 @@ and how flexible a function they fit.]{.slide-bullet}
 ::: {.slide-bullet}
 
 - **Means and rolling means** are useful when the summarized values should have
-  a straightforward interpretation. It is poorly suited to extrapolation beyond the data range
+  a straightforward interpretation. They are poorly suited to extrapolation beyond the data range
   but can be particularly accessible to a general audience.
 - **Regression models** are useful when a simple equation is a reasonable description
   of the relationship and it is advantageous to describe the relationship with a known equation.
   Predictions beyond the observed range
   are generally more accurate than for models fitted using a local neighborhood,
-  but they still rely on that the fitted equation hold beyong the observed range,
+  but they still rely on the fitted equation holding beyond the observed range,
   and become more uncertain as they move further from the data.
 - **LOESS** is useful for describing patterns within the observed data without choosing
   one global equation. It often resembles the trend a reader would sketch by eye,
-  and it generally usable for communication purposes although they are not as straightforward
+  and it is generally usable for communication purposes, although it is not as straightforward
   to understand as a rolling mean.
   It is poorly suited to extrapolation beyond the data range.
 

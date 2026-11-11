@@ -59,7 +59,7 @@ several techniques from the book are combined
 to explore a dataset.
 When we receive a new dataset,
 we might start with a rather broad question of interest
-that gets more narrow as we learn which comparisons in the data
+that gets narrower as we learn which comparisons in the data
 reveal interesting features of the data.
 We also don't know whether the data mean what we think they mean.
 
@@ -182,10 +182,10 @@ weather |> summary()
 
 We can see that there are some missing values
 in both the `temp_min` and `temp_max` columns,
-which we will explore more in detail later.
+which we will explore in more detail later.
 Another example specific to this dataset
 is that we might want to check that
-there is exactly one recorded values per day and no duplicates
+there is exactly one record per day and no duplicates
 or missing dates.
 
 ::: {.panel-tabset group="language"}
@@ -206,13 +206,13 @@ weather |> count(date)
 
 :::
 
-All dates are present exactly once.
+All recorded dates appear exactly once.
 That rules out one potential problem with duplication,
 but it does not tell us whether every measurement on those dates is present.
-It also doesn't tell us whether every data is present
+It also doesn't tell us whether every date is present
 unless we manually go through those dates one by one.
 For that we would have needed to construct the periodic range
-between the start and end date and then compare that to the dates available,
+between the start and end dates and then compare that to the dates available,
 which we will not do here.
 
 ::: {.callout-note}
@@ -222,7 +222,7 @@ If a movie belongs to both Comedy and Animation,
 expanding its genre list creates two rows for one film.
 Those rows can be useful for counting genre memberships,
 but treating them as two independent films changes the interpretation.
-Likewise, in a dataset of people
+Likewise, in a dataset of people,
 repeated measurements from one person should not be counted as additional people.
 Count rows and the relevant observational units when the distinction matters.
 :::
@@ -242,7 +242,7 @@ we can automate some of the chart construction,
 but we still need to decide what the columns mean and how to interpret each chart we make.
 For example, a numerical storage type does not automatically guarantee that the column
 is worth putting in a histogram or correlation matrix,
-as it could e.g. contain IDs or phone numbers.
+as it could, for example, contain IDs or phone numbers.
 
 ### A grid of distributions
 
@@ -250,7 +250,7 @@ In @sec-binned-distributions and @sec-smoothed-distributions,
 we examined one or a few distributions at a time.
 When we are doing EDA,
 we often want to explore multiple variables
-and tend to create many distributions charts at once
+and tend to create many distribution charts at once
 to inspect several measurement columns together.
 We can create these grids
 using any of the distribution plots we have learned about so far;
@@ -283,8 +283,8 @@ alt.Chart(weather, height=200).mark_bar().encode(
 ```
 
 Since the construction of the plot grids in EDA tends to demand more complex syntax,
-we often use helper packages that allows us to focus on exploring the data
-rather than getting to bogged down with writing code.
+we often use helper packages that allow us to focus on exploring the data
+rather than getting too bogged down with writing code.
 A related helper package for Altair is [Altair Ally](https://github.com/joelostblom/altair_ally),
 and we could use it to visualize the distributions in the following way:
 
@@ -294,7 +294,7 @@ import altair_ally as aly
 aly.dist(weather, bin=True)
 ```
 
-The default is to show densities for each variables,
+The default is to show densities for each variable,
 which would be perfectly reasonable.
 Here we also demonstrate how to use `bin=True`
 to show histograms instead.
@@ -326,8 +326,8 @@ ggplot(weather_long, aes(x = value)) +
 ```
 
 Since the construction of the plot grids in EDA tends to demand more complex syntax,
-we often use helper packages that allows us to focus on exploring the data
-rather than getting to bogged down with writing code.
+we often use helper packages that allow us to focus on exploring the data
+rather than getting too bogged down with writing code.
 A related helper package for ggplot is [GGally](https://ggobi.github.io/ggally/articles/ggpairs.html)
 and we could use it to visualize the distributions of each variable.
 By default,
@@ -348,7 +348,7 @@ ggpairs(
 )
 ```
 
-The default is to show densities for each variables,
+The default is to show densities for each variable,
 which would be perfectly reasonable.
 Here we also demonstrate how to use `diag = list(continuous = "barDiag")`
 to show histograms instead.
@@ -356,10 +356,10 @@ to show histograms instead.
 :::
 
 
-This grid of distribution plots bin settings provide a first look
-of our variables.
+This grid of distribution plots provides a first look
+at our variables.
 We should still apply the best practices of each individual visualization,
-such as testing various bind widths and inspecting individual observations.
+such as testing various bin widths and inspecting individual observations.
 
 From the chart above,
 we can note that
@@ -401,9 +401,9 @@ Just as we explored the distribution of our numerical variables above,
 we can explore the distribution of categorical variables
 as part of our overview visualization.
 We can think of the categorical distribution
-as simply the count of values for each categorical grouop.
+as simply the count of values for each categorical group.
 In this case,
-it could e.g. be interesting how many observations there are 
+it could, for example, be interesting to see how many observations there are
 for each weather type.
 
 ::: {.panel-tabset group="language"}
@@ -434,14 +434,14 @@ weather |>
 In this chart we can see that
 there are some records described as snow days.
 How can there be snowy days if there were no negative temperatures in the data?
-This lends support to that there is something suspicious going on with this data
+This supports the possibility that there is something suspicious going on with this data
 that we should explore further.
 
 ### An overview of bivariate relationships
 
 In addition to viewing the univariate distributions above,
-we might also be interesting in the bivariate or joint distributions.
-Creating a grid of usch distributions is often referred to as a 
+we might also be interested in the bivariate or joint distributions.
+Creating a grid of such distributions is often referred to as
 a scatterplot matrix or a pairs plot
 and lets us scan multiple relationships effectively.
 Usually,
@@ -468,16 +468,16 @@ alt.Chart(weather).mark_point(size=9, opacity=0.2).encode(
 )
 ```
 
-As you can see
+As you can see,
 the diagonal compares each variable with itself,
-why we see a straight line for all those relationships,
-and it redundant to include.
+which is why we see a straight line for all those relationships,
+and including it is redundant.
 Likewise,
-the lower and upper diagonal are mirrors of each other
+the lower and upper triangles are mirrors of each other
 and we really only need to include one of them.
 It would be a tedious manual process to modify this,
-so instead we can use a Altair ally,
-which also let's us easily bin the points 
+so instead we can use Altair Ally,
+which also lets us easily bin the points
 to avoid saturation.
 
 ```{python}
@@ -507,7 +507,7 @@ that we will use.
 Here we request points for the lower triangle and histograms on the diagonal.
 We include the densities on the diagonal,
 but we could have excluded them if we wanted to just show the bivariate relationships.
-GGally also let's us easily use a 2D density instead of plotting the points directly
+GGally also lets us easily use a 2D density instead of plotting the points directly
 to avoid saturation.
 
 ```{r}
@@ -590,7 +590,7 @@ which uses ranks and summarizes **monotonic** associations:
 whether larger values of one variable tend to accompany larger or smaller values of another.
 It can capture some nonlinear relationships, but not arbitrary curves.
 For example, a strong U-shaped relationship can have little correlation
-for both the Pearson and Spearmean metrics.
+for both the Pearson and Spearman metrics.
 Relationships that depend on a combination of predictors can also be missed
 by inspecting each predictor separately.
 
@@ -631,9 +631,9 @@ The meaning of a missing value also requires context.
 It might represent a failed measurement, a survey question that was never asked,
 a refusal to answer, or a field that does not apply to that observation.
 A missing value can also be introduced by an unsuccessful join between tables,
-so the issue could like in the data processing rather than the data collection step.
-All these situations can all end up encoded as `NA`,
-but they require different interpreatations and actions.
+so the issue could lie in the data processing rather than the data collection step.
+All these situations can end up encoded as `NA`,
+but they require different interpretations and actions.
 Conversely, an unknown value might be encoded as a number such as `999`
 and therefore escape a simple missing-value count
 (this is not good practice but can still happen).
@@ -699,7 +699,7 @@ ggplot(missing_cells, aes(x = date, y = variable, fill = status)) +
 
 :::
 
-The missing temperatures seems to occur in colder parts of the year.
+The missing temperatures seem to occur in colder parts of the year.
 This supports further investigation as we don't yet know the mechanism.
 A device problem, a reporting procedure, and a processing rule
 could all produce seasonally patterned missingness.
@@ -898,7 +898,7 @@ this example does not establish a universally correct replacement rule.
 The weather mystery is one example of a broader strategy:
 [follow a surprising pattern with a check that could change your interpretation]{.slide-bullet}.
 Generating another plot is useful when you can explain what it will help you learn.
-Here is an example of some common scenarios and what a helpful next step could be.
+Here are some common scenarios and possible next steps.
 
 | Observation in an overview | Possible explanations | A useful next check |
 |:--|:--|:--|

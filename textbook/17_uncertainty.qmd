@@ -24,7 +24,7 @@ resources:
    and pointwise coverage from simultaneous coverage of an entire curve.
 7. **Translate** probabilities into frequencies of hypothetical outcomes.
    Explain why one unlikely outcome does not by itself invalidate a forecast.
-8. **Compare** confidence bands and showing potential individual outcomes.
+8. **Compare** confidence bands with displays of potential individual outcomes.
 
 :::
 
@@ -214,13 +214,13 @@ Bootstrapping is a procedure
 for estimating the distribution of an estimator (such as the mean)
 by resampling the observed data.
 The underlying idea in bootstrapping is that
-since we don't have access to data of the entire population
+since we don't have access to data from the entire population
 and we cannot repeatedly collect new samples from that population,
 we treat the data we have as the closest approximation
 of the distribution of the population
 and draw new samples from our observed data
 to build a confidence interval for our population mean estimate.
-You can read more detail about this technique 
+You can read more about this technique
 and play around with an interactive chart in the deep dive below.
 
 ::: {.deep-dive}
@@ -264,7 +264,7 @@ and play around with some of the parameters.
 #| slide-show: output
 #| slide-title: Build a confidence interval by bootstrapping
 #| fig-cap: >
-#|    Interactive chart for construction CI via bootstrapping.
+#|    Interactive chart for constructing a confidence interval via bootstrapping.
 #|    After clicking a slider you can either drag with the pointer
 #|    or use the arrow keys to step through the values.
 #|    The slider reveals a fixed sequence of resamples generated with a random seed,
@@ -545,7 +545,7 @@ In **SD / SE** mode, the standard deviation of the accumulated resample means
 estimates the standard error of the original sample mean.
 A one-SE interval is approximately a 68% confidence interval when the estimator's
 sampling distribution is approximately normal and bias is small
-(which is increasingly likely as the sample size grews larger as per the central limit theorem).
+(which is increasingly likely as the sample size grows larger, as described by the central limit theorem).
 
 :::
 

@@ -6,16 +6,16 @@
 This educational resource aims to form a connected learning journey
 where each chapter introduces new principles and chart elements
 as a response to a limitation of what came before
-rather than simply presenting rules of which charts are good for what.
+rather than simply presenting rules about which charts are good for what.
 The motivation for this is that
-learners can be apt at remembering *that*
+learners can be adept at remembering *that*
 they should use one chart instead of another
 without understanding *why* that's the case.
 Or they might remember why for a specific example,
 but fail to extend that into a general understanding
 that applies to previously unseen scenarios and charts.
 
-Even more experienced visualized data workers
+Even more experienced data visualization practitioners
 might intuitively and implicitly make appropriate generalizations,
 without fully being able to articulate
 the reasoning behind their thought process.
@@ -30,14 +30,14 @@ and improve their ability to predict
 what is an effective visualization choice
 for a scenario not previously encountered.
 It is my hope
-that a deeper understanding for why and when
+that a deeper understanding of why and when
 certain visualization strategies are needed
 can contribute to and encourage
 learners' critical thinking about any chart they might come across.
 In my personal experience,
 developing such an understanding
 and revealing the implicit reasons behind visualization choices
-also makes learning more fun.
+also make learning more fun.
 
 This resource interleaves exercises throughout the chapters
 to encourage experiential learning
@@ -46,17 +46,17 @@ instead of leaving them to passively consume information.
 The exercises are largely focused on visualization principles
 rather than coding,
 since memorization of library APIs
-is an increasingly replaceable skill;
+is an increasingly replaceable skill,
 although understanding the guiding principles of the grammatical framework
 those APIs implement
 can be informative and helpful.
 
 To make the learning interactive,
-code is included for the learner to experiment on their own.
+code is included for learners to experiment with on their own.
 Rather than focusing on any one particular library,
 this resource allows learners to choose their library of interest
 from a set of libraries implementing a grammar of graphics.
-These libraries where chosen
+These libraries were chosen
 because their predictable grammar
 encourages learners to interpolate from charts they have seen
 to charts they *could* potentially make
@@ -66,8 +66,8 @@ to distinguish underlying visualization principles
 from library-specific API design.
 The grammar of graphics also provides a data-centric framework
 for reasoning about visualization choices
-and more clearly seeing similarities and difference between charts,
-rather than just memorizing names of different charts types.
+and more clearly seeing similarities and differences between charts,
+rather than just memorizing names of different chart types.
 <!-- rather than being focused on what **does** work from remembering a full api catalogue --> 
 <!-- of chart templtaes and names. -->
 

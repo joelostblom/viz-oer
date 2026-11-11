@@ -95,8 +95,8 @@ sketch your prediction (either on paper or in your mind).
 :::: {.callout-default .ex-hint}
 
 Let's make our prediction more precise.
-[One of these two charts holds the correct data,
-which one do you think it is?]{.slide-bullet}
+[One of these two charts holds the correct data.
+Which one do you think it is?]{.slide-bullet}
 
 ```{python}
 #| label: fig-polar
@@ -311,7 +311,7 @@ If there is no such order,
 we say that the column is "nominal"
 (e.g., types of fruit or color names).
 As a general rule,
-we [don't group data by continuous variables or discrete variable with many values]{.slide-bullet},
+we [don't group data by continuous variables or discrete variables with many values]{.slide-bullet},
 but we could if we first turn them into interval categories
 e.g. converting age in years into the intervals 18–24, 25–34, and 35–44.
 In general, [we want relatively few unique values when we group by a variable]{.slide-bullet}
@@ -520,7 +520,7 @@ when there are more than about 4–6 groups in the data,
 it might be better to break it down into separate charts instead of grouping by
 color.
 The more overlap,
-the fewer content
+the fewer groups we can distinguish clearly.
 
 :::
 
@@ -551,7 +551,7 @@ making the shapes easier to distinguish:
 ```{python}
 #| label: income-filled-shape-alt
 #| slide-show: both
-#| slide-title: Combining shape and color — altair
+#| slide-title: Combining shape and color — Altair
 alt.Chart(income_df).mark_point(filled=True).encode(
     x='percentage_heavy_drinkers',
     y='life_expectancy_at_65',
@@ -591,7 +591,7 @@ and another to `shape`.
 This tends to lead to too much visual information
 and it is difficult to distinguish the many different combinations visually.
 The exception is if the chart is relatively simple
-with few observations and few combinations of the shape and color variable;
+with few observations and few combinations of the shape and color variables;
 then this combination *might* work.
 
 The many combinations of income group
@@ -674,7 +674,7 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 [Grouping by position often creates the clearest separation between groups]{.slide-bullet}.
 Distributing the groups along the x- or y-axis gives each group its own visual lane,
 preventing observations from different groups from overlapping.
-This means that there is [no risk for overlap between groups]{.slide-bullet}
+This means that there is [no risk of overlap between groups]{.slide-bullet}
 and [we can generally visualize many more groups]{.slide-bullet}
 when we separate them by position rather than color or shape.
 However, [the grouping column now occupies one positional visual channel]{.slide-bullet},
@@ -742,7 +742,7 @@ alt.Chart(income_df).mark_point(color='#FF0039').encode(
 
 Faceting takes the concept of grouping to the next level.
 Instead of using different visual channels within a single chart,
-[generates multiple charts (or "facets"),
+[faceting generates multiple charts (or "facets"),
 each dedicated to a grouped subset of the data]{.slide-bullet}.
 Faceting is [particularly effective for highlighting distinct trends
 and patterns within each subset]{.slide-bullet},
@@ -750,7 +750,7 @@ as well as identifying extreme values or outliers within groups.
 We could think of faceting as a type of position grouping,
 but its advantage is that it [keeps both the x- and y-axes free
 for other variables]{.slide-bullet}.
-Facetting [generally supports comparison of many groups]{.slide-bullet},
+Faceting [generally supports comparison of many groups]{.slide-bullet},
 just like grouping by x or y position.
 
 [Previous grouping strategies can be used within each facet]{.content-visible when-format="revealjs" .slide-bullet}
@@ -857,12 +857,12 @@ As a secondary comparison,
 
 :::: {.callout-default .ex-hint}
 
-You could e.g. use faceting and coloring,
+You could, for example, use faceting and coloring,
 but which one should you use for which grouping variable?
 
 ::::: {.callout-default .ex-solution}
 
-Since we are interesting in comparing the relationship between two variables,
+Since we are interested in comparing the relationship between two variables,
 faceting is a suitable choice 
 as it gives two free positional channels (x and y)
 to map the two variables to for each group.

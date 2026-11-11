@@ -485,7 +485,7 @@ ggplot(data) + aes() + geom()
 
 1. `ggplot(data)` creates the data-linked canvas.
 2. `aes(...)` encodes the visual aesthetics, such as `x` and `y`.
-3. `geom_*(...)` A geom function adds geometric marks, such as points or bars.
+3. `geom_*(...)` adds geometric marks, such as points or bars.
 
 ::::
 

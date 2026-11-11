@@ -30,7 +30,7 @@ knitr:
    or brushing can drive highlighting, filtering, or another response.
 4. **Distinguish** the effects of highlighting, filtering, and zooming.
    Explain when an interaction changes only appearance, changes the observations entering a calculation,
-   or the scale limits.
+   or changes the scale limits.
 5. **Explain** the general concept of how to create a selection
    and how to make a chart responsive to the selection.
 
@@ -49,22 +49,22 @@ and let others explore a figure without writing code.]{.slide-bullet}
 
 ### Panning and zooming
 
-Panning and zooming is useful
-changes the viewing window or the state we are examining.
+Panning and zooming
+change the viewing window or the state we are examining.
 This is useful
 when there is additional detail
 that cannot be seen in a chart's
 initial view,
 but might be of interest to the reader.
 While it would be possible
-to present a single static zoomed in view of the chart,
-it would quickly become unwieldley
+to present a single static zoomed-in view of the chart,
+it would quickly become unwieldy
 to show multiple zoom levels in separate panels.
 
 This basic type of interaction
-also illustrates a key features of interactivity,
+also illustrates a key feature of interactivity:
 it enables the audience of the visualization 
-to activiley explore the data an ask questions of their own;
+to actively explore the data and ask questions of their own,
 including questions that the chart creator
 might not have thought of including in a static chart.
 
@@ -97,18 +97,18 @@ alt.Chart(cars).mark_circle().encode(
 
 #### ggplot {.slide-skip}
 
-`ggplot` does not have interactivity built-in to the library,
+`ggplot` does not have interactivity built into the library,
 so we will need to use a few different libraries
-to be add interactive features to it.
+to add interactive features to it.
 Plotly provides the `ggplotly` convenience function
-which convert a ggplot figure to a plotly figure
+which converts a ggplot figure to a Plotly figure
 and adds basic interactive features to it.
 It would be sufficient to just use the `ggplotly`
 function and its toolbar to access most functionality,
 but here we show how to enable
 zooming and panning by default without having to click in the panel.
-You will also notice that there is a tooltip enabled by default,
-more on that later.
+You will also notice that there is a tooltip enabled by default;
+we will discuss that later.
 Click the little house icon in the toolbar
 to reset the axes.
 
@@ -128,7 +128,7 @@ ggplotly(car_plot) |>
     config(scrollZoom = TRUE)
 ```
 
-Note that while plotly provides many useful interactive feature to ggplot
+Note that while Plotly provides many useful interactive features for ggplot,
 its API does not aim to implement a grammar of interactivity,
 but follows a more traditional design approach,
 so the code we learn here will look slightly 
@@ -139,10 +139,9 @@ different from the ggplot code we have used so far.
 ### Overview and detail
 
 Another helpful interaction tool
-it to use one chart as a navigation overview
+is to use one chart as a navigation overview
 for another chart that displays more detail.
-The example below
-shows how a time series can be examples below use the same S&P 500 time series.
+The examples below use the same S&P 500 time series.
 Drag an x-interval in the lower overview to set the upper panel's scale domain.
 
 ::: {.panel-tabset group="language"}
@@ -151,7 +150,7 @@ Drag an x-interval in the lower overview to set the upper panel's scale domain.
 
 We are using the layout operators from @sec-figure-composition
 to compose a view of the navigation overview
-togeher with the more detailed chart.
+together with the more detailed chart.
 Here we first define a selection
 and add it to the chart.
 You can click and drag in the chart (also called "brushing")
@@ -189,7 +188,7 @@ details = alt.Chart(sp500, height=120).mark_area().encode(
 details & overview.add_params(brush)
 ```
 
-Not that we can also scroll when hovering over the brush
+Note that we can also scroll when hovering over the brush
 to expand and shrink the selection.
 
 #### ggplot {.slide-skip}
@@ -198,7 +197,7 @@ Due to the lack of a grammar of interactivity,
 we cannot reuse what we learned in @sec-figure-composition
 to compose together the navigation overview and the detailed chart.
 Instead,
-plotly has a function named `rangeslider()`
+Plotly has a function named `rangeslider()`
 that supplies an overview with draggable handles
 used to create a selection (also called a "brush").
 `hovermode = 'x'` means that our brush is only selecting
@@ -221,9 +220,9 @@ ggplotly(sp500_plot, dynamicTicks=TRUE) |>
 
 ## Tooltips
 
-Tooltips is an effective way to supply
+Tooltips are an effective way to supply
 additional information when a data point is hovered.
-This can prevent overlaoding a visualization with text labels
+This can prevent overloading a visualization with text labels
 while still providing these details on demand
 when a reader asks for them.
 
@@ -231,7 +230,7 @@ when a reader asks for them.
 
 #### Altair {.slide-skip}
 
-Enabling the tooltip of a mark,
+Enabling the tooltip of a mark
 includes all mapped encodings
 in the text that pops up when hovering a point in the chart.
 
@@ -297,8 +296,8 @@ car_tooltip_plot <- ggplot(cars, aes(x = Horsepower, y = Miles_per_Gallon, color
 ggplotly(car_tooltip_plot)
 ```
 
-`ggplotly()` can uses aesthetics from ggplot for custom tooltip content,
-so we must first map each dataframe we want to use to an aesthetic.
+`ggplotly()` can use aesthetics from ggplot for custom tooltip content,
+so we must first map each dataframe column we want to use to an aesthetic.
 Here we use `label` which does not show up in `geom_point`,
 but is still part of the structure of the plot.
 If we wanted to avoid seeing the `Name:` prefix in the tooltip,
@@ -347,21 +346,21 @@ ggplotly(car_tooltip_plot, tooltip = c('label', 'color'))
 [A selection identifies observations of interest in a chart,
 and can then trigger an effect such as highlighting or filtering of that data.]{.slide-bullet}
 We already saw how to set up a chart's scale domain
-to respond to a selections range,
+to respond to a selection's range,
 and here we will see a few other ways to respond to selections as well.
 
 ### Highlighting observations {.slide-skip}
 
 [Highlighting observations means that all data is retained in the chart
 but the visual styling of the selected observations
-differ from that of the unselected ones.]{.slide-bullet}
+differs from that of the unselected ones.]{.slide-bullet}
 
 ::: {.panel-tabset group="language"}
 
 #### Altair {.slide-skip}
 
 Let's start by creating an empty brush again.
-Drag'n drop to see the brush selection rectangle.
+Click and drag to see the brush selection rectangle.
 
 ```{python}
 #| label: interaction-brush-alt
@@ -645,8 +644,8 @@ subplot(count_widget, car_legend_widget, widths = c(0.3, 0.7), titleX = TRUE, ti
 
 [Highlighting changes the visual emphasis
 without changing the observations used in the view.]{.slide-bullet}
-[Filtering restricts which observations are available to a another chart layer,
-effecting both display and calculations made in that chart.]{.slide-bullet}
+[Filtering restricts which observations are available to another chart layer,
+affecting both display and calculations made in that chart.]{.slide-bullet}
 An interactive query can change not just which marks appear,
 but the values being summarized.
 
@@ -658,7 +657,7 @@ Here, the brush filters the bar chart's input before counting,
 so the bars show the number
 of selected cars in each origin.
 The `transform_filter` method could have been used for any static filtering too,
-such as only keeping cars with Horsepower < 120,
+such as only keeping cars with Horsepower < 120.
 But in general it is preferred to do such operations
 in the dataframe library
 to limit the amount of data passed to the chart.
@@ -679,12 +678,12 @@ bars = alt.Chart(cars, height=80).transform_filter(brush).mark_bar().encode(
 selected_points & bars
 ```
 
-The x-axis is flickering a bit because it's domain max changes
+The x-axis is flickering a bit because its domain maximum changes
 with the number of cars that are included in the rectangle.
 We can also see that if we only select cars from a single Origin,
 that bar becomes thrice as wide
 as it takes up all the space in the chart.
-We can address both these issues,
+We can address both these issues
 by defining constant domains in the chart:
 
 ```{python}
@@ -759,7 +758,7 @@ alt.Chart(cars).mark_circle().encode(
 
 Plotly legends are interactive by default.
 Clicking an entry highlights that group
-and make the other points invisible.
+and makes the other points invisible.
 
 ```{r}
 #| label: interaction-legend-gg
@@ -774,7 +773,7 @@ ggplotly(car_legend_plot)
 
 ### Driving selections from widgets
 
-Widgets are another type of input mechanisms
+Widgets are another type of input mechanism
 that can drive a selection.
 [A dropdown, radio button, slider, legend, or plotted mark can define a selection;
 and then the chart can respond with highlighting or filtering observations,
@@ -1107,7 +1106,7 @@ ggplotly(p, tooltip = 'text') |>
 
 #### A widget or a chart?
 
-We could design charts as more small, more informative widgets
+We could design charts as smaller, more informative widgets
 by removing elements from the charts and styling them accordingly.
 
 :::: {.panel-tabset group="language"}
@@ -1277,7 +1276,7 @@ Keep reset behavior and the current state clear so readers can tell what they ar
 [All the examples in this chapter run **client-side**, in the browser.]{.slide-bullet}
 That means that they don't require a server that keeps running in the background
 and [the examples work after the Python or R session that created them has ended.]{.slide-bullet}
-This also means that we can share them without someone else
+This also means that we can share them with someone else
 without the need for that person to know how to use R or Python.
 We will use the composition and self-contained
 HTML export techniques from @sec-figure-composition

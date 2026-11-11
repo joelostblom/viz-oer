@@ -49,7 +49,7 @@ could drastically impact the appearance of the histogram]{.slide-subbullet}
 and lead to varying perceptions of the underlying distribution
 as we saw in @fig-hist-bin-shift.
 
-[How could we could change
+[How could we change
 the histogram creation process
 so that bins were always created in a fixed position?]{.slide-subbullet}
 Study the animated schematic in @fig-hist-buildup again
@@ -79,8 +79,8 @@ as can be seen in this animation:
 [This modification removes the need to select
 fixed bin boundaries along the axis]{.slide-bullet}
 and thus [the appearance of the distribution
-depend only on the width of each bin]{.slide-bullet}
-(i.e. one parameter less than the histogram).
+depends only on the width of each bin]{.slide-bullet}
+(i.e., one fewer parameter than the histogram).
 For a fixed rectangular kernel shape, the estimate depends on the window width
 but no longer requires a separate choice of bin origin.
 
@@ -320,7 +320,7 @@ density = alt.Chart(movies, height=120, width=220).transform_density(
     counts=True,
     bandwidth=5,
 ).mark_area(color="#FF0039").encode(
-    x=alt.X('Running Time min:Q').scale(zero=False, nice=False).title('Running Time (minues)'),
+    x=alt.X('Running Time min:Q').scale(zero=False, nice=False).title('Running Time (minutes)'),
     y=alt.Y('Density:Q').title('Count-scaled density'),
 )
 
@@ -412,12 +412,12 @@ whereas a large bandwidth produces a smoother curve.
 ::::
 :::
 
-One of the advantages of a density over a histogram
+One of the advantages of density estimates over histograms
 is that they are less influenced by the kernel bandwidth
 than histograms are by bin width.
 It is also notably easier
 to optimize for a suitable kernel bandwidth
-than a suitable bin width,
+than for a suitable bin width,
 so the default rules for density bandwidth estimation
 can be quite effective.
 
@@ -500,8 +500,8 @@ Since we don't know which `bw` value is selected by the Sheather-Jones rule,
 it can be tricky to know where to start when trying multiple `bw` values.
 For this,
 it can be helpful to use the `adjust` parameter instead,
-which adjust the default selected bandwidth by multiplying it by the value we pass.
-E.g. to try half the bandwidth of the Sheather-Jones rule:
+which adjusts the selected bandwidth by multiplying it by the value we pass.
+For example, to try half the bandwidth selected by the Sheather-Jones rule:
 
 ```{r}
 #| label: runtime-kde-bandwidth-sj-adjust-gg
@@ -530,11 +530,11 @@ The KDE on the right assigns density to negative durations,
 even though phone-use time must be between 0 and 60 minutes.
 
 In general,
-it is acceptable that the KDE
-extends beyond a minimum or maximum value in a sample
-as long as those values are sensible for the variable
-Since those the sample’s minimum and maximum are not necessarily population boundaries,
-so extending beyond them can be appropriate when estimating the population distribution
+it is acceptable for a KDE
+to extend beyond a sample's minimum or maximum
+as long as those values are sensible for the variable.
+The sample's minimum and maximum are not necessarily population boundaries,
+so extending beyond them can be appropriate when estimating the population distribution.
 It can,
 however,
 still be a good idea to clip the displayed curve
@@ -550,7 +550,7 @@ the omitted tails would simply taper smoothly toward zero).
 #|   The same KDE displayed only over the observed range (left) or beyond it (right).
 #|   The red curve is multiplied by the sample size and 3-minute bin width for
 #|   comparison with the histogram counts. Truncating the display hides the negative tail
-#|   rather than re-computes and corrects the KDE near the boundary.
+#|   rather than recomputing and correcting the KDE near the boundary.
 # Synthetic observations: 23 students in a 60-minute lecture.
 df = pd.DataFrame({"minutes": [
     0.4, 0.5, 0.6, 0.7,
@@ -626,7 +626,7 @@ panel(x_domain).properties(height=300, width=400)
 panel(observed_range).properties(height=300, width=400)
 ```
 
-[Limiting the display to the observed range, hides the impossible tail]{.slide-bullet}
+[Limiting the display to the observed range hides the impossible tail]{.slide-bullet}
 but also removes unobserved values that could be possible.
 It neither corrects boundary bias nor renormalizes the truncated curve.
 For bounded variables, consider a boundary-aware density estimator
@@ -682,7 +682,7 @@ def runtime_comparison_curve(label, width=420, height=160):
 runtime_comparison_curve('Five movies')
 ```
 
-[How many movies are this density chart created from?]{.content-visible when-format="revealjs" .slide-bullet}
+[How many movies was this density chart created from?]{.content-visible when-format="revealjs" .slide-bullet}
 
 :::: {.callout-default .ex-hint}
 
@@ -888,9 +888,9 @@ as one strategy to separate groups spatially.
 We have also seen that it can be beneficial
 to distribute the groups along the x or y axis
 to introduce some spatial separation,
-but still having them near each other for easier comparison.
+while still keeping them near each other for easier comparison.
 While it is possible to do this with density curves directly,
-a more common way is to use a so called violin plot.
+a more common way is to use a so-called violin plot.
 
 [Violin plots mirror a density estimate around a group’s position]{.slide-text},
 creating a centered shape
@@ -954,7 +954,7 @@ alt.Chart(movies, height=60).transform_density(
 
 `geom_violin()` calculates the density
 and draws the mirrored violin shape.
-With `scale = 'count'`, violin areas are proportional to group density sizes.
+With `scale = 'count'`, violin areas are proportional to group sizes.
 By default, the violins are trimmed to the observed range of each group,
 just like the densities.
 
