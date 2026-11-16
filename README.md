@@ -4,6 +4,89 @@ An interactive open educational resource for learning data visualization.
 
 ## Previewing and building the textbook
 
+Open the repository root in Positron. It is the shared uv, uvr, and Quarto
+project root, and Quarto's `execute-dir: project` makes chapter code run there
+too. Select `.venv/bin/python` for Python and the managed uvr R interpreter.
+Paths such as `data/vega-cars.csv` work in both console sessions and renders.
+
+For Positron's Quarto inline output, set the workspace setting
+`"notebook.workingDirectory": "${workspaceFolder}"` in `.vscode/settings.json`.
+Inline output uses a separate session for each document and otherwise starts
+in the chapter's folder, independently of Quarto's render-time `execute-dir`.
+After changing this setting, close and reopen the document to create a fresh
+document session (restart Positron if the existing session is restored). Check
+`os.getcwd()` inside a Python cell or `getwd()` inside an R cell: both should
+report the repository root. The standalone Console can use a different session,
+so checking its working directory alone does not verify inline cell execution.
+
+Mixed-language inline output has another limitation, verified in Positron
+2026.11.1 with Quarto extension 1.139.0: without a declared Jupyter kernel,
+the first supported code cell determines the document's primary language, and cells in
+the other language execute through the Console. Thus Python-first chapters use
+a Python document kernel, while R plots may appear in the Plots pane rather
+than inline. Console text output can still be mirrored inline. R Console plots
+use Positron plot comms, whereas R notebook kernels emit inline image data.
+Changing the first cell to R reverses the routing; it does not provide two
+fully inline document kernels. Inline execution also does not use reticulate
+to share R/Python state; see [Positron issue #13161](https://github.com/posit-dev/positron/issues/13161).
+Normal book and slide renders use knitr/reticulate for both languages.
+
+To use a shared R/reticulate session interactively, keep `engine: knitr` in
+the document and configure Console-based execution for this workspace:
+
+```json
+{
+  "quarto.inlineOutput.enabled": false,
+  "quarto.cells.useReticulate": true,
+  "positron.reticulate.enabled": "always"
+}
+```
+
+Run an entire Python cell with **Run Cell** (Ctrl+Shift+Enter on Linux/Windows,
+Cmd+Shift+Enter on macOS). The Quarto extension wraps the code in
+`reticulate::repl_python(...)` and sends it to R. Inline execution bypasses
+that wrapper even when Use Reticulate is enabled. **Run Line** (Ctrl/Cmd+Enter)
+uses a separate Python-console command and does not apply the cell wrapper;
+when using it, explicitly select the **Python (reticulate)** console started
+from the relevant R session. Start that console by running
+`reticulate::repl_python()` in R, or selecting Python (reticulate) in the
+interpreter picker. R's `Sys.getpid()` and Python's `os.getpid()` should agree
+when the two sessions are paired.
+
+The [Quarto extension fix in PR #1116](https://github.com/quarto-dev/quarto/pull/1116)
+restored the Console cell setting; it did not add reticulate support to inline
+output. [Positron issue #6675](https://github.com/posit-dev/positron/issues/6675)
+discusses the remaining distinction between Run Cell and Run Line, while
+[#13161](https://github.com/posit-dev/positron/issues/13161) tracks mixed-language
+reticulate support for inline output.
+
+The source layout is:
+
+```text
+_quarto.yml                 # Book configuration
+_chapter-slides.yml         # Standalone slide-project template
+index.qmd                   # Book landing page
+chapters/                   # Chapter and reference-page sources
+data/                       # Shared datasets
+assets/images/              # Illustrations and animations
+assets/audio/               # Audio resources
+assets/styles/              # CSS, SCSS, and highlighting themes
+assets/scripts/             # Browser JavaScript
+src/filters/                # Quarto Lua filters
+src/data_processing/        # Explicit data preparation scripts
+src/utils.py, src/utils.R   # Shared table helpers
+src/_slide-chunks.qmd       # Slide-only executable knitr setup
+_extensions/                # Quarto extensions
+tests/                      # Rendering and browser regressions
+_book/                      # Generated site, including slides/
+```
+
+In chapter Markdown, use project-root-relative asset paths such as
+`/assets/images/histogram-buildup.gif`. Includes remain source-relative, for
+example `{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}`. Runtime data
+paths in Python/R remain `data/...`, relative to the project root. Reading pages
+are published under `chapters/`; slide decks remain under `slides/`.
+
 Install the Python dependencies with `uv sync`. Altair currently comes from
 the `feat/to_html-should-work-as_save_html` branch on GitHub, which fixes
 VegaFusion HTML output through reticulate. The resolved commit is pinned in
