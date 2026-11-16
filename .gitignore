@@ -5,8 +5,6 @@
 
 # Generated chapter execution caches and figure/support files.
 _book/
-_extensions/
 *_cache/
 *_files/
 /_*.local
-

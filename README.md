@@ -106,7 +106,7 @@ by uv. For example, `make preview` is equivalent to:
 
 ```sh
 . .uvr/activate
-uv run quarto preview textbook
+uv run quarto preview
 ```
 
 Press Ctrl+C to stop the preview.
@@ -139,14 +139,14 @@ rather than the older `environment.yaml` Conda environment:
 - `RETICULATE_PYTHON` explicitly selects `.venv/bin/python` so Python chunks
   cannot accidentally run in a separate reticulate-managed environment.
 - Both workflows activate `.uvr/activate` and run
-  `uv run --locked quarto render textbook`. The post-render hook builds the
+  `uv run --locked quarto render`. The post-render hook builds the
   slide decks as part of the same publication.
 
 Python and R downloads are cached. When changing dependencies, commit both the
 manifest and its lockfile; if frozen R installation reports a stale lock, run
 `uvr lock`, review the changes, then run `uvr sync --frozen` locally.
 
-Production publishes `textbook/_book` to the existing `gh-pages` branch, matching
+Production publishes `_book` to the existing `gh-pages` branch, matching
 the repository's Pages setting (**Deploy from a branch**, `gh-pages`, `/`).
 The production deployment removes obsolete pages and assets, while preserving
 the complete `pull<number>/` and `diff<number>/` PR snapshots. It uses
@@ -163,18 +163,18 @@ after workflow changes have reached GitHub.
 Figures in the reading view are left-aligned and use margin captions by default
 (`fig-align: left`, `fig-cap-location: margin`). Figure captions display a bold
 **Figure N** label on its own line, followed by the caption text. The
-`figure-captions.js` helper aligns captions moved out of exercise callouts with
+`assets/scripts/figure-captions.js` helper aligns captions moved out of exercise callouts with
 their figures and updates positioning after resizing, chart loading, or
 expanding/collapsing an exercise. On narrow screens, Quarto's in-flow caption
 layout is used. Table captions remain below their tables.
-`figure-caption-links.lua` preserves links and cross-references when Quarto
+`src/filters/figure-caption-links.lua` preserves links and cross-references when Quarto
 moves figure captions into a callout's margin, by keeping the caption contents
 inside a single HTML wrapper.
 
 The reading view offers Quarto's built-in light/dark theme toggle in the book
 sidebar. The default dark theme uses Darkly
-with a small `textbook/tokyo-night.scss` customization matching the slide palette.
-Dark-mode code highlighting reuses `textbook/tokyo-night.theme` from the slides;
+with a small `assets/styles/tokyo-night.scss` customization matching the slide palette.
+Dark-mode code highlighting reuses `assets/styles/tokyo-night.theme` from the slides;
 light mode uses Quarto's default Arrow highlighting.
 Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
@@ -245,15 +245,15 @@ Uncertainty is chapter 17, followed by Figure composition and saving (18),
 Interactivity (19), and Geospatial (20).
 The ODP's trendline-comparison figures are included in Trends, while its
 overplotting figures are omitted. Original figure assets, their source manifest,
-and regeneration instructions are in `textbook/img/communication-lecture/`;
-`textbook/src/export_communication_figures.py` extracts them directly from the ODP.
+and regeneration instructions are in `assets/images/communication-lecture/`;
+`src/export_communication_figures.py` extracts them directly from the ODP.
 Color's original images, animation, source credits, and extraction manifest are
-in `textbook/img/color-lecture/`; regenerate them with
-`textbook/src/export_color_figures.py` and the color lecture ODP.
+in `assets/images/color-lecture/`; regenerate them with
+`src/export_color_figures.py` and the color lecture ODP.
 The examples read local Vega dataset snapshots rather than downloading data
 during rendering. The R examples require `hexbin` and
 `ggthemes`, both recorded in `uvr.toml` and `uvr.lock`. The LOESS animations are
-local, attributed files under `textbook/img/`.
+local, attributed files under `assets/images/`.
 
 Charts and static plots are constrained to the slide canvas, including tall
 faceted charts, without changing the chart specifications used in the book.
@@ -271,7 +271,7 @@ content have heading-only slides with their explanation in the notes.
 
 The chapter uses lightweight annotations:
 
-- `chapter-slides: slides/1_why-visualize-data.html` enables its presentation link.
+- `chapter-slides: ../slides/1_why-visualize-data.html` enables its presentation link.
 - A `.slide-outcomes` div wraps the learning outcomes.
   Slides use one heading and a borderless numbered list with extra space between items.
   Optionally mark shorter `.slide-bullet` spans within it to show just those
@@ -414,7 +414,7 @@ This is useful for asking students to predict the answer. The output still
 executes during rendering; only its presentation is delayed. The option also
 works for cells inside a `.slide-visual` wrapper and does not affect the book.
 
-Slide code uses the custom `textbook/tokyo-night.theme`: dark background, purple
+Slide code uses the custom `assets/styles/tokyo-night.theme`: dark background, purple
 keywords, green strings, orange numbers, and blue functions. It is configured
 only in the presentation template.
 Each slide code block has a **Hide code** chevron beside its top-right copy
@@ -431,7 +431,7 @@ and PDF export include the expanded source.
 Slide text and headings use the OS interface font (`system-ui`); code uses
 `ui-monospace` with platform-appropriate fallbacks. No Ubuntu webfont download
 is needed. The font stacks are set in `_chapter-slides.yml` and
-`chapter-slides.css`.
+`assets/styles/chapter-slides.css`.
 
 #### Selecting text
 
@@ -465,7 +465,7 @@ The block appears normally in the chapter and becomes one bulleted slide fragmen
 Its paragraphs and list items are also bold in speaker notes.
 Each paragraph becomes a bullet; existing lists retain their type, numbering,
 and nesting without adding an extra bullet level. These
-are project-specific annotations implemented by `chapter-slides.lua`, not native
+are project-specific annotations implemented by `src/filters/chapter-slides.lua`, not native
 Quarto selection syntax. Place inline selections after their section heading.
 
 For plain slide text, use `.slide-text` instead:
@@ -506,7 +506,7 @@ to later chart cells. To add another visual to a chapter deck, wrap it in:
 ```markdown
 ::: {.slide-visual}
 
-![Caption](img/example.svg)
+![Caption](/assets/images/example.svg)
 
 :::
 ```
@@ -624,8 +624,8 @@ the book continues to render its normal tabsets.
 Regression checks:
 
 ```bash
-TMPDIR=/tmp/opencode uv run --locked python -m unittest discover -s textbook/tests -v
-TMPDIR=/tmp/opencode uv run --with playwright python -m unittest discover -s textbook/tests -p test_slide_tabset_browser.py -v
+TMPDIR=/tmp/opencode uv run --locked python -m unittest discover -s tests -v
+TMPDIR=/tmp/opencode uv run --with playwright python -m unittest discover -s tests -p test_slide_tabset_browser.py -v
 ```
 
 The browser checks require an installed Playwright Chromium. Set
@@ -791,37 +791,37 @@ the explanatory prose. Chapter 1 uses this layout for
 its Anscombe charts and conclusions.
 
 Local images referenced in the chapter's Markdown or raw HTML are discovered
-and staged automatically by `textbook/src/build_chapter_slides.py`. Adding or
+and staged automatically by `src/build_chapter_slides.py`. Adding or
 renaming an image in the `.qmd` needs no staging-list edit: rebuild the deck
 (`make slides` or the normal book/preview render) and reload it. The discovery
 supports reference-style Markdown images, project-root-relative paths such as
-`/img/example.svg`, and URL-encoded paths. Commented-out images and code examples
+`/assets/images/example.svg`, and URL-encoded paths. Commented-out images and code examples
 are ignored. A missing referenced file produces an error identifying its path.
 
 Data files and other runtime dependencies still go in `CHAPTER_ASSETS`, since
 they can be loaded dynamically by Python/R code. That list accepts individual
 files or directories; chapter 3 stages its declared `data` directory. The knitr
-include, slide assets, `utils.py`, and `utils.R` are shared. Remote images retain
+include, slide assets, `src/utils.py`, and `src/utils.R` are shared. Remote images retain
 their source URLs, and Mermaid diagrams are rendered through Quarto as in the
 textbook. New image files must still be committed for CI to access them.
 
 Image-discovery regression checks can be run with:
 
 ```sh
-uv run --locked python -m unittest discover -s textbook/tests
+uv run --locked python -m unittest discover -s tests
 ```
 
-`chapter-slides.lua` handles the two views. `_chapter-slides.yml` selects the
-Reveal format and output location; `chapter-slides.css` controls slide layout.
-`chapter-slide-options.lua` applies heading format conditions in both views and
+`src/filters/chapter-slides.lua` handles the two views. `_chapter-slides.yml` selects the
+Reveal format and output location; `assets/styles/chapter-slides.css` controls slide layout.
+`src/filters/chapter-slide-options.lua` applies heading format conditions in both views and
 preserves slide tab-heading annotations before Quarto processes tabsets.
-The builder appends `_slide-chunks.qmd` to the staged knitr
+The builder appends `src/_slide-chunks.qmd` to the staged knitr
 include to implement presentation-only cell visibility.
-`chapter-slides.js` implements Escape navigation and resets fragments when entering
-a slide. Decks and chapters use matching HTML filenames, with decks one directory
-deeper in `slides/`, so the return URL works for each chapter automatically.
-`chapter-title-tools.js` places the chapter's presentation icon beside its title.
-The chapter's normal render triggers `textbook/src/build_chapter_slides.py` as a Quarto
+`assets/scripts/chapter-slides.js` implements Escape navigation and resets fragments when entering
+a slide. Decks and chapters use matching HTML filenames in the sibling `slides/`
+and `chapters/` directories, so the return URL works for each chapter automatically.
+`assets/scripts/chapter-title-tools.js` places the chapter's presentation icon beside its title.
+The chapter's normal render triggers `src/build_chapter_slides.py` as a Quarto
 post-render hook. It copies the chapter and its required assets into a temporary
 standalone project outside the book directory, renders the deck there, and copies the
 finished presentation into `_book/slides/`. Isolation prevents the slide build
@@ -830,17 +830,25 @@ with `make preview` updates and `make book`, without an extra manual slide build
 Each registered chapter executes twice when rendered: once for each output format.
 An incremental render rebuilds only the deck for the chapter that was rendered.
 
+Slide renders explicitly use the repository's `.venv` Python via
+`RETICULATE_PYTHON` and `QUARTO_PYTHON`, even if Quarto starts its post-render
+hook with system Python. This matters because the temporary slide project is
+outside the repository, so reticulate cannot discover the root environment
+there. An explicit `RETICULATE_PYTHON` override is respected. The builder logs
+the selected interpreter as `Slide Python: ...`; if no project environment is
+available, run `uv sync` from the repository root before building slides.
+
 Generated files:
 
-- Reading view: `textbook/_book/0_chapter-key.html`
-- Slide view: `textbook/_book/slides/0_chapter-key.html`
-- Reading view: `textbook/_book/1_why-visualize-data.html`
-- Slide view: `textbook/_book/slides/1_why-visualize-data.html`
-- Reading view: `textbook/_book/2_grammar-of-graphics.html`
-- Slide view: `textbook/_book/slides/2_grammar-of-graphics.html`
+- Reading view: `_book/chapters/0_chapter-key.html`
+- Slide view: `_book/slides/0_chapter-key.html`
+- Reading view: `_book/chapters/1_why-visualize-data.html`
+- Slide view: `_book/slides/1_why-visualize-data.html`
+- Reading view: `_book/chapters/2_grammar-of-graphics.html`
+- Slide view: `_book/slides/2_grammar-of-graphics.html`
 
 Chapters 3–14 and 18 follow the same pattern, for example
-`textbook/_book/slides/9_binned-distributions.html`.
+`_book/slides/9_binned-distributions.html`.
 
 All decks are part of the published `_book` directory. Each deck has its own generated
 assets, so the reading pages are not overwritten. To render only the slide decks:
@@ -850,15 +858,15 @@ make slides
 ```
 
 This activates the same R/Python environments as the other Make targets and runs
-`uv run python textbook/src/build_chapter_slides.py --force`. `make book` and
+`uv run python src/build_chapter_slides.py --force`. `make book` and
 `make preview` invoke the builder indirectly through the post-render hook in
-`textbook/_quarto.yml`, so they do not need a separate `slides` prerequisite.
+`_quarto.yml`, so they do not need a separate `slides` prerequisite.
 
 To build one presentation, use `--chapter`, for example:
 
 ```sh
 . .uvr/activate
-uv run python textbook/src/build_chapter_slides.py --chapter 2_grammar-of-graphics
+uv run python src/build_chapter_slides.py --chapter 2_grammar-of-graphics
 ```
 
 To add another chapter, register its filename stem and assets in `CHAPTER_ASSETS`,
@@ -868,13 +876,13 @@ existing preview after changing project configuration or the hook.
 ### Synchronized language tabs
 
 Tabsets sharing `group="language"` still switch languages together.
-`textbook/tabset-scroll.js` keeps the clicked tab bar at its current screen
+`assets/scripts/tabset-scroll.js` keeps the clicked tab bar at its current screen
 position when panels above it change height, including delayed chart/image
 resizing. It releases that position when the reader scrolls or interacts again.
 
 ### Dataframe previews
 
-The shared `textbook/utils.py` module provides `show_df()` for HTML previews
+The shared `src/utils.py` module provides `show_df()` for HTML previews
 with column names, a separate datatype header row, and the first and last three
 rows separated by an ellipsis. Short dataframes are shown in full; truncated
 previews also show the full row and column counts.
@@ -882,7 +890,7 @@ previews also show the full row and column counts.
 Import it in a chapter's Python setup chunk:
 
 ```python
-from utils import show_df
+from src.utils import show_df
 
 show_df(cars)                     # pandas dataframe
 show_df(cars, max_rows=10, index=False)
@@ -891,7 +899,7 @@ show_df(cars, max_rows=10, index=False)
 For R dataframes and tibbles, source the companion helper in an R setup chunk:
 
 ```r
-source("utils.R")
+source("src/utils.R")
 
 show_df(cars)
 show_df(cars, max_rows = 10, index = FALSE)
@@ -907,12 +915,12 @@ The R helper runs during document rendering and requires desktop R/Python via
 reticulate; it is not a webR helper. In Python chunks, `show_df(r.cars)` remains
 available, but reports the converted pandas types instead of R's original types.
 Both helper files are declared as book-wide resources. Chapters with their own
-`resources` list should also include `utils.py` there so that the live extension
+`resources` list should also include `/src/utils.py` there so that the live extension
 mounts it for browser Python exercises.
 
 ### Execution caching
 
-Chunk caching is disabled in `textbook/_quarto.yml`. These chapters use knitr
+Chunk caching is disabled in `_quarto.yml`. These chapters use knitr
 for both R and Python, with Python executed through reticulate. Reusing a cached
 Python chunk's output does not recreate its imports, dataframes, or chart objects
 in a fresh Python session. If a later chunk changes and is re-executed, this can
@@ -928,5 +936,5 @@ For a one-off render that bypasses caching explicitly:
 
 ```sh
 . .uvr/activate
-uv run quarto render textbook/6_connections.qmd --no-cache
+uv run quarto render chapters/6_connections.qmd --no-cache
 ```

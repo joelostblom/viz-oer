@@ -3,14 +3,6 @@ name: "Rebuild and deploy PR and diff versions of a website to gh-pages branch"
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - 'textbook/**'
-      - '.github/**'
-      - 'pyproject.toml'
-      - 'uv.lock'
-      - '.python-version'
-      - 'uvr.toml'
-      - 'uvr.lock'
     branches:
       - 'main'
 
@@ -37,7 +29,7 @@ jobs:
         shell: bash
         run: |
           . .uvr/activate
-          uv run --locked quarto render textbook
+          uv run --locked quarto render
 
       # Push the PR version of the website to the gh-pages branch 
       # the PR version will be stored in a folder named pull### (where ### is the PR number)
@@ -46,7 +38,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./textbook/_book
+          publish_dir: ./_book
           keep_files: true
           destination_dir: pull${{ github.event.number }}
 

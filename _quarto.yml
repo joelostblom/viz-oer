@@ -1,0 +1,95 @@
+project:
+  type: book
+  execute-dir: project
+  post-render:
+    - src/chapter_reference_titles.py
+    - src/build_chapter_slides.py
+
+book:
+  title: "Data Visualization"
+  subtitle: "Concepts & Grammars"
+  date: today
+  chapters:
+    - index.qmd
+    - chapters/0_chapter-key.qmd
+    - part: "Introduction"
+      chapters:
+        - chapters/1_why-visualize-data.qmd
+        - chapters/2_grammar-of-graphics.qmd
+    - part: "Foundations"
+      chapters:
+        - chapters/3_individual-observations.qmd
+        - chapters/4_magnitude.qmd
+        - chapters/5_groups.qmd
+        - chapters/6_connections.qmd
+    - part: "Summaries"
+      chapters:
+        - chapters/7_summaries.qmd
+        - chapters/8_counts.qmd
+    - part: "Distributions"
+      chapters:
+        - chapters/9_binned-distributions.qmd
+        - chapters/10_smoothed-distributions.qmd
+        - chapters/11_cumulative-distributions.qmd
+        - chapters/12_joint-distributions.qmd
+    - part: "Communication & design"
+      chapters:
+        - chapters/13_communication.qmd
+        - chapters/14_color.qmd
+    - part: "Extensions & applications"
+      chapters:
+        - chapters/15_exploratory-data-analysis.qmd
+        - chapters/16_trends.qmd
+        - chapters/17_uncertainty.qmd
+        - chapters/18_figure-composition-and-saving.qmd
+        - chapters/19_interactivity.qmd
+        - chapters/20_geospatial.qmd
+    # - chapters/99_misc.qmd
+
+filters:
+  - path: src/filters/chapter-slide-options.lua
+    at: pre-ast
+  - src/filters/illustrative-chart-actions.lua
+  - src/filters/custom-callouts.lua
+  - src/filters/chapter-slides.lua
+  - path: src/filters/figure-caption-links.lua
+    at: post-render
+
+# Shared table helpers and browser behavior; utils.py also supports Python exercises.
+resources:
+  - src/utils.py
+  - src/utils.R
+  - assets/scripts/tabset-scroll.js
+  - assets/scripts/chapter-title-tools.js
+  - assets/scripts/figure-captions.js
+
+format:
+  live-html:
+    theme:
+      dark:
+        - darkly
+        - assets/styles/callouts.scss
+        - assets/styles/tokyo-night.scss
+      light:
+        - cosmo
+        - assets/styles/callouts.scss
+    highlight-style:
+      light: arrow
+      dark: assets/styles/tokyo-night.theme
+    css: assets/styles/styles.css
+    include-after-body:
+      - text: |
+          <script src="/assets/scripts/tabset-scroll.js"></script>
+          <script src="/assets/scripts/chapter-title-tools.js"></script>
+          <script src="/assets/scripts/figure-captions.js"></script>
+    monofont: "Ubuntu Mono"
+    mainfont: Ubuntu
+    number-depth: 2
+    fig-align: left
+    fig-cap-location: margin
+    tbl-cap-location: bottom
+
+execute:
+  # knitr's chunk cache does not restore reticulate's Python session state.
+  # Re-run imports and dependent chunks together to avoid intermittent NameErrors.
+  cache: false

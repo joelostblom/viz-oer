@@ -1,0 +1,71 @@
+{
+  "source_model_url": "https://ora.ox.ac.uk/objects/uuid:a63fb28c-98f8-4313-add6-e9eca99320a5",
+  "source_model_filename": "LCA+Meta-Analysis+of+Food+Products+-+Full+Model+v0+(1).xlsx",
+  "source_model_sha256": "98a66a916270efadcd17c2a73af029d03fb8a14d2a30ed8f702888fa7ddc70a0",
+  "source_nutrition_url": "https://josephpoore.com/data/science-2018/Data%20S2.xls",
+  "source_nutrition_sha256": "2fac998ebe2560233e214651c3c52b30603ad9ac3bc9c14a342be038343a594b",
+  "paper_reported_unique_observations": 2278,
+  "exported_product_records": 2519,
+  "product_groups": 43,
+  "row_unit": "Harmonized product-level LCA record; not necessarily an individual farm",
+  "source_values": "Cached Excel formula results; no recalculation or resampling",
+  "metric_source_columns": {
+    "ghg_kg_co2e": "BN",
+    "land_use_m2_year": "AS",
+    "acidification_g_so2e": "CU",
+    "eutrophication_g_po4e": "DE",
+    "freshwater_withdrawals_l": "DO",
+    "scarcity_weighted_water_l_eq": "DV"
+  },
+  "metric_multipliers": {
+    "ghg_kg_co2e": 1,
+    "land_use_m2_year": 1,
+    "acidification_g_so2e": 1000,
+    "eutrophication_g_po4e": 1000,
+    "freshwater_withdrawals_l": 1,
+    "scarcity_weighted_water_l_eq": 1
+  },
+  "nutrition_coverage_product_groups": {
+    "protein": 16,
+    "energy": 6,
+    "mass": 41
+  },
+  "nonmissing_impacts": {
+    "ghg_kg_co2e": {
+      "retail_unit": 2519,
+      "kg": 2367,
+      "100g_protein": 931,
+      "1000kcal": 638
+    },
+    "land_use_m2_year": {
+      "retail_unit": 2519,
+      "kg": 2367,
+      "100g_protein": 931,
+      "1000kcal": 638
+    },
+    "acidification_g_so2e": {
+      "retail_unit": 1703,
+      "kg": 1567,
+      "100g_protein": 555,
+      "1000kcal": 460
+    },
+    "eutrophication_g_po4e": {
+      "retail_unit": 1404,
+      "kg": 1294,
+      "100g_protein": 492,
+      "1000kcal": 360
+    },
+    "freshwater_withdrawals_l": {
+      "retail_unit": 2240,
+      "kg": 2088,
+      "100g_protein": 666,
+      "1000kcal": 637
+    },
+    "scarcity_weighted_water_l_eq": {
+      "retail_unit": 2163,
+      "kg": 2011,
+      "100g_protein": 589,
+      "1000kcal": 637
+    }
+  }
+}
