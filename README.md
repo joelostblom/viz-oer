@@ -9,6 +9,12 @@ project root, and Quarto's `execute-dir: project` makes chapter code run there
 too. Select `.venv/bin/python` for Python and the managed uvr R interpreter.
 Paths such as `data/vega-cars.csv` work in both console sessions and renders.
 
+Run `make positron` from the repository root to activate uvr and launch the IDE
+through `uv run positron .`. The new process inherits the project's R package
+library and Python environment. Fully quit an existing Positron instance before
+using this command when changing environments; an existing instance or session
+may retain its earlier environment.
+
 For Positron's Quarto inline output, set the workspace setting
 `"notebook.workingDirectory": "${workspaceFolder}"` in `.vscode/settings.json`.
 Inline output uses a separate session for each document and otherwise starts
@@ -95,6 +101,7 @@ VegaFusion HTML output through reticulate. The resolved commit is pinned in
 From the repository root:
 
 ```sh
+make positron # Open Positron with the R and Python environments activated
 make preview  # Start the live preview
 make book     # Render the textbook
 make slides   # Render the chapter key and registered chapter decks
