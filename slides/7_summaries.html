@@ -103,7 +103,7 @@
     code span.wa { color: #e0af68; } /* Warning */
   </style>
   <link rel="stylesheet" href="7_summaries_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="7_summaries_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="7_summaries_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="7_summaries_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,8 +195,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -209,7 +209,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
+<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
@@ -219,7 +219,7 @@
 </ol>
 </div>
 </section>
-<section id="why-bother" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
+<section id="why-bother" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
 <h2>Why bother?</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Altair</a></li><li><a href="#tabset-1-2">ggplot</a></li></ul>
@@ -320,13 +320,13 @@
 </ul>
 </div>
 <aside class="notes">
-<p>In <a href="../6_connections.html#sec-connections">Connections</a>, we connected related observations to reveal changes over time and differences between conditions. Sometimes, however, our question concerns a collection of observations: How many are there? What is their total? What is a typical value? A summary helps answer these questions by reducing many values to a few. In this chapter, we will explore how to reduce a collection of observations to useful quantities.</p>
-<p>That reduction is useful, but it also leaves information out. As we work through this chapter, keep asking: What did we lose, and how much of it do we need to put back? We will explore these questions here and in the following chapters.</p>
+<p>The distribution chapters showed how counts, densities, and cumulative proportions reveal concentrations, tails, and differences between groups. In <a href="../chapters/12_joint-distributions.html#sec-joint-distributions">Joint distributions</a>, we extended those views to combinations of variables. Sometimes, however, we want a more concise comparison: What is a typical value in each group, and how much do the observations vary? In this chapter, we summarize centers and spread by reducing many values to a few.</p>
+<p>That reduction is useful, but it also leaves information out. As we work through this chapter, keep asking: What did we lose, and how much of it do we need to put back? We will compare those summaries with the distribution views we already know, then extend the idea to fitted trends and uncertainty in the following chapters.</p>
 <!-- TODO add summaries for line for lab 1? -->
 <!-- TODO I think it makes sense to learn jittering eearlier and show it here in the first example. Or learn it right here as a simpler form of seeing all data, or do we do this in histograms already -->
 <p><strong>Exercise</strong></p>
 <!-- TODO add long term benefit comment -->
-<p>Suppose you are interested in whether meditation could help you feel less stressed before your next exam. The dataset below is a 500-observation sample from a randomized study.<span>(Sparacio et al.&nbsp;(2024), <a href="https://doi.org/10.1038/s41562-024-01907-7"><em>Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study</em></a>, <em>Nature Human Behaviour</em>, 8, 1716–1725.)</span> It contains stress scores from four meditation conditions and a control condition in which participants listened to a story excerpt. The stress score averages 20 items from a questionnaire where each item ranges from 1 to 4, with higher scores indicating greater self-reported distress after the activity.</p>
+<p>Suppose you are interested in whether meditation could help you feel less stressed before your next exam. We return to the 500-observation sample introduced in <a href="../chapters/8_counts.html#sec-counts-proportions">Counts &amp; proportions</a>, this time examining the participants’ stress scores rather than just counting how many were in each condition.<span>(Sparacio et al.&nbsp;(2024), <a href="https://doi.org/10.1038/s41562-024-01907-7"><em>Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study</em></a>, <em>Nature Human Behaviour</em>, 8, 1716–1725.)</span> It contains stress scores from four meditation conditions and a control condition in which participants listened to a story excerpt. The stress score averages 20 items from a questionnaire where each item ranges from 1 to 4, with higher scores indicating greater self-reported distress after the activity.</p>
 <p>Let’s say we’re interested in comparing how the stress scores differ between conditions. We might visualize the data by applying the strategies we have learned so far: grouping observations by position and comparing their values on a shared scale.</p>
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
@@ -334,7 +334,7 @@
 <p><strong>Hint</strong></p>
 <p>Can you tell where most observations lie in each condition? Could several observations share the same position in the chart?</p>
 <p><strong>Solution</strong></p>
-<p>Although we followed the strategies we have learned so far, <span class="slide-bullet"><strong>overlapping points make it difficult to compare where observations are concentrated</strong></span>. We can see the range of recorded scores, but not how many observations share each position. Instead, we can use statistical summaries, such as the mean and median, to make it easier to compare conditions. Read on to see examples of how to do this.</p>
+<p>Although we followed the strategies we have learned so far, <span class="slide-bullet"><strong>overlapping points make it difficult to compare where observations are concentrated</strong></span>. We can see the range of recorded scores, but not how many observations share each position. Instead, we could use jittering, histograms, or density plots to reveal more of each distribution. If we want a concise comparison of typical scores, we can use statistical summaries, such as the mean and median, to make it easier to compare conditions. Read on to see how to show these summaries without losing sight of the distributions.</p>
 <p><span class="slide-bullet"><strong>statistical summaries can make it easier to compare conditions</strong></span></p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -348,7 +348,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualizing-statistical-summaries" class="slide level2" data-footer="false" data-chapter-anchor="visualizing-statistical-summaries">
+<section id="visualizing-statistical-summaries" class="slide level2" data-chapter-anchor="visualizing-statistical-summaries" data-footer="false">
 <h2>Visualizing statistical summaries</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Altair</a></li><li><a href="#tabset-2-2">ggplot</a></li></ul>
@@ -443,9 +443,10 @@
 </ul>
 </div>
 <aside class="notes">
-<p>In <a href="../1_why-visualize-data.html#sec-why-visualize-data">Why visualize data?</a>, we saw that statistical summaries can make some patterns easier to identify than they are in a raw table of numbers. We can use a similar strategy here by comparing the mean stress score in each condition, to show how observations within the different conditions differ on average.</p>
+<p>In <a href="../chapters/1_why-visualize-data.html#sec-why-visualize-data">Why visualize data?</a>, we saw that statistical summaries can make some patterns easier to identify than they are in a raw table of numbers. We can use a similar strategy here by comparing the mean stress score in each condition, to show how observations within the different conditions differ on average.</p>
 <p><strong>Altair</strong></p>
 <p>In Altair, we can <span class="slide-text"><strong>include a <a href="https://altair-viz.github.io/user_guide/encodings/index.html#encoding-aggregates">supported aggregation function</a> such as mean, median, or sum directly as a string wrapping the column name</strong></span>, for example, <code>'mean(stress)'</code>:</p>
+<p>This extends the aggregation syntax used for <code>count()</code>: the field inside the parentheses specifies which values to average within each group.</p>
 <p><strong>ggplot</strong></p>
 <p>In ggplot, we can <span class="slide-text"><strong>tell <code>geom_point()</code> to use a summary statistic instead of the individual observation values</strong></span>. We set <code>stat = 'summary'</code> and specify a function that returns a single value, such as <code>mean</code>, <code>median</code>, or <code>sum</code>. For <code>geom_point()</code>, the default stat is <code>'identity'</code>, which uses the supplied values directly; other geoms can have different defaults.</p>
 <p>Instead of calling <code>geom_point()</code> and setting the <code>stat</code> parameter, we could call <code>stat_summary()</code> and set the <code>geom</code> parameter:</p>
@@ -463,7 +464,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualizing-spread" class="slide level2" data-footer="false" data-chapter-anchor="visualizing-spread">
+<section id="visualizing-spread" class="slide level2" data-chapter-anchor="visualizing-spread" data-footer="false">
 <h2>Visualizing spread</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -541,7 +542,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualizing-spread-1" class="slide level2" data-footer="false" data-chapter-anchor="visualizing-spread-1">
+<section id="visualizing-spread-1" class="slide level2" data-chapter-anchor="visualizing-spread-1" data-footer="false">
 <h2>Visualizing spread</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -558,12 +559,12 @@
 </div>
 <div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="3" data-subbullet-attached="true">
 <ul>
-<li><p>Answer two different questions, but graphically they are often depicted similarly, e.g.&nbsp;with errorbars</p></li>
+<li><p>Answer two different questions, but graphically they are often depicted similarly, e.g., with error bars</p></li>
 </ul>
 </div>
 <div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="4" data-subbullet-attached="true">
 <ul>
-<li><p>Always label what an errorbar represents</p></li>
+<li><p>Always label what an error bar represents</p></li>
 </ul>
 </div></li>
 </ul>
@@ -578,15 +579,15 @@
 </div>
 <div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="7" data-subbullet-attached="true">
 <ul>
-<li><p>Percentile interval: Where a certain range of the observations lie</p></li>
+<li><p>Percentile interval: Where a specified proportion of the observations lies</p></li>
 </ul>
 </div></li>
 </ul>
 </div>
 <aside class="notes">
-<p>Here, we need to <span class="slide-bullet"><strong>distinguish two graphically related concepts</strong></span>: <span class="slide-subbullet"><strong>the spread of the underlying data (descriptive statistics)</strong></span> and <span class="slide-subbullet"><strong>the uncertainty in the estimate of central tendency (inferential statistics)</strong></span>. These <span class="slide-subbullet"><strong>answer two different questions, but graphically they are often depicted similarly, e.g.&nbsp;with errorbars</strong></span>. Therefore it is important to <span class="slide-subbullet"><strong>always label what an errorbar represents</strong></span>. In this chapter, we will focus on how spread out the underlying data distribution is, and return to confidence intervals and other measures of inferential uncertainty in a future chapter. <!-- TODO which chapter for ci, link to it and include more discussion around bootstrap there? and also talk about how more points changes the interval to become smaller --> <!-- TODO mention error bar --></p>
+<p>Here, we need to <span class="slide-bullet"><strong>distinguish two graphically related concepts</strong></span>: <span class="slide-subbullet"><strong>the spread of the underlying data (descriptive statistics)</strong></span> and <span class="slide-subbullet"><strong>the uncertainty in the estimate of central tendency (inferential statistics)</strong></span>. These <span class="slide-subbullet"><strong>answer two different questions, but graphically they are often depicted similarly, e.g., with error bars</strong></span>. Therefore it is important to <span class="slide-subbullet"><strong>always label what an error bar represents</strong></span>. In this chapter, we will focus on how spread out the underlying data distribution is. After extending summaries to trends, we will examine confidence intervals and other measures of inferential uncertainty in <a href="../chapters/17_uncertainty.html#sec-uncertainty">Uncertainty</a>. <!-- TODO mention error bar --></p>
 <p>One measure of the spread in the underlying data is the <a href="https://en.wikipedia.org/wiki/Standard_deviation">standard deviation</a>, which measures how spread out observations are around the mean.<span>(The population standard deviation is the <a href="https://en.wikipedia.org/wiki/Root_mean_square_deviation">root mean squared deviation</a> from the population mean.)</span> Let’s see how we can include the standard deviation together with the mean in our charts:</p>
-<p><span class="slide-bullet"><strong>Two measures of spread</strong></span> <span class="slide-subbullet"><strong>Standard deviation: How spread out observations are around the mean</strong></span> <span class="slide-subbullet"><strong>Percentile interval: Where a certain range of the observations lie</strong></span></p>
+<p><span class="slide-bullet"><strong>Two measures of spread</strong></span> <span class="slide-subbullet"><strong>Standard deviation: How spread out observations are around the mean</strong></span> <span class="slide-subbullet"><strong>Percentile interval: Where a specified proportion of the observations lies</strong></span></p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -599,7 +600,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-3-step-1" class="slide level2" data-footer="false" data-chapter-anchor="visualizing-spread-1">
+<section id="tabset-3-step-1" class="slide level2" data-chapter-anchor="visualizing-spread-1" data-footer="false">
 <h2>Mean and standard deviation</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Altair</a></li><li><a href="#tabset-3-2">ggplot</a></li></ul>
@@ -696,7 +697,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-3" class="slide level2" data-footer="false" data-chapter-anchor="visualizing-spread-1">
+<section id="visualization-continued-3" class="slide level2" data-chapter-anchor="visualizing-spread-1" data-footer="false">
 <h2>What could these summaries be hiding?</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-slide-title="What could these summaries be hiding?" data-fragment-index="0">
 <div id="fig-summary-sd-obs" class="cell-output-display quarto-float quarto-figure quarto-figure-center">
@@ -787,7 +788,7 @@ Figure&nbsp;1: Underlying distributions for mean and standard deviation. Adapted
           display:block!important;
       }</style></aside>
 </section>
-<section id="including-the-underlying-observations" class="slide level2" data-footer="false" data-chapter-anchor="including-the-underlying-observations">
+<section id="including-the-underlying-observations" class="slide level2" data-chapter-anchor="including-the-underlying-observations" data-footer="false">
 <h2>Including the underlying observations</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -875,7 +876,7 @@ Figure&nbsp;1: Underlying distributions for mean and standard deviation. Adapted
 </div>
 </div>
 <aside class="notes">
-<p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap. <span class="slide-bullet"><strong>Jittering adds small random offsets to the points to help separate them</strong></span>. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
+<p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap, as in the movie-runtime example in <a href="../chapters/9_binned-distributions.html#sec-binned-distributions">Binned distributions</a>. <span class="slide-bullet"><strong>Jittering adds small random offsets to the points to help separate them</strong></span>. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
 <p><strong>Altair</strong></p>
 <p>We calculate a random value for each observation and use <code>yOffset</code> to spread the points within each condition’s row. We then layer the mean and standard deviation interval over those points.</p>
 <p><strong>ggplot</strong></p>
@@ -892,13 +893,13 @@ Figure&nbsp;1: Underlying distributions for mean and standard deviation. Adapted
           display:block!important;
       }</style></aside>
 </section>
-<section id="showing-medians-percentile-intervals-with-boxplots" class="slide level2" data-footer="false" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots">
+<section id="showing-medians-percentile-intervals-with-boxplots" class="slide level2" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots" data-footer="false">
 <h2>Showing medians &amp; percentile intervals with boxplots</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <div id="fig-boxplot-anatomy" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-boxplot-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="img/boxplot-elements.svg">
+<img data-src="assets/images/boxplot-elements.svg">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-anatomy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: The elements of a boxplot.
@@ -908,7 +909,7 @@ Figure&nbsp;2: The elements of a boxplot.
 </div>
 <aside class="notes">
 <p>What if we visualize the median instead of the mean? Showing the median can be especially useful when there are a few extreme values in the data since these impact the mean more than the median, and the median thus becomes a more helpful indication of a typical value. But this decision is context-dependent: if we are interested in these extreme values, the mean may capture their influence in a way that is relevant to our question. Therefore, it is often a good idea to show means and medians together, since they tell us different things about the data.</p>
-<p>A common measure of spread used together with medians is a percentile interval, which marks the range between two chosen percentiles. For comparison, the interval from one standard deviation below the mean to one above it contains about 68% of a normal distribution.</p>
+<p>A common measure of spread used together with medians is a percentile interval, which marks the range between two chosen percentiles. We can find these endpoints by reading an ECDF at the chosen cumulative proportions, as in <a href="../chapters/11_cumulative-distributions.html#sec-cumulative-distributions">Cumulative distributions</a>: a percentile identifies a value at a chosen position in the ordered observations. For comparison, the interval from one standard deviation below the mean to one above it contains about 68% of a normal distribution.</p>
 <p>A common way to show the median and a percentile interval is a <strong>boxplot</strong>. The box spans the 25th to the 75th percentile, enclosing the middle 50% of the data, with a line marking the median. In the default boxplots below, the whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box edges; observations beyond the whiskers are drawn separately. This illustration can help you interpret the different parts of the box:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -922,7 +923,7 @@ Figure&nbsp;2: The elements of a boxplot.
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-5-step-1" class="slide level2" data-footer="false" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots">
+<section id="tabset-5-step-1" class="slide level2" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots" data-footer="false">
 <h2>Median and spread</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Altair</a></li><li><a href="#tabset-5-2">ggplot</a></li></ul>
@@ -1010,13 +1011,13 @@ Figure&nbsp;2: The elements of a boxplot.
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-6" class="slide level2" data-footer="false" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots">
+<section id="visualization-continued-6" class="slide level2" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots" data-footer="false">
 <h2>Different distributions, identical boxplots</h2>
 <div class="slide-media fragment fade-in" data-slide-title="Different distributions, identical boxplots" data-fragment-index="0">
 <div id="fig-boxplot-drawbacks" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-boxplot-drawbacks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="img/hist-point-box.gif">
+<img data-src="assets/images/hist-point-box.gif">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-drawbacks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: This illustration from <a href="https://www.autodesk.com/research/publications/same-stats-different-graphs">Autodesk Research</a> shows how boxplots can look the same even when the distribution of the underlying observations changes drastically.
@@ -1025,7 +1026,7 @@ Figure&nbsp;3: This illustration from <a href="https://www.autodesk.com/research
 </div>
 </div>
 </section>
-<section id="avoid-drawing-conclusions-from-summary-charts-alone" class="slide level2" data-footer="false" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots">
+<section id="avoid-drawing-conclusions-from-summary-charts-alone" class="slide level2" data-chapter-anchor="showing-medians-percentile-intervals-with-boxplots" data-footer="false">
 <h2>Avoid drawing conclusions from summary charts alone</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1062,6 +1063,7 @@ Figure&nbsp;3: This illustration from <a href="https://www.autodesk.com/research
 <p>The charts show differences in recorded stress scores between conditions in this sample. However, we have not assessed the statistical significance of those differences. <span class="slide-bullet"><strong>Standard deviations and boxplots describe the spread of the observations, not the uncertainty in the group means or their differences</strong></span>. In particular, <span class="slide-bullet"><strong>overlap between these descriptive intervals does not establish whether a difference is statistically significant</strong></span>. That would require an appropriate inferential analysis, informed by the study design.</p>
 <p>What about the magnitude of the differences? In this dataset, <span class="slide-bullet"><strong>the meditation conditions have mean stress scores about 0.14–0.28 units below the story-listening control condition. Is that a lot or a little?</strong></span> These are differences on the 1–4 questionnaire scale described above; judging their practical importance also requires considering what difference would matter in this context. The <span class="slide-bullet"><strong>charts help us describe the sample, but they do not by themselves establish that meditation caused the differences or that the differences are large enough to matter in practice</strong></span>.</p>
 <p>The original study’s main analysis, using 2,239 participants across 37 sites, found evidence that all four 15-minute mindfulness exercises reduced self-reported stress relative to the active control. The largest mean difference was for body scan: 0.27 points lower than the control on the 1–4 scale. <span class="slide-bullet"><strong>The authors concluded that even these brief exercises can offer modest, short-term benefits</strong></span>.</p>
+<p>Our summaries compared typical values and spread within categorical conditions. In <a href="../chapters/16_trends.html#sec-trends">Trends</a>, we extend this idea to a quantitative predictor: instead of one central value per named group, we summarize how a response changes across values or neighborhoods along an axis. The underlying observations remain important for judging what the fitted summary hides.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

@@ -79,7 +79,7 @@ from Plotly's CDN. No example depends on a live boundary-data download.
 From the repository root:
 
 ```sh
-uv run python textbook/src/data_processing/prepare_geospatial_data.py
+uv run python src/data_processing/prepare_geospatial_data.py
 ```
 
 This refreshes the Natural Earth and Vega data.
@@ -87,14 +87,14 @@ This refreshes the Natural Earth and Vega data.
 With the project's R environment activated, regenerate the Census snapshot with:
 
 ```sh
-Rscript textbook/src/data_processing/prepare_geospatial_us_states.R
+Rscript src/data_processing/prepare_geospatial_us_states.R
 ```
 
 To also recover the original population/election tables, provide the
 instructor notebook:
 
 ```sh
-uv run python textbook/src/data_processing/prepare_geospatial_data.py --lecture /path/to/lectures/4-geoviz.ipynb
+uv run python src/data_processing/prepare_geospatial_data.py --lecture /path/to/lectures/4-geoviz.ipynb
 ```
 
 Importing reads saved chart specifications, not truncated dataframe previews or changing live

@@ -35,7 +35,7 @@
     }
   </style>
   <link rel="stylesheet" href="13_communication_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="13_communication_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="13_communication_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="13_communication_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -127,8 +127,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -141,7 +141,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
+<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
@@ -155,7 +155,7 @@
 </ol>
 </div>
 </section>
-<section id="why-bother" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
+<section id="why-bother" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
 <h2>Why bother?</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -178,6 +178,7 @@
 </ul>
 </div>
 <aside class="notes">
+<p>We now have ways to inspect distributions, summarize typical values and trends, and display uncertainty. As <a href="../chapters/17_uncertainty.html#sec-uncertainty">Uncertainty</a> showed, choosing an appropriate statistical display does not guarantee that another reader will interpret it as intended.</p>
 <p><span class="slide-bullet"><strong>During data exploration, you are often the main person interpreting a chart.</strong></span> <span class="slide-bullet"><strong>For communication, a figure needs to make sense to someone who does not already know the data or the plotting code.</strong></span> <span class="slide-bullet"><strong>That reader might encounter it without the surrounding text or a spoken explanation.</strong></span> Readable labels, an informative title, and an appropriate view of the data are therefore part of the explanation itself.</p>
 <p>Many useful design recommendations are collected in the <a href="https://github.com/glosophy/CatoDataVizGuidelines/blob/master/PocketStyleBook.pdf">Cato Institute’s visualization style guide</a>. Other collections include <a href="https://medium.com/nightingale/style-guidelines-92ebe166addc">these style guidelines</a>, <a href="https://docs.google.com/spreadsheets/d/1F1gm5QLXh3USC8ZFx_M9TXYxmD-X5JLDD0oJATRTuIE/edit#gid=1679646668">this spreadsheet of visualization guides</a>, and the <a href="https://www.datavisualizationsociety.org/">Data Visualization Society’s resources</a>. Another way to learn is from other people’s mistakes: <a href="https://medium.economist.com/mistakes-weve-drawn-a-few-8cdd8a42d368">the Economist’s review of its own charts</a> contains useful examples.</p>
 <p><span class="slide-bullet"><strong>These are guidelines, not rules that work independently of the audience and context.</strong></span> For example, a familiar association with a fruit or political party may matter more than using the default palette. <a href="https://medium.economist.com/why-you-sometimes-need-to-break-the-rules-in-data-viz-4d8ece284919">This discussion of breaking visualization rules</a> illustrates how a deliberate exception can sometimes make a visualization more memorable. The important question is whether the choice helps readers understand the data.</p>
@@ -194,13 +195,13 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="design-shapes-the-message" class="slide level2" data-footer="false" data-chapter-anchor="design-shapes-the-message">
+<section id="design-shapes-the-message" class="slide level2" data-chapter-anchor="design-shapes-the-message" data-footer="false">
 <h2>Design shapes the message</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/iraq-bloody-toll.png" style="width:70.0%" alt="An Iraq casualty infographic uses a red, downward-pointing area and the title Iraq's bloody toll."></p>
+<p><img data-src="assets/images/communication-lecture/iraq-bloody-toll.png" style="width:70.0%" alt="An Iraq casualty infographic uses a red, downward-pointing area and the title Iraq's bloody toll."></p>
 </div>
 <aside class="notes">
-<p>Titles, colors, and graphical direction can emphasize different aspects of a dataset. Ask what message each design brings forward, and what important context it leaves behind. This first figure using red color and a reversed axis to draw parallels between the deaths in this war to the dripping of blood.</p>
+<p>Titles, colors, and graphical direction can emphasize different aspects of a dataset. Ask what message each design brings forward and what important context it leaves behind. This first figure uses red and a reversed axis to draw a parallel between the deaths in this war and dripping blood.</p>
 <p>The same data set could have been presented with a more positive design, focusing on the recent decline in the death rate.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -214,10 +215,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-1" class="slide level2" data-footer="false" data-chapter-anchor="design-shapes-the-message">
+<section id="visualization-continued-1" class="slide level2" data-chapter-anchor="design-shapes-the-message" data-footer="false">
 <h2>Design shapes the message</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/iraq-deaths-on-decline.png" style="width:70.0%" alt="A contrasting Iraq casualty infographic uses blue, upward-pointing bars and the title Iraq: Deaths on the decline."></p>
+<p><img data-src="assets/images/communication-lecture/iraq-deaths-on-decline.png" style="width:70.0%" alt="A contrasting Iraq casualty infographic uses blue, upward-pointing bars and the title Iraq: Deaths on the decline."></p>
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="1">
 <ul>
@@ -225,7 +226,7 @@
 </ul>
 </div>
 <aside class="notes">
-<p><span class="slide-bullet"><strong>Both these messages are true and the complete data story includes both</strong></span>, but in a visulization we can what to highlight. This not only important to be aware of when making our own visualization, but also when reading a visualization from someone else.</p>
+<p><span class="slide-bullet"><strong>Both these messages are true and the complete data story includes both</strong></span>, but in a visualization we can choose what to highlight. This is important to be aware of not only when making our own visualizations, but also when reading a visualization from someone else.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -238,14 +239,14 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="match-the-detail-to-the-audience" class="slide level2" data-footer="false" data-chapter-anchor="match-the-detail-to-the-audience">
+<section id="match-the-detail-to-the-audience" class="slide level2" data-chapter-anchor="match-the-detail-to-the-audience" data-footer="false">
 <h2>Match the detail to the audience</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/minard-napoleon-campaign.png" alt="Minard's map of Napoleon's Russian campaign combines troop strength, direction of travel, geography, and temperature."></p>
+<p><img data-src="assets/images/communication-lecture/minard-napoleon-campaign.png" alt="Minard's map of Napoleon's Russian campaign combines troop strength, direction of travel, geography, and temperature."></p>
 </div>
 <aside class="notes">
 <p>This chart of the evolution of the size of Napoleon’s army when they marched towards Moscow rewards careful study by combining several kinds of information. That richness can be useful for exploration, but may require more explanation than a reader has time for in a short presentation.</p>
-<p>A simpler “take home” message of this chart presented to C-level executives in a short update meeting, might be much simpler and just focus on the outcome of the operation.</p>
+<p>A “take-home” version of this chart presented to C-level executives in a short update meeting might focus only on the outcome of the operation.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -258,10 +259,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-2" class="slide level2" data-footer="false" data-chapter-anchor="match-the-detail-to-the-audience">
+<section id="visualization-continued-2" class="slide level2" data-chapter-anchor="match-the-detail-to-the-audience" data-footer="false">
 <h2>Match the detail to the audience</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/napoleon-survival-summary.png" alt="A simplified pie-chart summary of Napoleon's campaign labels 98 percent as died and 2 percent as survived."></p>
+<p><img data-src="assets/images/communication-lecture/napoleon-survival-summary.png" alt="A simplified pie-chart summary of Napoleon's campaign labels 98 percent as died and 2 percent as survived."></p>
 </div>
 <aside class="notes">
 <p>The simplified chart emphasizes the scale of the losses but discards route, timing, and conditions. Even a concise label needs checking: a reduction in army strength does not, by itself, establish how many soldiers died.</p>
@@ -277,10 +278,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="make-category-comparisons-easy" class="slide level2" data-footer="false" data-chapter-anchor="make-category-comparisons-easy">
+<section id="make-category-comparisons-easy" class="slide level2" data-chapter-anchor="make-category-comparisons-easy" data-footer="false">
 <h2>Make category comparisons easy</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/pie-bar-comparison.png" alt="A comparison schematic replaces a many-category pie chart and its legend with a sorted horizontal bar chart."></p>
+<p><img data-src="assets/images/communication-lecture/pie-bar-comparison.png" alt="A comparison schematic replaces a many-category pie chart and its legend with a sorted horizontal bar chart."></p>
 </div>
 <aside class="notes">
 <p>Positions and lengths on a common scale are usually easier to compare than angles and areas. A bar chart can also place each category name beside the value it identifies.</p>
@@ -296,10 +297,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-3" class="slide level2" data-footer="false" data-chapter-anchor="make-category-comparisons-easy">
+<section id="visualization-continued-3" class="slide level2" data-chapter-anchor="make-category-comparisons-easy" data-footer="false">
 <h2>Make category comparisons easy</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/pie-bar-alternatives.png" alt="A schematic compares reading proportions from several pie charts with reading aligned horizontal bars."></p>
+<p><img data-src="assets/images/communication-lecture/pie-bar-alternatives.png" alt="A schematic compares reading proportions from several pie charts with reading aligned horizontal bars."></p>
 </div>
 <aside class="notes">
 <p>Comparisons across several pies require the reader to mentally align angles. A shared baseline makes the intended comparison more direct.</p>
@@ -315,10 +316,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-4" class="slide level2" data-footer="false" data-chapter-anchor="make-category-comparisons-easy">
+<section id="visualization-continued-4" class="slide level2" data-chapter-anchor="make-category-comparisons-easy" data-footer="false">
 <h2>Make category comparisons easy</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/many-category-pie.png" alt="A video-game survey pie chart has many narrow slices and a long color legend."></p>
+<p><img data-src="assets/images/communication-lecture/many-category-pie.png" alt="A video-game survey pie chart has many narrow slices and a long color legend."></p>
 </div>
 <aside class="notes">
 <p>With many categories, matching small wedges to a long legend becomes hard work. Extrusion and exploded pieces add visual complexity without making the values easier to compare.</p>
@@ -334,10 +335,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-5" class="slide level2" data-footer="false" data-chapter-anchor="make-category-comparisons-easy">
+<section id="visualization-continued-5" class="slide level2" data-chapter-anchor="make-category-comparisons-easy" data-footer="false">
 <h2>Make category comparisons easy</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/donut-chart-election.png" alt="An election-news graphic uses donut sectors whose apparent areas do not match the displayed seat counts."></p>
+<p><img data-src="assets/images/communication-lecture/donut-chart-election.png" alt="An election-news graphic uses donut sectors whose apparent areas do not match the displayed seat counts."></p>
 </div>
 <aside class="notes">
 <p>A published chart can look polished while contradicting its own numerical labels. Check whether sector angles and areas represent the values proportionally, rather than trusting the visual finish.</p>
@@ -353,10 +354,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="use-color-to-add-information" class="slide level2" data-footer="false" data-chapter-anchor="use-color-to-add-information">
+<section id="use-color-to-add-information" class="slide level2" data-chapter-anchor="use-color-to-add-information" data-footer="false">
 <h2>Use color to add information</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/one-series-one-color.png" alt="Examples of a single bar series and a single line series use one consistent color instead of unnecessary category colors."></p>
+<p><img data-src="assets/images/communication-lecture/one-series-one-color.png" alt="Examples of a single bar series and a single line series use one consistent color instead of unnecessary category colors."></p>
 </div>
 <aside class="notes">
 <p>When a chart shows one series, extra colors can imply distinctions that do not exist. A single color often provides a clear starting point.</p>
@@ -372,10 +373,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-6" class="slide level2" data-footer="false" data-chapter-anchor="use-color-to-add-information">
+<section id="visualization-continued-6" class="slide level2" data-chapter-anchor="use-color-to-add-information" data-footer="false">
 <h2>Use color to add information</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/highlight-one-series.png" alt="Bar and line chart examples use orange to highlight one series while leaving the remaining series gray."></p>
+<p><img data-src="assets/images/communication-lecture/highlight-one-series.png" alt="Bar and line chart examples use orange to highlight one series while leaving the remaining series gray."></p>
 </div>
 <aside class="notes">
 <p>Use a contrasting color to draw attention to the observation or series that matters for the current question. Keep the remaining observations as context.</p>
@@ -391,10 +392,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-7" class="slide level2" data-footer="false" data-chapter-anchor="use-color-to-add-information">
+<section id="visualization-continued-7" class="slide level2" data-chapter-anchor="use-color-to-add-information" data-footer="false">
 <h2>Use color to add information</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/too-many-highlights.png" alt="Chart examples marked with red crosses illustrate how many saturated colors and competing series undermine selective highlighting."></p>
+<p><img data-src="assets/images/communication-lecture/too-many-highlights.png" alt="Chart examples marked with red crosses illustrate how many saturated colors and competing series undermine selective highlighting."></p>
 </div>
 <aside class="notes">
 <p>If every series asks for attention, highlighting stops being selective. Consider smaller, separate views when a comparison becomes too crowded.</p>
@@ -410,10 +411,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-8" class="slide level2" data-footer="false" data-chapter-anchor="use-color-to-add-information">
+<section id="visualization-continued-8" class="slide level2" data-chapter-anchor="use-color-to-add-information" data-footer="false">
 <h2>Use color to add information</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/highlight-a-line.png" alt="A not-ideal versus better line-chart comparison keeps one orange line prominent and makes the contextual series lighter."></p>
+<p><img data-src="assets/images/communication-lecture/highlight-a-line.png" alt="A not-ideal versus better line-chart comparison keeps one orange line prominent and makes the contextual series lighter."></p>
 </div>
 <aside class="notes">
 <p>Make the foreground comparison easier to find by reducing the saturation or contrast of the background series. The context should remain visible and interpretable.</p>
@@ -429,13 +430,13 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-9" class="slide level2" data-footer="false" data-chapter-anchor="use-color-to-add-information">
+<section id="visualization-continued-9" class="slide level2" data-chapter-anchor="use-color-to-add-information" data-footer="false">
 <h2>Use color to add information</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/consistent-group-colors.png" alt="A comparison across line and pie charts shows that reusing the same colors for the same groups makes identification easier."></p>
+<p><img data-src="assets/images/communication-lecture/consistent-group-colors.png" alt="A comparison across line and pie charts shows that reusing the same colors for the same groups makes identification easier."></p>
 </div>
 <aside class="notes">
-<p>Use the same color for the same group across related figures. Reassigning a familiar color forces the reader to relearn the mapping; <a href="../14_color.html#sec-color">Color</a> develops these choices in more detail.</p>
+<p>Use the same color for the same group across related figures. Reassigning a familiar color forces the reader to relearn the mapping; <a href="../chapters/14_color.html#sec-color">Color</a> develops these choices in more detail.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -448,10 +449,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="make-long-labels-readable" class="slide level2" data-footer="false" data-chapter-anchor="make-long-labels-readable">
+<section id="make-long-labels-readable" class="slide level2" data-chapter-anchor="make-long-labels-readable" data-footer="false">
 <h2>Make long labels readable</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/horizontal-category-labels.png" alt="A schematic replaces vertical bars with awkwardly wrapped category names by horizontal bars with readable labels."></p>
+<p><img data-src="assets/images/communication-lecture/horizontal-category-labels.png" alt="A schematic replaces vertical bars with awkwardly wrapped category names by horizontal bars with readable labels."></p>
 </div>
 <aside class="notes">
 <p>Change the chart orientation when that gives category names room to be read naturally. Horizontal bars often preserve the comparison while avoiding rotated or heavily wrapped text.</p>
@@ -467,10 +468,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="ask-what-a-chart-does-not-show" class="slide level2" data-footer="false" data-chapter-anchor="ask-what-a-chart-does-not-show">
+<section id="ask-what-a-chart-does-not-show" class="slide level2" data-chapter-anchor="ask-what-a-chart-does-not-show" data-footer="false">
 <h2>Ask what a chart does <em>not</em> show</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/horror-film-counts.png" alt="A line chart shows the number of horror-film releases increasing over time."></p>
+<p><img data-src="assets/images/communication-lecture/horror-film-counts.png" alt="A line chart shows the number of horror-film releases increasing over time."></p>
 </div>
 <aside class="notes">
 <p>An increasing number of horror releases does not establish that horror’s share of all films is increasing. Ask what denominator would be needed to support that claim.</p>
@@ -486,10 +487,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-10" class="slide level2" data-footer="false" data-chapter-anchor="ask-what-a-chart-does-not-show">
+<section id="visualization-continued-10" class="slide level2" data-chapter-anchor="ask-what-a-chart-does-not-show" data-footer="false">
 <h2>Ask what a chart does <em>not</em> show</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/horror-film-context.png" alt="The horror-film series is shown alongside a much larger series for all movie releases."></p>
+<p><img data-src="assets/images/communication-lecture/horror-film-context.png" alt="The horror-film series is shown alongside a much larger series for all movie releases."></p>
 </div>
 <aside class="notes">
 <p>Adding total releases changes the question we can answer. To discuss relative popularity, examine the horror share alongside counts, and consider whether dataset coverage or reporting has changed.</p>
@@ -505,10 +506,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-11" class="slide level2" data-footer="false" data-chapter-anchor="ask-what-a-chart-does-not-show">
+<section id="visualization-continued-11" class="slide level2" data-chapter-anchor="ask-what-a-chart-does-not-show" data-footer="false">
 <h2>Ask what a chart does <em>not</em> show</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/iphone-cumulative-sales.png" alt="A presentation graphic emphasizes an increasing cumulative total of iPhone sales."></p>
+<p><img data-src="assets/images/communication-lecture/iphone-cumulative-sales.png" alt="A presentation graphic emphasizes an increasing cumulative total of iPhone sales."></p>
 </div>
 <aside class="notes">
 <p>A cumulative total of nonnegative sales cannot decrease. Its increasing height alone does not show that the current rate of sales is accelerating.</p>
@@ -524,10 +525,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-12" class="slide level2" data-footer="false" data-chapter-anchor="ask-what-a-chart-does-not-show">
+<section id="visualization-continued-12" class="slide level2" data-chapter-anchor="ask-what-a-chart-does-not-show" data-footer="false">
 <h2>Ask what a chart does <em>not</em> show</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/iphone-quarterly-context.png" alt="An annotated iPhone-sales graphic adds quarterly sales to the cumulative total."></p>
+<p><img data-src="assets/images/communication-lecture/iphone-quarterly-context.png" alt="An annotated iPhone-sales graphic adds quarterly sales to the cumulative total."></p>
 </div>
 <aside class="notes">
 <p>Quarterly sales correspond to increments in the cumulative total, not its height. Showing both can reveal changes in the rate that an ever-increasing total conceals.</p>
@@ -543,10 +544,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-redundant-3d" class="slide level2" data-footer="false" data-chapter-anchor="avoid-redundant-3d">
+<section id="avoid-redundant-3d" class="slide level2" data-chapter-anchor="avoid-redundant-3d" data-footer="false">
 <h2>Avoid redundant 3D</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/three-dimensional-donut.png" alt="An exploded three-dimensional donut chart adds perspective, separated pieces, and overlapping surfaces to a part-to-whole display."></p>
+<p><img data-src="assets/images/communication-lecture/three-dimensional-donut.png" alt="An exploded three-dimensional donut chart adds perspective, separated pieces, and overlapping surfaces to a part-to-whole display."></p>
 </div>
 <aside class="notes">
 <!-- TODO we could move these examples to the channel encoding lesson -->
@@ -562,10 +563,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-13" class="slide level2" data-footer="false" data-chapter-anchor="avoid-redundant-3d">
+<section id="visualization-continued-13" class="slide level2" data-chapter-anchor="avoid-redundant-3d" data-footer="false">
 <h2>Avoid redundant 3D</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/three-dimensional-cylinders.png" alt="A three-dimensional chart uses stacked, translucent cylinders with perspective and overlapping surfaces."></p>
+<p><img data-src="assets/images/communication-lecture/three-dimensional-cylinders.png" alt="A three-dimensional chart uses stacked, translucent cylinders with perspective and overlapping surfaces."></p>
 </div>
 <aside class="notes">
 <p>Perspective and occlusion make both heights and colored segments harder to compare. Use a third spatial dimension when it represents something the reader needs to understand, rather than simply as decoration.</p>
@@ -581,10 +582,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-14" class="slide level2" data-footer="false" data-chapter-anchor="avoid-redundant-3d">
+<section id="visualization-continued-14" class="slide level2" data-chapter-anchor="avoid-redundant-3d" data-footer="false">
 <h2>Avoid redundant 3D</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/communication-lecture/banana-chart.png" alt="A densely decorated three-dimensional banana-export chart combines a fruit-textured background, many colors, and angled labels."></p>
+<p><img data-src="assets/images/communication-lecture/banana-chart.png" alt="A densely decorated three-dimensional banana-export chart combines a fruit-textured background, many colors, and angled labels."></p>
 </div>
 <aside class="notes">
 <p>Textures, gradients, tilted axes, and competing colors can obscure the values. Readers should be able to answer the data question without first decoding the decoration.</p>

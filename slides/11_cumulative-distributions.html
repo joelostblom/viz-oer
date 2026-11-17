@@ -103,7 +103,7 @@
     code span.wa { color: #e0af68; } /* Warning */
   </style>
   <link rel="stylesheet" href="11_cumulative-distributions_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="11_cumulative-distributions_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="11_cumulative-distributions_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="11_cumulative-distributions_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,8 +195,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -209,7 +209,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
+<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
@@ -218,7 +218,7 @@
 </ol>
 </div>
 </section>
-<section id="why-bother" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
+<section id="why-bother" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
 <h2>Why bother?</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -231,7 +231,7 @@
 </ul>
 </div>
 <aside class="notes">
-<p><span class="slide-bullet"><strong>Suppose we have 100 minutes available to watch a movie. What proportion of the films in our dataset would fit?</strong></span> Histograms and density plots show where values are concentrated, but answering this question requires combining bins or estimating an area. A <strong>cumulative distribution</strong> makes the proportion directly visible.</p>
+<p><span class="slide-bullet"><strong>Suppose we have 100 minutes available to watch a movie. What proportion of the films in our dataset would fit?</strong></span> In <a href="../chapters/10_smoothed-distributions.html#sec-smoothed-distributions">Smoothed distributions</a>, density plots helped us compare distribution shapes. Histograms and density plots show where values are concentrated, but answering this question requires combining bins or estimating an area. A <strong>cumulative distribution</strong> makes the proportion directly visible.</p>
 <p><span class="slide-bullet"><strong>An empirical cumulative distribution function, or ECDF, shows the proportion of observations that are less than or equal to each value on the x-axis.</strong></span> For example, its height at 100 minutes is the number of films lasting at most 100 minutes divided by the total number of films. “Empirical” means that we calculate it from the observed data.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -245,7 +245,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualizing-cumulative-distributions" class="slide level2" data-chapter-anchor="visualizing-cumulative-distributions" data-footer="false">
+<section id="visualizing-cumulative-distributions" class="slide level2" data-footer="false" data-chapter-anchor="visualizing-cumulative-distributions">
 <h2>Visualizing cumulative distributions</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Altair</a></li><li><a href="#tabset-1-2">ggplot</a></li></ul>
@@ -330,7 +330,7 @@
 </div>
 </div>
 <aside class="notes">
-<p>We will reuse the movie dataset from <a href="../9_binned-distributions.html#sec-binned-distributions">Binned distributions</a>. Here we use all 797 films, each of which has a recorded runtime.</p>
+<p>We will reuse the movie dataset from <a href="../chapters/9_binned-distributions.html#sec-binned-distributions">Binned distributions</a>. Here we use all 797 films, each of which has a recorded runtime.</p>
 <p><strong>Altair</strong></p>
 <p>The <code>cume_dist()</code> operation computes the cumulative proportion. We use the helper class <code>SortField</code> to sort by runtime so that the calculation proceeds from the shortest films to the longest, then use a step line to connect the results.</p>
 <p><strong>ggplot</strong></p>
@@ -347,7 +347,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="reading-an-ecdf" class="slide level2" data-chapter-anchor="reading-an-ecdf" data-footer="false">
+<section id="reading-an-ecdf" class="slide level2" data-footer="false" data-chapter-anchor="reading-an-ecdf">
 <h2>Reading an ECDF</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -380,7 +380,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="proportions-and-percentiles" class="slide level2" data-chapter-anchor="reading-an-ecdf" data-footer="false">
+<section id="proportions-and-percentiles" class="slide level2" data-footer="false" data-chapter-anchor="reading-an-ecdf">
 <h2>Proportions and percentiles</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ol type="1">
@@ -430,7 +430,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="ecdfs-and-other-distribution-plots" class="slide level2" data-chapter-anchor="ecdfs-and-other-distribution-plots" data-footer="false">
+<section id="ecdfs-and-other-distribution-plots" class="slide level2" data-footer="false" data-chapter-anchor="ecdfs-and-other-distribution-plots">
 <h2>ECDFs and other distribution plots</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -456,7 +456,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="comparing-groups" class="slide level2" data-chapter-anchor="comparing-groups" data-footer="false">
+<section id="comparing-groups" class="slide level2" data-footer="false" data-chapter-anchor="comparing-groups">
 <h2>Comparing groups</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -556,7 +556,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="comparing-cumulative-proportions" class="slide level2" data-chapter-anchor="comparing-cumulative-proportions" data-footer="false">
+<section id="comparing-cumulative-proportions" class="slide level2" data-footer="false" data-chapter-anchor="comparing-cumulative-proportions">
 <h2>Comparing cumulative proportions</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -583,7 +583,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="proportions-are-not-counts" class="slide level2" data-chapter-anchor="comparing-cumulative-proportions" data-footer="false">
+<section id="proportions-are-not-counts" class="slide level2" data-footer="false" data-chapter-anchor="comparing-cumulative-proportions">
 <h2>Proportions are not counts</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -618,7 +618,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-reading-an-ecdf-as-a-density-plot" class="slide level2" data-chapter-anchor="comparing-cumulative-proportions" data-footer="false">
+<section id="avoid-reading-an-ecdf-as-a-density-plot" class="slide level2" data-footer="false" data-chapter-anchor="comparing-cumulative-proportions">
 <h2>Avoid reading an ECDF as a density plot</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -627,6 +627,7 @@
 </div>
 <aside class="notes">
 <p><span class="slide-bullet"><strong>The height of an ECDF at 100 minutes is the proportion lasting at most 100 minutes, not the proportion lasting exactly 100 minutes.</strong></span> The proportion at an individual value is represented by the jump there. Use step lines to preserve these empirical proportions between observed values; straight diagonal segments would interpolate values that are not part of the ECDF.</p>
+<p>Counts, densities, and cumulative proportions offer different views of a distribution. So far, we have mostly examined one measured variable at a time, sometimes comparing it across categorical groups. In <a href="../chapters/12_joint-distributions.html#sec-joint-distributions">Joint distributions</a>, we ask how observations are distributed across combinations of variables, keeping the values recorded for each observation together.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

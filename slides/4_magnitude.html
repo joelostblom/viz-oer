@@ -103,7 +103,7 @@
     code span.wa { color: #e0af68; } /* Warning */
   </style>
   <link rel="stylesheet" href="4_magnitude_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="4_magnitude_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="4_magnitude_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="4_magnitude_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,8 +195,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -209,7 +209,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
+<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
@@ -219,17 +219,17 @@
 </ol>
 </div>
 </section>
-<section id="why-bother" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
+<section id="why-bother" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
 <h2>Why bother?</h2>
 <div class="slide-media fragment fade-in" data-slide-layout="columns" data-fragment-index="0">
-<p><img data-src="img/circle-comparison.png"></p>
-<p><img data-src="img/bar-comparison.png"></p>
+<p><img data-src="assets/images/circle-comparison.png"></p>
+<p><img data-src="assets/images/bar-comparison.png"></p>
 </div>
 <aside class="notes">
 <p>In the last chapter, we saw how we could visualize magnitude as either the position of a point along an axis or as the brightness of the point’s color. We can refer to these different ways of representing a quantity graphically as visual “channels”. There are many more visual channels than position and brightness, and when we visualize something, we want to think about which are the most effective channels that we can use to understand the data.</p>
 <p>As in many cases, an efficient way to learn this topic is through personal experience, rather than just being told the answer. So let’s experience how some visual channels are more effective than others through a short exercise.</p>
 <p><strong>Exercise</strong></p>
-<p>Take a few seconds to answer the following question. How many times larger is the bigger object as the smaller one in each of these two images?</p>
+<p>Take a few seconds to answer the following question. How many times as large is the bigger object as the smaller one in each of these two images?</p>
 <p><em>Remember that we learn more effectively when we actively try to answer questions like these instead of viewing the solution right away.</em></p>
 <p><strong>Hint</strong></p>
 <p>What do you think is meant by “bigger” when it comes to the circles? Are you supposed to compare the areas or the diameters?</p>
@@ -247,7 +247,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-1" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
+<section id="visualization-continued-1" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
 <h2>Area versus length</h2>
 <div class="slide-media fragment fade-in" data-slide-title="Area versus length" data-fragment-index="0">
 <p><img data-src="https://viz-learn.mds.ubc.ca/module2/7x.png"></p>
@@ -267,13 +267,13 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="visual-channel-effectiveness" class="slide level2" data-chapter-anchor="visual-channel-effectiveness" data-footer="false">
+<section id="visual-channel-effectiveness" class="slide level2" data-footer="false" data-chapter-anchor="visual-channel-effectiveness">
 <h2>Visual channel effectiveness</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <div id="fig-mag" class="quarto-float quarto-figure quarto-figure-center" width="633.6" alt="Ten channels in classical magnitude order: common-scale position, unaligned-scale position, length, tilt or angle, area, depth, luminance, saturation, curvature, and volume.">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-mag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="img/magnitude-channels.svg">
+<img data-src="assets/images/magnitude-channels.svg">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Classical visual-channel ranking for quantitative magnitude judgments. Adapted from <a href="https://www.cs.ubc.ca/~tmm/vadbook/figures.html">Visualization Analysis and Design</a>, Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0).
@@ -296,7 +296,7 @@ Figure&nbsp;1: Classical visual-channel ranking for quantitative magnitude judgm
           display:block!important;
       }</style></aside>
 </section>
-<section id="unnecessary-3d-makes-plot-interpretation-harder" class="slide level2" data-chapter-anchor="unnecessary-3d-makes-plot-interpretation-harder" data-footer="false">
+<section id="unnecessary-3d-makes-plot-interpretation-harder" class="slide level2" data-footer="false" data-chapter-anchor="unnecessary-3d-makes-plot-interpretation-harder">
 <h2>Unnecessary 3D makes plot interpretation harder</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -324,7 +324,7 @@ Figure&nbsp;1: Classical visual-channel ranking for quantitative magnitude judgm
           display:block!important;
       }</style></aside>
 </section>
-<section id="meaningful-3d-can-facilitate-plot-interpretation" class="slide level2" data-chapter-anchor="meaningful-3d-can-facilitate-plot-interpretation" data-footer="false">
+<section id="meaningful-3d-can-facilitate-plot-interpretation" class="slide level2" data-footer="false" data-chapter-anchor="meaningful-3d-can-facilitate-plot-interpretation">
 <h2>Meaningful 3D can facilitate plot interpretation</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <div id="fig-3d-movie" class="quarto-float quarto-figure quarto-figure-center">
@@ -353,7 +353,7 @@ Figure&nbsp;2: A useful application of 3D.
           display:block!important;
       }</style></aside>
 </section>
-<section id="well-designed-visualizations-can-support-clinical-decisions" class="slide level2" data-chapter-anchor="well-designed-visualizations-can-support-clinical-decisions" data-footer="false" data-slide-columns="content">
+<section id="well-designed-visualizations-can-support-clinical-decisions" class="slide level2" data-footer="false" data-chapter-anchor="well-designed-visualizations-can-support-clinical-decisions" data-slide-columns="content">
 <h2>Well-designed visualizations can support clinical decisions</h2>
 <div class="slide-columns-content slide-columns-counted" style="--slide-column-count: 3;">
 <div class="slide-column">
@@ -397,7 +397,7 @@ Figure&nbsp;2: A useful application of 3D.
           display:block!important;
       }</style></aside>
 </section>
-<section id="choose-the-most-effective-channel-for-the-most-important-comparison" class="slide level2" data-chapter-anchor="choose-the-most-effective-channel-for-the-most-important-comparison" data-footer="false">
+<section id="choose-the-most-effective-channel-for-the-most-important-comparison" class="slide level2" data-footer="false" data-chapter-anchor="choose-the-most-effective-channel-for-the-most-important-comparison">
 <h2>Choose the most effective channel for the most important comparison</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Altair</a></li><li><a href="#tabset-1-2">ggplot</a></li></ul>
@@ -475,15 +475,15 @@ Figure&nbsp;2: A useful application of 3D.
 </div>
 </div>
 <aside class="notes">
-<p>Let’s apply what we have learned in the context of the dataset from last chapter.</p>
+<p>Let’s apply what we have learned in the context of the dataset from the last chapter.</p>
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
-<p>If we are interested in visualizing the relationship between <code>'Miles_per_Gallon'</code>, <code>'Horsepower'</code>, and <code>'Weight_in_lbs'</code>. If all pairwise relationships were of high importance, we could created three separate plots where each variable get to be on the x and y axis two times each, so that they can make use of the most effective channel, position on a shared scale.</p>
+<p>Suppose we are interested in visualizing the relationship between <code>'Miles_per_Gallon'</code>, <code>'Horsepower'</code>, and <code>'Weight_in_lbs'</code>. If all pairwise relationships were of high importance, we could create three separate plots where each variable appears on the x- or y-axis twice, so that they can make use of the most effective channel, position on a shared scale.</p>
 <p>However, if we would like to include all three variables in the same chart, then we would need to decide what the most important comparison is. If it is to compare fuel efficiency to weight, then we would make the following chart:</p>
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
-<p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower weights to light blue for higher weights, since light colors have the highest contrast to the chart’s dark background.</p>
-<p>If we instead are mainly interested in comparing, engine power vs weight, then we would make the following chart:</p>
+<p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower values to light blue for higher values, since light colors have the highest contrast with the chart’s dark background.</p>
+<p>If we are instead mainly interested in comparing engine power with weight, then we would make the following chart:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -496,7 +496,7 @@ Figure&nbsp;2: A useful application of 3D.
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-3-step-1" class="slide level2" data-chapter-anchor="choose-the-most-effective-channel-for-the-most-important-comparison" data-footer="false">
+<section id="tabset-3-step-1" class="slide level2" data-footer="false" data-chapter-anchor="choose-the-most-effective-channel-for-the-most-important-comparison">
 <h2>Choose the most effective channel for the most important comparison</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Altair</a></li><li><a href="#tabset-2-2">ggplot</a></li></ul>
@@ -576,7 +576,7 @@ Figure&nbsp;2: A useful application of 3D.
 <aside class="notes">
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
-<p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower weights to light blue for higher weights, since light colors have the highest contrast to the chart’s dark background.</p>
+<p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower values to light blue for higher values, since light colors have the highest contrast with the chart’s dark background.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -589,7 +589,7 @@ Figure&nbsp;2: A useful application of 3D.
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-blindly-following-a-ranking" class="slide level2" data-chapter-anchor="choose-the-most-effective-channel-for-the-most-important-comparison" data-footer="false">
+<section id="avoid-blindly-following-a-ranking" class="slide level2" data-footer="false" data-chapter-anchor="choose-the-most-effective-channel-for-the-most-important-comparison">
 <h2>Avoid blindly following a ranking</h2>
 <div class="slide-media fragment fade-in" data-slide-show="both" data-slide-output-fragment="true" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(cars).mark_point(color<span class="op">=</span><span class="st">'#FF0039'</span>).encode(</span>
@@ -645,7 +645,7 @@ Figure&nbsp;2: A useful application of 3D.
 </div>
 </div>
 <aside class="notes">
-<p>As with much of the other advice in this book, (and in life) context matters. If we think there is good reason to pick a lower ranking visual channel, then do that. For example, using <code>size</code> instead of <code>color</code> seems reasonable since area is more highly ranked than color brightness. However, if we try this, we immediately see that this is not an effective visualization since the additional size of the points leads to significant overlap in the chart and it is difficult to tell what is going on in the saturated area in the bottom left.</p>
+<p>As with much of the other advice in this book (and in life), context matters. If we think there is good reason to pick a lower-ranking visual channel, then do that. For example, using <code>size</code> instead of <code>color</code> seems reasonable since area is more highly ranked than color brightness. However, if we try this, we immediately see that this is not an effective visualization since the additional size of the points leads to significant overlap in the chart and it is difficult to tell what is going on in the saturated area in the bottom left.</p>
 Further reading
 <ul>
 <li><a href="https://socviz.co/01-look-at-data.html#visual-tasks-and-decoding-graphs">Data Visualization: A Practical Introduction</a> by Kieran Healy; from “Visual tasks and decoding graphs” until the end of the chapter.</li>

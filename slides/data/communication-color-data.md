@@ -23,7 +23,7 @@ The full diamond carat/price data used in chapters 12 and 13 are in
 To regenerate the Vega snapshots, run:
 
 ```sh
-uv run --with vega-datasets python textbook/src/data_processing/prepare_communication_color_data.py
+uv run --with vega-datasets python src/data_processing/prepare_communication_color_data.py
 ```
 
 Regeneration can access the network. Ordinary chapter rendering only reads the

@@ -103,7 +103,7 @@
     code span.wa { color: #e0af68; } /* Warning */
   </style>
   <link rel="stylesheet" href="3_individual-observations_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="3_individual-observations_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="3_individual-observations_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="3_individual-observations_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,8 +195,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
   <style>
     .table.dataframe { width: auto; text-align: right; }
   </style>
@@ -426,6 +426,11 @@
 </div>
 </div>
 </div>
+<div class="slide-content fragment fade-in" data-fragment-index="0">
+<ul>
+<li><p>Perhaps the cars with the best fuel efficiency are also the cars with the least powerful engines</p></li>
+</ul>
+</div>
 <aside class="notes">
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
@@ -545,7 +550,7 @@
 </table>
 
 <p>399 rows × 9 columns</p>
-<p>Looking at the table above, we might start to generate questions about our data. <a href=".slide-bullet">Perhaps the cars with the best fuel efficiency are also the cars with the least powerful engines</a> (i.e.&nbsp;do the cars with the highest <code>Miles_per_Gallon</code> also have the lowest <code>Horsepower</code>)? This sounds reasonable since a more powerful engine generally uses more fuel. Let’s see if we can answer this question with a visualization. To see how these two variables relate to each other, we can map them to two visual channels in the chart, such as <code>x</code> and <code>y</code>.</p>
+<p>Looking at the table above, we might start to generate questions about our data. <span class="slide-bullet"><strong>Perhaps the cars with the best fuel efficiency are also the cars with the least powerful engines</strong></span> (i.e.&nbsp;do the cars with the highest <code>Miles_per_Gallon</code> also have the lowest <code>Horsepower</code>)? This sounds reasonable since a more powerful engine generally uses more fuel. Let’s see if we can answer this question with a visualization. To see how these two variables relate to each other, we can map them to two visual channels in the chart, such as <code>x</code> and <code>y</code>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -913,16 +918,16 @@
 <p><strong>Altair</strong></p>
 <p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. Note that the largest value in the <code>Weight_in_lbs</code> column is represented with a dark color, which contrasts strongly with the light background of the chart.</p>
 <p><strong>ggplot</strong></p>
-<p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower weights to light blue for higher weights, since light colors have the highest contrast to the chart’s dark background.</p>
+<p>Here, we add the <code>color</code> encoding to the chart so that we can see how all three variables relate to each other. The default color gradient runs from dark blue for lower weights to light blue for higher weights, since light colors have the highest contrast with the chart’s dark background.</p>
 <p><strong>Exercise</strong></p>
 <p><span class="slide-bullet"><strong>How does a car’s weight relate to its fuel efficiency?</strong></span></p>
 <p><strong>Hint</strong></p>
 <p>Use the color legend to find the heaviest cars. Where do they fall on the fuel-efficiency axis? Compare them with the lightest cars, then check how their horsepower differs too.</p>
 <p><strong>Solution</strong></p>
 <p>We can see that <code>Weight_in_lbs</code> is positively correlated with <code>Horsepower</code> and negatively with <code>Miles_per_Gallon</code>. This aligns with our knowledge about the world: heavier cars generally need more energy to accelerate to the same speed, and the heavier cars in this dataset tend to have more powerful engines. However, remember that we can’t establish causation from the chart alone. We can only note that the correlation matches what we would expect based on our knowledge about the physics of moving objects.</p>
-<p><span class="slide-bullet"><strong>Is the color or position easier to read?</strong></span>. You might already have noticed that it was harder to read exact values from the color scale than from the x- and y-axes. This is an important consideration, and we will dive deeper into which visual channels are the most effective at presenting information in the next chapter.</p>
+<p><span class="slide-bullet"><strong>Is the color or position easier to read?</strong></span> You might already have noticed that it was harder to read exact values from the color scale than from the x- and y-axes. This is an important consideration, and we will dive deeper into which visual channels are the most effective at presenting information in the next chapter.</p>
 <!-- TODO This section could combine theoretical knowledge with coding, but the exercises throughout the chapter remain conceptual exercises to discover and motivate the content. -->
-<!-- {{< include ./_extensions/r-wasm/live/_knitr.qmd >}} -->
+<!-- {{< include _extensions/r-wasm/live/_knitr.qmd >}} -->
 <!-- ## Exercise mission -->
 <!-- Apply what you have learned about individual observations in the following exercises. -->
 <!-- With a commitment to sustainability and a vision for a greener future, -->
@@ -964,7 +969,7 @@
 <!-- #|   - tooltip_chart_alt -->
 <!-- import altair as alt -->
 <!-- import pandas as pd -->
-<!-- from utils import assert_chart_equal -->
+<!-- from src.utils import assert_chart_equal -->
 <!-- url = 'data/aggregated__food_data.csv' -->
 <!-- food_emission = pd.read_csv(url) -->
 <!-- ``` -->

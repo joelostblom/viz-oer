@@ -103,7 +103,7 @@
     code span.wa { color: #e0af68; } /* Warning */
   </style>
   <link rel="stylesheet" href="8_counts_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="8_counts_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="8_counts_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="8_counts_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,8 +195,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -209,7 +209,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
+<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol type="1">
@@ -220,7 +220,8 @@
 </ol>
 </div>
 <aside class="notes">
-<p>In <a href="../7_summaries.html#sec-summaries">Central tendency &amp; spread</a>, we explored central values and variability. Another useful property we can compute is the number of observations in a group. We will return to the meditation dataset to compare counts across conditions, then explore proportions and different ways to show parts of a whole.</p>
+<p>In <a href="../chapters/6_connections.html#sec-connections">Connections</a>, we connected related observations to reveal changes over time and differences between paired values. Here, we ask how many observations belong to each category, without needing an order in which to connect them. Counting the observations in each group describes a <strong>categorical distribution</strong>: how the observations are divided among the categories.</p>
+<p>We will use a 500-observation sample from a randomized meditation study.<span>(Sparacio et al.&nbsp;(2024), <a href="https://doi.org/10.1038/s41562-024-01907-7"><em>Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study</em></a>.)</span> Participants were assigned to one of four meditation conditions or a control condition in which they listened to a story excerpt. We first compare the numbers of participants across conditions, then explore proportions and different ways to show parts of a whole.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -233,7 +234,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="counts" class="slide level2" data-footer="false" data-chapter-anchor="counts">
+<section id="counts" class="slide level2" data-chapter-anchor="counts" data-footer="false">
 <h2>Counts</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Altair</a></li><li><a href="#tabset-1-2">ggplot</a></li></ul>
@@ -323,7 +324,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="from-points-to-bars" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
+<section id="from-points-to-bars" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
 <h2>From points to bars</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -360,7 +361,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-2-step-1" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
+<section id="tabset-2-step-1" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
 <h2>From points to bars</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Altair</a></li><li><a href="#tabset-2-2">ggplot</a></li></ul>
@@ -449,7 +450,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-giant-bars" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
+<section id="avoid-giant-bars" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
 <h2>Avoid giant bars</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
@@ -474,7 +475,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-bar-charts-for-means-and-medians" class="slide level2" data-footer="false" data-chapter-anchor="from-points-to-bars">
+<section id="avoid-bar-charts-for-means-and-medians" class="slide level2" data-chapter-anchor="from-points-to-bars" data-footer="false">
 <h2>Avoid bar charts for means and medians</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -500,7 +501,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="sorting-groups" class="slide level2" data-footer="false" data-chapter-anchor="sorting-groups">
+<section id="sorting-groups" class="slide level2" data-chapter-anchor="sorting-groups" data-footer="false">
 <h2>Sorting groups</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -585,18 +586,18 @@
 </div>
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="4">
-<p>Could you think of a scenario when it would make sense to sort by something else than the length of the bar?</p>
+<p>Could you think of a scenario when it would make sense to sort by something other than the length of the bar?</p>
 </div>
 <aside class="notes">
 <!-- TODO also mentions that we should sort points of mean, medians etc -->
 <p>In our chart above, <span class="slide-bullet"><strong>the groups on the y-axis are sorted in alphabetical order</strong></span>. <span class="slide-bullet"><strong>Sorting by count instead makes it easier to compare groups</strong></span> with similar counts and identify those with the most and fewest observations.</p>
 <p><strong>Altair</strong></p>
 <p>The <code>sort()</code> method takes the name of another visual channel to sort by, such as <code>'x'</code>, <code>'color'</code>, etc.</p>
-<p>This places the largest bar at the bottom, nearest the x-axis. To place it at the top instead, pass <code>'-x'</code> rather than <code>'x'</code>. Either direction can work, but generally it is more visually appealing to have the longest bar, the closest to the axis.</p>
+<p>This places the largest bar at the bottom, nearest the x-axis. To place it at the top instead, pass <code>'-x'</code> rather than <code>'x'</code>. Either direction can work, but generally it is more visually appealing to have the longest bar closest to the axis.</p>
 <p><strong>ggplot</strong></p>
 <p>The base R function <code>reorder()</code> sets the order of categorical levels based on another column in the dataframe, for example, <code>reorder(column_to_sort, column_to_use_as_sorting_order)</code>. To order the categories by their counts, we first need to calculate those counts and add them to the dataframe. Here, we use <code>dplyr::add_count()</code> to create a column automatically named <code>n</code>, then use it to order the categories on the y-axis.</p>
-<p>We used <code>-n</code> to put the longest bar the closest to the axis. To put the largest count at the top instead, use <code>reorder(condition, n)</code>. Either direction can work; but generally it is more visually appealing to have the longest bar, the closest to the axis.</p>
-<p><span class="slide-text"><strong>Could you think of a scenario when it would make sense to sort by something else than the length of the bar?</strong></span></p>
+<p>We used <code>-n</code> to put the longest bar closest to the axis. To put the largest count at the top instead, use <code>reorder(condition, n)</code>. Either direction can work; but generally it is more visually appealing to have the longest bar closest to the axis.</p>
+<p><span class="slide-text"><strong>Could you think of a scenario when it would make sense to sort by something other than the length of the bar?</strong></span></p>
 <p>Ordering categories by their plotted values can also help in other charts, such as point charts of group means. However, when categories have a meaningful order, such as education levels or days of the week, preserving that order is generally more useful than sorting by value. Here, there is no such natural order, but we show an example of how we would define one.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -610,7 +611,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-4-step-1" class="slide level2" data-footer="false" data-chapter-anchor="sorting-groups">
+<section id="tabset-4-step-1" class="slide level2" data-chapter-anchor="sorting-groups" data-footer="false">
 <h2>Sorting by a custom order</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Altair</a></li><li><a href="#tabset-4-2">ggplot</a></li></ul>
@@ -689,7 +690,7 @@
 <p><strong>Altair</strong></p>
 <p>The custom order is passed to <code>sort</code>, just as when ordering by another visual channel.</p>
 <p><strong>ggplot</strong></p>
-<p>When ordering by another visual channel we used <code>reorder</code> to change the order of the dataframe column. To define a custom order, we need to directly manipulate order of the scale that the categorical variable is plotting on, in this case the y scale.</p>
+<p>When ordering by another visual channel we used <code>reorder</code> to change the order of the dataframe column. To define a custom order, we need to directly manipulate the order of the scale on which the categorical variable is plotted, in this case the y scale.</p>
 <!-- TODO add counts in 2D, either here or in joint distributions. Might fit better there because all the visual techniques will be the same and can contrast heatmap from -->
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -703,7 +704,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="stacked-bars" class="slide level2" data-footer="false" data-chapter-anchor="stacked-bars">
+<section id="stacked-bars" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
 <h2>Stacked bars</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -783,7 +784,7 @@
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="3">
 <ul>
-<li><p>Compare the exact number of respondents between conditions; is that easier for the male of female group?</p>
+<li><p>Compare the exact number of respondents between conditions; is that easier for the male or female group?</p>
 <div class="slide-content fragment fade-in slide-subbullet" data-fragment-index="4" data-subbullet-attached="true">
 <ul>
 <li><p>What’s the reason it’s easier for one group over the other?</p></li>
@@ -797,7 +798,7 @@
 <p>For example, we might be interested in how participants’ self-reported gender is distributed across the study conditions.</p>
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
-<p>In this chart, it is easy to see that all conditions have more female than male respondents. Try to <span class="slide-bullet"><strong>compare the exact number of respondents between conditions; is that easier for the male of female group?</strong></span> <span class="slide-subbullet"><strong>What’s the reason it’s easier for one group over the other?</strong></span></p>
+<p>In this chart, it is easy to see that all conditions have more female than male respondents. Try to <span class="slide-bullet"><strong>compare the exact number of respondents between conditions; is that easier for the male or female group?</strong></span> <span class="slide-subbullet"><strong>What’s the reason it’s easier for one group over the other?</strong></span></p>
 <p><strong>Hint</strong></p>
 <p>Look at which bar segments start at zero and which start at another segment’s endpoint. The difficulty is the same as for stacked areas. But the solution is slightly different since we have more options than just layering the bars on top of each other.</p>
 <p><strong>Solution</strong></p>
@@ -815,7 +816,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-6-step-1" class="slide level2" data-footer="false" data-chapter-anchor="stacked-bars">
+<section id="tabset-6-step-1" class="slide level2" data-chapter-anchor="stacked-bars" data-footer="false">
 <h2>Give the groups a shared baseline</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Altair</a></li><li><a href="#tabset-6-2">ggplot</a></li></ul>
@@ -891,7 +892,7 @@
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="2">
 <ul>
-<li>Prefer bars with a shared baseline when comparisons between bar segments is important</li>
+<li>Prefer bars with a shared baseline when comparisons between bar segments are important.</li>
 <li>Prefer stacked bars when the total is important (similar to stacked areas).</li>
 </ul>
 </div>
@@ -903,7 +904,7 @@
 <p>Now both gender categories can be compared across conditions using a shared zero baseline. Body scan and mindful breathing tie for the most male participants, with 36 each; the control condition has the most female participants, with 86.</p>
 <div class="slide-text">
 <ul>
-<li><strong>Prefer bars with a shared baseline when comparisons between bar segments is important</strong></li>
+<li><strong>Prefer bars with a shared baseline when comparisons between bar segments are important.</strong></li>
 <li><strong>Prefer stacked bars when the total is important (similar to stacked areas).</strong></li>
 </ul>
 </div>
@@ -921,7 +922,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="proportions" class="slide level2" data-footer="false" data-chapter-anchor="proportions">
+<section id="proportions" class="slide level2" data-chapter-anchor="proportions" data-footer="false">
 <h2>Proportions</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1062,7 +1063,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="pie-charts" class="slide level2" data-footer="false" data-chapter-anchor="pie-charts">
+<section id="pie-charts" class="slide level2" data-chapter-anchor="pie-charts" data-footer="false">
 <h2>Pie charts</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1146,7 +1147,7 @@
 <p><code>theta</code> is the visual channel that controls the angle of each slice in the pie.</p>
 <p>We can also <a href="https://altair-viz.github.io/gallery/radial_chart.html">adjust the inner and outer radii</a>. Setting an inner radius greater than zero creates a donut chart.</p>
 <p><strong>ggplot</strong></p>
-<p>In ggplot, we can construct a pie chart by transforming a stacked bar into polar coordinates with <code>coord_polar()</code>; a very grammatically coherent way to express a pie chart!</p>
+<p>In ggplot, we can construct a pie chart by transforming a stacked bar into polar coordinates with <code>coord_polar()</code>— a very grammatically coherent way to express a pie chart!</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1159,7 +1160,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-pie-charts-for-precise-comparisons" class="slide level2" data-footer="false" data-chapter-anchor="pie-charts">
+<section id="avoid-pie-charts-for-precise-comparisons" class="slide level2" data-chapter-anchor="pie-charts" data-footer="false">
 <h2>Avoid pie charts for precise comparisons</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
@@ -1208,9 +1209,9 @@
 </div>
 </div>
 <aside class="notes">
-<p>It is almost always better to use some form of a bar chart. When there are many groups in the data, pie charts can be disorienting. The charts below show parliamentary seats from the 2026 Swedish election.<span>(Source: <a href="https://www.val.se/valresultat-och-statistik/riksdags--region--och-kommunval/valresultat-2026">Swedish Election Authority, final results for 2026</a>)</span>, with parties grouped into their blocs from last election. In the bar chart to the left, it is easier to see that Bloc 1 has slightly more seats: 176 compared with 173, and we could make this even clearer by adding a line/rule at the majority cutoff or by making the figure larger. In the middle pie chart, comparing the bloc totals is much harder because each bloc is split across several party slices. Even in the simplified rightmost pie chart which shows only the seats per bloc, the small difference between the two slices is difficult to judge.</p>
+<p>It is almost always better to use some form of a bar chart. When there are many groups in the data, pie charts can be disorienting. The charts below show parliamentary seats from the 2026 Swedish election.<span>(Source: <a href="https://www.val.se/valresultat-och-statistik/riksdags--region--och-kommunval/valresultat-2026">Swedish Election Authority, final results for 2026</a>)</span>, with parties grouped into their blocs from the last election. In the bar chart to the left, it is easier to see that Bloc 1 has slightly more seats: 176 compared with 173, and we could make this even clearer by adding a line/rule at the majority cutoff or by making the figure larger. In the middle pie chart, comparing the bloc totals is much harder because each bloc is split across several party slices. Even in the simplified rightmost pie chart which shows only the seats per bloc, the small difference between the two slices is difficult to judge.</p>
 <!-- TODO include this example on the color page when talking about appropriate inherent colors -->
-<p>Another way of thinking of these count charts is that we are viewing distributions of categorical values. This concept can also be applied to quantitative values, as we will see in <a href="../9_binned-distributions.html#sec-binned-distributions">Binned distributions</a>.</p>
+<p>These charts show distributions by counting observations in categories. What if the variable is quantitative, with many distinct values rather than a few named categories? In <a href="../chapters/9_binned-distributions.html#sec-binned-distributions">Binned distributions</a>, we group nearby values into intervals and count observations in each one. This extends the bar-chart idea to histograms.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

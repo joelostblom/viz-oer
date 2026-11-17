@@ -35,7 +35,7 @@
     }
   </style>
   <link rel="stylesheet" href="14_color_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="14_color_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="14_color_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="14_color_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -127,8 +127,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
   <style>
   img[src*="color-lecture/"],
   img[data-src*="color-lecture/"] {
@@ -183,7 +183,7 @@
 </ul>
 </div>
 <aside class="notes">
-<p><span class="slide-bullet"><strong>Color can distinguish groups, communicate numerical magnitude, or draw attention to a particular observation.</strong></span> <span class="slide-bullet"><strong>A color scheme should make those meanings easier to see, rather than introduce patterns that are not present in the data.</strong></span> This chapter builds on the grouping channels in <a href="../5_groups.html#sec-groups">Groups</a> and the communication choices in <a href="../13_communication.html#sec-communication">Communication</a>.</p>
+<p><span class="slide-bullet"><strong>Color can distinguish groups, communicate numerical magnitude, or draw attention to a particular observation.</strong></span> <span class="slide-bullet"><strong>A color scheme should make those meanings easier to see, rather than introduce patterns that are not present in the data.</strong></span> This chapter builds on the grouping channels in <a href="../chapters/5_groups.html#sec-groups">Groups</a> and the communication choices in <a href="../chapters/13_communication.html#sec-communication">Communication</a>.</p>
 <p><span class="slide-bullet"><strong>A useful palette is not simply a collection of favorite colors</strong></span>. These lecture figures show how <span class="slide-bullet"><strong>context, perception, and the meaning of a variable affect what a color choice communicates</strong></span>. The programming examples follow the visual examples later in the chapter.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -200,8 +200,8 @@
 <section id="color-depends-on-context" class="slide level2" data-footer="false" data-chapter-anchor="color-depends-on-context">
 <h2>Color depends on context</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/dress-photograph.png" alt="The photograph of the dress that viewers famously interpreted as either blue and black or white and gold."></p>
-<!-- ![](img/color-lecture/dress-lighting-context.png){fig-alt="An illustration places the dress in different lighting contexts to show how assumptions about illumination affect perceived color."} -->
+<p><img data-src="assets/images/color-lecture/dress-photograph.png" alt="The photograph of the dress that viewers famously interpreted as either blue and black or white and gold."></p>
+<!-- ![](assets/images/color-lecture/dress-lighting-context.png){fig-alt="An illustration places the dress in different lighting contexts to show how assumptions about illumination affect perceived color."} -->
 </div>
 <aside class="notes">
 <p>The dress debate illustrates that perceived color depends on how we interpret illumination. Different readers can experience the same image differently, so a color choice that seems obvious to its creator may not be obvious to everyone.</p>
@@ -220,7 +220,7 @@
 <section id="visualization-continued-1" class="slide level2" data-footer="false" data-chapter-anchor="color-depends-on-context">
 <h2>Color depends on context</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/checker-shadow.png" alt="Edward H. Adelson's checker-shadow illusion shows squares A and B on a checkerboard beneath the shadow of a green cylinder."></p>
+<p><img data-src="assets/images/color-lecture/checker-shadow.png" alt="Edward H. Adelson's checker-shadow illusion shows squares A and B on a checkerboard beneath the shadow of a green cylinder."></p>
 </div>
 <aside class="notes">
 <p>Compare squares A and B before watching the next example. The surrounding checkerboard and cast shadow influence our judgment of their lightness. Illustration: Edward H. Adelson.</p>
@@ -239,7 +239,7 @@
 <section id="visualization-continued-2" class="slide level2" data-footer="false" data-chapter-anchor="color-depends-on-context">
 <h2>Color depends on context</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/checker-shadow-reveal.gif" alt="An animated version of the checker-shadow illusion connects the two squares with matching gray regions, revealing that their pixel values are the same." width="650"></p>
+<p><img data-src="assets/images/color-lecture/checker-shadow-reveal.gif" alt="An animated version of the checker-shadow illusion connects the two squares with matching gray regions, revealing that their pixel values are the same." width="650"></p>
 </div>
 <aside class="notes">
 <p>The animation reveals that the two squares use the same gray values. Apparent lightness is not determined by a pixel value alone; its surroundings help determine how we interpret it. Animation: Edward H. Adelson.</p>
@@ -262,14 +262,14 @@
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="0">Colored by protein expression</h3>
 <div class="slide-media fragment fade-in" data-slide-title="Colored by protein expression" data-fragment-index="0">
-<p><img data-src="img/color-lecture/microscopy-boundary.png" style="width:100.0%" alt="A microscopy image shows cells inside an irregular white boundary."></p>
+<p><img data-src="assets/images/color-lecture/microscopy-boundary.png" style="width:100.0%" alt="A microscopy image shows cells inside an irregular white boundary."></p>
 </div>
 </div>
 <div class="slide-column">
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="1">Colored by distance</h3>
 <div class="slide-media fragment fade-in" data-slide-title="Colored by distance" data-fragment-index="1">
-<p><img data-src="img/color-lecture/distance-rainbow.png" style="width:100.0%" alt="A continuous distance field is rendered with a rainbow palette that makes several distinct bands appear within the region."></p>
+<p><img data-src="assets/images/color-lecture/distance-rainbow.png" style="width:100.0%" alt="A continuous distance field is rendered with a rainbow palette that makes several distinct bands appear within the region."></p>
 </div>
 </div>
 </div>
@@ -293,13 +293,13 @@
 <div class="columns">
 <div class="column" style="width:33%;">
 <p><strong>Rainbow</strong></p>
-<p><img data-src="img/color-lecture/distance-rainbow.png" style="width:100.0%" alt="The distance field uses a rainbow palette with prominent bands."></p>
+<p><img data-src="assets/images/color-lecture/distance-rainbow.png" style="width:100.0%" alt="The distance field uses a rainbow palette with prominent bands."></p>
 </div><div class="column" style="width:33%;">
 <p><strong>Viridis</strong></p>
-<p><img data-src="img/color-lecture/distance-viridis.png" style="width:100.0%" alt="The same distance field uses a smoothly varying viridis palette."></p>
+<p><img data-src="assets/images/color-lecture/distance-viridis.png" style="width:100.0%" alt="The same distance field uses a smoothly varying viridis palette."></p>
 </div><div class="column" style="width:33%;">
 <p><strong>Grayscale</strong></p>
-<p><img data-src="img/color-lecture/distance-grayscale.png" style="width:100.0%" alt="The same distance field is represented by an ordered grayscale gradient."></p>
+<p><img data-src="assets/images/color-lecture/distance-grayscale.png" style="width:100.0%" alt="The same distance field is represented by an ordered grayscale gradient."></p>
 </div></div>
 </div>
 <aside class="notes">
@@ -321,9 +321,9 @@
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="img/color-lecture/rainbow-monochrome.png" style="width:100.0%" alt="A monochrome view of the rainbow distance map retains alternating bright and dark rings."></p>
+<p><img data-src="assets/images/color-lecture/rainbow-monochrome.png" style="width:100.0%" alt="A monochrome view of the rainbow distance map retains alternating bright and dark rings."></p>
 </div><div class="column" style="width:50%;">
-<p><img data-src="img/color-lecture/viridis-monochrome.png" style="width:100.0%" alt="A monochrome view of the viridis distance map retains a more steadily changing lightness gradient."></p>
+<p><img data-src="assets/images/color-lecture/viridis-monochrome.png" style="width:100.0%" alt="A monochrome view of the viridis distance map retains a more steadily changing lightness gradient."></p>
 </div></div>
 </div>
 <aside class="notes">
@@ -345,9 +345,9 @@
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="img/color-lecture/rainbow-cvd-simulation.png" style="width:100.0%" alt="A color-vision-deficiency simulation changes the rainbow map into strong blue and yellow bands."></p>
+<p><img data-src="assets/images/color-lecture/rainbow-cvd-simulation.png" style="width:100.0%" alt="A color-vision-deficiency simulation changes the rainbow map into strong blue and yellow bands."></p>
 </div><div class="column" style="width:50%;">
-<p><img data-src="img/color-lecture/viridis-cvd-simulation.png" style="width:100.0%" alt="A color-vision-deficiency simulation of the viridis map preserves a more continuous lightness progression."></p>
+<p><img data-src="assets/images/color-lecture/viridis-cvd-simulation.png" style="width:100.0%" alt="A color-vision-deficiency simulation of the viridis map preserves a more continuous lightness progression."></p>
 </div></div>
 </div>
 <aside class="notes">
@@ -371,14 +371,14 @@
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="0">RGB</h3>
 <div class="slide-media fragment fade-in" data-slide-title="RGB" data-fragment-index="0">
-<p><img data-src="img/color-lecture/rgb-color-model.png" alt="An RGB color model represents colors by combinations of red, green, and blue components."></p>
+<p><img data-src="assets/images/color-lecture/rgb-color-model.png" alt="An RGB color model represents colors by combinations of red, green, and blue components."></p>
 </div>
 </div>
 <div class="slide-column">
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="1">HSL</h3>
 <div class="slide-media fragment fade-in" data-slide-title="HSL" data-fragment-index="1">
-<p><img data-src="img/color-lecture/hsl-color-model.png" alt="An HSL color model arranges hue around a circle, saturation from gray toward vivid color, and lightness from black to white."></p>
+<p><img data-src="assets/images/color-lecture/hsl-color-model.png" alt="An HSL color model arranges hue around a circle, saturation from gray toward vivid color, and lightness from black to white."></p>
 </div>
 </div>
 </div>
@@ -400,7 +400,7 @@
 <section id="visualization-continued-6" class="slide level2" data-footer="false" data-chapter-anchor="color-palette-foundations">
 <h2>Color palette foundations</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/hue-saturation-lightness.png" style="width:100.0%" alt="Three rows of swatches vary hue across colors, saturation from gray to blue, and lightness from dark to light."></p>
+<p><img data-src="assets/images/color-lecture/hue-saturation-lightness.png" style="width:100.0%" alt="Three rows of swatches vary hue across colors, saturation from gray to blue, and lightness from dark to light."></p>
 </div>
 <aside class="notes">
 <p>Hue answers roughly “which color?”, saturation describes how colorful or gray it looks, and lightness describes a dark-to-light dimension. The swatches from the <a href="https://seaborn.pydata.org/tutorial/color_palettes.html">Seaborn palette tutorial</a> help separate these choices.</p>
@@ -419,7 +419,7 @@
 <section id="visualization-continued-7" class="slide level2" data-footer="false" data-chapter-anchor="color-palette-foundations">
 <h2>Color palette foundations</h2>
 <div class="slide-media" data-slide-reveal="false">
-<p><img data-src="img/color-lecture/categorical-palette-comparison.png" alt="Two scatterplots compare distinct hues for categories with shades of blue that imply an order among the groups."></p>
+<p><img data-src="assets/images/color-lecture/categorical-palette-comparison.png" alt="Two scatterplots compare distinct hues for categories with shades of blue that imply an order among the groups."></p>
 <p>Source: <a href="https://seaborn.pydata.org/tutorial/color_palettes.html">Seaborn palette tutorial</a>.</p>
 </div>
 <aside class="notes">
@@ -439,7 +439,7 @@
 <section id="visualization-continued-8" class="slide level2" data-footer="false" data-chapter-anchor="color-palette-foundations">
 <h2>Color palette foundations</h2>
 <div class="slide-media" data-slide-reveal="false">
-<p><img data-src="img/color-lecture/numerical-palette-comparison.png" alt="Two binned plots compare an unordered many-hue palette with an ordered dark-to-light palette for numerical values."></p>
+<p><img data-src="assets/images/color-lecture/numerical-palette-comparison.png" alt="Two binned plots compare an unordered many-hue palette with an ordered dark-to-light palette for numerical values."></p>
 <p>Source: <a href="https://seaborn.pydata.org/tutorial/color_palettes.html">Seaborn palette tutorial</a>.</p>
 </div>
 <aside class="notes">
@@ -459,10 +459,10 @@
 <section id="different-types-of-color-palettes-are-designed-for-different-purposes" class="slide level2" data-footer="false" data-chapter-anchor="different-types-of-color-palettes-are-designed-for-different-purposes">
 <h2>Different types of color palettes are designed for different purposes</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/sequential-lightness.png" style="width:100.0%" alt="Several sequential palettes are plotted against perceptual lightness, showing how lightness changes through each palette."></p>
+<p><img data-src="assets/images/color-lecture/sequential-lightness.png" style="width:100.0%" alt="Several sequential palettes are plotted against perceptual lightness, showing how lightness changes through each palette."></p>
 </div>
 <aside class="notes">
-<p>A sequential palette represents movement along a numerical range. Check the lightness progression, plateaus or reversals can make some changes stand out more than others, and sometimes introduce artifical banding.</p>
+<p>A sequential palette represents movement along a numerical range. Check the lightness progression: plateaus or reversals can make some changes stand out more than others, and sometimes introduce artificial banding.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -478,7 +478,7 @@
 <section id="visualization-continued-9" class="slide level2" data-footer="false" data-chapter-anchor="different-types-of-color-palettes-are-designed-for-different-purposes">
 <h2>Different types of color palettes are designed for different purposes</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/uniform-sequential-lightness.png" style="width:100.0%" alt="Lightness plots for viridis, plasma, inferno, magma, and cividis show approximately uniform sequential progressions."></p>
+<p><img data-src="assets/images/color-lecture/uniform-sequential-lightness.png" style="width:100.0%" alt="Lightness plots for viridis, plasma, inferno, magma, and cividis show approximately uniform sequential progressions."></p>
 </div>
 <aside class="notes">
 <p>Perceptually uniform palettes aim to make equal data steps look approximately equally different to the human eye. These reference diagrams come from the <a href="https://matplotlib.org/stable/users/explain/colors/colormaps.html">Matplotlib colormap guide</a>.</p>
@@ -497,7 +497,7 @@
 <section id="visualization-continued-10" class="slide level2" data-footer="false" data-chapter-anchor="different-types-of-color-palettes-are-designed-for-different-purposes">
 <h2>Different types of color palettes are designed for different purposes</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/nonuniform-lightness.png" style="width:100.0%" alt="Lightness plots for several miscellaneous palettes have peaks, troughs, and unequal changes across the range."></p>
+<p><img data-src="assets/images/color-lecture/nonuniform-lightness.png" style="width:100.0%" alt="Lightness plots for several miscellaneous palettes have peaks, troughs, and unequal changes across the range."></p>
 </div>
 <aside class="notes">
 <p>A colorful palette can have a highly uneven lightness profile. Those peaks and troughs can create artificial emphasis or obscure the ordering of values.</p>
@@ -516,7 +516,7 @@
 <section id="visualization-continued-11" class="slide level2" data-footer="false" data-chapter-anchor="different-types-of-color-palettes-are-designed-for-different-purposes">
 <h2>Different types of color palettes are designed for different purposes</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/palette-rendering-comparison.png" alt="The same scene is rendered with Turbo, Jet, Viridis, and Inferno, revealing different apparent bands and levels of emphasis."></p>
+<p><img data-src="assets/images/color-lecture/palette-rendering-comparison.png" alt="The same scene is rendered with Turbo, Jet, Viridis, and Inferno, revealing different apparent bands and levels of emphasis."></p>
 </div>
 <aside class="notes">
 <p>Changing the palette changes which features attract attention even when the values are unchanged. Choose a palette for the comparison it supports, rather than for visual excitement alone.</p>
@@ -535,10 +535,10 @@
 <section id="guessing-a-numerical-sequence-from-hue" class="slide level2" data-footer="false" data-chapter-anchor="guessing-a-numerical-sequence-from-hue">
 <h2>Guessing a numerical sequence from hue</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/texas-color-sequence-no-legend.png" alt="A Texas county map uses a rainbow-like palette to represent the percentage identifying as white." width="800"></p>
+<p><img data-src="assets/images/color-lecture/texas-color-sequence-no-legend.png" alt="A Texas county map uses a rainbow-like palette to represent the percentage identifying as white." width="800"></p>
 </div>
 <aside class="notes">
-<p>In the images above, where would you expect red to fall in this sequence before reading the legend below? Hue alone does not provide an unambiguous numerical order; the legend and the palette’s lightness structure both matter. In this case a cyclic palette was used for data that is not cyclic in nature, so the red shade being matched to both the top and the bottom of the color scale is quite confusing (although we could use neighboring regions to figure out the likely vaule of the red regions).</p>
+<p>In the images above, where would you expect red to fall in this sequence before reading the legend below? Hue alone does not provide an unambiguous numerical order; the legend and the palette’s lightness structure both matter. In this case a cyclic palette was used for data that is not cyclic in nature, so the red shade being matched to both the top and the bottom of the color scale is quite confusing (although we could use neighboring regions to figure out the likely value of the red regions).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -554,13 +554,13 @@
 <section id="visualization-continued-12" class="slide level2" data-footer="false" data-chapter-anchor="guessing-a-numerical-sequence-from-hue">
 <h2>Guessing a numerical sequence from hue</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/texas-color-sequence.png" alt="A Texas county map uses a rainbow-like palette to represent the percentage identifying as white." width="800"></p>
+<p><img data-src="assets/images/color-lecture/texas-color-sequence.png" alt="A Texas county map uses a rainbow-like palette to represent the percentage identifying as white." width="800"></p>
 </div>
 </section>
 <section id="visualization-continued-13" class="slide level2" data-footer="false" data-chapter-anchor="guessing-a-numerical-sequence-from-hue">
 <h2>Guessing a numerical sequence from hue</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/cyclic-palettes.png" style="width:100.0%" alt="Cyclic palette diagrams show colors returning to a similar appearance at the beginning and end of the range."></p>
+<p><img data-src="assets/images/color-lecture/cyclic-palettes.png" style="width:100.0%" alt="Cyclic palette diagrams show colors returning to a similar appearance at the beginning and end of the range."></p>
 </div>
 <aside class="notes">
 <p>Use a cyclic palette when the underlying variable wraps around, such as an angle or a position within a yearly cycle. Similar endpoint colors communicate that connection, but would be misleading for unrelated low and high endpoints on a linear scale.</p>
@@ -579,7 +579,7 @@
 <section id="visualization-continued-14" class="slide level2" data-footer="false" data-chapter-anchor="guessing-a-numerical-sequence-from-hue">
 <h2>Guessing a numerical sequence from hue</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/diverging-palettes.png" alt="Diverging palettes use two sides around a central light region, with their lightness profiles shown for comparison."></p>
+<p><img data-src="assets/images/color-lecture/diverging-palettes.png" alt="Diverging palettes use two sides around a central light region, with their lightness profiles shown for comparison."></p>
 </div>
 <aside class="notes">
 <p>Use a diverging palette when departures above and below a meaningful reference have different interpretations. Examples include change from a baseline or correlations centered on zero; the middle should not be chosen merely because it is halfway between the observed extremes.</p>
@@ -598,21 +598,21 @@
 <section id="visualization-continued-15" class="slide level2" data-footer="false" data-chapter-anchor="guessing-a-numerical-sequence-from-hue" data-slide-columns="content">
 <h2>Guessing a numerical sequence from hue</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
-<p><img data-src="img/color-lecture/categorical-palettes.png" style="width:100.0%" alt="Qualitative palette examples use distinct colors to separate groups without a numerical progression."></p>
+<p><img data-src="assets/images/color-lecture/categorical-palettes.png" style="width:100.0%" alt="Qualitative palette examples use distinct colors to separate groups without a numerical progression."></p>
 </div>
 <div class="slide-columns-content">
 <div class="slide-column">
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="1"></h3>
 <div class="slide-media fragment fade-in" data-slide-title="" data-fragment-index="1">
-<p><img data-src="img/color-lecture/too-many-country-colors-scatter.png" alt="A country-level scatterplot assigns a different color to many countries and requires a very long legend."></p>
+<p><img data-src="assets/images/color-lecture/too-many-country-colors-scatter.png" alt="A country-level scatterplot assigns a different color to many countries and requires a very long legend."></p>
 </div>
 </div>
 <div class="slide-column">
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="2"></h3>
 <div class="slide-media fragment fade-in" data-slide-title="" data-fragment-index="2">
-<p><img data-src="img/color-lecture/too-many-country-colors-bars.png" alt="A bar chart uses many different country colors that form a striking rainbow but are difficult to identify individually."></p>
+<p><img data-src="assets/images/color-lecture/too-many-country-colors-bars.png" alt="A bar chart uses many different country colors that form a striking rainbow but are difficult to identify individually."></p>
 </div>
 </div>
 </div>
@@ -621,14 +621,14 @@
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="3"></h3>
 <div class="slide-media fragment fade-in" data-slide-title="" data-fragment-index="3">
-<p><img data-src="img/color-lecture/land-water-unintuitive.png" style="width:100.0%" alt="A land-cover bar chart colors land blue and water green, contrary to a common map-color convention."></p>
+<p><img data-src="assets/images/color-lecture/land-water-unintuitive.png" style="width:100.0%" alt="A land-cover bar chart colors land blue and water green, contrary to a common map-color convention."></p>
 </div>
 </div>
 <div class="slide-column">
 <!-- column content -->
 <h3 class="slide-heading fragment fade-in" data-fragment-index="4"></h3>
 <div class="slide-media fragment fade-in" data-slide-title="" data-fragment-index="4">
-<p><img data-src="img/color-lecture/land-water-intuitive.png" style="width:100.0%" alt="The same land-cover values use green for land and blue for water."></p>
+<p><img data-src="assets/images/color-lecture/land-water-intuitive.png" style="width:100.0%" alt="The same land-cover values use green for land and blue for water."></p>
 </div>
 </div>
 </div>

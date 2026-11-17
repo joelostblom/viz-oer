@@ -16,5 +16,5 @@ historical dataset, not current diamond prices.
 Recreate the file from the project R environment:
 
 ```sh
-Rscript textbook/src/data_processing/prepare_joint_diamonds.R
+Rscript src/data_processing/prepare_joint_diamonds.R
 ```

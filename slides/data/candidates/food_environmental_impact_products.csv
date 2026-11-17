@@ -1,0 +1,44 @@
+product_id,product,source_product_group,retail_unit,kg_per_retail_unit,mass_conversion_source,protein_g_per_kg,protein_source,energy_kcal_per_kg,energy_source,record_count,reported_farm_or_regional_inventories_land_ghg,n_ghg_kg_co2e,n_land_use_m2_year,n_acidification_g_so2e,n_eutrophication_g_po4e,n_freshwater_withdrawals_l,n_scarcity_weighted_water_l_eq
+1,Wheat & Rye (Bread),Wheat & Rye (Bread),1 kg,1,Definition: one kilogram,,,2675.33,"Data S2, Results - Nutritional Units!B4 x 1000",261,8772,261,261,209,166,261,261
+2,Maize (Meal),Maize (Meal),1 kg,1,Definition: one kilogram,,,4522.5,"Data S2, Results - Nutritional Units!B5 x 1000",152,6180,152,152,112,65,152,152
+3,Barley (Beer),Barley (Beer),1 litre,,,,,,,93,695,93,93,83,61,93,93
+4,Oatmeal,Oatmeal,1 kg,1,Definition: one kilogram,,,2623,"Data S2, Results - Nutritional Units!B7 x 1000",17,139,17,17,14,10,17,17
+5,Rice,Rice,1 kg,1,Definition: one kilogram,,,3686,"Data S2, Results - Nutritional Units!B8 x 1000",65,7788,65,65,52,53,65,65
+6,Potatoes,Potatoes,1 kg,1,Definition: one kilogram,,,732,"Data S2, Results - Nutritional Units!B9 x 1000",91,604,91,91,58,64,90,90
+7,Cassava,Cassava,1 kg,1,Definition: one kilogram,,,974,"Data S2, Results - Nutritional Units!B10 x 1000",52,288,52,52,15,2,52,52
+8,Cane Sugar,Cane Sugar,1 kg,1,Definition: one kilogram,,,,,53,116,53,53,32,22,53,53
+9,Beet Sugar,Beet Sugar,1 kg,1,Definition: one kilogram,,,,,36,209,36,36,16,14,36,36
+10,Other Pulses,Other Pulses,1 kg,1,Definition: one kilogram,214.1,"Data S2, Results - Nutritional Units!B13 x 100",,,44,115,44,44,29,24,44,44
+11,Peas,Peas,1 kg,1,Definition: one kilogram,222.2,"Data S2, Results - Nutritional Units!B14 x 100",,,33,438,33,33,27,25,33,33
+12,Nuts,Nuts,1 kg,1,Definition: one kilogram,163.3,"Data S2, Results - Nutritional Units!B15 x 100",,,23,199,23,23,21,19,23,23
+13,Groundnuts,Groundnuts,1 kg,1,Definition: one kilogram,261.8,"Data S2, Results - Nutritional Units!B16 x 100",,,24,100,24,24,23,13,24,24
+14,Soymilk,Soymilk,1 litre,1.01216244073,Standardisation!C859 (kg/litre),33,Supplementary Table S1: nominal 3.3% protein (33 g/kg),,,47,354,47,47,41,23,47,47
+15,Tofu,Tofu,1 kg,1,Definition: one kilogram,160,"Data S2, Results - Nutritional Units!B18 x 100",,,47,354,47,47,41,23,47,47
+16,Soybean Oil,Soybean Oil,1 litre,0.926,Standardisation!C858 (kg/litre),,,,,49,449,49,49,43,26,49,49
+17,Palm Oil,Palm Oil,1 litre,0.89,Standardisation!C856 (kg/litre),,,,,30,220,30,30,16,10,30,30
+18,Sunflower Oil,Sunflower Oil,1 litre,0.92,Standardisation!C860 (kg/litre),,,,,31,519,31,31,29,26,31,31
+19,Rapeseed Oil,Rapeseed Oil,1 litre,0.92,Standardisation!C857 (kg/litre),,,,,77,1791,77,77,62,51,77,77
+20,Olive Oil,Olive Oil,1 litre,0.86,Standardisation!C855 (kg/litre),,,,,24,411,24,24,19,14,24,24
+21,Tomatoes,Tomatoes,1 kg,1,Definition: one kilogram,,,,,82,855,82,82,66,55,69,69
+22,Onions & Leeks,Onions & Leeks,1 kg,1,Definition: one kilogram,,,,,29,37,29,29,14,12,29,29
+23,Root Vegetables,Root Vegetables,1 kg,1,Definition: one kilogram,,,,,30,43,30,30,14,14,30,30
+24,Brassicas,Brassicas,1 kg,1,Definition: one kilogram,,,,,32,40,32,32,14,16,32,32
+25,Other Vegetables,Other Vegetables,1 kg,1,Definition: one kilogram,,,,,66,249,66,66,52,46,66,66
+26,Citrus Fruit,Citrus Fruit,1 kg,1,Definition: one kilogram,,,,,30,377,30,30,25,21,30,30
+27,Bananas,Bananas,1 kg,1,Definition: one kilogram,,,,,23,246,23,23,13,12,23,23
+28,Apples,Apples,1 kg,1,Definition: one kilogram,,,,,66,125,66,66,55,51,66,66
+29,Berries & Grapes,Berries & Grapes,1 kg,1,Definition: one kilogram,,,,,40,183,40,40,21,7,40,40
+30,Wine,Wine,1 litre,,,,,,,59,154,59,59,53,49,59,59
+31,Other Fruit,Other Fruit,1 kg,1,Definition: one kilogram,,,,,53,814,53,53,31,24,53,53
+32,Coffee,Coffee,1 kg,1,Definition: one kilogram,,,,,28,346,28,28,12,12,28,28
+33,Dark Chocolate,Dark Chocolate,1 kg,1,Definition: one kilogram,,,,,19,162,19,19,18,9,19,19
+34,Beef (beef herd),Bovine Meat (beef herd),1 kg,1,Definition: one kilogram,199.4,"Data S2, Results - Nutritional Units!B37 x 100",,,106,724,106,106,29,29,78,66
+35,Beef (dairy herd),Bovine Meat (dairy herd),1 kg,1,Definition: one kilogram,197.4,"Data S2, Results - Nutritional Units!B38 x 100",,,43,490,43,43,19,19,23,20
+36,Lamb & Mutton,Lamb & Mutton,1 kg,1,Definition: one kilogram,200.1,"Data S2, Results - Nutritional Units!B39 x 100",,,37,757,37,37,9,9,20,15
+37,Pig Meat,Pig Meat,1 kg,1,Definition: one kilogram,161.8,"Data S2, Results - Nutritional Units!B40 x 100",,,75,116,75,75,49,49,60,57
+38,Poultry Meat,Poultry Meat,1 kg,1,Definition: one kilogram,173.2,"Data S2, Results - Nutritional Units!B41 x 100",,,46,326,46,46,35,34,37,27
+39,Milk,Milk,1 litre,1.033,Standardisation!C854 (kg/litre),33,Supplementary Table S1: nominal 3.3% protein (33 g/kg),,,147,1811,147,147,68,68,77,57
+40,Cheese,Cheese,1 kg,1,Definition: one kilogram,220.8,"Data S2, Results - Nutritional Units!B43 x 100",,,153,1862,153,153,69,71,78,58
+41,Eggs,Eggs,1 kg,1,Definition: one kilogram,110.96,"Data S2, Results - Nutritional Units!B44 x 100",,,31,100,31,31,25,18,16,16
+42,Fish (farmed),Fish (farmed),1 kg,1,Definition: one kilogram,228.05,"Data S2, Results - Nutritional Units!B45 x 100",,,54,612,54,54,49,49,38,34
+43,Crustaceans (farmed),Crustaceans (farmed),1 kg,1,Definition: one kilogram,147.7,"Data S2, Results - Nutritional Units!B46 x 100",,,21,1035,21,21,21,19,21,21

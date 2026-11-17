@@ -13,7 +13,7 @@
 To recreate both CSVs explicitly (never during a chapter render):
 
 ```sh
-python textbook/src/data_processing/prepare_eda_weather.py
+python src/data_processing/prepare_eda_weather.py
 ```
 
 The script checks the schema, record count, date uniqueness, endpoints, and absence of empty source values, and prints the downloaded source's SHA-256 and the numbers of removed measurements.

@@ -103,7 +103,7 @@
     code span.wa { color: #e0af68; } /* Warning */
   </style>
   <link rel="stylesheet" href="5_groups_files/libs/revealjs/dist/theme/quarto-b71ce94314d660ce5adf569d6d97f7a5.css">
-  <link rel="stylesheet" href="chapter-slides.css">
+  <link rel="stylesheet" href="assets/styles/chapter-slides.css">
   <link href="5_groups_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="5_groups_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="5_groups_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,8 +195,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="chapter-slides.js" defer=""></script>
-  <script src="chapter-slide-tabs.js" defer=""></script>
+  <script src="assets/scripts/chapter-slides.js" defer=""></script>
+  <script src="assets/scripts/chapter-slide-tabs.js" defer=""></script>
   <style>
     .table.dataframe {
       width: auto;
@@ -215,7 +215,7 @@
 </div>
 
 </section>
-<section id="learning-outcomes" class="slide level2" data-chapter-anchor="" data-footer="false">
+<section id="learning-outcomes" class="slide level2" data-footer="false" data-chapter-anchor="">
 <h2>Learning outcomes</h2>
 <div class="slide-content fragment fade-in slide-outcomes-content" data-fragment-index="0">
 <ol>
@@ -254,7 +254,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-bother" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
+<section id="why-bother" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
 <h2>Why bother?</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -268,7 +268,7 @@
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="2">
 <ul>
-<li><p>One of these two charts holds the correct data, which one do you think it is?</p></li>
+<li><p>One of these two charts holds the correct data. Which one do you think it is?</p></li>
 </ul>
 </div>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="3">
@@ -331,7 +331,7 @@ Figure&nbsp;1
 <p>We will <span class="slide-bullet"><strong>investigate a country-level dataset containing the percentage of heavy drinkers and the average remaining life expectancy at age 65</strong></span>.<span>(Sources: Global Burden of Disease Study 2021 (GBD 2021) Results; <a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups">World Bank country and lending groups</a>.)</span> In our scatterplot, each point represents a country. The x-axis shows the percentage of heavy drinkers, and the y-axis shows the average number of years a person reaching age 65 can expect to live beyond that age.<span>(Retirement age differs between countries. We have used age 65 as it is close to the average in OECD countries. <a href="https://www.oecd-ilibrary.org/docserver/9bf0cb7f-en.pdf">OECD report</a>.)</span></p>
 <p>Before viewing the chart in the solution, sketch your prediction (either on paper or in your mind).</p>
 <p><strong>Hint</strong></p>
-<p>Let’s make our prediction more precise. <span class="slide-bullet"><strong>One of these two charts holds the correct data, which one do you think it is?</strong></span></p>
+<p>Let’s make our prediction more precise. <span class="slide-bullet"><strong>One of these two charts holds the correct data. Which one do you think it is?</strong></span></p>
 <p><strong>Solution</strong></p>
 <p>The correct answer is chart A, which may not be the pattern you expected! In this dataset, it seems like countries with a higher percentage of heavy drinkers tend to have higher remaining life expectancy at age 65. Remember, the chart is showing us an association; it hasn’t explained why the two measures move together.</p>
 <p>Did the pattern above match your expectations? Proceed to the next exercise to find out if there is more to this dataset than meets the eye!</p>
@@ -348,7 +348,7 @@ Figure&nbsp;1
           display:block!important;
       }</style></aside>
 </section>
-<section id="why-bother-1" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
+<section id="why-bother-1" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
 <h2>Why bother?</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -469,7 +469,7 @@ Figure&nbsp;1
           display:block!important;
       }</style></aside>
 </section>
-<section id="visualization-continued-1" class="slide level2" data-chapter-anchor="why-bother" data-footer="false">
+<section id="visualization-continued-1" class="slide level2" data-footer="false" data-chapter-anchor="why-bother">
 <h2>What changes when we group by income?</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-slide-title="What changes when we group by income?" data-fragment-index="0">
 <div class="cell-output-display">
@@ -538,7 +538,7 @@ Figure&nbsp;1
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-two-main-purposes-of-grouping" class="slide level2" data-chapter-anchor="the-two-main-purposes-of-grouping" data-footer="false">
+<section id="the-two-main-purposes-of-grouping" class="slide level2" data-footer="false" data-chapter-anchor="the-two-main-purposes-of-grouping">
 <h2>The two main purposes of grouping</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ol type="1">
@@ -567,7 +567,7 @@ Figure&nbsp;1
           display:block!important;
       }</style></aside>
 </section>
-<section id="simpsons-paradox" class="slide level2" data-chapter-anchor="simpsons-paradox" data-footer="false" data-slide-columns="content">
+<section id="simpsons-paradox" class="slide level2" data-footer="false" data-chapter-anchor="simpsons-paradox" data-slide-columns="content">
 <h2>Simpson’s paradox</h2>
 <div class="slide-columns-content">
 <div class="slide-column">
@@ -688,7 +688,7 @@ Figure&nbsp;1
           display:block!important;
       }</style></aside>
 </section>
-<section id="what-type-of-column-can-we-use-for-grouping" class="slide level2" data-chapter-anchor="what-type-of-column-can-we-use-for-grouping" data-footer="false">
+<section id="what-type-of-column-can-we-use-for-grouping" class="slide level2" data-footer="false" data-chapter-anchor="what-type-of-column-can-we-use-for-grouping">
 <h2>What type of column can we use for grouping?</h2>
 <div class="slide-media fragment fade-in" data-fragment-index="0">
 <ol type="A">
@@ -706,7 +706,7 @@ Figure&nbsp;1
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="2">
 <ul>
-<li><p>Don’t group data by continuous variables or discrete variable with many values</p></li>
+<li><p>Don’t group data by continuous variables or discrete variables with many values</p></li>
 </ul>
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="3">
@@ -715,7 +715,7 @@ Figure&nbsp;1
 </ul>
 </div>
 <aside class="notes">
-<p>In general, we <span class="slide-bullet"><strong>group data by “categorical” columns</strong></span>. If there is a natural order to the categories (e.g., education levels or letter grades), we can be more precise and call the column “ordinal”. If there is no such order, we say that the column is “nominal” (e.g., types of fruit or color names). As a general rule, we <span class="slide-bullet"><strong>don’t group data by continuous variables or discrete variable with many values</strong></span>, but we could if we first turn them into interval categories e.g.&nbsp;converting age in years into the intervals 18–24, 25–34, and 35–44. In general, <span class="slide-bullet"><strong>we want relatively few unique values when we group by a variable</strong></span> so that the visualization is easy to digest, but there are exceptions, particularly when creating faceted plots as we will see later.</p>
+<p>In general, we <span class="slide-bullet"><strong>group data by “categorical” columns</strong></span>. If there is a natural order to the categories (e.g., education levels or letter grades), we can be more precise and call the column “ordinal”. If there is no such order, we say that the column is “nominal” (e.g., types of fruit or color names). As a general rule, we <span class="slide-bullet"><strong>don’t group data by continuous variables or discrete variables with many values</strong></span>, but we could if we first turn them into interval categories e.g.&nbsp;converting age in years into the intervals 18–24, 25–34, and 35–44. In general, <span class="slide-bullet"><strong>we want relatively few unique values when we group by a variable</strong></span> so that the visualization is easy to digest, but there are exceptions, particularly when creating faceted plots as we will see later.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -728,7 +728,7 @@ Figure&nbsp;1
           display:block!important;
       }</style></aside>
 </section>
-<section id="channels-for-grouping" class="slide level2" data-chapter-anchor="channels-for-grouping" data-footer="false" data-slide-columns="true" style="--slide-left-width: 40fr; --slide-right-width: 60fr;">
+<section id="channels-for-grouping" class="slide level2" data-footer="false" data-chapter-anchor="channels-for-grouping" data-slide-columns="true" style="--slide-left-width: 40fr; --slide-right-width: 60fr;">
 <h2>Channels for grouping</h2>
 <div class="slide-column slide-column-left">
 <!-- column content -->
@@ -736,7 +736,7 @@ Figure&nbsp;1
 <div id="fig-grouping-channels" class="quarto-float quarto-figure quarto-figure-center" alt="Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles.">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-grouping-channels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="img/grouping-channels.svg" alt="Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles." width="451">
+<img data-src="assets/images/grouping-channels.svg" alt="Three grouping channels in classical order: spatial region illustrated by separate clusters, color hue by interleaved colored points, and shape by interleaved circles, squares, and triangles." width="451">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grouping-channels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Classical ordering of static identity channels for grouping; effectiveness depends on the task and design. Adapted from <a href="https://www.cs.ubc.ca/~tmm/vadbook/figures.html">Visualization Analysis and Design</a>, Tamara Munzner, with illustrations by Eamonn Maguire (2014, CC BY 4.0); motion omitted.
@@ -752,7 +752,7 @@ Figure&nbsp;2: Classical ordering of static identity channels for grouping; effe
 <div id="fig-traffic-light" class="quarto-float quarto-figure quarto-figure-center" alt="Illustration of pedestrian traffic light with a green and red person and different positions.">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-traffic-light-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="img/traffic-light.svg" alt="Illustration of pedestrian traffic light with a green and red person and different positions." width="451">
+<img data-src="assets/images/traffic-light.svg" alt="Illustration of pedestrian traffic light with a green and red person and different positions." width="451">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-traffic-light-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Traffic lights often use color, shape, and position to communicate meaning. <a href="https://www.vecteezy.com/vector-art/80397127-pedestrian-traffic-light-signals-with-green-walk-and-red-stop-hand-flat-icons">Pedestrian Vectors by Achmad Saroju via Vecteezy</a>
@@ -777,7 +777,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="applying-grouping-strategies" class="slide level2" data-chapter-anchor="applying-grouping-strategies" data-footer="false" data-slide-columns="content">
+<section id="applying-grouping-strategies" class="slide level2" data-footer="false" data-chapter-anchor="applying-grouping-strategies" data-slide-columns="content">
 <h2>Applying grouping strategies</h2>
 <div class="slide-columns-content">
 <div class="slide-column">
@@ -839,7 +839,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="color-2" class="slide level2" data-chapter-anchor="color-2" data-footer="false">
+<section id="color-2" class="slide level2" data-footer="false" data-chapter-anchor="color-2">
 <h2>Color</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -883,7 +883,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-1-step-1" class="slide level2" data-chapter-anchor="color-2" data-footer="false">
+<section id="tabset-1-step-1" class="slide level2" data-footer="false" data-chapter-anchor="color-2">
 <h2>Color</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Altair</a></li><li><a href="#tabset-3-2">ggplot</a></li></ul>
@@ -975,7 +975,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 <p><strong>ggplot</strong></p>
 <p>Here we use <code>color = income_group</code>:</p>
 <!-- TODO add an example with too many colors and then include this insteadof note on first color page -->
-<p>Using too many colors or colors that are too similar can blur the differences between groups. There are also several other important aspects of using colors effectively, such as how to ensure accessibility, particularly for people with color vision deficiencies. We will learn more about these topics in a later chapter, but for now it’s enough to remember that when there are more than about 4–6 groups in the data, it might be better to break it down into separate charts instead of grouping by color. The more overlap, the fewer content</p>
+<p>Using too many colors or colors that are too similar can blur the differences between groups. There are also several other important aspects of using colors effectively, such as how to ensure accessibility, particularly for people with color vision deficiencies. We will learn more about these topics in a later chapter, but for now it’s enough to remember that when there are more than about 4–6 groups in the data, it might be better to break it down into separate charts instead of grouping by color. The more overlap, the fewer groups we can distinguish clearly.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -988,7 +988,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="shape-2" class="slide level2" data-chapter-anchor="shape-2" data-footer="false">
+<section id="shape-2" class="slide level2" data-footer="false" data-chapter-anchor="shape-2">
 <h2>Shape</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1015,13 +1015,13 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-2-step-1" class="slide level2" data-chapter-anchor="shape-2" data-footer="false">
+<section id="tabset-2-step-1" class="slide level2" data-footer="false" data-chapter-anchor="shape-2">
 <h2>Combining shape and color</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Altair</a></li><li><a href="#tabset-4-2">ggplot</a></li></ul>
 <div class="slide-tabset tab-content" data-group="language">
 <div id="tabset-4-1">
-<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Combining shape and color — altair" data-fragment-index="0">
+<div class="slide-media fragment fade-in" data-slide-show="both" data-slide-title="Combining shape and color — Altair" data-fragment-index="0">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>alt.Chart(income_df).mark_point(filled<span class="op">=</span><span class="va">True</span>).encode(</span>
 <span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'percentage_heavy_drinkers'</span>,</span>
 <span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'life_expectancy_at_65'</span>,</span>
@@ -1142,7 +1142,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 <p>Setting <code>filled=True</code> fills all the points with a solid color, making the shapes easier to distinguish:</p>
 <p><strong>ggplot</strong></p>
 <p>While this combined approach can make grouping clearer, there are some pitfalls. For instance, hollow symbols limit the total area that can be colored, reducing the impact of color. Filled shapes can make color easier to see when combining shape and color. Additionally, smaller shapes are difficult to distinguish, so when plotting a dense scatterplot of small marks, try restricting the number of unique shapes to three or fewer, or consider avoiding using shape altogether. <!--TODO number of shapes --></p>
-<p>It is often difficult to interpret charts that map one variable to <code>color</code> and another to <code>shape</code>. This tends to lead to too much visual information and it is difficult to distinguish the many different combinations visually. The exception is if the chart is relatively simple with few observations and few combinations of the shape and color variable; then this combination <em>might</em> work.</p>
+<p>It is often difficult to interpret charts that map one variable to <code>color</code> and another to <code>shape</code>. This tends to lead to too much visual information and it is difficult to distinguish the many different combinations visually. The exception is if the chart is relatively simple with few observations and few combinations of the shape and color variables; then this combination <em>might</em> work.</p>
 <p>The many combinations of income group and region in this chart are hard to separate visually, which makes this chart ineffective:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1156,7 +1156,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-3-step-1" class="slide level2" data-chapter-anchor="shape-2" data-footer="false">
+<section id="tabset-3-step-1" class="slide level2" data-footer="false" data-chapter-anchor="shape-2">
 <h2>Using shape and color for different variables</h2>
 <div class="slide-tabset-single">
 <!-- single tab content -->
@@ -1236,7 +1236,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-using-size-to-group-by-a-categorical-variable" class="slide level2" data-chapter-anchor="shape-2" data-footer="false">
+<section id="avoid-using-size-to-group-by-a-categorical-variable" class="slide level2" data-footer="false" data-chapter-anchor="shape-2">
 <h2>Avoid using size to group by a categorical variable</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
@@ -1299,7 +1299,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="x-and-y-position" class="slide level2" data-chapter-anchor="x-and-y-position" data-footer="false">
+<section id="x-and-y-position" class="slide level2" data-footer="false" data-chapter-anchor="x-and-y-position">
 <h2>X and Y position</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1308,7 +1308,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="1">
 <ul>
-<li><p>No risk for overlap between groups</p></li>
+<li><p>No risk of overlap between groups</p></li>
 </ul>
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="2">
@@ -1327,7 +1327,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 </ul>
 </div>
 <aside class="notes">
-<p><span class="slide-bullet"><strong>Grouping by position often creates the clearest separation between groups</strong></span>. Distributing the groups along the x- or y-axis gives each group its own visual lane, preventing observations from different groups from overlapping. This means that there is <span class="slide-bullet"><strong>no risk for overlap between groups</strong></span> and <span class="slide-bullet"><strong>we can generally visualize many more groups</strong></span> when we separate them by position rather than color or shape. However, <span class="slide-bullet"><strong>the grouping column now occupies one positional visual channel</strong></span>, so <span class="slide-bullet"><strong>there is only one positional channel left</strong></span> for encoding the values we want to compare between the groups.</p>
+<p><span class="slide-bullet"><strong>Grouping by position often creates the clearest separation between groups</strong></span>. Distributing the groups along the x- or y-axis gives each group its own visual lane, preventing observations from different groups from overlapping. This means that there is <span class="slide-bullet"><strong>no risk of overlap between groups</strong></span> and <span class="slide-bullet"><strong>we can generally visualize many more groups</strong></span> when we separate them by position rather than color or shape. However, <span class="slide-bullet"><strong>the grouping column now occupies one positional visual channel</strong></span>, so <span class="slide-bullet"><strong>there is only one positional channel left</strong></span> for encoding the values we want to compare between the groups.</p>
 <p>Below, we distribute the regions along the y-axis. This leaves us with a choice of whether to use the x-axis for <code>percentage_heavy_drinkers</code> or <code>life_expectancy_at_65</code>. We cannot represent both quantitative variables with position in this chart.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1341,7 +1341,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-4-step-1" class="slide level2" data-chapter-anchor="x-and-y-position" data-footer="false">
+<section id="tabset-4-step-1" class="slide level2" data-footer="false" data-chapter-anchor="x-and-y-position">
 <h2>Giving each group its own lane</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Altair</a></li><li><a href="#tabset-5-2">ggplot</a></li></ul>
@@ -1432,7 +1432,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="avoid-rotated-category-labels-along-the-x-axis" class="slide level2" data-chapter-anchor="x-and-y-position" data-footer="false">
+<section id="avoid-rotated-category-labels-along-the-x-axis" class="slide level2" data-footer="false" data-chapter-anchor="x-and-y-position">
 <h2>Avoid rotated category labels along the x-axis</h2>
 <div class="slide-media fragment fade-in" data-slide-show="output" data-fragment-index="0">
 <div class="cell-output-display">
@@ -1494,11 +1494,11 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="faceting" class="slide level2" data-chapter-anchor="faceting" data-footer="false">
+<section id="faceting" class="slide level2" data-footer="false" data-chapter-anchor="faceting">
 <h2>Faceting</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
-<li><p>Generates multiple charts (or “facets”), each dedicated to a grouped subset of the data</p></li>
+<li><p>Faceting generates multiple charts (or “facets”), each dedicated to a grouped subset of the data</p></li>
 </ul>
 </div>
 <div class="slide-content fragment fade-in" data-fragment-index="1">
@@ -1522,7 +1522,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 </ul>
 </div>
 <aside class="notes">
-<p>Faceting takes the concept of grouping to the next level. Instead of using different visual channels within a single chart, <span class="slide-bullet"><strong>generates multiple charts (or “facets”), each dedicated to a grouped subset of the data</strong></span>. Faceting is <span class="slide-bullet"><strong>particularly effective for highlighting distinct trends and patterns within each subset</strong></span>, as well as identifying extreme values or outliers within groups. We could think of faceting as a type of position grouping, but its advantage is that it <span class="slide-bullet"><strong>keeps both the x- and y-axes free for other variables</strong></span>. Facetting <span class="slide-bullet"><strong>generally supports comparison of many groups</strong></span>, just like grouping by x or y position.</p>
+<p>Faceting takes the concept of grouping to the next level. Instead of using different visual channels within a single chart, <span class="slide-bullet"><strong>faceting generates multiple charts (or “facets”), each dedicated to a grouped subset of the data</strong></span>. Faceting is <span class="slide-bullet"><strong>particularly effective for highlighting distinct trends and patterns within each subset</strong></span>, as well as identifying extreme values or outliers within groups. We could think of faceting as a type of position grouping, but its advantage is that it <span class="slide-bullet"><strong>keeps both the x- and y-axes free for other variables</strong></span>. Faceting <span class="slide-bullet"><strong>generally supports comparison of many groups</strong></span>, just like grouping by x or y position.</p>
 <p><span class="slide-bullet"><strong>Previous grouping strategies can be used within each facet</strong></span></p>
 <p>Let’s create a separate facet for each income group, so that the relationship between <code>percentage_heavy_drinkers</code> and <code>life_expectancy_at_65</code> within each group stands out. We can lay out the facets differently depending on what we are most interested in comparing. If the y-axis is the primary channel for comparison, we would spread the facets out horizontally in a single row. If the x-axis is the primary channel for comparison, we would spread the facets out vertically in a single column. In either case, the scales should be shared for direct comparisons. Neither axis is our sole focus here: we are interested in comparing the overall pattern within each group, so we will lay out the facets in a compact grid to save space.</p>
 <style type="text/css">
@@ -1537,7 +1537,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-5-step-1" class="slide level2" data-chapter-anchor="faceting" data-footer="false">
+<section id="tabset-5-step-1" class="slide level2" data-footer="false" data-chapter-anchor="faceting">
 <h2>Faceting by income</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Altair</a></li><li><a href="#tabset-6-2">ggplot</a></li></ul>
@@ -1638,7 +1638,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="grouping-within-facets" class="slide level2" data-chapter-anchor="grouping-within-facets" data-footer="false">
+<section id="grouping-within-facets" class="slide level2" data-footer="false" data-chapter-anchor="grouping-within-facets">
 <h2>Grouping within facets</h2>
 <div class="slide-content fragment fade-in" data-fragment-index="0">
 <ul>
@@ -1661,9 +1661,9 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 <p><strong>Exercise</strong></p>
 <p>Let’s say <span class="slide-bullet"><strong>you are primarily interested in the relationship between life expectancy and heavy drinking across different regions</strong></span>. As a secondary comparison, <span class="slide-bullet"><strong>you would also like to see how different income groups vary within the same region</strong></span>. <span class="slide-bullet"><strong>Which visual channels would you use to group the chart?</strong></span></p>
 <p><strong>Hint</strong></p>
-<p>You could e.g.&nbsp;use faceting and coloring, but which one should you use for which grouping variable?</p>
+<p>You could, for example, use faceting and coloring, but which one should you use for which grouping variable?</p>
 <p><strong>Solution</strong></p>
-<p>Since we are interesting in comparing the relationship between two variables, faceting is a suitable choice as it gives two free positional channels (x and y) to map the two variables to for each group. Since we are primarily interested in how this relationship changes between regions, we will create one facet per region. Then we use another visual channel, such as color (or color and shape) to highlight the income groups within each region.</p>
+<p>Since we are interested in comparing the relationship between two variables, faceting is a suitable choice as it gives two free positional channels (x and y) to map the two variables to for each group. Since we are primarily interested in how this relationship changes between regions, we will create one facet per region. Then we use another visual channel, such as color (or color and shape) to highlight the income groups within each region.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1676,7 +1676,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
           display:block!important;
       }</style></aside>
 </section>
-<section id="tabset-6-step-1" class="slide level2" data-chapter-anchor="grouping-within-facets" data-footer="false">
+<section id="tabset-6-step-1" class="slide level2" data-footer="false" data-chapter-anchor="grouping-within-facets">
 <h2>Grouping within facets</h2>
 <div class="slide-tabset panel-tabset" data-group="language">
 <ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Altair</a></li><li><a href="#tabset-7-2">ggplot</a></li></ul>
@@ -1758,7 +1758,7 @@ Figure&nbsp;3: Traffic lights often use color, shape, and position to communicat
 <!-- #|   - facet_alt -->
 <!-- import altair as alt -->
 <!-- import pandas as pd -->
-<!-- from utils import assert_chart_equal -->
+<!-- from src.utils import assert_chart_equal -->
 <!-- url = 'data/income_lifeexp_alcohol.csv' -->
 <!-- ``` -->
 <!-- ```{pyodide} -->
