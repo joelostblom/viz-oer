@@ -59,6 +59,19 @@ from the relevant R session. Start that console by running
 interpreter picker. R's `Sys.getpid()` and Python's `os.getpid()` should agree
 when the two sessions are paired.
 
+The Quarto extension's **Run All Cells** command has a separate mixed-language
+limitation, verified in extension 1.139.0: in Source mode it collects only cells
+matching the first executable cell's language, before Python-to-reticulate
+routing happens. Thus a Python-first document runs only its Python cells, even
+when all those cells execute through R. **Run Above** and **Run Below** also
+filter by language. For interactive execution across both languages, use
+**Run Cell and Advance** (Shift+Enter) to step through the document in order.
+For complete document execution, use `quarto render`; its results are produced
+in a separate rendering session, not the active interactive Console. Changing
+the first cell's language only reverses which cells Run All omits. The
+[extension's cell command implementation](https://github.com/quarto-dev/quarto/blob/main/apps/vscode/src/providers/cell/commands.ts)
+contains this filtering in `RunAllCellsCommand`.
+
 The [Quarto extension fix in PR #1116](https://github.com/quarto-dev/quarto/pull/1116)
 restored the Console cell setting; it did not add reticulate support to inline
 output. [Positron issue #6675](https://github.com/posit-dev/positron/issues/6675)
