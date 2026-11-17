@@ -32,6 +32,11 @@ resources:
 
 ## Why bother?
 
+In @sec-cumulative-distributions, we read proportions below a threshold
+and compared those proportions across groups.
+Other questions require counting combinations of values rather than
+following just one variable along an axis.
+
 [Knowing how many films are horror films and how many are rated R
 does not tell us how many are **both**.]{.slide-bullet}
 For that, we need to retain the correspondence between the genre and rating
@@ -440,6 +445,13 @@ ggplot(diamonds, aes(x = carat, y = price)) +
 ```
 
 :::
+
+We have now examined concentrations, cumulative proportions, and combinations
+of values without reducing a distribution to a single typical value.
+Sometimes that detail is essential; at other times, a concise comparison of
+centers and spread is easier to read.
+In @sec-summaries, we explore those summaries and check what they leave out
+by comparing them with the underlying distributions.
 
 ## Further reading {.slide-skip}
 

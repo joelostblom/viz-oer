@@ -26,7 +26,8 @@ resources:
 
 [Suppose we have 100 minutes available to watch a movie.
 What proportion of the films in our dataset would fit?]{.slide-bullet}
-Histograms and density plots show where values are concentrated,
+In @sec-smoothed-distributions, density plots helped us compare distribution
+shapes. Histograms and density plots show where values are concentrated,
 but answering this question requires combining bins or estimating an area.
 A **cumulative distribution** makes the proportion directly visible.
 
@@ -228,3 +229,9 @@ Use step lines to preserve these empirical proportions between observed values;
 straight diagonal segments would interpolate values that are not part of the ECDF.
 
 :::
+
+Counts, densities, and cumulative proportions offer different views of a distribution.
+So far, we have mostly examined one measured variable at a time,
+sometimes comparing it across categorical groups.
+In @sec-joint-distributions, we ask how observations are distributed across
+combinations of variables, keeping the values recorded for each observation together.

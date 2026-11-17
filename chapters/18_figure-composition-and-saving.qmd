@@ -30,6 +30,10 @@ execute:
 
 ## Why bother?
 
+In @sec-eda, we used a sequence of views to investigate a question and decide
+which evidence mattered. Presenting that evidence may require several of those
+views together, with a layout and output format that support the reader's task.
+
 [A single plot may not answer every part of a question.]{.slide-bullet}
 Combining complementary views can show a relationship alongside its distributions,
 or let readers compare how the same response relates to different predictors.
@@ -616,6 +620,11 @@ mpg_weight
 Return to interactive HTML display with `alt.renderers.enable('default')`.
 A PNG fallback is a static preview; sharing the HTML export preserves interactive
 exploration. Notebook display settings and exported-file formats are separate choices.
+
+We can now arrange complementary views and choose how to share the resulting figure.
+In @sec-interactivity, we give readers controls for navigating those views,
+inspecting details, and choosing observations of interest, then reuse these
+layout and export techniques to share the interactive result.
 
 ## Further reading {.slide-skip}
 

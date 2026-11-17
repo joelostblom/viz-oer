@@ -24,18 +24,18 @@ fig-height: 3.75
 
 ## Why bother?
 
-In @sec-connections, we connected related observations to reveal changes over time
-and differences between conditions.
-Sometimes, however, our question concerns a collection of observations:
-How many are there? What is their total? What is a typical value?
-A summary helps answer these questions by reducing many values to a few.
-In this chapter, we will explore how to reduce a collection
-of observations to useful quantities.
+The distribution chapters showed how counts, densities, and cumulative
+proportions reveal concentrations, tails, and differences between groups.
+In @sec-joint-distributions, we extended those views to combinations of variables.
+Sometimes, however, we want a more concise comparison:
+What is a typical value in each group, and how much do the observations vary?
+In this chapter, we summarize centers and spread by reducing many values to a few.
 
 That reduction is useful, but it also leaves information out.
 As we work through this chapter, keep asking:
 What did we lose, and how much of it do we need to put back?
-We will explore these questions here and in the following chapters.
+We will compare those summaries with the distribution views we already know,
+then extend the idea to fitted trends and uncertainty in the following chapters.
 
 <!-- TODO add summaries for line for lab 1? -->
 
@@ -46,7 +46,9 @@ We will explore these questions here and in the following chapters.
 <!-- TODO add long term benefit comment -->
 Suppose you are interested in whether meditation could help you feel less stressed
 before your next exam.
-The dataset below is a 500-observation sample from a randomized study.^[Sparacio et al. (2024), [*Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study*](https://doi.org/10.1038/s41562-024-01907-7), *Nature Human Behaviour*, 8, 1716–1725.]
+We return to the 500-observation sample introduced in @sec-counts-proportions,
+this time examining the participants' stress scores rather than just counting
+how many were in each condition.^[Sparacio et al. (2024), [*Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study*](https://doi.org/10.1038/s41562-024-01907-7), *Nature Human Behaviour*, 8, 1716–1725.]
 It contains stress scores from four meditation conditions
 and a control condition in which participants listened to a story excerpt.
 The stress score averages 20 items from a questionnaire
@@ -107,10 +109,12 @@ Although we followed the strategies we have learned so far,
 We can see the range of recorded scores,
 but not how many observations share each position.
 Instead,
+we could use jittering, histograms, or density plots to reveal more of each
+distribution. If we want a concise comparison of typical scores,
 we can use statistical summaries,
 such as the mean and median,
 to make it easier to compare conditions.
-Read on to see examples of how to do this.
+Read on to see how to show these summaries without losing sight of the distributions.
 
 [statistical summaries can make it easier to compare conditions]{.content-visible when-format="revealjs" .slide-bullet}
 
@@ -140,6 +144,9 @@ such as mean, median, or sum
 directly as a string
 wrapping the column name]{.slide-text},
 for example, `'mean(stress)'`:
+
+This extends the aggregation syntax used for `count()`:
+the field inside the parentheses specifies which values to average within each group.
 
 
 ```{python}
@@ -254,10 +261,9 @@ These [answer two different questions,
 but graphically they are often depicted similarly, e.g., with error bars]{.slide-subbullet}.
 Therefore it is important to [always label what an error bar represents]{.slide-subbullet}.
 In this chapter,
-we will focus on how spread out the underlying data distribution is,
-and return to confidence intervals and other measures of inferential uncertainty
-in a future chapter.
-<!-- TODO which chapter for ci, link to it and include more discussion around bootstrap there? and also talk about how more points changes the interval to become smaller -->
+we will focus on how spread out the underlying data distribution is.
+After extending summaries to trends, we will examine confidence intervals
+and other measures of inferential uncertainty in @sec-uncertainty.
 <!-- TODO mention error bar -->
 
 One measure of the spread in the underlying data
@@ -439,7 +445,8 @@ with a single average value.
 To avoid being misled by a lone summary statistic,
 we can show the underlying observations of each group
 together with the statistical summaries.
-Plotting every observation in a group along the same line can lead to overlap.
+Plotting every observation in a group along the same line can lead to overlap,
+as in the movie-runtime example in @sec-binned-distributions.
 [**Jittering** adds small random offsets to the points to help separate them]{.slide-bullet}.
 Here, we jitter only along the categorical y-axis,
 so each point's horizontal position still represents its recorded stress score.
@@ -514,6 +521,9 @@ A common measure of spread
 used together with medians
 is a percentile interval,
 which marks the range between two chosen percentiles.
+We can find these endpoints by reading an ECDF at the chosen cumulative
+proportions, as in @sec-cumulative-distributions: a percentile identifies
+a value at a chosen position in the ordered observations.
 For comparison, the interval from one standard deviation below the mean
 to one above it contains about 68% of a normal distribution.
 
@@ -619,3 +629,9 @@ found evidence that all four 15-minute mindfulness exercises reduced self-report
 relative to the active control.
 The largest mean difference was for body scan: 0.27 points lower than the control on the 1–4 scale.
 [The authors concluded that even these brief exercises can offer modest, short-term benefits]{.slide-bullet}.
+
+Our summaries compared typical values and spread within categorical conditions.
+In @sec-trends, we extend this idea to a quantitative predictor:
+instead of one central value per named group, we summarize how a response
+changes across values or neighborhoods along an axis.
+The underlying observations remain important for judging what the fitted summary hides.

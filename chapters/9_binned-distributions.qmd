@@ -31,11 +31,10 @@ resources:
 
 ## Why bother?
 
-In @sec-summaries,
-we learned that [it is important to inspect the underlying observations
-to see how they are distributed]{.slide-bullet}.
-Much of that information would be hidden
-if we looked only at a summary like the mean or median.
+In @sec-counts-proportions,
+[we counted observations in categories to see how they are distributed]{.slide-bullet}.
+For a quantitative variable, observations can take many distinct values,
+so counting every exact value separately may not give us a useful overview.
 [But what can we do when there are too many data points
 to visualize all of them individually?]{.slide-subbullet}
 
@@ -660,3 +659,8 @@ Now we can detect differences
 that we couldn't see in the original jittered point plot.
 For example, adventure movies span a broad range of runtimes,
 whereas comedies tend to be more tightly concentrated.
+
+Histograms reveal these concentrations by counting observations in intervals,
+but their appearance depends on the bin width and boundaries.
+In @sec-smoothed-distributions, we explore another way to show distribution
+shape: combining smooth contributions centered on the individual observations.

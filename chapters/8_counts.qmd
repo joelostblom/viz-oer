@@ -22,10 +22,17 @@ fig-height: 3.75
 
 ::::
 
-In @sec-summaries, we explored central values and variability.
-Another useful property we can compute
-is the number of observations in a group.
-We will return to the meditation dataset to compare counts across conditions,
+In @sec-connections, we connected related observations to reveal changes over
+time and differences between paired values.
+Here, we ask how many observations belong to each category,
+without needing an order in which to connect them.
+Counting the observations in each group describes a **categorical distribution**:
+how the observations are divided among the categories.
+
+We will use a 500-observation sample from a randomized meditation study.^[Sparacio et al. (2024), [*Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study*](https://doi.org/10.1038/s41562-024-01907-7).]
+Participants were assigned to one of four meditation conditions or a control
+condition in which they listened to a story excerpt.
+We first compare the numbers of participants across conditions,
 then explore proportions and different ways to show parts of a whole.
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
@@ -656,5 +663,8 @@ alt.hconcat(
 
 :::
 
-Another way of thinking of these count charts is that we are viewing distributions of categorical values.
-This concept can also be applied to quantitative values, as we will see in @sec-binned-distributions.
+These charts show distributions by counting observations in categories.
+What if the variable is quantitative, with many distinct values rather than
+a few named categories? In @sec-binned-distributions,
+we group nearby values into intervals and count observations in each one.
+This extends the bar-chart idea to histograms.

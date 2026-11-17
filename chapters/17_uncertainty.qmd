@@ -32,6 +32,10 @@ resources:
 
 ## Why bother?
 
+In @sec-trends, we fitted lines and curves to summarize relationships.
+Together with the group summaries in @sec-summaries, those estimates help us
+describe patterns, but they leave another question open: how uncertain are the estimates?
+
 [A point or a line can look precise even when it represents an uncertain estimate.]{.slide-bullet}
 Showing uncertainty helps readers judge which conclusions the data support,
 but the visual representation also matters:

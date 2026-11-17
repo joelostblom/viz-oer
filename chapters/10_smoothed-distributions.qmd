@@ -980,9 +980,9 @@ as an indication of the relative sizes
 of these two groups within each genre.
 
 In addition to the densities,
-we also visualize summary statistics of each group
-to facilitate comparing both the distribution
-and central tendency of the observations.
+we mark each group's **mean runtime**: the sum of its runtimes divided by
+its number of movies. This gives us a reference for comparing the centers
+while retaining the distribution shapes.
 
 ::: {.panel-tabset group="language"}
 
@@ -1028,9 +1028,13 @@ alt.layer(
 
 #### ggplot {.slide-skip}
 
-The 25th, 50th (median), and 75th percentiles
-are computed by default in `geom_violin()`
+We can also mark percentiles within each violin.
+The 50th percentile, or **median**, divides the ordered observations in half;
+the 25th and 75th percentiles bound the middle half.
+These percentiles are computed by default in `geom_violin()`,
 and we can make them visible by setting the style of the quantile lines.
+The point layer uses `stat = 'summary'` and `fun = mean` to calculate
+one mean runtime per genre and rating group.
 
 ```{r}
 #| fig-height: 6
@@ -1074,3 +1078,9 @@ which aligns with our expectations
 of low demand for this genre among younger audiences.
 
 <!-- TODO sina density clouds -->
+
+Density plots make distribution shapes easier to compare,
+but their heights are not cumulative proportions.
+To find what share of movies fit within a particular viewing window,
+we would still need to estimate an area under a density curve.
+In @sec-cumulative-distributions, we put those proportions directly on an axis.

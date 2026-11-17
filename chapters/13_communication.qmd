@@ -43,6 +43,10 @@ execute:
 
 ## Why bother?
 
+We now have ways to inspect distributions, summarize typical values and trends,
+and display uncertainty. As @sec-uncertainty showed, choosing an appropriate
+statistical display does not guarantee that another reader will interpret it as intended.
+
 [During data exploration, you are often the main person interpreting a chart.]{.slide-bullet}
 [For communication, a figure needs to make sense to someone who does not already
 know the data or the plotting code.]{.slide-bullet}
@@ -833,6 +837,12 @@ reversed_hex + scale_fill_continuous(transform = 'reverse')
 ```
 
 ::::
+
+The same question guides all these choices: what comparison should the reader
+be able to make, and what context is needed to interpret it?
+Color can support that comparison or introduce a competing message.
+In @sec-color, we examine how palette choice, perception, and the meaning of
+the data determine which colors are useful.
 
 ## Further reading {.slide-skip}
 

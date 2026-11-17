@@ -56,8 +56,11 @@ cars <- read_csv('data/vega-cars.csv', show_col_types = FALSE) |>
 
 ## Why bother?
 
-In @sec-connections, lines connected observations to show relationships and changes.
-Here we use lines to summarize a pattern rather than connect every observation.
+In @sec-summaries, we compared central values and spread within groups.
+Here we ask how a typical response changes with a quantitative predictor,
+using a fitted line or curve as a summary of that relationship.
+Unlike the lines in @sec-connections, these lines summarize a pattern
+rather than connect every observation.
 [A trendline can make a general pattern easier to see when individual observations
 or multiple groups obscure it.]{.slide-bullet}
 Trendlines are also called fitted lines or lines of best fit.
@@ -1058,6 +1061,12 @@ Ask whether the groups occupy different parts of the x-range and whether their
 slopes or fitted levels differ. The pooled and grouped fits answer different questions;
 choose according to the comparison you want to make, rather than automatically
 adding groups to every trend plot.
+
+Whether we fit one line or several, the fitted pattern is an estimate based
+on the observed data. The spread of points around it does not by itself show
+how uncertain the estimated line is.
+In @sec-uncertainty, we add intervals and bands to distinguish variation among
+observations from uncertainty in central values and fitted relationships.
 
 ## Further reading {.slide-skip}
 

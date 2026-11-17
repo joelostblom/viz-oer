@@ -1169,3 +1169,9 @@ alt.Chart(regions).mark_line().encode(
 <!-- Todo make backgruond of chart redish instead so it is easeir to see for marks that are colored? --> 
 
 :::
+
+Connecting related observations helps us see changes over time and differences between paired values.
+But not every collection has an order that we should connect with a line.
+To compare how many observations belong to different categories,
+we can count them instead. In @sec-counts-proportions,
+we use those counts and their proportions to describe a categorical distribution.
