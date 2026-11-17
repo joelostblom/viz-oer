@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/13_communication.html
+chapter-slides: ../slides/communication.html
 fig-width: 6
 fig-height: 4
 resources:

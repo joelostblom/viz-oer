@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/20_geospatial.html
+chapter-slides: ../slides/geospatial.html
 resources:
   - /data/geospatial-world-countries.geojson
   - /data/geospatial-world-regions.geojson

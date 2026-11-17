@@ -17,57 +17,57 @@ from tempfile import TemporaryDirectory
 from urllib.parse import unquote, urlsplit
 
 CHAPTER_ASSETS = {
-    "0_chapter-key": (),
-    "1_why-visualize-data": (),
-    "2_grammar-of-graphics": (),
-    "3_individual-observations": ("data",),
-    "4_magnitude": (),
-    "5_groups": (
+    "_chapter-key": (),
+    "why-visualize-data": (),
+    "grammar-of-graphics": (),
+    "observations": ("data",),
+    "magnitude": (),
+    "groups": (
         "data/income_lifeexp_alcohol.csv",
         "data/simpsons_paradox_data_l.csv",
     ),
-    "6_connections": (
+    "connections": (
         "data/co-emissions-per-capita.csv",
         "data/gapminder_world_from_1850.csv",
         "data/gapminder_regions_from_1850.csv",
         "data/gapminder_world_trends.csv",
         "data/movie_scores.csv",
     ),
-    "7_summaries": (
-        "data/meditation-stress-sample.csv",
-        "data/same_mean_sd.csv",
-    ),
-    "8_counts": ("data/meditation-stress-sample.csv",),
-    "9_binned-distributions": (
+    "categorical": ("data/meditation-stress-sample.csv",),
+    "binned": (
         "data/movies.csv",
         "data/london_marathon_finish_times.csv",
     ),
-    "10_smoothed-distributions": (
+    "smoothed": (
         "data/movies.csv",
         "data/london_marathon_finish_times.csv",
     ),
-    "11_cumulative-distributions": ("data/movies.csv",),
-    "12_joint-distributions": (
+    "cumulative": ("data/movies.csv",),
+    "joint": (
         "data/movies.csv",
         "data/diamonds-carat-price.csv",
     ),
-    "13_communication": ("data/diamonds-carat-price.csv",),
-    "14_color": (
+    "center-and-spread": (
+        "data/meditation-stress-sample.csv",
+        "data/same_mean_sd.csv",
+    ),
+    "trends": ("data/vega-cars.csv",),
+    "uncertainty": ("data/vega-cars.csv",),
+    "communication": ("data/diamonds-carat-price.csv",),
+    "color": (
         "data/vega-iris.csv",
         "data/vega-gapminder.csv",
         "data/vega-wheat.csv",
         "data/vega-stocks.csv",
     ),
-    "16_trends": ("data/vega-cars.csv",),
-    "17_uncertainty": ("data/vega-cars.csv",),
-    "18_figure-composition-and-saving": ("data/vega-cars.csv",),
-    "19_interactivity": (
+    "composition": ("data/vega-cars.csv",),
+    "interactivity": (
         "data/vega-cars.csv",
         "data/vega-sp500.csv",
         "data/vega-gapminder.csv",
         "data/vega-movies-interactivity.csv",
     ),
-    "20_geospatial": (
+    "geospatial": (
         "data/geospatial-world-countries.geojson",
         "data/geospatial-world-regions.geojson",
         "data/geospatial-canada-population-2021.csv",
@@ -247,7 +247,13 @@ def build_chapter(quarto, project, output_dir, chapter):
     # in child directories and otherwise treat the deck as a chapter rebuild.
     with TemporaryDirectory(prefix="viz-oer-chapter-slides-") as directory:
         staging = Path(directory)
-        shutil.copy2(project / "_chapter-slides.yml", staging / "_quarto.yml")
+        config = (project / "_chapter-slides.yml").read_text(encoding="utf-8")
+        # Quarto otherwise treats underscored sources as standalone documents,
+        # bypassing the temporary project's theme, filters, and output directory.
+        config = config.replace(
+            "project:\n", f"project:\n  render:\n    - {chapter}.qmd\n", 1
+        )
+        (staging / "_quarto.yml").write_text(config, encoding="utf-8")
         chapter_source = project / "chapters" / f"{chapter}.qmd"
         images = discover_local_images(quarto, project, chapter_source)
         assets = dict.fromkeys(
@@ -302,7 +308,10 @@ def build_chapter(quarto, project, output_dir, chapter):
                 )
                 references[identifier] = {
                     "text": text,
-                    "url": "../" + source_path.relative_to(project).with_suffix(".html").as_posix() + f"#{identifier}",
+                    "url": "../" + (
+                        "index.html" if source_path.name == "_welcome.qmd"
+                        else source_path.relative_to(project).with_suffix(".html").as_posix()
+                    ) + f"#{identifier}",
                 }
         (staging / "slide-references.json").write_text(
             json.dumps(references), encoding="utf-8"

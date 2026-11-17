@@ -4,7 +4,7 @@ fig-height: 3.75
 number-sections: false
 ---
 
-# 99 Misc {#sec-misc .unnumbered}
+# Misc {#sec-misc .unnumbered}
 
 This placeholder chapter collects material awaiting a permanent home.
 

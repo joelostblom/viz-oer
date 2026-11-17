@@ -4,7 +4,7 @@ Run from the repository root:
     uv run python src/data_processing/candidates/prepare_marathon_finish_times.py \
         "/home/joel/Downloads/Respository London Marathon 18-23.csv"
 
-Matches chapter 9's selection and time conversion exactly, keeping only the
+Matches the Binned chapter's selection and time conversion exactly, keeping only the
 finish time in minutes. The source has no year column; no year is inferred.
 """
 

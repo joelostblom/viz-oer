@@ -6,17 +6,17 @@ communication and color lectures. They are exported through the
 the [Vega datasets collection](https://github.com/vega/vega-datasets).
 
 - `vega-cars.csv`: automobile specifications, including year, horsepower, and
-  origin; used for trendlines in chapter 16 and car examples in chapters 18–19.
+  origin; used for trendlines in Trends and car examples in Composition and Interactivity.
 - `vega-iris.csv`: Fisher's iris measurements and species; used for color
-  scales in chapter 14. The R examples use the equivalent built-in `iris` data.
+  scales in Color. The R examples use the equivalent built-in `iris` data.
 - `vega-gapminder.csv`: country-level development indicators; used to compute
-  the correlation matrix in chapter 14 and to compare years interactively in chapter 19.
+  the correlation matrix in Color and to compare years interactively in Interactivity.
 - `vega-wheat.csv`: historical wheat prices; used for highlighting and
-  annotations in chapter 14.
+  annotations in Color.
 - `vega-stocks.csv`: stock-price series; used for ordering legends and direct
-  labeling in chapter 14.
+  labeling in Color.
 
-The full diamond carat/price data used in chapters 12 and 13 are in
+The full diamond carat/price data used in Joint and Communication are in
 `diamonds-carat-price.csv`; their provenance is recorded in
 `diamonds-carat-price.md`.
 

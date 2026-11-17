@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/10_smoothed-distributions.html
+chapter-slides: ../slides/smoothed.html
 fig-width: 5
 fig-height: 3
 resources:
@@ -119,7 +119,7 @@ window_width = 50
 
 # Use a coarse display grid to emphasize the connection to histograms.
 # At this chart's width, 25-unit display steps have approximately the same
-# visual width as the 50-unit bins in the narrower chapter 9 panels.
+# visual width as the 50-unit bins in the narrower Binned chapter panels.
 display_step = 12.5
 edges = np.arange(25, 501, display_step)
 midpoints = (edges[:-1] + edges[1:]) / 2

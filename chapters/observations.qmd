@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/3_individual-observations.html
+chapter-slides: ../slides/observations.html
 fig-width: 4
 fig-height: 4
 resources:

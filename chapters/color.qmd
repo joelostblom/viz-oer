@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/14_color.html
+chapter-slides: ../slides/color.html
 fig-width: 6
 fig-height: 4
 include-in-header:

@@ -1,0 +1,104 @@
+<!-- This landing page will contain an image -->
+<!-- and a short text about the reasoning behind the book and what it is trying to achieve. -->
+
+This educational resource aims to form a connected learning journey
+where each chapter introduces new principles and chart elements
+as a response to a limitation of what came before
+rather than simply presenting rules about which charts are good for what.
+The motivation for this is that
+learners can be adept at remembering *that*
+they should use one chart instead of another
+without understanding *why* that's the case.
+Or they might remember why for a specific example,
+but fail to extend that into a general understanding
+that applies to previously unseen scenarios and charts.
+
+Even more experienced data visualization practitioners
+might intuitively and implicitly make appropriate generalizations,
+without fully being able to articulate
+the reasoning behind their thought process.
+This resource strives to make such choices explicit
+through examples showing where previous techniques fall short
+so that students experience why a novel strategy is needed
+for a particular scenario.
+
+Helping learners generalize their understanding
+can empower their agency
+and improve their ability to predict
+what is an effective visualization choice
+for a scenario not previously encountered.
+It is my hope
+that a deeper understanding of why and when
+certain visualization strategies are needed
+can contribute to and encourage
+learners' critical thinking about any chart they might come across.
+In my personal experience,
+developing such an understanding
+and revealing the implicit reasons behind visualization choices
+also make learning more fun.
+
+This resource interleaves exercises throughout the chapters
+to encourage experiential learning
+and to make learners more active
+instead of leaving them to passively consume information.
+The exercises are largely focused on visualization principles
+rather than coding,
+since memorization of library APIs
+is an increasingly replaceable skill,
+although understanding the guiding principles of the grammatical framework
+those APIs implement
+can be informative and helpful.
+
+To make the learning interactive,
+code is included for learners to experiment with on their own.
+Rather than focusing on any one particular library,
+this resource allows learners to choose their library of interest
+from a set of libraries implementing a grammar of graphics.
+These libraries were chosen
+because their predictable grammar
+encourages learners to interpolate from charts they have seen
+to charts they *could* potentially make
+based on understanding the rules of the grammar.
+Having multiple such libraries also allows learners
+to distinguish underlying visualization principles
+from library-specific API design.
+The grammar of graphics also provides a data-centric framework
+for reasoning about visualization choices
+and more clearly seeing similarities and differences between charts,
+rather than just memorizing names of different chart types.
+<!-- rather than being focused on what **does** work from remembering a full api catalogue --> 
+<!-- of chart templtaes and names. -->
+
+<!-- TODO add note about how having the slides in the same document helps organize content -->
+
+This resource also hopes to introduce students
+to some interesting data sets along the way,
+although this will likely be a work in progress over a longer time.
+
+<!-- I believe learning and exercises are tighyl coupled so therefore exercises --> 
+<!-- are spread throughout the chapters rather than all coming at the end; -->
+<!-- this doesn't mean there is not value in doing the exercises after reading as repetition. -->
+<!-- experiential learning is best, in exercises student can experience the problem,not just "read about it" -->
+
+
+
+<!-- Just like development does not recapitulate the stags of evolution, -->
+<!-- there progression herein is not a reflection of the history of data visualization -->
+<!-- although this author think it could have been. -->
+
+
+<!-- This books also hopes to introduce students to some interesting data sets along the way, -->
+<!-- although this will likely be a work in progress over a longer time -->
+<!-- as I come across more inspiring ones. -->
+
+
+<!-- TODO separation of concept and implemenation (theory and priactice) so that it is modulear and possible to teach with many tools. I have various expertise so some are better than other, improvements welcome. ggsql, observable, seaborn -->
+
+
+<!-- ## acknolwedgmenets -->
+
+<!-- every who helped review and develop: roy, sandra, mona, ben -->
+<!-- UBC OER grant -->
+<!-- MDS -->
+<!-- Altair/Vega-Lite and all other visualization communieis -->
+<!-- Other simlar books / what to read instead -->

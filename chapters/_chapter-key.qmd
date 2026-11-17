@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/0_chapter-key.html
+chapter-slides: ../slides/_chapter-key.html
 ---
 
 # Chapter key {#sec-chapter-key .unnumbered}

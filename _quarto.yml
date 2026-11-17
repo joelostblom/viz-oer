@@ -11,42 +11,42 @@ book:
   date: today
   chapters:
     - index.qmd
-    - chapters/0_chapter-key.qmd
+    - chapters/_chapter-key.qmd
     - part: "Introduction"
       chapters:
-        - chapters/1_why-visualize-data.qmd
-        - chapters/2_grammar-of-graphics.qmd
+        - chapters/why-visualize-data.qmd
+        - chapters/grammar-of-graphics.qmd
     - part: "Foundations"
       chapters:
-        - chapters/3_individual-observations.qmd
-        - chapters/4_magnitude.qmd
-        - chapters/5_groups.qmd
-        - chapters/6_connections.qmd
+        - chapters/observations.qmd
+        - chapters/magnitude.qmd
+        - chapters/groups.qmd
+        - chapters/connections.qmd
     - part: "Distributions"
       chapters:
-        - chapters/8_counts.qmd
-        - chapters/9_binned-distributions.qmd
-        - chapters/10_smoothed-distributions.qmd
-        - chapters/11_cumulative-distributions.qmd
-        - chapters/12_joint-distributions.qmd
+        - chapters/categorical.qmd
+        - chapters/binned.qmd
+        - chapters/smoothed.qmd
+        - chapters/cumulative.qmd
+        - chapters/joint.qmd
     - part: "Summaries"
       chapters:
-        - chapters/7_summaries.qmd
-        - chapters/16_trends.qmd
-        - chapters/17_uncertainty.qmd
+        - chapters/center-and-spread.qmd
+        - chapters/trends.qmd
+        - chapters/uncertainty.qmd
     - part: "Presentation"
       chapters:
-        - chapters/13_communication.qmd
-        - chapters/14_color.qmd
-        - chapters/18_figure-composition-and-saving.qmd
+        - chapters/communication.qmd
+        - chapters/color.qmd
+        - chapters/composition.qmd
     - part: "Exploration"
       chapters:
-        - chapters/15_exploratory-data-analysis.qmd
-        - chapters/19_interactivity.qmd
+        - chapters/eda.qmd
+        - chapters/interactivity.qmd
     - part: "Applications"
       chapters:
-        - chapters/20_geospatial.qmd
-    # - chapters/99_misc.qmd
+        - chapters/geospatial.qmd
+    # - chapters/misc.qmd
 
 filters:
   - path: src/filters/chapter-slide-options.lua

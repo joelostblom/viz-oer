@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/8_counts.html
+chapter-slides: ../slides/categorical.html
 fig-width: 5
 fig-height: 3.75
 ---
@@ -87,8 +87,8 @@ alt.Chart(meditation).mark_point().encode(
 
 We can use `stat = 'count'`
 to count observations.
-This stat computes the counts itself,
-so we don't need to supply a summary function such as `mean` or `median`.
+This stat computes the counts from the individual rows,
+so we don't need to calculate a separate table of counts first.
 By default,
 the categories are sorted alphabetically
 from bottom to top
@@ -398,10 +398,10 @@ we can put them next to each other within each condition.
 
 ##### Altair {.slide-skip}
 
-The `yOffset`/`xOffset` encodings
-that we used for jittering
-can also take a categorical variable
-to offset groups next to each other.
+The `yOffset`/`xOffset` encodings place marks at different positions
+within the category on the main axis.
+Mapping gender to `yOffset` puts its categories next to each other
+within each condition.
 
 ```{python}
 #| label: condition-gender-grouped-alt
@@ -417,9 +417,7 @@ alt.Chart(meditation).mark_bar().encode(
 
 ##### ggplot {.slide-skip}
 
-The `position` parameter
-that we used for jittering
-can also take the `'dodge'` value,
+The `position` parameter can take the `'dodge'` value,
 which places bars next to one another instead of stacking them.
 
 ```{r}

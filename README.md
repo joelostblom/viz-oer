@@ -106,6 +106,14 @@ example `{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}`. Runtime data
 paths in Python/R remain `data/...`, relative to the project root. Reading pages
 are published under `chapters/`; slide decks remain under `slides/`.
 
+Chapter filenames use stable, unnumbered slugs matching their titles, such as
+`observations.qmd`, `center-and-spread.qmd`, and `composition.qmd`.
+`_quarto.yml` controls reading order and displayed chapter numbers; reordering
+chapters does not change their URLs. Keep filenames and cross-reference IDs
+stable when refining titles. Preamble sources start with an underscore.
+Quarto requires `index.qmd`, so it contains the Welcome heading and includes
+the text from `chapters/_welcome.qmd`.
+
 Install the Python dependencies with `uv sync`. Altair currently comes from
 the `feat/to_html-should-work-as_save_html` branch on GitHub, which fixes
 VegaFusion HTML output through reticulate. The resolved commit is pinned in
@@ -131,14 +139,14 @@ uv run quarto preview
 
 Press Ctrl+C to stop the preview.
 
-Chapter 19, **Interactivity**, includes live Plotly HTML widgets in its R examples
+**Interactivity** includes live Plotly HTML widgets in its R examples
 (tooltips, linked legends, range selection, animation, and dropdowns).
-Chapter 18, **Figure composition and saving**, covers Altair and patchwork,
+**Composition** covers Altair and patchwork,
 static exports, and offline HTML export with Altair's `inline=True` and R's
 `htmlwidgets::saveWidget(..., selfcontained = TRUE)`. Its save commands are examples
 to run explicitly, so rendering the book does not create export files in the source tree.
 It precedes Interactivity so its layout and offline-export techniques can be reused there.
-Chapter 20, **Geospatial**, adapts the DSCI 532 geoviz notebook: GeoJSON and
+**Geospatial** adapts the DSCI 532 geoviz notebook: GeoJSON and
 GeoPandas, projections, choropleths, proportional symbols, and linked map selections.
 Altair and ggplot2/sf examples share language tabs and use the same data, with
 `ggplotly()` providing interactivity for the R maps. Boundary and table snapshots
@@ -200,7 +208,7 @@ Cosmo remains available as the optional light theme.
 Quarto remembers the reader's choice. Custom callouts also adapt to dark mode.
 The slide decks retain their separate dark presentation theme.
 
-The chapter key and chapters with registered decks (1–14 and 16–20) open as ordinary textbook pages. Their small **Present slides**
+The chapter key and chapters with registered decks open as ordinary textbook pages. Their small **Present slides**
 icons beside the chapter titles (screens with tooltips and accessible labels)
 open Reveal.js decks generated from the same chapter `.qmd` files.
 In the deck, use arrow keys to navigate, **F** for fullscreen, **S** for speaker
@@ -232,37 +240,37 @@ shortcuts, learning outcomes, exercises, and coding content. It demonstrates
 grouped heading/code reveals and delayed Python/R output, with exercise hints
 and solutions in speaker notes.
 
-Chapter 1 includes the title, learning outcomes, all section/subsection headings,
-both Anscombe tables, the Altair chart, and the Datasaurus animation. Chapter 2
+**Why visualize data?** includes the title, learning outcomes, all section/subsection headings,
+both Anscombe tables, the Altair chart, and the Datasaurus animation. **The grammar of graphics**
 also includes the exercise dataset, declarative/imperative charts and pseudocode,
 arithmetic code examples and grammar implementations.
 
-Chapters 3–14 and 16–20 have first-draft decks covering their key principles, selected
+The remaining registered chapters have first-draft decks covering their key principles, selected
 exercise visuals, diagrams/animations, and Altair/ggplot examples. Short examples
 show source and output together; longer examples show the chart with explanations
 in speaker notes. Language variants share interactive tabs, with their selected
 content paired step by step when examples have descriptive slide titles.
-Deep dives and margin notes are excluded. Chapter 15 is not yet registered
+Deep dives and margin notes are excluded. **EDA** is not yet registered
 for slide builds. The Geospatial deck includes the projection exercise and
 animation, lecture illustrations about choropleths and cartograms, and paired
 Altair/ggplotly examples. Longer inset and layered-map examples show their output;
 their full code remains available in the reading view.
 
 Material from the DSCI 531 communication and color lectures is organized into
-ordinary Quarto chapters with synchronized Altair/ggplot tabs. Chapter 12 combines
+ordinary Quarto chapters with synchronized Altair/ggplot tabs. **Joint** combines
 overplotting, rectangular/hexagonal bins, and two-dimensional density estimates
-with the joint-distribution examples. Chapter 13 opens with annotated comparison
+with the joint-distribution examples. **Communication** opens with annotated comparison
 figures from the supplied DSCI 531 lecture ODP; its presentation uses only those
 design examples. Its learning outcomes and existing programming material are in
 a reading-view `.slide-skip` block. The later reading sections cover number
-formats, titles, and scale ranges. Chapter 14 likewise opens with figures and an
+formats, titles, and scale ranges. **Color** likewise opens with figures and an
 animation from the color lecture ODP, with short comments about perception,
 palette types, accessibility, and color associations. Its slideshow uses that
 new image material; the original prose and programming sections are reading-only.
 Those sections cover palettes, highlights, annotations, and direct labeling.
-Chapter 16, **Trends**, covers means, rolling averages, regression, and local smoothing.
-Uncertainty is chapter 17, followed by Figure composition and saving (18),
-Interactivity (19), and Geospatial (20).
+**Trends** covers means, rolling averages, regression, and local smoothing,
+followed by **Uncertainty**. The later parts cover Communication, Color,
+Composition, EDA, Interactivity, and Geospatial.
 The ODP's trendline-comparison figures are included in Trends, while its
 overplotting figures are omitted. Original figure assets, their source manifest,
 and regeneration instructions are in `assets/images/communication-lecture/`;
@@ -291,7 +299,7 @@ content have heading-only slides with their explanation in the notes.
 
 The chapter uses lightweight annotations:
 
-- `chapter-slides: ../slides/1_why-visualize-data.html` enables its presentation link.
+- `chapter-slides: ../slides/why-visualize-data.html` enables its presentation link.
 - A `.slide-outcomes` div wraps the learning outcomes.
   Slides use one heading and a borderless numbered list with extra space between items.
   Optionally mark shorter `.slide-bullet` spans within it to show just those
@@ -532,7 +540,7 @@ to later chart cells. To add another visual to a chapter deck, wrap it in:
 ```
 
 For two items inside one visual block, `slide-layout="columns"` places the items
-side by side in slides. Chapter 4 uses this for its circle/bar comparison. The
+side by side in slides. Magnitude uses this for its circle/bar comparison. The
 book keeps the items' original layout.
 
 Add `slide-title="A classroom question"` to a `.slide-visual` div to give that
@@ -658,9 +666,9 @@ on the first selected visual/fragment and use `.slide-fragment` for subsequent
 items. The main slide heading spans the full width above a content-only grid.
 Each selected block becomes a column; three or more items use equal widths.
 With two items, `slide-widths` can set the relative widths as described below.
-Chapter 4 uses three columns for the artery-visualization comparison.
+Magnitude uses three columns for the artery-visualization comparison.
 
-For a two-example comparison like chapter 2's syntax examples, add
+For a two-example comparison like the grammar chapter's syntax examples, add
 `.slide-columns` to the enclosing tabset. Use a plain heading for the first
 example, a `.slide-fragment` heading for the second, and one `.slide-visual`
 block per example. Slides put the first heading and example in the left column
@@ -670,7 +678,7 @@ code/output layout.
 
 Both examples must belong to the same slide: a second plain heading starts
 another slide, so mark it `.slide-fragment`. Add `.slide-with-content` to reveal
-that heading together with its chart, as in chapter 5's comparison:
+that heading together with its chart, as in the Groups chapter's comparison:
 
 ```markdown
 ::: {.panel-tabset .slide-columns}
@@ -713,7 +721,7 @@ heading are not read by the slide filter:
 
 The main title appears first. Each column heading and its first selected block
 then reveal together, left column followed by right column. `slide-widths` works
-with this layout too. The book retains its normal headings and tabs. Chapter 5
+with this layout too. The book retains its normal headings and tabs. Groups
 uses this full-width-title layout for its aggregation comparison.
 
 For presentation-only column headings, you can use `slide-title` on two
@@ -745,7 +753,7 @@ For presentation-only column headings, you can use `slide-title` on two
 
 The generated subheadings sit beneath the main title, left and right, and each
 reveals together with its block. Explanatory prose between the blocks stays in
-speaker notes. This wrapper can also sit inside an exercise callout. Chapter 2
+speaker notes. This wrapper can also sit inside an exercise callout. The grammar chapter
 uses this layout for its numbers/strings example.
 
 This layout currently supports two columns. The former `.slide-comparison`
@@ -807,7 +815,7 @@ after `Because` stacks in the right column until the next slide heading;
 bullets reveal one at a time. Add `.slide-with-content` to `Because` to reveal
 it together with the first bullet. A format condition can go directly on the
 heading, as above, or on a heading-only div to hide it in the book while preserving
-the explanatory prose. Chapter 1 uses this layout for
+the explanatory prose. Why visualize data? uses this layout for
 its Anscombe charts and conclusions.
 
 Local images referenced in the chapter's Markdown or raw HTML are discovered
@@ -820,7 +828,7 @@ are ignored. A missing referenced file produces an error identifying its path.
 
 Data files and other runtime dependencies still go in `CHAPTER_ASSETS`, since
 they can be loaded dynamically by Python/R code. That list accepts individual
-files or directories; chapter 3 stages its declared `data` directory. The knitr
+files or directories; Observations stages its declared `data` directory. The knitr
 include, slide assets, `src/utils.py`, and `src/utils.R` are shared. Remote images retain
 their source URLs, and Mermaid diagrams are rendered through Quarto as in the
 textbook. New image files must still be committed for CI to access them.
@@ -860,15 +868,16 @@ available, run `uv sync` from the repository root before building slides.
 
 Generated files:
 
-- Reading view: `_book/chapters/0_chapter-key.html`
-- Slide view: `_book/slides/0_chapter-key.html`
-- Reading view: `_book/chapters/1_why-visualize-data.html`
-- Slide view: `_book/slides/1_why-visualize-data.html`
-- Reading view: `_book/chapters/2_grammar-of-graphics.html`
-- Slide view: `_book/slides/2_grammar-of-graphics.html`
+- Welcome: `_book/index.html`
+- Reading view: `_book/chapters/_chapter-key.html`
+- Slide view: `_book/slides/_chapter-key.html`
+- Reading view: `_book/chapters/why-visualize-data.html`
+- Slide view: `_book/slides/why-visualize-data.html`
+- Reading view: `_book/chapters/grammar-of-graphics.html`
+- Slide view: `_book/slides/grammar-of-graphics.html`
 
-Chapters 3–14 and 18 follow the same pattern, for example
-`_book/slides/9_binned-distributions.html`.
+Other registered chapters follow the same pattern, for example
+`_book/slides/binned.html`.
 
 All decks are part of the published `_book` directory. Each deck has its own generated
 assets, so the reading pages are not overwritten. To render only the slide decks:
@@ -878,7 +887,8 @@ make slides
 ```
 
 This activates the same R/Python environments as the other Make targets and runs
-`uv run python src/build_chapter_slides.py --force`. `make book` and
+`uv run python src/build_chapter_slides.py --force`, then regenerates legacy URL
+redirects. `make book` and
 `make preview` invoke the builder indirectly through the post-render hook in
 `_quarto.yml`, so they do not need a separate `slides` prerequisite.
 
@@ -886,7 +896,7 @@ To build one presentation, use `--chapter`, for example:
 
 ```sh
 . .uvr/activate
-uv run python src/build_chapter_slides.py --chapter 2_grammar-of-graphics
+uv run python src/build_chapter_slides.py --chapter grammar-of-graphics
 ```
 
 To add another chapter, register its filename stem and assets in `CHAPTER_ASSETS`,
@@ -956,5 +966,5 @@ For a one-off render that bypasses caching explicitly:
 
 ```sh
 . .uvr/activate
-uv run quarto render chapters/6_connections.qmd --no-cache
+uv run quarto render chapters/connections.qmd --no-cache
 ```

@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/7_summaries.html
+chapter-slides: ../slides/center-and-spread.html
 fig-width: 5
 fig-height: 3.75
 ---

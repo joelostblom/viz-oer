@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/12_joint-distributions.html
+chapter-slides: ../slides/joint.html
 fig-width: 6
 fig-height: 4
 resources:

@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/9_binned-distributions.html
+chapter-slides: ../slides/binned.html
 fig-height: 2.5
 fig-width: 4
 resources:
@@ -48,6 +48,10 @@ and it is difficult to tell
 how the data points are distributed.
 How do you think we could plot the observations
 to more clearly see how they are distributed?
+
+The points have small random vertical offsets, called **jitter**, to separate
+movies with similar runtimes. These offsets do not change the recorded runtime
+on the x-axis, but even with this extra space many marks overlap.
 
 ```{python}
 #| label: runtime-jitter-motivation

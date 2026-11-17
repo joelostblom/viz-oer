@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/2_grammar-of-graphics.html
+chapter-slides: ../slides/grammar-of-graphics.html
 fig-width: 4
 fig-height: 4
 include-in-header:

@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/1_why-visualize-data.html
+chapter-slides: ../slides/why-visualize-data.html
 fig-width: 4
 fig-height: 4
 include-in-header:

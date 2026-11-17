@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/11_cumulative-distributions.html
+chapter-slides: ../slides/cumulative.html
 fig-width: 6
 fig-height: 4
 resources:

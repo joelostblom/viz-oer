@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/19_interactivity.html
+chapter-slides: ../slides/interactivity.html
 resources:
   - /data/vega-cars.csv
   - /data/vega-sp500.csv

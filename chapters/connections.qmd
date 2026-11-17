@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/6_connections.html
+chapter-slides: ../slides/connections.html
 fig-width: 5
 fig-height: 3.75
 resources:

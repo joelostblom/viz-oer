@@ -1,10 +1,10 @@
-"""Prepare the two Gapminder time-series datasets used in chapter 6.
+"""Prepare the two Gapminder time-series datasets used in Connections.
 
 Run from the repository root:
     uv run python src/data_processing/candidates/create_trends_data.py
 
 The chapter reads the generated CSVs directly, without teaching aggregation
-syntax before chapter 7. Population is summed over countries. Regional
+syntax before Center & spread. Population is summed over countries. Regional
 children_per_woman is the unweighted mean of the country values, matching
 the original chapter's mean(children_per_woman) charts (not a population-
 weighted regional fertility rate). pandas excludes missing fertility values

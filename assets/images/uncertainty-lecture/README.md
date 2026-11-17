@@ -1,7 +1,7 @@
 # Uncertainty lecture figures
 
 These figures were extracted from `Copy of DSCI 531 - Lec 7.odp`, supplied by
-Joel Ostblom, for the opening of `17_uncertainty.qmd`. Embedded images are retained
+Joel Ostblom, for the opening of `uncertainty.qmd`. Embedded images are retained
 at their original resolution. The hypothetical-outcome GIF retains its animation.
 The lecture's administrative opening and unrelated interactivity speaker notes
 were not imported.

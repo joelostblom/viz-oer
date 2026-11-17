@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/18_figure-composition-and-saving.html
+chapter-slides: ../slides/composition.html
 fig-width: 7
 fig-height: 4
 resources:

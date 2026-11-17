@@ -1,5 +1,5 @@
 ---
-chapter-slides: ../slides/4_magnitude.html
+chapter-slides: ../slides/magnitude.html
 fig-width: 5
 fig-height: 3.75
 ---
