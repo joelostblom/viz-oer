@@ -84,7 +84,8 @@ The source layout is:
 ```text
 _quarto.yml                 # Book configuration
 _chapter-slides.yml         # Standalone slide-project template
-index.qmd                   # Book landing page
+index.qmd                   # Welcome page
+chapters/chapter-key.qmd    # Chapter conventions and presentation shortcuts
 chapters/                   # Chapter and reference-page sources
 data/                       # Shared datasets
 assets/images/              # Illustrations and animations
@@ -110,9 +111,8 @@ Chapter filenames use stable, unnumbered slugs matching their titles, such as
 `observations.qmd`, `center-and-spread.qmd`, and `composition.qmd`.
 `_quarto.yml` controls reading order and displayed chapter numbers; reordering
 chapters does not change their URLs. Keep filenames and cross-reference IDs
-stable when refining titles. Preamble sources start with an underscore.
-Quarto requires `index.qmd`, so it contains the Welcome heading and includes
-the text from `chapters/_welcome.qmd`.
+stable when refining titles. The Welcome page lives in `index.qmd`, and the
+chapter key lives in `chapters/chapter-key.qmd`.
 
 Install the Python dependencies with `uv sync`. Altair currently comes from
 the `feat/to_html-should-work-as_save_html` branch on GitHub, which fixes
@@ -869,8 +869,8 @@ available, run `uv sync` from the repository root before building slides.
 Generated files:
 
 - Welcome: `_book/index.html`
-- Reading view: `_book/chapters/_chapter-key.html`
-- Slide view: `_book/slides/_chapter-key.html`
+- Reading view: `_book/chapters/chapter-key.html`
+- Slide view: `_book/slides/chapter-key.html`
 - Reading view: `_book/chapters/why-visualize-data.html`
 - Slide view: `_book/slides/why-visualize-data.html`
 - Reading view: `_book/chapters/grammar-of-graphics.html`

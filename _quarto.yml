@@ -11,7 +11,7 @@ book:
   date: today
   chapters:
     - index.qmd
-    - chapters/_chapter-key.qmd
+    - chapters/chapter-key.qmd
     - part: "Introduction"
       chapters:
         - chapters/why-visualize-data.qmd

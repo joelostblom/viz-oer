@@ -17,7 +17,7 @@ from tempfile import TemporaryDirectory
 from urllib.parse import unquote, urlsplit
 
 CHAPTER_ASSETS = {
-    "_chapter-key": (),
+    "chapter-key": (),
     "why-visualize-data": (),
     "grammar-of-graphics": (),
     "observations": ("data",),
@@ -247,13 +247,7 @@ def build_chapter(quarto, project, output_dir, chapter):
     # in child directories and otherwise treat the deck as a chapter rebuild.
     with TemporaryDirectory(prefix="viz-oer-chapter-slides-") as directory:
         staging = Path(directory)
-        config = (project / "_chapter-slides.yml").read_text(encoding="utf-8")
-        # Quarto otherwise treats underscored sources as standalone documents,
-        # bypassing the temporary project's theme, filters, and output directory.
-        config = config.replace(
-            "project:\n", f"project:\n  render:\n    - {chapter}.qmd\n", 1
-        )
-        (staging / "_quarto.yml").write_text(config, encoding="utf-8")
+        shutil.copy2(project / "_chapter-slides.yml", staging / "_quarto.yml")
         chapter_source = project / "chapters" / f"{chapter}.qmd"
         images = discover_local_images(quarto, project, chapter_source)
         assets = dict.fromkeys(
@@ -308,10 +302,7 @@ def build_chapter(quarto, project, output_dir, chapter):
                 )
                 references[identifier] = {
                     "text": text,
-                    "url": "../" + (
-                        "index.html" if source_path.name == "_welcome.qmd"
-                        else source_path.relative_to(project).with_suffix(".html").as_posix()
-                    ) + f"#{identifier}",
+                    "url": "../" + source_path.relative_to(project).with_suffix(".html").as_posix() + f"#{identifier}",
                 }
         (staging / "slide-references.json").write_text(
             json.dumps(references), encoding="utf-8"
