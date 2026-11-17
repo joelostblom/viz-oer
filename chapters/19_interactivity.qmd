@@ -39,6 +39,11 @@ knitr:
 
 ## Why bother?
 
+In @sec-eda, what we learned from one view helped us choose what to inspect next.
+Here, we let readers make some of those choices directly within a figure.
+We build on the layout and export techniques from @sec-figure-composition
+to combine interactive views and share the result.
+
 [An interactive figure lets readers ask questions that a static view cannot answer all at once.]{.slide-bullet}
 They might examine a particular region, inspect an observation, compare selected groups,
 or change which variable is displayed. [Interactivity can help us explore data ourselves

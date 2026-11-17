@@ -1116,6 +1116,11 @@ stock_lines +
 
 ::::
 
+Color, labels, and legends should help readers identify the comparisons that matter.
+When several plots appear together, those choices also need to work across panels.
+In @sec-figure-composition, we arrange complementary views into a readable figure
+and choose an output format that suits how it will be shared.
+
 ## Further reading {.slide-skip}
 
 - [Color basics](https://clauswilke.com/dataviz/color-basics.html).

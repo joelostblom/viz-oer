@@ -34,15 +34,17 @@ book:
         - chapters/7_summaries.qmd
         - chapters/16_trends.qmd
         - chapters/17_uncertainty.qmd
-    - part: "Communication & design"
+    - part: "Presentation"
       chapters:
         - chapters/13_communication.qmd
         - chapters/14_color.qmd
-    - part: "Extensions & applications"
+        - chapters/18_figure-composition-and-saving.qmd
+    - part: "Exploration"
       chapters:
         - chapters/15_exploratory-data-analysis.qmd
-        - chapters/18_figure-composition-and-saving.qmd
         - chapters/19_interactivity.qmd
+    - part: "Applications"
+      chapters:
         - chapters/20_geospatial.qmd
     # - chapters/99_misc.qmd
 

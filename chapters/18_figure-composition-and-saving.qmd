@@ -30,9 +30,9 @@ execute:
 
 ## Why bother?
 
-In @sec-eda, we used a sequence of views to investigate a question and decide
-which evidence mattered. Presenting that evidence may require several of those
-views together, with a layout and output format that support the reader's task.
+In @sec-communication and @sec-color, we considered how design choices guide
+a reader's attention and interpretation. Here, we extend those choices to
+figures with several views and to the formats we use to share them.
 
 [A single plot may not answer every part of a question.]{.slide-bullet}
 Combining complementary views can show a relationship alongside its distributions,

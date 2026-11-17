@@ -994,9 +994,10 @@ For your next dataset, try leaving a short trail of reasoning:
 
 > **What did I expect? What did I observe? What could explain it? What did I check next? What can I now conclude?**
 
-Once we know which views support a conclusion, we need to decide how to present
-and share them. In @sec-figure-composition, we arrange complementary plots into
-one figure and choose an output format that suits the intended use.
+Exploration often involves changing a view or examining a different subset of
+observations. In @sec-interactivity, we make some of these checks possible
+directly within a figure, then reuse the composition and export techniques from
+@sec-figure-composition to share views that others can explore.
 
 ## Further reading
 

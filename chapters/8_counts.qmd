@@ -4,7 +4,7 @@ fig-width: 5
 fig-height: 3.75
 ---
 
-# Counts & proportions {#sec-counts-proportions}
+# Categorical distributions {#sec-counts-proportions}
 
 :::: {.slide-outcomes}
 
