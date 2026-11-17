@@ -1,11 +1,11 @@
 # London Marathon finish times
 
 `london_marathon_finish_times.csv` contains the same observations used in the
-bin-width exercise in chapter 9, `9_binned-distributions.qmd`. It is an extract from
+bin-width exercise in `binned.qmd`. It is an extract from
 the author-provided file `Respository London Marathon 18-23.csv`.
 
 - Keep rows where `gender == 1` and `agecat == "18-39"`, matching the male
-  18–39 sample described in chapter 9.
+  18–39 sample described in Binned.
 - Interpret the first whitespace-separated part of `fulltime` as a duration,
   then convert seconds to minutes.
 - Keep only the column `Time (minutes)`; discard missing finish times.
@@ -16,7 +16,7 @@ The author has confirmed that the source contains only results from the
 year column; the year is established by the author's confirmation.
 
 The saved extract has 12,805 observations. It allows the density-bandwidth
-exercise in chapter 10 to run without accessing a personal Downloads folder.
+exercise in Smoothed to run without accessing a personal Downloads folder.
 The selectable density curves are computed from these observations during render;
 the CSV stores the observations themselves, not the curves.
 
