@@ -3,7 +3,7 @@ name = "viz-oer"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dependencies = [
     "altair[all] @ git+https://github.com/vega/altair.git@feat/to_html-should-work-as_save_html",
     "altair_ally>=0.2.1",
