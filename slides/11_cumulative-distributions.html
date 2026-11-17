@@ -9,7 +9,7 @@
 <link href="11_cumulative-distributions_files/libs/quarto-html/quarto-syntax-highlighting-c15f42e3d0c4dfe67de8d7f9ab699eef.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
-  <title>Cumulative distributions</title>
+  <title>Cumulative</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -203,7 +203,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Cumulative distributions</h1>
+  <h1 class="title">Cumulative</h1>
 
 <div class="quarto-title-authors">
 </div>
@@ -231,7 +231,7 @@
 </ul>
 </div>
 <aside class="notes">
-<p><span class="slide-bullet"><strong>Suppose we have 100 minutes available to watch a movie. What proportion of the films in our dataset would fit?</strong></span> In <a href="../chapters/10_smoothed-distributions.html#sec-smoothed-distributions">Smoothed distributions</a>, density plots helped us compare distribution shapes. Histograms and density plots show where values are concentrated, but answering this question requires combining bins or estimating an area. A <strong>cumulative distribution</strong> makes the proportion directly visible.</p>
+<p><span class="slide-bullet"><strong>Suppose we have 100 minutes available to watch a movie. What proportion of the films in our dataset would fit?</strong></span> In <a href="../chapters/10_smoothed-distributions.html#sec-smoothed-distributions">Smoothed</a>, density plots helped us compare distribution shapes. Histograms and density plots show where values are concentrated, but answering this question requires combining bins or estimating an area. A <strong>cumulative distribution</strong> makes the proportion directly visible.</p>
 <p><span class="slide-bullet"><strong>An empirical cumulative distribution function, or ECDF, shows the proportion of observations that are less than or equal to each value on the x-axis.</strong></span> For example, its height at 100 minutes is the number of films lasting at most 100 minutes divided by the total number of films. “Empirical” means that we calculate it from the observed data.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -330,7 +330,7 @@
 </div>
 </div>
 <aside class="notes">
-<p>We will reuse the movie dataset from <a href="../chapters/9_binned-distributions.html#sec-binned-distributions">Binned distributions</a>. Here we use all 797 films, each of which has a recorded runtime.</p>
+<p>We will reuse the movie dataset from <a href="../chapters/9_binned-distributions.html#sec-binned-distributions">Binned</a>. Here we use all 797 films, each of which has a recorded runtime.</p>
 <p><strong>Altair</strong></p>
 <p>The <code>cume_dist()</code> operation computes the cumulative proportion. We use the helper class <code>SortField</code> to sort by runtime so that the calculation proceeds from the shortest films to the longest, then use a step line to connect the results.</p>
 <p><strong>ggplot</strong></p>
@@ -627,7 +627,7 @@
 </div>
 <aside class="notes">
 <p><span class="slide-bullet"><strong>The height of an ECDF at 100 minutes is the proportion lasting at most 100 minutes, not the proportion lasting exactly 100 minutes.</strong></span> The proportion at an individual value is represented by the jump there. Use step lines to preserve these empirical proportions between observed values; straight diagonal segments would interpolate values that are not part of the ECDF.</p>
-<p>Counts, densities, and cumulative proportions offer different views of a distribution. So far, we have mostly examined one measured variable at a time, sometimes comparing it across categorical groups. In <a href="../chapters/12_joint-distributions.html#sec-joint-distributions">Joint distributions</a>, we ask how observations are distributed across combinations of variables, keeping the values recorded for each observation together.</p>
+<p>Counts, densities, and cumulative proportions offer different views of a distribution. So far, we have mostly examined one measured variable at a time, sometimes comparing it across categorical groups. In <a href="../chapters/12_joint-distributions.html#sec-joint-distributions">Joint</a>, we ask how observations are distributed across combinations of variables, keeping the values recorded for each observation together.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

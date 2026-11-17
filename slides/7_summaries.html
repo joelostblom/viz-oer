@@ -9,7 +9,7 @@
 <link href="7_summaries_files/libs/quarto-html/quarto-syntax-highlighting-c15f42e3d0c4dfe67de8d7f9ab699eef.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
-  <title>Central tendency &amp; spread</title>
+  <title>Center &amp; spread</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -203,7 +203,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Central tendency &amp; spread</h1>
+  <h1 class="title">Center &amp; spread</h1>
 
 <div class="quarto-title-authors">
 </div>
@@ -320,13 +320,13 @@
 </ul>
 </div>
 <aside class="notes">
-<p>The distribution chapters showed how counts, densities, and cumulative proportions reveal concentrations, tails, and differences between groups. In <a href="../chapters/12_joint-distributions.html#sec-joint-distributions">Joint distributions</a>, we extended those views to combinations of variables. Sometimes, however, we want a more concise comparison: What is a typical value in each group, and how much do the observations vary? In this chapter, we summarize centers and spread by reducing many values to a few.</p>
+<p>The distribution chapters showed how counts, densities, and cumulative proportions reveal concentrations, tails, and differences between groups. In <a href="../chapters/12_joint-distributions.html#sec-joint-distributions">Joint</a>, we extended those views to combinations of variables. Sometimes, however, we want a more concise comparison: What is a typical value in each group, and how much do the observations vary? In this chapter, we summarize centers and spread by reducing many values to a few.</p>
 <p>That reduction is useful, but it also leaves information out. As we work through this chapter, keep asking: What did we lose, and how much of it do we need to put back? We will compare those summaries with the distribution views we already know, then extend the idea to fitted trends and uncertainty in the following chapters.</p>
 <!-- TODO add summaries for line for lab 1? -->
 <!-- TODO I think it makes sense to learn jittering eearlier and show it here in the first example. Or learn it right here as a simpler form of seeing all data, or do we do this in histograms already -->
 <p><strong>Exercise</strong></p>
 <!-- TODO add long term benefit comment -->
-<p>Suppose you are interested in whether meditation could help you feel less stressed before your next exam. We return to the 500-observation sample introduced in <a href="../chapters/8_counts.html#sec-counts-proportions">Counts &amp; proportions</a>, this time examining the participants’ stress scores rather than just counting how many were in each condition.<span>(Sparacio et al.&nbsp;(2024), <a href="https://doi.org/10.1038/s41562-024-01907-7"><em>Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study</em></a>, <em>Nature Human Behaviour</em>, 8, 1716–1725.)</span> It contains stress scores from four meditation conditions and a control condition in which participants listened to a story excerpt. The stress score averages 20 items from a questionnaire where each item ranges from 1 to 4, with higher scores indicating greater self-reported distress after the activity.</p>
+<p>Suppose you are interested in whether meditation could help you feel less stressed before your next exam. We return to the 500-observation sample introduced in <a href="../chapters/8_counts.html#sec-counts-proportions">Categorical</a>, this time examining the participants’ stress scores rather than just counting how many were in each condition.<span>(Sparacio et al.&nbsp;(2024), <a href="https://doi.org/10.1038/s41562-024-01907-7"><em>Self-administered mindfulness interventions reduce stress in a large, randomized controlled multi-site study</em></a>, <em>Nature Human Behaviour</em>, 8, 1716–1725.)</span> It contains stress scores from four meditation conditions and a control condition in which participants listened to a story excerpt. The stress score averages 20 items from a questionnaire where each item ranges from 1 to 4, with higher scores indicating greater self-reported distress after the activity.</p>
 <p>Let’s say we’re interested in comparing how the stress scores differ between conditions. We might visualize the data by applying the strategies we have learned so far: grouping observations by position and comparing their values on a shared scale.</p>
 <p><strong>Altair</strong></p>
 <p><strong>ggplot</strong></p>
@@ -876,7 +876,7 @@ Figure&nbsp;1: Underlying distributions for mean and standard deviation. Adapted
 </div>
 </div>
 <aside class="notes">
-<p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap, as in the movie-runtime example in <a href="../chapters/9_binned-distributions.html#sec-binned-distributions">Binned distributions</a>. <span class="slide-bullet"><strong>Jittering adds small random offsets to the points to help separate them</strong></span>. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
+<p>To avoid being misled by a lone summary statistic, we can show the underlying observations of each group together with the statistical summaries. Plotting every observation in a group along the same line can lead to overlap, as in the movie-runtime example in <a href="../chapters/9_binned-distributions.html#sec-binned-distributions">Binned</a>. <span class="slide-bullet"><strong>Jittering adds small random offsets to the points to help separate them</strong></span>. Here, we jitter only along the categorical y-axis, so each point’s horizontal position still represents its recorded stress score.</p>
 <p><strong>Altair</strong></p>
 <p>We calculate a random value for each observation and use <code>yOffset</code> to spread the points within each condition’s row. We then layer the mean and standard deviation interval over those points.</p>
 <p><strong>ggplot</strong></p>
@@ -909,7 +909,7 @@ Figure&nbsp;2: The elements of a boxplot.
 </div>
 <aside class="notes">
 <p>What if we visualize the median instead of the mean? Showing the median can be especially useful when there are a few extreme values in the data since these impact the mean more than the median, and the median thus becomes a more helpful indication of a typical value. But this decision is context-dependent: if we are interested in these extreme values, the mean may capture their influence in a way that is relevant to our question. Therefore, it is often a good idea to show means and medians together, since they tell us different things about the data.</p>
-<p>A common measure of spread used together with medians is a percentile interval, which marks the range between two chosen percentiles. We can find these endpoints by reading an ECDF at the chosen cumulative proportions, as in <a href="../chapters/11_cumulative-distributions.html#sec-cumulative-distributions">Cumulative distributions</a>: a percentile identifies a value at a chosen position in the ordered observations. For comparison, the interval from one standard deviation below the mean to one above it contains about 68% of a normal distribution.</p>
+<p>A common measure of spread used together with medians is a percentile interval, which marks the range between two chosen percentiles. We can find these endpoints by reading an ECDF at the chosen cumulative proportions, as in <a href="../chapters/11_cumulative-distributions.html#sec-cumulative-distributions">Cumulative</a>: a percentile identifies a value at a chosen position in the ordered observations. For comparison, the interval from one standard deviation below the mean to one above it contains about 68% of a normal distribution.</p>
 <p>A common way to show the median and a percentile interval is a <strong>boxplot</strong>. The box spans the 25th to the 75th percentile, enclosing the middle 50% of the data, with a line marking the median. In the default boxplots below, the whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box edges; observations beyond the whiskers are drawn separately. This illustration can help you interpret the different parts of the box:</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
