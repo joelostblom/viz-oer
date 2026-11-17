@@ -7,7 +7,7 @@ resources:
   - /data/london_marathon_finish_times.csv
 ---
 
-# Smoothed distributions {#sec-smoothed-distributions}
+# Smoothed {#sec-smoothed-distributions}
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 

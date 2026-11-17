@@ -15,7 +15,7 @@ include-in-header:
       </style>
 ---
 
-# Individual observations {#sec-individual-observations}
+# Observations {#sec-individual-observations}
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 

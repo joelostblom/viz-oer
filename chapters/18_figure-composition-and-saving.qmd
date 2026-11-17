@@ -9,7 +9,7 @@ execute:
   warning: false
 ---
 
-# Figure composition and saving {#sec-figure-composition}
+# Composition {#sec-figure-composition}
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 

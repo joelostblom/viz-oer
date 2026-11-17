@@ -8,7 +8,7 @@ resources:
   - /src/utils.R
 ---
 
-# Exploratory data analysis {#sec-eda}
+# EDA {#sec-eda}
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 

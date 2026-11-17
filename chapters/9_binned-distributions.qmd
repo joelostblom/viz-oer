@@ -7,7 +7,7 @@ resources:
   - /data/london_marathon_finish_times.csv
 ---
 
-# Binned distributions {#sec-binned-distributions}
+# Binned {#sec-binned-distributions}
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
